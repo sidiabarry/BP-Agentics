@@ -31,7 +31,7 @@ export function SiteHeader({
 
   return (
     <header
-      className={`absolute inset-x-0 top-0 z-40 ${
+      className={`absolute inset-x-0 top-0 z-40 transition-colors duration-300 ${
         invert ? "text-white" : "text-foreground"
       }`}
     >

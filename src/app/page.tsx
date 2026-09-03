@@ -9,12 +9,10 @@ import { Pricing } from "@/components/pricing";
 import { SchnellCheck } from "@/components/schnell-check";
 import { Faq } from "@/components/faq";
 import { CtaBand } from "@/components/cta-band";
-import { SiteHeader } from "@/components/site-header";
 
 export default function HomePage() {
   return (
     <>
-      <SiteHeader tone="dark" />
       <HeroScrub />
       <ProblemWall />
       <TradeSelector />

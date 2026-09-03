@@ -4,8 +4,15 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SiteHeader } from "@/components/site-header";
 
-const HERO_VH = 240;
+const HERO_VH = 340;
+const VIDEO_ASPECT = 828 / 1108;
+/** First share of the pin distance plays the clip. The rest holds the last frame. */
+const VIDEO_SCROLL = 0.66;
+/** Overlay only after the clip has reached the filled phone screen. */
+const OVERLAY_AT = 0.72;
+const SCALE_FROM = 0.8;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -17,10 +24,43 @@ function motionSnapshot() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function containSize(width: number, height: number) {
+  if (width / height > VIDEO_ASPECT) {
+    return { width: height * VIDEO_ASPECT, height };
+  }
+  return { width, height: width / VIDEO_ASPECT };
+}
+
+function subscribeViewport(cb: () => void) {
+  window.addEventListener("resize", cb);
+  return () => window.removeEventListener("resize", cb);
+}
+
+function viewportSnapshot() {
+  return `${window.innerWidth}x${window.innerHeight}`;
+}
+
+function coverScaleFor(width: number, height: number) {
+  const fitted = containSize(width, height);
+  return Math.max(width / fitted.width, height / fitted.height);
+}
+
+function easeInOut(t: number) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
 export function HeroScrub() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
+  const viewportKey = useSyncExternalStore(
+    subscribeViewport,
+    viewportSnapshot,
+    () => "1280x800",
+  );
+  const [viewW, viewH] = viewportKey.split("x").map(Number);
+  const coverScale = coverScaleFor(viewW, viewH);
+  const frame = containSize(viewW, viewH);
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   const [ready, setReady] = useState(false);
 
@@ -33,9 +73,11 @@ export function HeroScrub() {
     const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
     const next = total > 0 ? scrolled / total : 1;
     setProgress(next);
+
+    const videoProgress = Math.min(1, next / VIDEO_SCROLL);
     if (video && video.duration && Number.isFinite(video.duration)) {
-      const t = next * (video.duration - 0.04);
-      if (Math.abs(video.currentTime - t) > 0.03) {
+      const t = videoProgress * Math.max(video.duration - 0.04, 0);
+      if (Math.abs(video.currentTime - t) > 0.025) {
         video.currentTime = t;
       }
     }
@@ -43,16 +85,16 @@ export function HeroScrub() {
 
   useEffect(() => {
     if (reduced) return;
-    let frame = 0;
+    let raf = 0;
     const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(sync);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(sync);
     };
     sync();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -61,12 +103,17 @@ export function HeroScrub() {
   const skip = () => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    const top = wrap.offsetTop + wrap.offsetHeight - window.innerHeight;
+    const total = wrap.offsetHeight - window.innerHeight;
+    const top = wrap.offsetTop + total * OVERLAY_AT;
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
   };
 
-  const entered = reduced || progress > 0.72;
-  const overlay = reduced ? 1 : Math.min(1, Math.max(0, (progress - 0.62) / 0.28));
+  const videoProgress = Math.min(1, progress / VIDEO_SCROLL);
+  const scaleT = easeInOut(Math.min(1, Math.max(0, (videoProgress - SCALE_FROM) / (1 - SCALE_FROM))));
+  const scale = 1 + (coverScale - 1) * scaleT;
+  const overlay = reduced ? 1 : Math.min(1, Math.max(0, (progress - OVERLAY_AT) / 0.08));
+  const entered = reduced || overlay > 0.55;
+  const headerTone = overlay > 0.35 ? "dark" : "light";
 
   return (
     <section
@@ -76,25 +123,42 @@ export function HeroScrub() {
       aria-label="Einstieg"
     >
       <div
-        className={reduced ? "relative" : "sticky top-0 h-dvh overflow-hidden bg-[#0c1020]"}
+        className={
+          reduced
+            ? "relative"
+            : "sticky top-0 h-dvh overflow-hidden bg-[#f4f4f2]"
+        }
       >
-        <video
-          ref={videoRef}
-          className={`h-dvh w-full object-cover ${reduced ? "hidden" : "block"}`}
-          src="/media/hero.mp4"
-          poster="/media/hero-start.jpg"
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          onLoadedMetadata={() => {
-            const video = videoRef.current;
-            if (video) {
-              video.pause();
-              setReady(true);
+        <SiteHeader tone={headerTone} />
+        <div className="flex h-dvh w-full items-center justify-center">
+          <video
+            ref={videoRef}
+            className={reduced ? "hidden" : "max-h-none max-w-none object-contain"}
+            src="/media/hero.mp4"
+            poster="/media/hero-start.jpg"
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            style={
+              reduced
+                ? undefined
+                : {
+                    width: frame.width,
+                    height: frame.height,
+                    transform: `scale(${scale})`,
+                    transformOrigin: "50% 40%",
+                  }
             }
-          }}
-        />
+            onLoadedMetadata={() => {
+              const video = videoRef.current;
+              if (video) {
+                video.pause();
+                setReady(true);
+              }
+            }}
+          />
+        </div>
         {reduced ? (
           <div
             className="relative min-h-dvh bg-cover bg-center"
@@ -112,7 +176,7 @@ export function HeroScrub() {
         />
 
         <div
-          className={`absolute inset-0 flex flex-col justify-end px-5 pb-16 pt-28 md:justify-center md:px-12 md:pb-24 ${
+          className={`absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-16 md:justify-center md:px-12 md:pb-24 ${
             entered ? "pointer-events-auto" : "pointer-events-none"
           }`}
           style={{ opacity: overlay }}
@@ -159,7 +223,7 @@ export function HeroScrub() {
           </div>
         </div>
 
-        {!reduced && progress < 0.92 ? (
+        {!reduced && overlay < 0.5 ? (
           <button
             type="button"
             onClick={skip}
