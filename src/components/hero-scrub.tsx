@@ -24,11 +24,18 @@ function motionSnapshot() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+const HEADER_SAFE = 96;
+const FOOT_SAFE = 32;
+
 function containSize(width: number, height: number) {
   if (width / height > VIDEO_ASPECT) {
     return { width: height * VIDEO_ASPECT, height };
   }
   return { width, height: width / VIDEO_ASPECT };
+}
+
+function startFrame(width: number, height: number) {
+  return containSize(width, Math.max(height - HEADER_SAFE - FOOT_SAFE, 1));
 }
 
 function subscribeViewport(cb: () => void) {
@@ -41,7 +48,7 @@ function viewportSnapshot() {
 }
 
 function coverScaleFor(width: number, height: number) {
-  const fitted = containSize(width, height);
+  const fitted = startFrame(width, height);
   return Math.max(width / fitted.width, height / fitted.height);
 }
 
@@ -60,7 +67,7 @@ export function HeroScrub() {
   );
   const [viewW, viewH] = viewportKey.split("x").map(Number);
   const coverScale = coverScaleFor(viewW, viewH);
-  const frame = containSize(viewW, viewH);
+  const frame = startFrame(viewW, viewH);
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   const [ready, setReady] = useState(false);
 
@@ -130,7 +137,7 @@ export function HeroScrub() {
         }
       >
         <SiteHeader tone={headerTone} />
-        <div className="flex h-dvh w-full items-center justify-center">
+        <div className="flex h-dvh w-full items-center justify-center pt-24 pb-8">
           <video
             ref={videoRef}
             className={reduced ? "hidden" : "max-h-none max-w-none object-contain"}
