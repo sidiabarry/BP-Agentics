@@ -130,27 +130,6 @@ export const steps = [
   },
 ];
 
-export const consequenceClips = [
-  {
-    src: "/media/buero-morgen.mp4",
-    poster: "/media/buero-morgen.jpg",
-    time: "Morgen",
-    caption: "Die erste Papierlage.",
-  },
-  {
-    src: "/media/buero-nachmittag.mp4",
-    poster: "/media/buero-nachmittag.jpg",
-    time: "Nachmittag",
-    caption: "Binder, Zettel, Excel.",
-  },
-  {
-    src: "/media/buero-nacht.mp4",
-    poster: "/media/buero-nacht.jpg",
-    time: "Nacht",
-    caption: "Nur noch die Schreibtischlampe.",
-  },
-];
-
 export const consequenceCards = [
   {
     time: "Morgen",
