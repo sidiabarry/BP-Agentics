@@ -103,10 +103,17 @@ export function ConsequenceReel({
     if (reduced || !incomingOn || heldIndex === activeIndex) return;
     const id = window.setTimeout(() => {
       setHeldIndex(activeIndex);
-      rewindOthers(activeIndex);
     }, FADE_MS);
     return () => window.clearTimeout(id);
-  }, [incomingOn, heldIndex, activeIndex, reduced, rewindOthers]);
+  }, [incomingOn, heldIndex, activeIndex, reduced]);
+
+  useEffect(() => {
+    if (reduced || heldIndex !== activeIndex) return;
+    const id = window.setTimeout(() => {
+      rewindOthers(heldIndex);
+    }, FADE_MS);
+    return () => window.clearTimeout(id);
+  }, [heldIndex, activeIndex, reduced, rewindOthers]);
 
   useEffect(() => {
     if (!reduced) return;
