@@ -8,15 +8,12 @@ import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/site-header";
 
 const HERO_VH = 360;
-const VIDEO_ASPECT = 828 / 1108;
 const VIDEO_END = 0.8;
-const SCALE_START = 0.7;
-const SCALE_END = 0.88;
 const OVERLAY_AT = 0.9;
 const OVERLAY_DUR = 0.07;
-const HEADER_SAFE = 96;
-const FOOT_SAFE = 32;
-const LERP = 0.34;
+const DESKTOP_FRAMES = 71;
+const MOBILE_FRAMES = 48;
+const HEADER_AT = 0.8;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -28,88 +25,96 @@ function motionSnapshot() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function containSize(width: number, height: number) {
-  if (width / height > VIDEO_ASPECT) {
-    return { width: height * VIDEO_ASPECT, height };
-  }
-  return { width, height: width / VIDEO_ASPECT };
+function subscribeMobile(cb: () => void) {
+  const media = window.matchMedia("(max-width: 767px)");
+  media.addEventListener("change", cb);
+  return () => media.removeEventListener("change", cb);
 }
 
-function startFrame(width: number, height: number) {
-  return containSize(width, Math.max(height - HEADER_SAFE - FOOT_SAFE, 1));
-}
-
-function subscribeViewport(cb: () => void) {
-  window.addEventListener("resize", cb);
-  return () => window.removeEventListener("resize", cb);
-}
-
-function viewportSnapshot() {
-  return `${window.innerWidth}x${window.innerHeight}`;
-}
-
-function coverScaleFor(width: number, height: number) {
-  const fitted = startFrame(width, height);
-  return Math.max(width / fitted.width, height / fitted.height);
-}
-
-function easeInOut(t: number) {
-  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+function mobileSnapshot() {
+  return window.matchMedia("(max-width: 767px)").matches;
 }
 
 function overlayFrom(progress: number) {
   return Math.min(1, Math.max(0, (progress - OVERLAY_AT) / OVERLAY_DUR));
 }
 
-function videoProgressFrom(progress: number) {
+function sequenceProgressFrom(progress: number) {
   return Math.min(1, Math.max(0, progress / VIDEO_END));
 }
 
-function scaleFrom(progress: number) {
-  return easeInOut(
-    Math.min(1, Math.max(0, (progress - SCALE_START) / (SCALE_END - SCALE_START))),
-  );
+function frameIndexFrom(progress: number, count: number) {
+  return Math.round(sequenceProgressFrom(progress) * (count - 1));
+}
+
+function frameSrc(kind: "desktop" | "mobile", index: number) {
+  return `/media/hero-sequence/${kind}/${String(index + 1).padStart(4, "0")}.webp`;
+}
+
+function lastFrameSrc(kind: "desktop" | "mobile") {
+  const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
+  return frameSrc(kind, count - 1);
+}
+
+function loadImage(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new window.Image();
+    img.decoding = "async";
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(src));
+    img.src = src;
+  });
+}
+
+function drawCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+) {
+  const scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
+  const dw = img.naturalWidth * scale;
+  const dh = img.naturalHeight * scale;
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(img, (width - dw) / 2, (height - dh) / 2, dw, dh);
+}
+
+function nearestLoaded(cache: Array<HTMLImageElement | undefined>, index: number) {
+  if (cache[index]) return cache[index];
+  for (let distance = 1; distance < cache.length; distance += 1) {
+    const next = cache[index + distance];
+    if (next) return next;
+    const prev = cache[index - distance];
+    if (prev) return prev;
+  }
+  return undefined;
 }
 
 const HERO_TAGS = ["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"];
 
 export function HeroScrub() {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoBoxRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const skipRef = useRef<HTMLButtonElement>(null);
-  const seekingRef = useRef(false);
   const progressRef = useRef(0);
-  const targetTimeRef = useRef(0);
-  const displayedTimeRef = useRef(0);
-  const hasMetaRef = useRef(false);
+  const cacheRef = useRef<Array<HTMLImageElement | undefined>>([]);
+  const kindRef = useRef<"desktop" | "mobile">("desktop");
   const rafRef = useRef(0);
-  const coverScaleRef = useRef(1);
 
-  const viewportKey = useSyncExternalStore(
-    subscribeViewport,
-    viewportSnapshot,
-    () => "1280x800",
-  );
-  const [viewW, viewH] = viewportKey.split("x").map(Number);
-  const coverScale = coverScaleFor(viewW, viewH);
-  const frame = startFrame(viewW, viewH);
-  coverScaleRef.current = coverScale;
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
+  const mobile = useSyncExternalStore(subscribeMobile, mobileSnapshot, () => false);
+  const kind: "desktop" | "mobile" = mobile ? "mobile" : "desktop";
+  const frameCount = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
+  kindRef.current = kind;
+
   const [hasFrame, setHasFrame] = useState(false);
   const [headerTone, setHeaderTone] = useState<"light" | "dark">("light");
 
   const applyVisuals = useCallback(
     (progress: number) => {
-      const scale = 1 + (coverScaleRef.current - 1) * scaleFrom(progress);
       const overlay = reduced ? 1 : overlayFrom(progress);
-      const zoom = reduced ? 1 : scaleFrom(progress);
-
-      if (videoBoxRef.current) {
-        videoBoxRef.current.style.transform = `scale(${scale})`;
-      }
       if (overlayRef.current) overlayRef.current.style.opacity = String(overlay);
       if (copyRef.current) {
         copyRef.current.style.opacity = String(overlay);
@@ -125,46 +130,34 @@ export function HeroScrub() {
       if (skipRef.current) {
         skipRef.current.hidden = overlay >= 0.5;
       }
-
-      const nextTone = overlay > 0.35 || zoom > 0.4 ? "dark" : "light";
+      const nextTone =
+        overlay > 0.35 || sequenceProgressFrom(progress) >= HEADER_AT ? "dark" : "light";
       setHeaderTone((prev) => (prev === nextTone ? prev : nextTone));
     },
     [reduced],
   );
 
-  const pump = useCallback(() => {
-    rafRef.current = 0;
-    const video = videoRef.current;
-    if (video && video.duration && Number.isFinite(video.duration)) {
-      video.pause();
-      hasMetaRef.current = true;
-      const videoProgress = videoProgressFrom(progressRef.current);
-      const lastFrame = Math.max(video.duration - 1 / 24, 0);
-      targetTimeRef.current = videoProgress * lastFrame;
-      if (videoProgress >= 0.995) {
-        displayedTimeRef.current = lastFrame;
-      } else {
-        displayedTimeRef.current += (targetTimeRef.current - displayedTimeRef.current) * LERP;
-        if (Math.abs(targetTimeRef.current - displayedTimeRef.current) < 0.012) {
-          displayedTimeRef.current = targetTimeRef.current;
-        }
-      }
-      if (!seekingRef.current && Math.abs(video.currentTime - displayedTimeRef.current) >= 0.016) {
-        seekingRef.current = true;
-        video.currentTime = displayedTimeRef.current;
-      }
+  const paint = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const count = kindRef.current === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
+    const index = frameIndexFrom(progressRef.current, count);
+    const img = nearestLoaded(cacheRef.current, index);
+    if (!img) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const pixelW = Math.max(1, Math.round(width * dpr));
+    const pixelH = Math.max(1, Math.round(height * dpr));
+    if (canvas.width !== pixelW || canvas.height !== pixelH) {
+      canvas.width = pixelW;
+      canvas.height = pixelH;
     }
-    const catching =
-      Math.abs(targetTimeRef.current - displayedTimeRef.current) >= 0.012 || seekingRef.current;
-    if (catching) {
-      rafRef.current = requestAnimationFrame(pump);
-    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawCover(ctx, img, width, height);
   }, []);
-
-  const requestPump = useCallback(() => {
-    cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(pump);
-  }, [pump]);
 
   const readProgress = useCallback(() => {
     const wrap = wrapRef.current;
@@ -178,20 +171,68 @@ export function HeroScrub() {
   useEffect(() => {
     if (reduced) return;
     const onScroll = () => {
-      const next = readProgress();
-      progressRef.current = next;
-      applyVisuals(next);
-      pump();
+      progressRef.current = readProgress();
+      applyVisuals(progressRef.current);
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0;
+        paint();
+      });
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [reduced, applyVisuals, readProgress, requestPump]);
+  }, [reduced, applyVisuals, readProgress, paint]);
+
+  useEffect(() => {
+    if (reduced) return;
+    let cancelled = false;
+    const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
+    cacheRef.current = new Array(count);
+    setHasFrame(false);
+
+    const loadRange = async (start: number, end: number, concurrency: number) => {
+      let cursor = start;
+      const workers = Array.from({ length: concurrency }, async () => {
+        while (!cancelled) {
+          const index = cursor;
+          cursor += 1;
+          if (index > end) return;
+          try {
+            const img = await loadImage(frameSrc(kind, index));
+            if (cancelled) return;
+            cacheRef.current[index] = img;
+            if (index === 0) {
+              setHasFrame(true);
+              paint();
+            }
+          } catch {
+            // Frame failed; nearestLoaded will skip it.
+          }
+        }
+      });
+      await Promise.all(workers);
+    };
+
+    const run = async () => {
+      await loadRange(0, 0, 1);
+      if (cancelled) return;
+      paint();
+      await loadRange(1, count - 1, 6);
+      if (!cancelled) paint();
+    };
+    void run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [kind, reduced, paint]);
 
   const skip = () => {
     const wrap = wrapRef.current;
@@ -200,39 +241,6 @@ export function HeroScrub() {
     const top = wrap.offsetTop + total * OVERLAY_AT;
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
   };
-
-  const markMeta = useCallback(() => {
-    const video = videoRef.current;
-    if (!video?.duration || !Number.isFinite(video.duration)) return;
-    video.pause();
-    const already = hasMetaRef.current;
-    hasMetaRef.current = true;
-    if (!already) {
-      const videoProgress = videoProgressFrom(progressRef.current);
-      targetTimeRef.current = videoProgress * Math.max(video.duration - 1 / 24, 0);
-      displayedTimeRef.current = targetTimeRef.current;
-    }
-    requestPump();
-  }, [requestPump]);
-
-  useEffect(() => {
-    if (reduced) return;
-    const video = videoRef.current;
-    if (!video) return;
-    const syncVideo = () => {
-      if (video.readyState >= 1) markMeta();
-      if (video.readyState >= 2) setHasFrame(true);
-    };
-    syncVideo();
-    video.addEventListener("loadedmetadata", syncVideo);
-    video.addEventListener("loadeddata", syncVideo);
-    video.addEventListener("canplay", syncVideo);
-    return () => {
-      video.removeEventListener("loadedmetadata", syncVideo);
-      video.removeEventListener("loadeddata", syncVideo);
-      video.removeEventListener("canplay", syncVideo);
-    };
-  }, [reduced, markMeta]);
 
   return (
     <section
@@ -243,71 +251,41 @@ export function HeroScrub() {
     >
       <div
         className={
-          reduced
-            ? "relative"
-            : "sticky top-0 h-dvh overflow-hidden bg-[#f4f4f2]"
+          reduced ? "relative" : "sticky top-0 h-dvh overflow-hidden bg-[#f4f4f2]"
         }
       >
         <SiteHeader tone={reduced ? "dark" : headerTone} />
-        <div className="flex h-dvh w-full items-center justify-center pt-24 pb-8">
-          <div
-            ref={videoBoxRef}
-            className={reduced ? "hidden" : "relative overflow-hidden"}
-            style={
-              reduced
-                ? undefined
-                : {
-                    width: frame.width,
-                    height: frame.height,
-                    transform: "scale(1)",
-                    transformOrigin: "50% 40%",
-                  }
-            }
-          >
-            <video
-              ref={(node) => {
-                videoRef.current = node;
-                if (!node) return;
-                node.setAttribute("fetchpriority", "high");
-                if (node.readyState >= 1) markMeta();
-                if (node.readyState >= 2) setHasFrame(true);
-              }}
-              className="h-full w-full object-contain"
-              src="/media/hero.mp4"
-              poster="/media/hero-start.jpg"
-              muted
-              playsInline
-              preload="auto"
-              aria-hidden="true"
-              onLoadedMetadata={markMeta}
-              onLoadedData={() => {
-                markMeta();
-                setHasFrame(true);
-              }}
-              onSeeked={() => {
-                seekingRef.current = false;
-                requestPump();
-              }}
-            />
-            {!reduced && !hasFrame ? (
-              <Image
-                src="/media/hero-start.jpg"
-                alt=""
-                fill
-                priority
-                fetchPriority="high"
-                sizes="100vw"
-                className="object-contain"
-              />
-            ) : null}
-          </div>
-        </div>
+
         {reduced ? (
-          <div
-            className="relative min-h-dvh bg-cover bg-center"
-            style={{ backgroundImage: "url(/media/hero-end.jpg)" }}
-          />
-        ) : null}
+          <div className="relative min-h-dvh">
+            <Image
+              src={lastFrameSrc(kind)}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <>
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0 h-full w-full"
+              aria-hidden="true"
+            />
+            {!hasFrame ? (
+              <picture>
+                <source srcSet="/media/hero-sequence/poster.avif" type="image/avif" />
+                <img
+                  src="/media/hero-sequence/poster-fallback.jpg"
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </picture>
+            ) : null}
+          </>
+        )}
 
         <div
           ref={overlayRef}
