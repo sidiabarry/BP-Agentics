@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BookingForm } from "@/components/booking-form";
 import { DataTable, DocPage } from "@/components/doc-page";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { napLine, site } from "@/lib/site";
@@ -70,16 +71,24 @@ export default function KontaktPage() {
         <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>.
       </p>
 
+      <h2>Terminwunsch von hier aus</h2>
+      <p className="answer">
+        Dasselbe Formular wie unter /termin: Name, Telefon, Betrieb, Wunschdatum. Die eigene Route bleibt, damit Kalender und NAP getrennt adressierbar sind.
+      </p>
+      <div className="mt-8 rounded-[2rem] bg-white p-6 md:p-8">
+        <BookingForm />
+      </div>
+
       <h2>Was sollten Sie vor dem Gespräch schon gelesen haben?</h2>
       <p className="answer">
         Vor dem Gespräch reicht oft eine Ebene: die Leistungsseite, die zu Ihrem Engpass passt, plus — wenn intern digitalisiert werden soll — die MID-Seite.
       </p>
       <ul>
         <li>
-          <Link href="/leistungen/website">Website für Betriebe</Link>, wenn der Auftritt schweigt.
+          <Link href="/leistungen/auftritt">Website für Betriebe</Link>, wenn der Auftritt schweigt.
         </li>
         <li>
-          <Link href="/leistungen/ki-setter">KI-Setter</Link>, wenn Anrufe liegen bleiben.
+          <Link href="/leistungen/annahme">KI-Setter</Link>, wenn Anrufe liegen bleiben.
         </li>
         <li>
           <Link href="/leistungen/ablaeufe">Interne Abläufe</Link>, wenn Papier den Abend frisst.
@@ -99,12 +108,12 @@ export default function KontaktPage() {
         <Link href="/">BP Agentics, Hagen</Link>.
       </p>
 
-      <h2>Warum liegt das Formular nicht auf dieser Seite?</h2>
+      <h2>Warum gibt es trotzdem /termin?</h2>
       <p className="answer">
-        Das Formular liegt unter /termin, damit diese Seite die ladungsfähige Erreichbarkeit trägt und die Buchungsseite den Kalender — zwei Absichten, zwei Adressen.
+        /termin bleibt die eigene Buchungsadresse für Menschen, die nur den Slot wollen; diese Seite trägt zuerst die ladungsfähige Erreichbarkeit — NAP oben, Formular darunter.
       </p>
       <p>
-        Suchmaschinen und Menschen, die „BP Agentics Telefon Hagen“ eingeben, sollen hier landen: Name, Straße, PLZ, Ort, Telefon, Mail, WhatsApp. Menschen, die einen Slot wollen, sollen das Formular ausfüllen, ohne an der Anschrift vorbeizuscrollen. Die Startseite bleibt die Choreografie. Impressum wiederholt die Anschrift, versteckt sie nicht mehr.
+        Suchmaschinen und Menschen, die „BP Agentics Telefon Hagen“ eingeben, sollen hier landen: Name, Straße, PLZ, Ort, Telefon, Mail, WhatsApp. Das Formular steht zusätzlich hier, damit niemand eine zweite Adresse suchen muss. Impressum wiederholt die Anschrift, versteckt sie nicht.
       </p>
       <p>
         Es gibt kein zweites Büro in Düsseldorf und keine virtuelle Adresse. Geo in den strukturierten Daten gehört zur Kleiststraße, nicht zum Stadtzentrum. Wer uns auf einer Karte sucht, soll vor der richtigen Tür stehen. Wer uns anruft, soll dieselbe Nummer erreichen, die auf WhatsApp und im Footer steht: +49 162 2843869.

@@ -48,7 +48,82 @@ const websites = [
   },
 ] as const;
 
-export function Pricing() {
+function WebsiteCards() {
+  return (
+    <div className="grid items-stretch gap-4 md:grid-cols-3">
+      {websites.map((plan, index) => (
+        <RevealIn
+          key={plan.name}
+          as="article"
+          variant="card"
+          delay={index * 60}
+          className={
+            plan.featured
+              ? "flex h-full flex-col rounded-3xl bg-[#198BE8] p-7 text-white"
+              : "flex h-full flex-col rounded-3xl bg-white p-7"
+          }
+        >
+          <h3 className="text-xl font-semibold">{plan.name}</h3>
+          <RevealIn
+            as="p"
+            variant="price"
+            delay={120 + index * 60}
+            className="mt-2 text-3xl font-semibold whitespace-nowrap"
+          >
+            {plan.price}
+          </RevealIn>
+          <p className={plan.featured ? "mt-1 text-white/80" : "mt-1 text-[#5C5F66]"}>
+            {plan.run}
+          </p>
+          <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
+            {plan.body}
+          </p>
+          <p className="mt-5">
+            <Link
+              href="/leistungen/auftritt"
+              className={
+                plan.featured
+                  ? "text-white underline-offset-4 hover:underline"
+                  : "text-[#198BE8] underline-offset-4 hover:underline"
+              }
+            >
+              Website {plan.name.replace("Website ", "")}: Leistung und Wartung
+            </Link>
+          </p>
+        </RevealIn>
+      ))}
+    </div>
+  );
+}
+
+export function Pricing({ teaser = false }: { teaser?: boolean }) {
+  if (teaser) {
+    return (
+      <section id="preise" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
+        <div className="mx-auto max-w-6xl">
+          <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
+            Preise
+          </RevealIn>
+          <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
+            950 € Einbau. 149 € im Monat.
+          </RevealHeading>
+          <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
+            Drei Website-Stufen mit Festpreis. Setter, Fundament und Module stehen
+            in der Preistabelle — inklusive Wartung und Eigentum.
+          </RevealIn>
+          <div className="mt-12">
+            <WebsiteCards />
+          </div>
+          <p className="mt-8 text-[1.08rem]">
+            <Link href="/preise" className="text-[#198BE8] underline-offset-4 hover:underline">
+              Alle Endpreise, Wartung und Eigentum in einer Tabelle
+            </Link>
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="preise" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
@@ -116,7 +191,7 @@ export function Pricing() {
                   Fundament und Module im Detail
                 </Link>
                 {" · "}
-                <Link href="/leistungen/ki-setter" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+                <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
                   KI-Setter für Annahme und Kalender
                 </Link>
                 {" · "}
@@ -130,13 +205,13 @@ export function Pricing() {
               src="/demos/feinkost-loop.mp4"
               poster="/demos/feinkost-poster.jpg"
               fullSrc="/demos/feinkost-full.mp4"
-              posterAlt="Smartphone-Ansicht des Bestellsystems von Feinkost Kreta mit Warenannahme und Kundendaten"
-              caption="Bestellweg im Kundensystem Feinkost Kreta."
+              posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta mit 1-Klick-Bestellung"
+              caption="Bestell-App Feinkost Kreta: 1-Klick und Benachrichtigung."
               width={300}
             />
             <p className="mt-4 text-center text-sm text-white/70">
               <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
-                Referenz Feinkost Kreta: Kundensystem und Demo
+                Referenz Feinkost Kreta: Bestell-App und Demo
               </Link>
             </p>
           </div>
@@ -158,48 +233,8 @@ export function Pricing() {
           </div>
         </RevealIn>
 
-        <div className="mt-6 grid items-stretch gap-4 md:grid-cols-3">
-          {websites.map((plan, index) => (
-            <RevealIn
-              key={plan.name}
-              as="article"
-              variant="card"
-              delay={index * 60}
-              className={
-                plan.featured
-                  ? "flex h-full flex-col rounded-3xl bg-[#198BE8] p-7 text-white"
-                  : "flex h-full flex-col rounded-3xl bg-white p-7"
-              }
-            >
-              <h3 className="text-xl font-semibold">{plan.name}</h3>
-              <RevealIn
-                as="p"
-                variant="price"
-                delay={120 + index * 60}
-                className="mt-2 text-3xl font-semibold whitespace-nowrap"
-              >
-                {plan.price}
-              </RevealIn>
-              <p className={plan.featured ? "mt-1 text-white/80" : "mt-1 text-[#5C5F66]"}>
-                {plan.run}
-              </p>
-              <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
-                {plan.body}
-              </p>
-              <p className="mt-5">
-                <Link
-                  href="/leistungen/website"
-                  className={
-                    plan.featured
-                      ? "text-white underline-offset-4 hover:underline"
-                      : "text-[#198BE8] underline-offset-4 hover:underline"
-                  }
-                >
-                  Website {plan.name.replace("Website ", "")}: Leistung und Wartung
-                </Link>
-              </p>
-            </RevealIn>
-          ))}
+        <div className="mt-6">
+          <WebsiteCards />
         </div>
 
         <DemoLoop

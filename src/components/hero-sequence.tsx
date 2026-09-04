@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useSyncExternalStore, type CSSPropertie
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SiteHeader } from "@/components/site-header";
 
 const HERO_VH = 250;
 const VIDEO_END = 0.8;
@@ -249,8 +248,6 @@ export function HeroSequence() {
             : "sticky top-0 h-dvh overflow-hidden bg-[var(--hero-exit)]"
         }
       >
-        <SiteHeader tone="light" />
-
         <picture>
           <source srcSet="/hero/poster.avif" type="image/avif" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -327,7 +324,7 @@ export function HeroSequence() {
                 variant="outline"
                 className="h-13 rounded-full border-[#14161C]/45 bg-white/55 px-7 text-[1.05rem] text-[#14161C] hover:bg-white"
               >
-                <Link href="/#arbeiten">Den Alltag ansehen</Link>
+                <Link href="/#referenzen">Was schon läuft</Link>
               </Button>
             </div>
           </div>

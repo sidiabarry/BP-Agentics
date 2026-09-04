@@ -59,7 +59,7 @@ export function organizationGraph() {
               itemOffered: {
                 "@type": "Service",
                 name: "Website für Betriebe",
-                url: `${site.url}/leistungen/website`,
+                url: `${site.url}/leistungen/auftritt`,
               },
             },
             {
@@ -67,7 +67,7 @@ export function organizationGraph() {
               itemOffered: {
                 "@type": "Service",
                 name: "KI-Setter",
-                url: `${site.url}/leistungen/ki-setter`,
+                url: `${site.url}/leistungen/annahme`,
               },
             },
             {

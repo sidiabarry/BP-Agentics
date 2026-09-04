@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
 import { BookingForm } from "@/components/booking-form";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { pageMetadata } from "@/lib/seo";
@@ -16,8 +15,7 @@ export default function TerminPage() {
   return (
     <>
       <div className="relative bg-[#F3EFE6] pb-8">
-        <SiteHeader tone="light" />
-        <main id="inhalt" className="mx-auto max-w-3xl px-5 pt-32 pb-24 md:px-8">
+        <main id="inhalt" className="mx-auto max-w-3xl px-5 pt-10 pb-24 md:px-8">
           <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Vor Ort in Ihrem Betrieb
           </p>

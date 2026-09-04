@@ -15,7 +15,7 @@ export default function ReferenzenPage() {
     <DocPage
       kicker="Referenzen"
       title="Zwei Systeme, die man sehen kann"
-      lead="Feinkost Kreta zeigt das Innere: Annahme und Bestand auf dem Telefon. Der Dachdecker zeigt das Äußere: eine Signature-Website, die verkauft."
+      lead="Feinkost Kreta ist eine Bestell-App: 1-Klick und Benachrichtigung. Der Dachdecker zeigt das Äußere: eine Signature-Website, die verkauft."
       crumbs={[{ name: "Referenzen", path: "/referenzen" }]}
       related={[
         { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta: Kundensystem und Phone-Demo" },
@@ -29,7 +29,7 @@ export default function ReferenzenPage() {
         BP Agentics zeigt zwei gebaute Systeme: das Kundensystem von Feinkost Kreta und die Signature-Website eines Dachdeckerbetriebs — jeweils mit Produktdemo, ohne erfundene Sterne.
       </p>
       <p>
-        Agenturseiten stapeln Logos und fünf-Sterne-Zitate. Das tun wir nicht. Es gibt keine Bewertungen in den strukturierten Daten und keine erfundenen Fallstudien. Es gibt zwei Wege, die man abspielen kann. Der eine sitzt im Inneren eines Handels: Bestellung, Bestand, Annahme. Der andere sitzt außen vor einem Handwerksbetrieb: Scroll, Bild, Angebot. Beide sind in Hagen entstanden. Beide gehören zu den Ebenen Auftritt, Annahme und Abläufe — nicht zu einer vierten, die wir extra erfunden hätten.
+        Agenturseiten stapeln Logos und fünf-Sterne-Zitate. Das tun wir nicht. Es gibt keine Bewertungen in den strukturierten Daten und keine erfundenen Fallstudien. Es gibt zwei Wege, die man abspielen kann. Der eine ist eine Bestell-App: ein Klick, die Bestellung sitzt, die Benachrichtigung geht raus. Der andere sitzt außen vor einem Handwerksbetrieb: Scroll, Bild, Angebot. Beide sind in Hagen entstanden. Feinkost ist kein Auftritt — das ist der Dachdecker.
       </p>
 
       <DataTable
@@ -38,8 +38,8 @@ export default function ReferenzenPage() {
         rows={[
           [
             "Feinkost Kreta",
-            "Annahme und Abläufe",
-            "Telefon-Demo des Bestellwegs",
+            "Bestell-App",
+            "1-Klick und Benachrichtigung",
             "Kundensystem",
           ],
           [
@@ -56,7 +56,7 @@ export default function ReferenzenPage() {
         Weil zwei ehrliche Systeme mehr sagten als zwölf austauschbare Screenshots ohne Kontext.
       </p>
       <p>
-        Feinkost Kreta ist ein internes System. Man sieht den Bestellweg, nicht eine Hochglanz-Startseite. Genau das brauchen Inhaber, die abends noch Excel offen haben. Die ausführliche Beschreibung und die Phone-Demo stehen unter{" "}
+        Feinkost Kreta ist eine Bestell-App, kein Schaufenster. Man sieht 1-Klick-Bestellung und Benachrichtigung, nicht eine Hochglanz-Startseite. Genau das brauchen Inhaber, die abends noch Excel offen haben. Die ausführliche Beschreibung und die Phone-Demo stehen unter{" "}
         <Link href="/referenzen/feinkost-kreta">Feinkost Kreta Kundensystem</Link>.
       </p>
       <p>

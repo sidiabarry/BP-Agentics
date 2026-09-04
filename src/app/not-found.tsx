@@ -1,12 +1,10 @@
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
     <div className="bg-[#F3EFE6]">
-      <SiteHeader tone="light" />
-      <main id="inhalt" className="mx-auto max-w-3xl px-5 pt-32 pb-24 md:px-8">
+      <main id="inhalt" className="mx-auto max-w-3xl px-5 pt-10 pb-24 md:px-8">
         <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">404</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
           Diese Seite gibt es nicht.

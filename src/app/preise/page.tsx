@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DataTable, DocPage } from "@/components/doc-page";
+import { Pricing } from "@/components/pricing";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -12,6 +13,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function PreisePage() {
   return (
+    <>
     <DocPage
       kicker="Preise"
       title="Endpreise, die nach dem Gespräch feststehen"
@@ -33,8 +35,8 @@ export default function PreisePage() {
         },
       ]}
       related={[
-        { href: "/leistungen/website", label: "Was in Website Start, Betrieb und Signature steckt" },
-        { href: "/leistungen/ki-setter", label: "Was der KI-Setter für 1.900 Euro tut" },
+        { href: "/leistungen/auftritt", label: "Was in Website Start, Betrieb und Signature steckt" },
+        { href: "/leistungen/annahme", label: "Was der KI-Setter für 1.900 Euro tut" },
         { href: "/leistungen/ablaeufe", label: "Fundament und Module im Detail" },
         { href: "/foerderung/mid-digitale-prozesse", label: "Wie MID den Eigenanteil senken kann" },
       ]}
@@ -86,16 +88,16 @@ export default function PreisePage() {
       </p>
       <ul>
         <li>
-          <Link href="/leistungen/website">Website für Betriebe</Link> — Start, Betrieb, Signature.
+          <Link href="/leistungen/auftritt">Website für Betriebe</Link> — Start, Betrieb, Signature.
         </li>
         <li>
-          <Link href="/leistungen/ki-setter">KI-Setter</Link> — Annahme, Qualifizierung, Kalender.
+          <Link href="/leistungen/annahme">KI-Setter</Link> — Annahme, Qualifizierung, Kalender.
         </li>
         <li>
           <Link href="/leistungen/ablaeufe">Interne Abläufe</Link> — Fundament und Module.
         </li>
         <li>
-          <Link href="/referenzen">Referenzen</Link> — Feinkost innen, Dachdecker außen.
+          <Link href="/referenzen">Referenzen</Link> — Feinkost Bestell-App, Dachdecker Auftritt.
         </li>
       </ul>
       <p>
@@ -116,8 +118,10 @@ export default function PreisePage() {
         Vergleichen Sie nicht gegen eine 199-Euro-Baukasten-Seite ohne Annahme und ohne Abläufe. Vergleichen Sie gegen Feierabend, verpasste Anrufe und Rechnungen, die drei Tage in der Kabine liegen. Das ist der Preis, den der Betrieb heute schon zahlt — nur ohne Rechnung.
       </p>
       <p>
-        Offer-Markup auf dieser Seite wiederholt die Beträge, die sichtbar in der Tabelle stehen. Keine Sterne, keine „aggrierten“ Bewertungen, keine SearchAction. Wer uns findet, soll denselben Centbetrag in der Tabelle und im Schema lesen.
+        Offer-Markup auf dieser Seite wiederholt die Beträge, die sichtbar in der Tabelle stehen. Keine Sterne, keine „aggrierten“ Bewertungen, keine SearchAction.         Wer uns findet, soll denselben Centbetrag in der Tabelle und im Schema lesen.
       </p>
     </DocPage>
+    <Pricing />
+    </>
   );
 }

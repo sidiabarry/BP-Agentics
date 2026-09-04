@@ -1,14 +1,12 @@
 import { HeroSequence } from "@/components/hero-sequence";
+import { JumpBar } from "@/components/jump-bar";
 import { ProblemWall } from "@/components/problem-wall";
-import { TradeSelector } from "@/components/trade-selector";
+import { HomeReferenzen } from "@/components/home-referenzen";
 import { ThreeLevels } from "@/components/three-levels";
-import { LivingChat } from "@/components/living-chat";
-import { Proof } from "@/components/proof";
-import { Process } from "@/components/process";
+import { WhyTeaser } from "@/components/why-teaser";
 import { Pricing } from "@/components/pricing";
-import { SchnellCheck } from "@/components/schnell-check";
+import { HomeStart } from "@/components/home-start";
 import { Faq } from "@/components/faq";
-import { CtaBand } from "@/components/cta-band";
 import { JsonLd } from "@/components/json-ld";
 import { faqs } from "@/lib/content";
 import { faqPage } from "@/lib/json-ld";
@@ -35,16 +33,14 @@ export default function HomePage() {
         }}
       />
       <HeroSequence />
+      <JumpBar />
       <ProblemWall />
-      <TradeSelector />
-      <Process />
-      <ThreeLevels />
-      <LivingChat />
-      <Proof />
-      <Pricing />
-      <SchnellCheck />
+      <HomeReferenzen />
+      <ThreeLevels compact />
+      <WhyTeaser />
+      <Pricing teaser />
+      <HomeStart />
       <Faq />
-      <CtaBand dark />
     </main>
   );
 }

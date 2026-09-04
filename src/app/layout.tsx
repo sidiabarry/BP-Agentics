@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Sora } from "next/font/google";
 import { JsonLd } from "@/components/json-ld";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { MobileDock } from "@/components/mobile-dock";
 import { WhatsAppFab } from "@/components/whatsapp-button";
 import { organizationGraph } from "@/lib/json-ld";
 import { site } from "@/lib/site";
@@ -78,9 +78,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Zum Inhalt springen
         </a>
         <JsonLd data={organizationGraph()} />
+        <SiteHeader />
         {children}
         <SiteFooter />
-        <MobileDock />
         <WhatsAppFab />
       </body>
     </html>

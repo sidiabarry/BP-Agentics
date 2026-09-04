@@ -5,7 +5,7 @@ Website für **BP Agentics** in Hagen: Websites, KI-Annahme und interne Abläufe
 Canonical-Host: `https://bp-agentics.de`  
 NAP: `Kleiststraße 9, 58095 Hagen · +49 162 2843869`
 
-Die Startseite bleibt die Verkaufsstrecke (Scroll-Choreografie). Darunter liegt ein Hub mit eigenen URLs für Leistungen, MID-Förderung, Referenzen, Preise und Kontakt.
+Die Startseite ist die Übersicht: acht Abschnitte, Sprungbalken, FAQ. Der volle Inhalt sitzt auf benannten Unterseiten.
 
 ## Lokal starten
 
@@ -18,11 +18,13 @@ Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
 ## Routen
 
-- `/` — Verkaufsstrecke
-- `/leistungen`, `/leistungen/website`, `/leistungen/ki-setter`, `/leistungen/ablaeufe`
+- `/` — Übersicht (acht Abschnitte plus FAQ)
+- `/leistungen`, `/leistungen/auftritt`, `/leistungen/annahme`, `/leistungen/ablaeufe`
+- `/passt-das`, `/ueber-mich`
 - `/foerderung/mid-digitale-prozesse`
 - `/referenzen`, `/referenzen/feinkost-kreta`, `/referenzen/dachdecker-signature`
 - `/preise`, `/kontakt`, `/termin`
+- 301: `/leistungen/website` → `/leistungen/auftritt`, `/leistungen/ki-setter` → `/leistungen/annahme`
 - Gewerke: `/dachdecker`, `/shk-haustechnik`, `/elektrotechnik`, `/kaeltetechnik`, `/spedition-container`, `/galabau`, `/metallbau`, `/nutzfahrzeuge`
 - `/impressum`, `/datenschutz`
 - Crawl: `/sitemap.xml`, `/robots.txt`, `/llms.txt`

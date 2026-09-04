@@ -82,8 +82,8 @@ export default function MidPage() {
       ]}
       related={[
         { href: "/leistungen/ablaeufe", label: "Interne Abläufe: typisch förderfähiger Kern" },
-        { href: "/leistungen/ki-setter", label: "KI-Setter als digitalisierte Annahme" },
-        { href: "/leistungen/website", label: "Website — meist Marketing, selten MID-Kern" },
+        { href: "/leistungen/annahme", label: "KI-Setter als digitalisierte Annahme" },
+        { href: "/leistungen/auftritt", label: "Website — meist Marketing, selten MID-Kern" },
         { href: "/preise", label: "Endpreise, gegen die der Zuschuss gerechnet wird" },
         { href: "/kontakt", label: "Förderfähigkeit in Hagen ansprechen" },
       ]}
@@ -97,9 +97,9 @@ export default function MidPage() {
       </p>
       <p>
         Typische Vorhaben aus unserem Zuschnitt: der{" "}
-        <Link href="/leistungen/ki-setter">KI-Setter</Link> als digitalisierte Annahme und die{" "}
+        <Link href="/leistungen/annahme">KI-Setter</Link> als digitalisierte Annahme und die{" "}
         <Link href="/leistungen/ablaeufe">internen Abläufe</Link> mit Fundament und Modulen. Eine{" "}
-        <Link href="/leistungen/website">Signature-Website</Link> ist der öffentliche Auftritt. Sie kann sinnvoll sein, ist aber oft nicht der förderfähige Kern.
+        <Link href="/leistungen/auftritt">Signature-Website</Link> ist der öffentliche Auftritt. Sie kann sinnvoll sein, ist aber oft nicht der förderfähige Kern.
       </p>
 
       <h2>Wie viel Zuschuss gibt es?</h2>
@@ -192,7 +192,7 @@ export default function MidPage() {
         Aktuelle Beträge ohne Förderrechnung:{" "}
         <Link href="/preise">Preistabelle</Link>. Gegenstand der inneren Arbeit:{" "}
         <Link href="/leistungen/ablaeufe">Abläufe</Link> und{" "}
-        <Link href="/leistungen/ki-setter">KI-Setter</Link>. Diese Seite wurde am 4. September 2026 gegen den öffentlich kommunizierten Rahmen (fünfzig Prozent, fünfzehntausend Euro, Fenster bis 1. Dezember 2026, Windhund, kein Start vor Bescheid) geprüft. Ändert die Landesregierung die Richtlinie, ändert sich der sichtbare Stand hier.
+        <Link href="/leistungen/annahme">KI-Setter</Link>. Diese Seite wurde am 4. September 2026 gegen den öffentlich kommunizierten Rahmen (fünfzig Prozent, fünfzehntausend Euro, Fenster bis 1. Dezember 2026, Windhund, kein Start vor Bescheid) geprüft. Ändert die Landesregierung die Richtlinie, ändert sich der sichtbare Stand hier.
       </p>
     </DocPage>
   );

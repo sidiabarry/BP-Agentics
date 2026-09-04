@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SiteHeader } from "@/components/site-header";
 import { JsonLd } from "@/components/json-ld";
 import { CtaBand } from "@/components/cta-band";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ export default async function IndustryPage({ params }: Props) {
 
   return (
     <div className="bg-[#F3EFE6]">
-      <SiteHeader tone="light" />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -58,7 +56,7 @@ export default async function IndustryPage({ params }: Props) {
           ],
         }}
       />
-      <main id="inhalt" className="mx-auto max-w-5xl px-5 pt-32 pb-8 md:px-8">
+      <main id="inhalt" className="mx-auto max-w-5xl px-5 pt-10 pb-8 md:px-8">
         <nav aria-label="Brotkrumen" className="text-sm text-[#5C5F66]">
           <Link href="/" className="underline-offset-4 hover:underline">
             Startseite

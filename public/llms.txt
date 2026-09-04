@@ -6,9 +6,14 @@ BP Agentics baut drei Schichten für Betriebe, die digital nachziehen müssen: d
 
 ## Kernangebote
 
-- Website für Betriebe: Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro im Monat. Seite: https://bp-agentics.de/leistungen/website
-- KI-Setter: Annahme am Telefon, Qualifizierung, Kalender. 1.900 Euro Einrichtung plus 99 Euro im Monat. Seite: https://bp-agentics.de/leistungen/ki-setter
-- Interne Abläufe: Fundament 2.900 Euro, Module 900 bis 1.800 Euro. Seite: https://bp-agentics.de/leistungen/ablaeufe
+- Auftritt / Website für Betriebe: Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro im Monat. Seite: https://bp-agentics.de/leistungen/auftritt
+- Annahme / KI-Setter: Annahme am Telefon, Qualifizierung, Kalender. 1.900 Euro Einrichtung plus 99 Euro im Monat. Seite: https://bp-agentics.de/leistungen/annahme
+- Abläufe: Fundament 2.900 Euro, Module 900 bis 1.800 Euro. Seite: https://bp-agentics.de/leistungen/ablaeufe
+
+## Orientierung
+
+- Passt das zu mir? Schnell-Check und vier Schritte: https://bp-agentics.de/passt-das
+- Über mich — Sidia Jerome Barry: https://bp-agentics.de/ueber-mich
 
 ## Förderung
 
@@ -16,7 +21,7 @@ MID Digitale Prozesse der Landesregierung NRW kann bis zu 50 Prozent der förder
 
 ## Referenzen
 
-- Feinkost Kreta: internes System mit Telefonannahme. https://bp-agentics.de/referenzen/feinkost-kreta
+- Feinkost Kreta: Bestell-App mit 1-Klick-Bestellung und Benachrichtigung. https://bp-agentics.de/referenzen/feinkost-kreta
 - Dachdecker Signature: öffentliche Website mit Choreografie. https://bp-agentics.de/referenzen/dachdecker-signature
 
 ## Kontakt

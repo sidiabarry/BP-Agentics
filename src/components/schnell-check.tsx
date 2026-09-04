@@ -8,10 +8,34 @@ import { checkPaths, teamSizes } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function SchnellCheck() {
+export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
   const [path, setPath] = useState<string | null>(null);
   const [size, setSize] = useState<string | null>(null);
   const chosen = checkPaths.find((item) => item.id === path);
+  const first = checkPaths[0];
+
+  if (teaser) {
+    return (
+      <div className="bg-white px-5 py-16 md:px-8">
+        <div className="mx-auto max-w-6xl">
+          <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
+            Schnell-Check
+          </RevealIn>
+          <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+            An welcher Stelle verliert Ihr Betrieb gerade am meisten?
+          </RevealHeading>
+          <p className="mt-8 rounded-2xl border border-black/10 bg-[#F3EFE6] px-5 py-4 text-[1.08rem] leading-snug">
+            {first.label}
+          </p>
+          <p className="mt-6">
+            <Link href="/passt-das" className="text-[#198BE8] underline-offset-4 hover:underline">
+              Reibungspunkt und Teamstärke im vollen Schnell-Check wählen
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section id="check" className="bg-white px-5 py-24 md:px-8">

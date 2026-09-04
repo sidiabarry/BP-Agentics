@@ -15,9 +15,9 @@ export const metadata: Metadata = pageMetadata({
 export default function FeinkostPage() {
   return (
     <DocPage
-      kicker="Referenz · Innere Ebene"
-      title="Feinkost Kreta: der Bestellweg sitzt im Telefon"
-      lead="Ein internes System für Annahme, Bestand und Bestellung — gebaut in Hagen, sichtbar als Phone-Demo, nicht als erfundene Fallstudie."
+      kicker="Referenz · Bestell-App"
+      title="Feinkost Kreta: 1-Klick-Bestellung, Benachrichtigung, fertig"
+      lead="Eine vollständige Bestell-App — nicht der öffentliche Auftritt. Ein Klick, die Bestellung sitzt, die Benachrichtigung geht raus. Gebaut in Hagen, sichtbar als Phone-Demo."
       crumbs={[
         { name: "Referenzen", path: "/referenzen" },
         { name: "Feinkost Kreta", path: "/referenzen/feinkost-kreta" },
@@ -35,7 +35,7 @@ export default function FeinkostPage() {
       ]}
       related={[
         { href: "/leistungen/ablaeufe", label: "Interne Abläufe in derselben Denke" },
-        { href: "/leistungen/ki-setter", label: "KI-Setter für die erste Minute der Annahme" },
+        { href: "/leistungen/annahme", label: "KI-Setter für die erste Minute der Annahme" },
         { href: "/referenzen/dachdecker-signature", label: "Die äußere Ebene: Dachdecker Signature" },
         { href: "/foerderung/mid-digitale-prozesse", label: "MID, wenn interne Prozesse gefördert werden" },
       ]}
@@ -54,7 +54,7 @@ export default function FeinkostPage() {
 
       <h2>Was ist das Kundensystem von Feinkost Kreta?</h2>
       <p className="answer">
-        Das Kundensystem von Feinkost Kreta ist ein internes Werkzeug für Annahme, Bestand und Bestellung — bedient auf dem Telefon, nicht in einem Ordner hinter der Theke.
+        Das Kundensystem von Feinkost Kreta ist eine Bestell-App: 1-Klick-Bestellung, Benachrichtigung an den Betrieb, Bestand im selben Weg — bedient auf dem Telefon, nicht in einem Ordner hinter der Theke.
       </p>
       <p>
         Ein Feinkostbetrieb verliert Geld, wenn niemand weiß, was da ist, was bestellt wurde und wer gerade anruft. Excel auf dem Ladenschreibtisch und Zettel am Kühlhaus sind dasselbe Muster, das ein Handwerksbetrieb mit Lieferscheinen kennt. Deshalb steht diese Referenz hier: Sie zeigt Abläufe, nicht eine schöne Startseite. Die Demo läuft als Hochformat im Telefonrahmen. Die längere Fassung öffnet sich auf Klick. Wer Bewegung reduziert, sieht das Poster mit beschreibendem Alternativtext.
@@ -62,15 +62,15 @@ export default function FeinkostPage() {
 
       <h2>Welche Ebene steckt in diesem System?</h2>
       <p className="answer">
-        In diesem System stecken Annahme und Abläufe: der Weg vom Kontakt zum Bestand, nicht der öffentliche Markenauftritt.
+        In diesem System stecken Bestellung und Abläufe: 1-Klick, Benachrichtigung, Bestand — nicht der öffentliche Markenauftritt. Das ist eine andere Arbeit als die Dachdecker-Signature.
       </p>
 
       <DataTable
         caption="Feinkost Kreta, eingeordnet in die drei Ebenen"
         headers={["Ebene", "In dieser Referenz"]}
         rows={[
-          ["Auftritt", "Nicht der Kern — das ist der Dachdecker"],
-          ["Annahme", "Bestellweg und Kontakt auf dem Telefon"],
+          ["Auftritt", "Nicht diese Referenz — das ist der Dachdecker"],
+          ["Bestell-App", "1-Klick-Bestellung und Benachrichtigung"],
           ["Abläufe", "Bestand und Innenweg statt Zettel"],
         ]}
       />
@@ -78,7 +78,7 @@ export default function FeinkostPage() {
       <p>
         Wer dasselbe Muster in einem Handwerks- oder Logistikbetrieb braucht, beginnt bei den{" "}
         <Link href="/leistungen/ablaeufe">internen Abläufen</Link>. Wer zuerst den Anruf verliert, beginnt beim{" "}
-        <Link href="/leistungen/ki-setter">KI-Setter</Link>. Eine öffentliche Signature-Seite ist die andere Referenz:{" "}
+        <Link href="/leistungen/annahme">KI-Setter</Link>. Eine öffentliche Signature-Seite ist die andere Referenz:{" "}
         <Link href="/referenzen/dachdecker-signature">Dachdecker Signature-Website</Link>.
       </p>
 
@@ -92,7 +92,7 @@ export default function FeinkostPage() {
       <p>
         Interne Digitalisierung dieses Zuschnitts kann unter{" "}
         <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link> fallen. Die Website-Stufen bleiben getrennt:{" "}
-        <Link href="/leistungen/website">Website für Betriebe</Link>. Gespräch und NAP stehen auf der{" "}
+        <Link href="/leistungen/auftritt">Website für Betriebe</Link>. Gespräch und NAP stehen auf der{" "}
         <Link href="/kontakt">Kontaktseite</Link>. Zurück zur Übersicht:{" "}
         <Link href="/referenzen">alle Referenzen</Link>.
       </p>

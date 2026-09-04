@@ -18,8 +18,8 @@ export default function LeistungenPage() {
       lead="BP Agentics baut den öffentlichen Auftritt, die Annahme am Telefon und die internen Abläufe — einzeln oder nacheinander, ohne Großprojekt."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       related={[
-        { href: "/leistungen/website", label: "Website für Betriebe: Start, Betrieb, Signature" },
-        { href: "/leistungen/ki-setter", label: "KI-Setter: Annahme, Qualifizierung, Kalender" },
+        { href: "/leistungen/auftritt", label: "Auftritt: Website Start, Betrieb, Signature" },
+        { href: "/leistungen/annahme", label: "Annahme: KI-Setter für Kalender und WhatsApp" },
         { href: "/leistungen/ablaeufe", label: "Interne Abläufe: Fundament und Module" },
         { href: "/foerderung/mid-digitale-prozesse", label: "MID Digitale Prozesse: Zuschuss in Nordrhein-Westfalen" },
         { href: "/preise", label: "Alle Endpreise in einer Tabelle" },
@@ -41,7 +41,8 @@ export default function LeistungenPage() {
         Zuerst kommt die Ebene, an der der Betrieb heute Geld oder Zeit verliert: zu wenige Anfragen, verpasste Anrufe oder Feierabendarbeit im Büro.
       </p>
       <p>
-        Ein Dachdecker mit voller Auslastung braucht selten zuerst eine Signature-Website. Er braucht Annahme, weil die Besichtigung verloren geht, während er auf dem Dach steht. Ein Betrieb, dessen Seite seit zwei Jahren schweigt, braucht zuerst Auftritt. Ein Containerdienst mit Lieferscheinen in der Kabine braucht Abläufe. Der Schnell-Check auf der Startseite sortiert das in zwei Fragen. Der Systemplan nach dem Gespräch legt es fest.
+        Ein Dachdecker mit voller Auslastung braucht selten zuerst eine Signature-Website. Er braucht Annahme, weil die Besichtigung verloren geht, während er auf dem Dach steht. Ein Betrieb, dessen Seite seit zwei Jahren schweigt, braucht zuerst Auftritt. Ein Containerdienst mit Lieferscheinen in der Kabine braucht Abläufe. Der Schnell-Check unter{" "}
+        <Link href="/passt-das">Passt das zu mir?</Link> sortiert das in zwei Fragen. Der Systemplan nach dem Gespräch legt es fest.
       </p>
 
       <DataTable
@@ -95,11 +96,11 @@ export default function LeistungenPage() {
       </p>
       <ul>
         <li>
-          <Link href="/leistungen/website">Website für Betriebe in Nordrhein-Westfalen</Link>
+          <Link href="/leistungen/auftritt">Website für Betriebe in Nordrhein-Westfalen</Link>
           — Start für neunhundertfünfzig Euro, Betrieb für dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro.
         </li>
         <li>
-          <Link href="/leistungen/ki-setter">KI-Setter für die telefonische Annahme</Link>
+          <Link href="/leistungen/annahme">KI-Setter für die telefonische Annahme</Link>
           — eintausendneunhundert Euro Einrichtung und neunundneunzig Euro im Monat.
         </li>
         <li>
@@ -136,7 +137,9 @@ export default function LeistungenPage() {
         <Link href="/kontakt">Kontaktseite mit Anschrift und WhatsApp</Link>.
       </p>
       <p>
-        Suchmaschinen und Sprachmodelle sollen diese Seite als Cluster lesen: drei Leistungen, eine Förderung, zwei Referenzen, eine Preistabelle. Deshalb liegen die Unterseiten nicht nur als Anker auf der Startseite, sondern als eigene Adressen mit eigenem Titel, eigener Beschreibung und eigenem Canonical auf https://bp-agentics.de.
+        Suchmaschinen und Sprachmodelle sollen diese Seite als Cluster lesen: drei Leistungen, eine Förderung, zwei Referenzen, eine Preistabelle. Deshalb liegen die Unterseiten nicht nur als Anker auf der Startseite, sondern als eigene Adressen mit eigenem Titel, eigener Beschreibung und eigenem Canonical auf https://bp-agentics.de. Wer unsicher ist, welche Ebene zuerst kommt, beginnt bei{" "}
+        <Link href="/passt-das">Passt das zu mir?</Link>
+        , nicht bei einem Paketnamen.
       </p>
     </DocPage>
   );

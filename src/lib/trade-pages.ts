@@ -26,8 +26,8 @@ export const tradePages: Record<
       "Die Website filtert. Signature zeigt das Gewerk, bevor jemand drei Angebote einholt. Der Setter legt zwei Besichtigungsslots in den Meisterkalender. Sie bleiben auf dem Dach.",
       "Betrieb ohne Bürokraft ganztags: Das Festnetz ist der Engpass. Eine neue Visitenkarte ändert das nicht. Deshalb die Konfiguration Signature plus KI-Setter, nachrüstbar um Abläufe, wenn Aufmaß und Rechnung den Abend fressen.",
     ],
-    leistung: { href: "/leistungen/website", label: "Website Signature für den Auftritt" },
-    second: { href: "/leistungen/ki-setter", label: "KI-Setter für Besichtigungen" },
+    leistung: { href: "/leistungen/auftritt", label: "Website Signature für den Auftritt" },
+    second: { href: "/leistungen/annahme", label: "KI-Setter für Besichtigungen" },
   },
   "shk-haustechnik": {
     metaTitle: "SHK-Systeme Hagen und NRW",
@@ -42,7 +42,7 @@ export const tradePages: Record<
       "Planbare Badsanierung darf nicht hinter dem Heizungsausfall verschwinden. Der Setter sortiert. Das Fundament hält Kunden, Anlagen und Termine, damit der Monteur nicht zweimal fährt.",
       "MID Digitale Prozesse kann genau diese innere Trennung treffen. Die öffentliche Badgalerie ist Website Betrieb oder Signature — getrennt beauftragt, nicht in denselben Förderantrag gemischt.",
     ],
-    leistung: { href: "/leistungen/ki-setter", label: "KI-Setter für Notdienst und Sanierung" },
+    leistung: { href: "/leistungen/annahme", label: "KI-Setter für Notdienst und Sanierung" },
     second: { href: "/leistungen/ablaeufe", label: "Fundament für Monteurberichte" },
   },
   elektrotechnik: {
@@ -59,7 +59,7 @@ export const tradePages: Record<
       "Eine Website holt hier selten den Engpass. Wer trotzdem gefunden werden will, nimmt Betrieb. Der Setter hilft auf der Bereitschaft, nicht auf der Großbaustelle.",
     ],
     leistung: { href: "/leistungen/ablaeufe", label: "Abläufe: Papier aufs Handy und Nachweis" },
-    second: { href: "/leistungen/website", label: "Website Betrieb, wenn der Auftritt schweigt" },
+    second: { href: "/leistungen/auftritt", label: "Website Betrieb, wenn der Auftritt schweigt" },
   },
   kaeltetechnik: {
     metaTitle: "Kälte-Notdienst ohne Rätsel",
@@ -74,7 +74,7 @@ export const tradePages: Record<
       "Der Setter fragt, bevor jemand den Schlüssel dreht. Nach der Instandsetzung liegt das Prüfprotokoll digital, nicht als nasser Durchschlag in der Tasche.",
       "Wartungsmodule hängen am Fundament. MID Digitale Prozesse ist hier oft näher als eine Signature-Seite. Die Seite kann später kommen.",
     ],
-    leistung: { href: "/leistungen/ki-setter", label: "KI-Setter für die Störungsmeldung" },
+    leistung: { href: "/leistungen/annahme", label: "KI-Setter für die Störungsmeldung" },
     second: { href: "/leistungen/ablaeufe", label: "Wartungsmodule und Protokolle" },
   },
   "spedition-container": {
@@ -107,7 +107,7 @@ export const tradePages: Record<
       "Pool- und Gartenbau verkaufen zusätzlich über Bilder. Website Betrieb oder Signature kann die richtige Anfrage holen. Zuerst aber das Innere, sonst bleibt die schöne Seite ohne Kolonne.",
     ],
     leistung: { href: "/leistungen/ablaeufe", label: "Lager- und Terminmodule" },
-    second: { href: "/leistungen/website", label: "Website, wenn die Saison Anfragen braucht" },
+    second: { href: "/leistungen/auftritt", label: "Website, wenn die Saison Anfragen braucht" },
   },
   metallbau: {
     metaTitle: "Metallbau ohne Nachtangebote",
@@ -123,7 +123,7 @@ export const tradePages: Record<
       "Signature ist selten der erste Schritt. MID kann das Fundament tragen, wenn der Prozess neu digitalisiert wird und noch nicht begonnen hat.",
     ],
     leistung: { href: "/leistungen/ablaeufe", label: "Fundament und Angebotsmodul" },
-    second: { href: "/leistungen/website", label: "Website Start als sichtbare Werkstatt" },
+    second: { href: "/leistungen/auftritt", label: "Website Start als sichtbare Werkstatt" },
   },
   nutzfahrzeuge: {
     metaTitle: "Werkstatt-Status ohne Anrufe",
@@ -138,7 +138,7 @@ export const tradePages: Record<
       "KI-Setter plus Fundament: Status und Nachtragsfreigabe laufen über WhatsApp. Die Annahme ist hier nicht nur der erste Anruf, sie ist der ganze Aufenthalt.",
       "Eine Website erklärt Öffnungszeiten. Sie räumt den Hof nicht. MID trifft den inneren Statusweg, wenn er neu aufgesetzt und erst nach dem Bescheid gebaut wird.",
     ],
-    leistung: { href: "/leistungen/ki-setter", label: "KI-Setter für Status und Freigabe" },
+    leistung: { href: "/leistungen/annahme", label: "KI-Setter für Status und Freigabe" },
     second: { href: "/leistungen/ablaeufe", label: "Fundament der Werkstattaufträge" },
   },
 };

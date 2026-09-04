@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DataTable, DocPage } from "@/components/doc-page";
-import { serviceOffer } from "@/lib/json-ld";
+import { PageFaqs } from "@/components/page-faqs";
+import { Proof } from "@/components/proof";
+import { TradeSelector } from "@/components/trade-selector";
+import { ablaeufeFaqs } from "@/lib/content";
+import { faqPage, serviceOffer } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -13,8 +17,9 @@ export const metadata: Metadata = pageMetadata({
 
 export default function AblaeufePage() {
   return (
+    <>
     <DocPage
-      kicker="Abläufe"
+      kicker="Abläufe · interne Systeme"
       title="Wenn die Arbeit nicht am Schreibtisch hängen bleibt"
       lead="Fundament für zweitausendneunhundert Euro, Module zwischen neunhundert und eintausendachthundert Euro. Kunden, Aufträge, Stundenzettel, Lieferscheine, Lager und Rechnung in einem Datenfundament."
       crumbs={[
@@ -33,11 +38,13 @@ export default function AblaeufePage() {
             { name: "Wartung interne Systeme", price: "190", unit: "MON" },
           ],
         }),
+        faqPage(ablaeufeFaqs),
       ]}
       related={[
-        { href: "/leistungen/ki-setter", label: "KI-Setter, bevor der Auftrag im System landet" },
+        { href: "/leistungen/auftritt", label: "Auftritt: Website, die die Anfrage holt" },
+        { href: "/leistungen/annahme", label: "Annahme: KI-Setter, bevor der Auftrag im System landet" },
         { href: "/foerderung/mid-digitale-prozesse", label: "MID Digitale Prozesse für interne Digitalisierung" },
-        { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta: Bestand, Bestellung, Annahme" },
+        { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta: Bestell-App mit 1-Klick" },
         { href: "/preise", label: "Preistabelle Fundament, Modul, Setter, Website" },
       ]}
     >
@@ -100,9 +107,9 @@ export default function AblaeufePage() {
       </p>
       <p>
         Gesehen statt behauptet:{" "}
-        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link> zeigt Bestand und Bestellweg auf dem Telefon. Die{" "}
-        <Link href="/leistungen/website">Website-Stufen</Link> und der{" "}
-        <Link href="/leistungen/ki-setter">KI-Setter</Link> bleiben einzeln beauftragbar.         Wer den Engpass beschreiben will, ohne gleich zu buchen, schreibt über{" "}
+        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link> ist eine vollständige Bestell-App — ein Klick, die Bestellung sitzt, die Benachrichtigung geht raus. Die{" "}
+        <Link href="/leistungen/auftritt">Website-Stufen</Link> und der{" "}
+        <Link href="/leistungen/annahme">KI-Setter</Link> bleiben einzeln beauftragbar. Wer den Engpass beschreiben will, ohne gleich zu buchen, schreibt über{" "}
         <Link href="/kontakt">Kontakt in Hagen</Link>.
       </p>
 
@@ -122,9 +129,31 @@ export default function AblaeufePage() {
         <Link href="/spedition-container">Spedition und Container</Link>,{" "}
         <Link href="/galabau">Garten, Landschaft, Pool</Link>,{" "}
         <Link href="/metallbau">Metallbau</Link>. Gesehen:{" "}
-        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link>. Gespräch:{" "}
+        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link>.         Gespräch:{" "}
         <Link href="/termin">90 Minuten im Betrieb</Link>.
       </p>
+
+      <PageFaqs items={ablaeufeFaqs} />
+      <p className="mt-8">
+        <Link href="/termin" className="text-[#198BE8] underline-offset-4 hover:underline">
+          Erstgespräch vereinbaren — 90 Minuten im Betrieb
+        </Link>
+        {" · "}
+        <Link href="/leistungen/auftritt" className="text-[#198BE8] underline-offset-4 hover:underline">
+          Zum Auftritt
+        </Link>
+        {" · "}
+        <Link href="/leistungen/annahme" className="text-[#198BE8] underline-offset-4 hover:underline">
+          Zur Annahme
+        </Link>
+        {" · "}
+        <Link href="/preise" className="text-[#198BE8] underline-offset-4 hover:underline">
+          Zur Preistabelle
+        </Link>
+      </p>
     </DocPage>
+    <TradeSelector />
+    <Proof />
+    </>
   );
 }

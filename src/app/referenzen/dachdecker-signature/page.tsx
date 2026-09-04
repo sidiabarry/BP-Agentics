@@ -34,7 +34,7 @@ export default function DachdeckerSignaturePage() {
         }),
       ]}
       related={[
-        { href: "/leistungen/website", label: "Website Start, Betrieb und Signature" },
+        { href: "/leistungen/auftritt", label: "Website Start, Betrieb und Signature" },
         { href: "/dachdecker", label: "Dachdecker in Hagen: Engpass und Konfiguration" },
         { href: "/referenzen/feinkost-kreta", label: "Die innere Ebene: Feinkost Kreta" },
         { href: "/preise", label: "Signature ab 7.900 Euro, Wartung 290 Euro" },
@@ -84,8 +84,8 @@ export default function DachdeckerSignaturePage() {
       <p>
         Die Gewerkeseite{" "}
         <Link href="/dachdecker">Dachdecker bei BP Agentics</Link> beschreibt den Engpass ohne Demo. Die Leistungsseite{" "}
-        <Link href="/leistungen/website">Website für Betriebe</Link> nennt die drei Stufen: Start neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro, Wartung einhundertneunundvierzig bis zweihundertneunzig Euro. Der{" "}
-        <Link href="/leistungen/ki-setter">KI-Setter</Link> gehört dazu, wenn die Mailbox das Geschäft macht. MID Digitale Prozesse fördert in der Regel die inneren Prozesse, nicht diese öffentliche Fläche — erklärt unter{" "}
+        <Link href="/leistungen/auftritt">Website für Betriebe</Link> nennt die drei Stufen: Start neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro, Wartung einhundertneunundvierzig bis zweihundertneunzig Euro. Der{" "}
+        <Link href="/leistungen/annahme">KI-Setter</Link> gehört dazu, wenn die Mailbox das Geschäft macht. MID Digitale Prozesse fördert in der Regel die inneren Prozesse, nicht diese öffentliche Fläche — erklärt unter{" "}
         <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link>.
       </p>
       <p>

@@ -169,6 +169,82 @@ export const officeSlides = [
 export const workReferences =
   "Danach gebaut: Feinkost Kreta · Dachdecker Signature · Betriebsorganisation";
 
+export const whyPoints = [
+  {
+    title: "Ein Ansprechpartner",
+    body: "Sidia Jerome Barry kommt selbst. Keine Account-Staffel, keine Partneragentur dazwischen.",
+  },
+  {
+    title: "Vor Ort, nicht im Foyer",
+    body: "90 Minuten im Betrieb, kostenlos. Drei Fragen, danach der Systemplan in drei Werktagen.",
+  },
+  {
+    title: "Festpreis nach dem Gespräch",
+    body: "Keine offenen Stundensätze. Zusätzliches nur über ein neues Angebot, das Sie vorher freigeben.",
+  },
+  {
+    title: "Die Dateien gehören Ihnen",
+    body: "Ab Zahlung des Einbaus. Sie zahlen für die Wartung, nicht für Ihr Eigentum.",
+  },
+];
+
+export const auftrittFaqs = [
+  {
+    q: "Welche Website-Stufe braucht ein Betrieb zuerst?",
+    a: "Start, wenn die Seite seit Jahren schweigt. Betrieb, wenn Leistungsseiten und Referenzen fehlen. Signature, wenn die Website selbst verkaufen soll.",
+  },
+  {
+    q: "Was kostet die Website — und was die Wartung?",
+    a: "Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 Euro im Monat bei Start und Betrieb, 290 Euro bei Signature. Alle Beträge sind Endpreise.",
+  },
+  {
+    q: "Wem gehört die Seite nach dem Einbau?",
+    a: "Ihnen, ab Zahlung des Einbaus. Die Wartung ist Pflege, nicht Miete. Nach zwölf Monaten monatlich kündbar. Bei Kündigung übergeben wir die Dateien kostenfrei.",
+  },
+  {
+    q: "Gehört die Annahme zur Website?",
+    a: "Nein. Die Website holt Anfragen. Der KI-Setter nimmt sie an. Abläufe tragen den Auftrag. Die Ebenen bleiben einzeln beauftragbar.",
+  },
+];
+
+export const annahmeFaqs = [
+  {
+    q: "Was tut der KI-Setter in der ersten Minute?",
+    a: "Er antwortet per Text, stellt die Qualifizierungsfragen und legt einen Termin in Ihren Kalender. Zwei freie Slots, Zusage, Eintrag.",
+  },
+  {
+    q: "Was kostet der Setter?",
+    a: "1.900 Euro Einrichtung und 99 Euro im Monat. Endpreise. WhatsApp bleibt Ihre Nummer, der Kalender bleibt Ihrer.",
+  },
+  {
+    q: "Ist das ein Chatbot auf der Website?",
+    a: "Nein. Der Setter hängt an WhatsApp, kennt Ihre Slots und schließt bis zum Kalendereintrag. Ein Website-Chat, der nur eine Mailadresse sammelt, ist das nicht.",
+  },
+  {
+    q: "Was tut der Setter nicht?",
+    a: "Er diagnostiziert keine Havarie, ersetzt keinen Meister und schreibt keine Rechnung. Dafür gibt es Abläufe.",
+  },
+];
+
+export const ablaeufeFaqs = [
+  {
+    q: "Was ist das Fundament — und was ein Modul?",
+    a: "Das Fundament bindet Postfach, Kalender und Kundendaten an einem Ort für 2.900 Euro. Ein Modul schließt danach genau einen Ablauf für 900 bis 1.800 Euro.",
+  },
+  {
+    q: "Warum keine fertige Branchensoftware?",
+    a: "Weil sie oft zwanzig Funktionen mitbringt, von denen der Betrieb drei braucht — und genau die eine, die weh tut, unsauber abbildet.",
+  },
+  {
+    q: "Kann MID Digitale Prozesse das tragen?",
+    a: "Innere Prozesse sind der Kern der Richtlinie: 50 Prozent, höchstens 15.000 Euro, Antrag vor Arbeitsbeginn, Fenster bis zum 1. Dezember 2026.",
+  },
+  {
+    q: "Was bleibt draußen?",
+    a: "DATEV, Lohn und Software, die der Steuerberater bereits sauber führt. Wir schließen den Medienbruch zwischen Hof, Kabine, Baustelle und Büro.",
+  },
+];
+
 export const faqs = [
   {
     q: "Wir haben keine IT-Kenntnisse im Betrieb.",

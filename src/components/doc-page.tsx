@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import {
   breadcrumbList,
@@ -34,7 +33,6 @@ export function DocPage({
 
   return (
     <div className="bg-[#F3EFE6]">
-      <SiteHeader tone="light" />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -51,7 +49,7 @@ export function DocPage({
       />
       <nav
         aria-label="Brotkrumen"
-        className="mx-auto max-w-3xl px-5 pt-28 text-sm text-[#5C5F66] md:px-8"
+        className="mx-auto max-w-3xl px-5 pt-8 text-sm text-[#5C5F66] md:px-8"
       >
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {trail.map((item, index) => (

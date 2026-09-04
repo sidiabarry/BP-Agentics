@@ -5,11 +5,11 @@ import { levels } from "@/lib/content";
 
 const levelHrefs: Record<string, { href: string; label: string }> = {
   auftritt: {
-    href: "/leistungen/website",
+    href: "/leistungen/auftritt",
     label: "Website-Stufen und Endpreise nachlesen",
   },
   annahme: {
-    href: "/leistungen/ki-setter",
+    href: "/leistungen/annahme",
     label: "KI-Setter für die Annahme nachlesen",
   },
   ablaeufe: {
@@ -18,7 +18,7 @@ const levelHrefs: Record<string, { href: string; label: string }> = {
   },
 };
 
-export function ThreeLevels() {
+export function ThreeLevels({ compact = false }: { compact?: boolean }) {
   return (
     <section id="leistungen" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
@@ -50,15 +50,23 @@ export function ThreeLevels() {
                 <p className="mt-4 flex-1 text-[1.08rem] leading-relaxed text-white/75">
                   {level.lead}
                 </p>
-                <ul className="mt-6 space-y-2 text-[1.02rem]">
-                  {level.items.map((item) => (
-                    <li key={item} className="border-t border-white/10 pt-2">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-8 text-[1.05rem]">{level.price}</p>
-                <p className="text-white/60">{level.run}</p>
+                {compact ? (
+                  <p className="mt-4 text-[1.05rem] leading-relaxed text-white/70">
+                    {level.price}. {level.run}.
+                  </p>
+                ) : (
+                  <>
+                    <ul className="mt-6 space-y-2 text-[1.02rem]">
+                      {level.items.map((item) => (
+                        <li key={item} className="border-t border-white/10 pt-2">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-8 text-[1.05rem]">{level.price}</p>
+                    <p className="text-white/60">{level.run}</p>
+                  </>
+                )}
                 {levelHrefs[level.id] ? (
                   <p className="mt-5">
                     <Link

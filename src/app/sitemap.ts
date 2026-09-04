@@ -20,9 +20,11 @@ const staticRoutes: {
 }[] = [
   { path: "/", file: "src/app/page.tsx", changeFrequency: "weekly", priority: 1 },
   { path: "/leistungen", file: "src/app/leistungen/page.tsx", changeFrequency: "monthly", priority: 0.9 },
-  { path: "/leistungen/website", file: "src/app/leistungen/website/page.tsx", changeFrequency: "monthly", priority: 0.9 },
-  { path: "/leistungen/ki-setter", file: "src/app/leistungen/ki-setter/page.tsx", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/leistungen/auftritt", file: "src/app/leistungen/auftritt/page.tsx", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/leistungen/annahme", file: "src/app/leistungen/annahme/page.tsx", changeFrequency: "monthly", priority: 0.9 },
   { path: "/leistungen/ablaeufe", file: "src/app/leistungen/ablaeufe/page.tsx", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/passt-das", file: "src/app/passt-das/page.tsx", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/ueber-mich", file: "src/app/ueber-mich/page.tsx", changeFrequency: "monthly", priority: 0.7 },
   {
     path: "/foerderung/mid-digitale-prozesse",
     file: "src/app/foerderung/mid-digitale-prozesse/page.tsx",
