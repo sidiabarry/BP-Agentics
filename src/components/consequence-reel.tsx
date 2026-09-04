@@ -5,6 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { officeSlides } from "@/lib/content";
 
+const FADE_MS = 220;
+
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
   media.addEventListener("change", cb);
@@ -23,13 +25,14 @@ export function ConsequenceReel({
   onIndexChange: (index: number) => void;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videosRef = useRef<Array<HTMLVideoElement | null>>([]);
   const [near, setNear] = useState(false);
   const [inView, setInView] = useState(false);
-  const [playing, setPlaying] = useState(false);
+  const [heldIndex, setHeldIndex] = useState(activeIndex);
+  const [incomingOn, setIncomingOn] = useState(false);
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   const slide = officeSlides[activeIndex] ?? officeSlides[0];
-  const nextSlide = officeSlides[(activeIndex + 1) % officeSlides.length] ?? officeSlides[0];
+  const held = officeSlides[heldIndex] ?? slide;
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -54,32 +57,66 @@ export function ConsequenceReel({
     };
   }, []);
 
-  useEffect(() => {
-    setPlaying(false);
-  }, [activeIndex]);
-
-  const playIfVisible = useCallback(() => {
-    const video = videoRef.current;
-    if (!video || reduced || !near) return;
-    if (inView) {
-      video.play().catch(() => {});
-    } else {
+  const rewindOthers = useCallback((keep: number) => {
+    videosRef.current.forEach((video, index) => {
+      if (!video || index === keep) return;
       video.pause();
-    }
-  }, [inView, near, reduced]);
+      if (video.currentTime > 0.01) {
+        video.currentTime = 0;
+      }
+    });
+  }, []);
 
   useEffect(() => {
-    playIfVisible();
-  }, [playIfVisible, activeIndex]);
+    if (reduced || !near) return;
+    const incoming = videosRef.current[activeIndex];
+    if (!incoming) return;
+    let cancelled = false;
 
-  const goTo = (nextIndex: number) => {
-    setPlaying(false);
-    onIndexChange(nextIndex);
-  };
+    if (activeIndex !== heldIndex) {
+      setIncomingOn(false);
+    }
 
-  const advance = () => {
-    goTo((activeIndex + 1) % officeSlides.length);
-  };
+    if (!inView) {
+      videosRef.current.forEach((video) => video?.pause());
+      return;
+    }
+
+    const playIncoming = () => {
+      if (cancelled) return;
+      incoming.play().catch(() => {});
+    };
+
+    if (incoming.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      playIncoming();
+    } else {
+      incoming.addEventListener("loadeddata", playIncoming, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      incoming.removeEventListener("loadeddata", playIncoming);
+    };
+  }, [activeIndex, heldIndex, near, inView, reduced]);
+
+  useEffect(() => {
+    if (reduced || !incomingOn || heldIndex === activeIndex) return;
+    const id = window.setTimeout(() => {
+      setHeldIndex(activeIndex);
+      rewindOthers(activeIndex);
+    }, FADE_MS);
+    return () => window.clearTimeout(id);
+  }, [incomingOn, heldIndex, activeIndex, reduced, rewindOthers]);
+
+  useEffect(() => {
+    if (!reduced) return;
+    setHeldIndex(activeIndex);
+    setIncomingOn(false);
+  }, [activeIndex, reduced]);
+
+  const isShown = (index: number) =>
+    (index === activeIndex && incomingOn) ||
+    (index === heldIndex && (activeIndex !== heldIndex || incomingOn));
 
   return (
     <div ref={wrapRef}>
@@ -94,39 +131,42 @@ export function ConsequenceReel({
           />
         ) : (
           <div className="relative aspect-video w-full bg-[#14161C]">
-            <video
-              ref={videoRef}
-              className="h-full w-full object-cover"
-              src={near ? slide.src : undefined}
-              poster={slide.poster}
-              muted
-              playsInline
-              preload={near ? "auto" : "none"}
-              aria-label={`${slide.time}: ${slide.caption}`}
-              onEnded={advance}
-              onLoadedData={playIfVisible}
-              onPlaying={() => setPlaying(true)}
+            <Image
+              src={held.poster}
+              alt=""
+              fill
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="object-cover"
             />
-            {!playing ? (
-              <Image
-                src={slide.poster}
-                alt=""
-                fill
-                sizes="(min-width: 1152px) 1152px, 100vw"
-                className="object-cover"
-              />
-            ) : null}
-            {near ? (
+            {officeSlides.map((item, index) => (
               <video
-                src={nextSlide.src}
+                key={item.id}
+                ref={(node) => {
+                  videosRef.current[index] = node;
+                }}
+                className={cn(
+                  "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity ease-out",
+                  isShown(index) ? "opacity-100" : "opacity-0",
+                )}
+                style={{
+                  transitionDuration: `${FADE_MS}ms`,
+                  zIndex: index === activeIndex ? 2 : 1,
+                }}
+                src={near ? item.src : undefined}
                 muted
                 playsInline
-                preload="auto"
-                tabIndex={-1}
-                aria-hidden
-                className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
+                preload={near ? "auto" : "none"}
+                aria-hidden={index !== activeIndex}
+                aria-label={index === activeIndex ? `${item.time}: ${item.caption}` : undefined}
+                onPlaying={() => {
+                  if (index === activeIndex) setIncomingOn(true);
+                }}
+                onEnded={() => {
+                  if (index !== activeIndex) return;
+                  onIndexChange((index + 1) % officeSlides.length);
+                }}
               />
-            ) : null}
+            ))}
           </div>
         )}
       </div>
@@ -143,10 +183,8 @@ export function ConsequenceReel({
               role="tab"
               aria-selected={itemIndex === activeIndex}
               aria-label={`${item.label}: ${item.time}`}
-              onClick={() => goTo(itemIndex)}
-              className={cn(
-                "flex size-11 items-center justify-center rounded-full",
-              )}
+              onClick={() => onIndexChange(itemIndex)}
+              className="flex size-11 items-center justify-center rounded-full"
             >
               <span
                 className={cn(
