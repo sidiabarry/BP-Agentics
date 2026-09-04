@@ -224,7 +224,7 @@ export function HeroScrub() {
                 variant="outline"
                 className="h-13 rounded-full border-white/70 bg-transparent px-7 text-[1.05rem] text-white hover:bg-white/10 hover:text-white"
               >
-                <Link href="/#arbeiten">Arbeiten ansehen</Link>
+                <Link href="/#arbeiten">Den Alltag ansehen</Link>
               </Button>
             </div>
           </div>

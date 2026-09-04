@@ -130,23 +130,47 @@ export const steps = [
   },
 ];
 
-export const works = [
+export const consequenceClips = [
   {
-    title: "Feinkost Kreta, Sprockhövel",
-    layer: "Außen plus Innen",
-    body: "Shop und App für iOS und Android auf einer Codebasis. Stripe und PayPal, Versand und Bestellung im Firmen-Branding.",
+    src: "/media/buero-morgen.mp4",
+    poster: "/media/buero-morgen.jpg",
+    time: "Morgen",
+    caption: "Die erste Papierlage.",
   },
   {
-    title: "Dachdecker Signature",
-    layer: "Außen, Showcase",
-    body: "Choreografierter Auftritt für ein traditionelles Gewerk. Der Betrieb wirkt wie eine Premiummarke und kann höhere Sätze durchsetzen.",
+    src: "/media/buero-nachmittag.mp4",
+    poster: "/media/buero-nachmittag.jpg",
+    time: "Nachmittag",
+    caption: "Binder, Zettel, Excel.",
   },
   {
-    title: "Digitales Innenbetriebssystem",
-    layer: "Innen, laufend",
-    body: "Auftrag am Desktop, Bearbeitung auf der Baustelle, Freigabe der Rechnung. Eine Kette, ohne Zettel zwischen Transporter und Büro.",
+    src: "/media/buero-nacht.mp4",
+    poster: "/media/buero-nacht.jpg",
+    time: "Nacht",
+    caption: "Nur noch die Schreibtischlampe.",
   },
 ];
+
+export const consequenceCards = [
+  {
+    time: "Morgen",
+    title: "Die erste Papierlage.",
+    body: "Die Anfrage liegt auf dem Tisch. Zurückgerufen wird später, wenn die Tour es zulässt.",
+  },
+  {
+    time: "Nachmittag",
+    title: "Binder, Zettel, Excel.",
+    body: "Der Meister ist auf der Baustelle. Das Büro sammelt Papier, nicht Aufträge.",
+  },
+  {
+    time: "Nacht",
+    title: "Nur noch die Schreibtischlampe.",
+    body: "Das Lager hinter Glas ist dunkel. Der Laptop bleibt an, weil nichts im System steht.",
+  },
+];
+
+export const workReferences =
+  "Danach gebaut: Feinkost Kreta · Dachdecker Signature · Innenbetrieb";
 
 export const faqs = [
   {

@@ -17,7 +17,7 @@ import { industryList } from "@/lib/content";
 const links = [
   { href: "/#problem", label: "Problem" },
   { href: "/#ebenen", label: "Ebenen" },
-  { href: "/#arbeiten", label: "Arbeiten" },
+  { href: "/#arbeiten", label: "Alltag" },
   { href: "/#preise", label: "Preise" },
 ];
 
