@@ -10,7 +10,7 @@ export const trades = [
     label: "Bau und Ausbau",
     quote: "Alles läuft über mein Telefon. Ich verliere Aufträge.",
     firm: "Dachdeckerbetrieb, 8 Mitarbeiter",
-    config: "Außen Signature plus Scharnier KI-Setter",
+    config: "Signature-Website plus KI-Setter",
     outcome:
       "Anfragen werden in Sekunden per WhatsApp vorqualifiziert und als Besichtigung in den Meisterkalender gelegt. Sie bleiben auf dem Dach.",
   },
@@ -19,7 +19,7 @@ export const trades = [
     label: "Logistik und Transport",
     quote: "Wir ertrinken in Papier.",
     firm: "Containerdienst, 40 Mitarbeiter",
-    config: "Innen Fundament, Papier aufs Handy, Rechnungen",
+    config: "Fundament plus Papier aufs Handy und Rechnungen",
     outcome:
       "Fahrer lassen Lieferscheine im Browser gegenzeichnen. Die Rechnung geht am Einsatztag raus, ohne App-Zwang.",
   },
@@ -28,7 +28,7 @@ export const trades = [
     label: "Technischer Außendienst",
     quote: "Der Notdienst klingelt nachts durch. Niemand filtert.",
     firm: "Kälte- und Klimabetrieb, 12 Mitarbeiter",
-    config: "Scharnier KI-Setter plus Innen Wartung",
+    config: "KI-Setter plus Wartungsmodule",
     outcome:
       "Störungen werden nach Kältemittel, Anlagennummer und Fehlerbild erfasst. Der Techniker fährt vorbereitet aus.",
   },
@@ -37,7 +37,7 @@ export const trades = [
     label: "Werkstatt und Spezialbetrieb",
     quote: "Ich weiß nie, was im Lager liegt. Die Saison ist kurz.",
     firm: "Pool- und Gartenbau, 15 Mitarbeiter",
-    config: "Innen Fundament, Lager, Terminplanung",
+    config: "Fundament plus Module für Lager und Termine",
     outcome:
       "Material und Kolonnen sind synchron. Stillstand in der kurzen Saison fällt weg.",
   },
@@ -64,10 +64,10 @@ export const problems = [
 
 export const levels = [
   {
-    id: "aussen",
+    id: "auftritt",
     roman: "01",
-    name: "Außen",
-    kicker: "Die Kundenschnittstelle",
+    name: "Auftritt",
+    sub: "Damit die richtigen Anfragen kommen.",
     lead: "Website, Web-App oder Shop, der Premium-Anfragen holt statt Preiskämpfer.",
     items: [
       "Website Start, Einseiter",
@@ -75,13 +75,13 @@ export const levels = [
       "Shop und App, iOS und Android",
     ],
     price: "Einbau 950 € bis ab 7.900 €",
-    run: "Wartung ab 149 € / Monat",
+    run: "Wartung 149 € bis 290 € / Monat",
   },
   {
-    id: "scharnier",
+    id: "annahme",
     roman: "02",
-    name: "Scharnier",
-    kicker: "Die Brücke ins Büro",
+    name: "Annahme",
+    sub: "Damit keine Anfrage liegen bleibt.",
     lead: "Der KI-Setter nimmt Anfragen über WhatsApp an, qualifiziert und schreibt Termine in den Kalender.",
     items: [
       "WhatsApp Business, Antwort in Sekunden",
@@ -92,10 +92,10 @@ export const levels = [
     run: "Wartung 99 € / Monat",
   },
   {
-    id: "innen",
+    id: "ablaeufe",
     roman: "03",
-    name: "Innen",
-    kicker: "Der Betrieb danach",
+    name: "Abläufe",
+    sub: "Damit die Arbeit nicht am Schreibtisch hängen bleibt.",
     lead: "Kunden, Aufträge, Stundenzettel, Lieferscheine, Lager und Rechnung in einem Datenfundament.",
     items: [
       "Fundament auf Postgres",
@@ -130,26 +130,41 @@ export const steps = [
   },
 ];
 
-export const consequenceCards = [
+export const officeSlides = [
   {
-    time: "Morgen",
-    title: "Die erste Papierlage.",
+    id: "morgen",
+    src: "/media/buero-morgen.mp4",
+    poster: "/media/buero-morgen.jpg",
+    time: "MO 07:45",
+    caption: "Der Tag fängt geordnet an.",
+    label: "Morgen",
+    sub: "Die erste Papierlage.",
     body: "Die Anfrage liegt auf dem Tisch. Zurückgerufen wird später, wenn die Tour es zulässt.",
   },
   {
-    time: "Nachmittag",
-    title: "Binder, Zettel, Excel.",
+    id: "nachmittag",
+    src: "/media/buero-nachmittag.mp4",
+    poster: "/media/buero-nachmittag.jpg",
+    time: "MO 14:20",
+    caption: "Drei Anrufe, vier Aufträge, kein System.",
+    label: "Nachmittag",
+    sub: "Binder, Zettel, Excel.",
     body: "Der Meister ist auf der Baustelle. Das Büro sammelt Papier, nicht Aufträge.",
   },
   {
-    time: "Nacht",
-    title: "Nur noch die Schreibtischlampe.",
+    id: "nacht",
+    src: "/media/buero-nacht.mp4",
+    poster: "/media/buero-nacht.jpg",
+    time: "MO 17:15",
+    caption: "Feierabend? Der Schreibtisch sagt: nein.",
+    label: "Nacht",
+    sub: "Nur noch die Schreibtischlampe.",
     body: "Das Lager hinter Glas ist dunkel. Der Laptop bleibt an, weil nichts im System steht.",
   },
-];
+] as const;
 
 export const workReferences =
-  "Danach gebaut: Feinkost Kreta · Dachdecker Signature · Innenbetrieb";
+  "Danach gebaut: Feinkost Kreta · Dachdecker Signature · Betriebsorganisation";
 
 export const faqs = [
   {
@@ -179,7 +194,7 @@ export const checkPaths = [
     id: "a",
     label:
       "Zu wenige oder die falschen Anfragen. Die Website wirkt veraltet und spricht Preiskämpfer an.",
-    resultTitle: "Einstieg über Außen",
+    resultTitle: "Wir fangen bei Ihrem Auftritt an.",
     result:
       "Eine Signature-Website positioniert den Betrieb als Qualitätsführer in der Region. Danach kommen die richtigen Anfragen.",
   },
@@ -187,7 +202,7 @@ export const checkPaths = [
     id: "b",
     label:
       "Wir verpassen Anfragen, weil tagsüber niemand ans Telefon geht und Rückrufe zu lange dauern.",
-    resultTitle: "Einstieg über Scharnier",
+    resultTitle: "Wir fangen bei den Anfragen an.",
     result:
       "Der KI-Setter fängt Anfragen in Sekunden über WhatsApp ab, qualifiziert und bucht Besichtigungen in den Kalender.",
   },
@@ -195,7 +210,7 @@ export const checkPaths = [
     id: "c",
     label:
       "Wir ersticken in Papier, Stundenzetteln und Lieferscheinen. Angebote und Rechnungen bleiben bis zum Abend liegen.",
-    resultTitle: "Einstieg über Innen",
+    resultTitle: "Wir fangen bei Ihren Abläufen an.",
     result:
       "Fundament plus die Module, die den Engpass schließen: Papier aufs Handy, Lager oder Rechnung. Feierabendarbeit fällt weg.",
   },
@@ -246,7 +261,7 @@ export const industries: Record<
     h2: "Dach, Wand und Abdichtung. Premium-Auftritt statt Mailbox.",
     bottleneck:
       "Steildach- und Sanierungsanfragen gehen verloren, sobald der Meister auf der Baustelle ist.",
-    config: "Außen Signature plus KI-Setter",
+    config: "Signature-Website plus KI-Setter",
     argument:
       "Die Website filtert Preiskämpfer. Der Setter terminiert Besichtigungen direkt in den Kalender.",
   },
@@ -256,7 +271,7 @@ export const industries: Record<
     h2: "Badsanierung planen, Havarie triagieren.",
     bottleneck:
       "Planbare Sanierungen und akute Notfälle laufen über dieselbe Nummer. Die Bereitschaft überlastet.",
-    config: "Scharnier KI-Setter plus Innen Fundament",
+    config: "KI-Setter plus Fundament",
     argument:
       "Automatische Notfall-Triage, Schadensfotos und digitale Monteurberichte.",
   },
@@ -266,7 +281,7 @@ export const industries: Record<
     h2: "Nachweise nach VOB/B, solange der Auftraggeber noch da ist.",
     bottleneck:
       "Zusatzarbeiten werden nicht erfasst. Gegenüber dem Generalunternehmer fehlt der Nachweis.",
-    config: "Innen Fundament plus Papier aufs Handy",
+    config: "Fundament plus Papier aufs Handy",
     argument:
       "Digitale Bautagesberichte mit Unterschrift und Live-Export ins Büro.",
   },
@@ -276,7 +291,7 @@ export const industries: Record<
     h2: "F-Gase, Dichtheit, Notdienst ohne Rätselraten.",
     bottleneck:
       "Techniker rücken ohne Kältemittel, Anlagentyp oder Fehlerbild aus.",
-    config: "Scharnier KI-Setter plus Innen Wartung",
+    config: "KI-Setter plus Wartungsmodule",
     argument:
       "Abfrage vor der Ausfahrt. Digitale Prüfprotokolle nach der Instandsetzung.",
   },
@@ -286,7 +301,7 @@ export const industries: Record<
     h2: "Ohne App-Download, im Browser des Mobilgeräts.",
     bottleneck:
       "Wiegescheine, Standzeiten und Lieferscheine bleiben Tage in der Kabine. Die Rechnung wartet.",
-    config: "Innen Fundament plus digitaler Lieferschein",
+    config: "Fundament plus digitaler Lieferschein",
     argument:
       "Kundensignatur im Browser. Rechnungsanstoß am Einsatztag.",
   },
@@ -296,7 +311,7 @@ export const industries: Record<
     h2: "Keine Stillstände wegen fehlender Kleinteile.",
     bottleneck:
       "Schüttgut, Bagger und Kolonnen sind nicht synchron. Die Saison verzeiht das nicht.",
-    config: "Innen Fundament, Lager, Terminplanung",
+    config: "Fundament plus Module für Lager und Termine",
     argument:
       "Einsatz und Materialdisposition in einem System, bevor das Wetter kippt.",
   },
@@ -306,7 +321,7 @@ export const industries: Record<
     h2: "EN 1090, Sonderbauten, Angebote ohne Nachtarbeit.",
     bottleneck:
       "Dokumentation und Kalkulation fressen die Zeit, die in die Fertigung gehört.",
-    config: "Außen Start plus Innen Fundament und Angebote",
+    config: "Website Start plus Fundament und Angebote",
     argument:
       "Standardisierte Kalkulation und digitale Abnahme per Tablet.",
   },
@@ -316,7 +331,7 @@ export const industries: Record<
     h2: "Freie Werkstatt, ohne ständige Anrufe vom Disponenten.",
     bottleneck:
       "Fuhrparkleiter rufen durch. Stellplätze bleiben blockiert, weil Freigaben fehlen.",
-    config: "Scharnier KI-Setter plus Innen Fundament",
+    config: "KI-Setter plus Fundament",
     argument:
       "Fertigstellung und Nachtragsfreigabe laufen über WhatsApp, nicht über den Meister am Telefon.",
   },

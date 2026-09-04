@@ -56,7 +56,7 @@ export default async function IndustryPage({ params }: Props) {
             variant="outline"
             className="h-13 rounded-full px-7 text-[1.05rem]"
           >
-            <Link href="/#ebenen">Die drei Ebenen</Link>
+            <Link href="/#leistungen">Die Leistungen</Link>
           </Button>
         </div>
         <div className="mt-16 grid gap-5 md:grid-cols-2">

@@ -157,7 +157,7 @@ export function LivingChat() {
         <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-              Scharnier, greifbar
+              Damit keine Anfrage liegen bleibt.
             </RevealIn>
             <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
               Vier Nachrichten. Ein Termin im Kalender.

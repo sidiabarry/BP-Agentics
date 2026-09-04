@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ihr Betrieb läuft. Nur digital nicht.",
     description:
-      "BP Agentics baut Websites, den KI-Setter und den Innenbetrieb für Handwerk, Außendienst und Logistik. Entwickelt in Hagen. Daten in der EU.",
+      "BP Agentics baut Websites, den KI-Setter und digitale Betriebssysteme für Handwerk, Außendienst und Logistik. Entwickelt in Hagen. Daten in der EU.",
     locale: "de_DE",
     type: "website",
   },
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link
           rel="preload"
           as="image"
-          href="/media/hero-sequence/poster.avif"
+          href="/hero/poster.avif"
           type="image/avif"
         />
       </head>

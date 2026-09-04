@@ -49,6 +49,8 @@
 }
 
 :root {
+  /* Sampled from public/hero/sequence-desktop/0071.webp */
+  --hero-exit: #82bbf0;
   --background: #f3efe6;
   --foreground: #14161c;
   --primary: #198be8;

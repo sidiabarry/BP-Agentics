@@ -1,9 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import { ConsequenceReel } from "@/components/consequence-reel";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
-import { consequenceCards, workReferences } from "@/lib/content";
+import { officeSlides, workReferences } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 export function Proof() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <section id="arbeiten" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
@@ -15,29 +21,43 @@ export function Proof() {
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Anfrage im Festnetz. Lieferschein auf dem Tisch. Lager hinter Glas. Das
-          ist kein unfähiger Betrieb. Das ist ein Betrieb ohne Setter und ohne
-          Datenfundament.
+          ist kein unfähiger Betrieb. Das ist ein Betrieb, in dem Anfragen und Daten
+          niemand einsammelt.
         </RevealIn>
         <div className="mt-12">
-          <ConsequenceReel />
+          <ConsequenceReel activeIndex={activeIndex} onIndexChange={setActiveIndex} />
         </div>
         <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
-          {consequenceCards.map((item, index) => (
-            <RevealIn
-              key={item.time}
-              as="article"
-              variant="card"
-              delay={index * 60}
-              className="flex h-full flex-col rounded-3xl bg-white p-7"
+          {officeSlides.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className={cn(
+                "flex h-full flex-col rounded-3xl p-7 text-left transition",
+                index === activeIndex
+                  ? "bg-[#14161C] text-[#F3EFE6] ring-2 ring-[#198BE8]"
+                  : "bg-white hover:bg-[#E8F4FC]",
+              )}
             >
-              <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-                {item.time}
+              <p
+                className={cn(
+                  "text-sm tracking-[0.16em] uppercase",
+                  index === activeIndex ? "text-[#9FD0F8]" : "text-[#198BE8]",
+                )}
+              >
+                {item.label}
               </p>
-              <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
-              <p className="mt-3 flex-1 text-[1.05rem] leading-relaxed text-[#3A3D45]">
+              <h3 className="mt-3 text-2xl font-semibold">{item.sub}</h3>
+              <p
+                className={cn(
+                  "mt-3 flex-1 text-[1.05rem] leading-relaxed",
+                  index === activeIndex ? "text-white/75" : "text-[#3A3D45]",
+                )}
+              >
                 {item.body}
               </p>
-            </RevealIn>
+            </button>
           ))}
         </div>
         <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{workReferences}</p>

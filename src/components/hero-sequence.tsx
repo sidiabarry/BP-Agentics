@@ -1,19 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useRef, useSyncExternalStore, type CSSProperties } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/site-header";
 
-const HERO_VH = 360;
+const HERO_VH = 250;
 const VIDEO_END = 0.8;
 const OVERLAY_AT = 0.9;
 const OVERLAY_DUR = 0.07;
 const DESKTOP_FRAMES = 71;
 const MOBILE_FRAMES = 48;
-const HEADER_AT = 0.8;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,12 +46,7 @@ function frameIndexFrom(progress: number, count: number) {
 }
 
 function frameSrc(kind: "desktop" | "mobile", index: number) {
-  return `/media/hero-sequence/${kind}/${String(index + 1).padStart(4, "0")}.webp`;
-}
-
-function lastFrameSrc(kind: "desktop" | "mobile") {
-  const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
-  return frameSrc(kind, count - 1);
+  return `/hero/sequence-${kind}/${String(index + 1).padStart(4, "0")}.webp`;
 }
 
 function loadImage(src: string) {
@@ -92,7 +85,7 @@ function nearestLoaded(cache: Array<HTMLImageElement | undefined>, index: number
 
 const HERO_TAGS = ["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"];
 
-export function HeroScrub() {
+export function HeroSequence() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -106,11 +99,7 @@ export function HeroScrub() {
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   const mobile = useSyncExternalStore(subscribeMobile, mobileSnapshot, () => false);
   const kind: "desktop" | "mobile" = mobile ? "mobile" : "desktop";
-  const frameCount = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
   kindRef.current = kind;
-
-  const [hasFrame, setHasFrame] = useState(false);
-  const [headerTone, setHeaderTone] = useState<"light" | "dark">("light");
 
   const applyVisuals = useCallback(
     (progress: number) => {
@@ -130,9 +119,6 @@ export function HeroScrub() {
       if (skipRef.current) {
         skipRef.current.hidden = overlay >= 0.5;
       }
-      const nextTone =
-        overlay > 0.35 || sequenceProgressFrom(progress) >= HEADER_AT ? "dark" : "light";
-      setHeaderTone((prev) => (prev === nextTone ? prev : nextTone));
     },
     [reduced],
   );
@@ -195,7 +181,6 @@ export function HeroScrub() {
     let cancelled = false;
     const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
     cacheRef.current = new Array(count);
-    setHasFrame(false);
 
     const loadRange = async (start: number, end: number, concurrency: number) => {
       let cursor = start;
@@ -208,12 +193,9 @@ export function HeroScrub() {
             const img = await loadImage(frameSrc(kind, index));
             if (cancelled) return;
             cacheRef.current[index] = img;
-            if (index === 0) {
-              setHasFrame(true);
-              paint();
-            }
+            if (index === 0) paint();
           } catch {
-            // Frame failed; nearestLoaded will skip it.
+            // Frame failed; poster stays, nearestLoaded skips gaps.
           }
         }
       });
@@ -251,49 +233,43 @@ export function HeroScrub() {
     >
       <div
         className={
-          reduced ? "relative" : "sticky top-0 h-dvh overflow-hidden bg-[#f4f4f2]"
+          reduced
+            ? "relative min-h-dvh overflow-hidden bg-[var(--hero-exit)]"
+            : "sticky top-0 h-dvh overflow-hidden bg-[var(--hero-exit)]"
         }
       >
-        <SiteHeader tone={reduced ? "dark" : headerTone} />
+        <SiteHeader tone="light" />
 
-        {reduced ? (
-          <div className="relative min-h-dvh">
-            <Image
-              src={lastFrameSrc(kind)}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <>
-            <canvas
-              ref={canvasRef}
-              className="absolute inset-0 h-full w-full"
-              aria-hidden="true"
-            />
-            {!hasFrame ? (
-              <picture>
-                <source srcSet="/media/hero-sequence/poster.avif" type="image/avif" />
-                <img
-                  src="/media/hero-sequence/poster-fallback.jpg"
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </picture>
-            ) : null}
-          </>
-        )}
+        <picture>
+          <source srcSet="/hero/poster.avif" type="image/avif" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero/poster-fallback.jpg"
+            alt=""
+            width={1440}
+            height={810}
+            fetchPriority="high"
+            decoding="sync"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </picture>
+
+        {!reduced ? (
+          <canvas
+            ref={canvasRef}
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            aria-hidden="true"
+          />
+        ) : null}
 
         <div
           ref={overlayRef}
           className="pointer-events-none absolute inset-0"
           style={{
             opacity: reduced ? 1 : 0,
-            background:
-              "linear-gradient(180deg, #63A6EC 0%, #198BE8 38%, #0C5A9A 100%)",
+            background: reduced
+              ? "linear-gradient(180deg, color-mix(in srgb, var(--hero-exit) 22%, transparent) 0%, color-mix(in srgb, var(--hero-exit) 48%, transparent) 42%, var(--hero-exit) 100%)"
+              : "linear-gradient(180deg, var(--hero-exit) 0%, color-mix(in srgb, var(--hero-exit) 82%, #198BE8) 42%, var(--hero-exit) 100%)",
           }}
         />
 
@@ -305,14 +281,14 @@ export function HeroScrub() {
           style={{ opacity: reduced ? 1 : 0 }}
         >
           <div className="mx-auto w-full max-w-4xl">
-            <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-white/80 uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
+            <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-[#0C5A9A] uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
               Systems & Automation · BP Agentics / Hagen
             </p>
-            <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-white text-balance sm:text-6xl md:text-7xl">
+            <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-[#14161C] text-balance sm:text-6xl md:text-7xl">
               <span className="hero-line-1 block">Ihr Betrieb läuft.</span>
               <span className="hero-line-2 block">Nur digital nicht.</span>
             </h1>
-            <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-white/90 md:text-[1.25rem]">
+            <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-[#3A3D45] md:text-[1.25rem]">
               Websites und Systeme für mittelständische Betriebe, die noch mit
               Telefon, Zetteln und Excel arbeiten. Fester Festpreis, in Wochen
               einsatzbereit, ein persönlicher Ansprechpartner.
@@ -321,7 +297,7 @@ export function HeroScrub() {
               {HERO_TAGS.map((tag, index) => (
                 <span
                   key={tag}
-                  className="hero-tag rounded-md border border-white/25 bg-white/10 px-3 py-1.5 text-sm text-white"
+                  className="hero-tag rounded-md border border-[#14161C]/18 bg-white/45 px-3 py-1.5 text-sm text-[#14161C]"
                   style={{ "--i": index } as CSSProperties}
                 >
                   {tag}
@@ -331,14 +307,14 @@ export function HeroScrub() {
             <div className="hero-cta mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
                 asChild
-                className="h-13 rounded-full bg-white px-7 text-[1.05rem] text-[#0C5A9A] hover:bg-[#F3EFE6]"
+                className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
               >
                 <Link href="/termin">Erstgespräch vereinbaren</Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
-                className="h-13 rounded-full border-white/70 bg-transparent px-7 text-[1.05rem] text-white hover:bg-white/10 hover:text-white"
+                className="h-13 rounded-full border-[#14161C]/45 bg-white/55 px-7 text-[1.05rem] text-[#14161C] hover:bg-white"
               >
                 <Link href="/#arbeiten">Den Alltag ansehen</Link>
               </Button>

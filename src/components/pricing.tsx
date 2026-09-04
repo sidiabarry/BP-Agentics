@@ -31,9 +31,16 @@ const websites = [
     featured: false,
   },
   {
+    name: "Website Betrieb",
+    price: "3.900 €",
+    run: "plus 149 € / Monat, 12 Monate",
+    body: "Mehrseitig, mit Leistungsseiten und Referenzen. Für Betriebe, die gefunden werden wollen, ohne Sonderanfertigung.",
+    featured: false,
+  },
+  {
     name: "Website Signature",
     price: "ab 7.900 €",
-    run: "Wartungsvertrag 190 € / Monat",
+    run: "Wartungsvertrag 290 € / Monat",
     body: "Für Betriebe, die über die Website verkaufen. Der Auftritt ist die Arbeitsprobe.",
     featured: true,
   },
@@ -116,7 +123,7 @@ export function Pricing() {
           </div>
         </RevealIn>
 
-        <div className="mt-6 grid items-stretch gap-4 md:grid-cols-2">
+        <div className="mt-6 grid items-stretch gap-4 md:grid-cols-3">
           {websites.map((plan, index) => (
             <RevealIn
               key={plan.name}

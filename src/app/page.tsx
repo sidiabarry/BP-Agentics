@@ -1,4 +1,4 @@
-import { HeroScrub } from "@/components/hero-scrub";
+import { HeroSequence } from "@/components/hero-sequence";
 import { ProblemWall } from "@/components/problem-wall";
 import { TradeSelector } from "@/components/trade-selector";
 import { ThreeLevels } from "@/components/three-levels";
@@ -13,7 +13,7 @@ import { CtaBand } from "@/components/cta-band";
 export default function HomePage() {
   return (
     <>
-      <HeroScrub />
+      <HeroSequence />
       <ProblemWall />
       <TradeSelector />
       <Process />
