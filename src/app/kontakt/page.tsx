@@ -110,7 +110,9 @@ export default function KontaktPage() {
         Es gibt kein zweites Büro in Düsseldorf und keine virtuelle Adresse. Geo in den strukturierten Daten gehört zur Kleiststraße, nicht zum Stadtzentrum. Wer uns auf einer Karte sucht, soll vor der richtigen Tür stehen. Wer uns anruft, soll dieselbe Nummer erreichen, die auf WhatsApp und im Footer steht: +49 162 2843869.
       </p>
       <p>
-        Einzugsgebiet ausdrücklich: Nordrhein-Westfalen, mit Schwerpunkt Hagen, Iserlohn, Lüdenscheid, Witten, Schwelm, Ennepe-Ruhr-Kreis, Märkischer Kreis. Außerhalb hören wir zu und sagen, ob die Anfahrt noch in den Festpreis fällt. Kein hreflang, keine englische Parallelseite, kein Canonical auf eine andere Host-Schreibweise.
+        Einzugsgebiet ausdrücklich: Nordrhein-Westfalen, mit Schwerpunkt Hagen, Iserlohn, Lüdenscheid, Witten, Schwelm, Ennepe-Ruhr-Kreis, Märkischer Kreis. Außerhalb hören wir zu und sagen, ob die Anfahrt noch in den Festpreis fällt.         Keine englische Parallelseite, kein Canonical auf eine andere Host-Schreibweise.
+        Dieselbe Zeile wie im Footer, im Impressum und in llms.txt: Kleiststraße 9, 58095 Hagen · +49 162 2843869.
+        Wenn die Nummer nicht durchgeht, bleibt die Mail und der wa.me-Link. Wir rufen zurück, wir schicken keine Newsletterserie.
       </p>
     </DocPage>
   );

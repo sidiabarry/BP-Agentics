@@ -106,7 +106,7 @@ export default function DachdeckerSignaturePage() {
         Die Gewerkeseite bleibt kürzer und lokal. Diese Referenzseite trägt das Video und die Einordnung. Beide verlinken einander, ohne denselben Text zu kopieren. Das ist Absicht gegen thin content: eine Demo-Adresse, eine Engpass-Adresse, eine Leistungsadresse.
       </p>
       <p>
-        Canonical: https://bp-agentics.de/referenzen/dachdecker-signature. NAP: Kleiststraße 9, 58095 Hagen, +49 162 2843869. Kein hreflang, keine zweite Sprache, keine erfundenen Profile unter sameAs.
+        Canonical: https://bp-agentics.de/referenzen/dachdecker-signature. NAP: Kleiststraße 9, 58095 Hagen, +49 162 2843869. Keine zweite Sprache, keine erfundenen Profile. Wer Signature für das eigene Gewerk prüfen will, bringt Fotos und die drei letzten Anfragen mit — dann sehen wir, ob Start, Betrieb oder Signature der richtige Schnitt ist.
       </p>
     </DocPage>
   );

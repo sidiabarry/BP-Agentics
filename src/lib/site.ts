@@ -41,7 +41,7 @@ export const site = {
     "n8n",
   ],
   defaultTitle:
-    "BP Agentics — Systeme und Automatisierung für Betriebe in NRW",
+    "BP Agentics — Systeme und Automatisierung für Betriebe NRW",
   defaultDescription:
     "BP Agentics in Hagen baut Websites, KI-Annahme und interne Abläufe für Betriebe in NRW. Sidia Jerome Barry. Kleiststraße 9, 58095 Hagen.",
 } as const;
