@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0 --port 43123",
+    "dev": "node scripts/preview-proxy.mjs",
+    "dev:next": "next dev --hostname 127.0.0.1 --port 43124",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
