@@ -10,6 +10,7 @@ type RevealHeadingProps = {
 
 export function RevealHeading({ children, className }: RevealHeadingProps) {
   const ref = useRef<HTMLHeadingElement>(null);
+  const [armed, setArmed] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -21,9 +22,12 @@ export function RevealHeading({ children, className }: RevealHeadingProps) {
     }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setRevealed(true);
-        observer.disconnect();
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+          return;
+        }
+        setArmed(true);
       },
       { threshold: 0.4 },
     );
@@ -36,7 +40,7 @@ export function RevealHeading({ children, className }: RevealHeadingProps) {
   return (
     <h2
       ref={ref}
-      className={cn(revealed && "reveal-heading-on", className)}
+      className={cn(armed && "reveal-armed", revealed && "reveal-heading-on", className)}
     >
       {words.map((word, index) => (
         <span key={`${word}-${index}`}>
