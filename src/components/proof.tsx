@@ -7,7 +7,7 @@ export function Proof() {
   return (
     <section id="arbeiten" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Ohne System
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
@@ -30,7 +30,7 @@ export function Proof() {
               delay={index * 60}
               className="flex h-full flex-col rounded-3xl bg-white p-7"
             >
-              <p className="text-sm tracking-[0.16em] text-[#5B54E6] uppercase">
+              <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
                 {item.time}
               </p>
               <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>

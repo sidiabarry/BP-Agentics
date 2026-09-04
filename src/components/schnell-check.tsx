@@ -16,7 +16,7 @@ export function SchnellCheck() {
   return (
     <section id="check" className="bg-white px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Schnell-Check
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
@@ -31,7 +31,7 @@ export function SchnellCheck() {
               className={cn(
                 "rounded-2xl border px-5 py-4 text-left text-[1.08rem] leading-snug transition",
                 path === item.id
-                  ? "border-[#5B54E6] bg-[#EDE8FF]"
+                  ? "border-[#198BE8] bg-[#E8F4FC]"
                   : "border-black/10 bg-[#F3EFE6] hover:border-black/25",
               )}
             >
@@ -51,7 +51,7 @@ export function SchnellCheck() {
               className={cn(
                 "rounded-2xl border px-5 py-4 text-left transition",
                 size === item.id
-                  ? "border-[#5B54E6] bg-[#EDE8FF]"
+                  ? "border-[#198BE8] bg-[#E8F4FC]"
                   : "border-black/10 hover:border-black/25",
               )}
             >
@@ -62,7 +62,7 @@ export function SchnellCheck() {
         </div>
         {chosen && size ? (
           <div className="mt-10 rounded-[2rem] bg-[#14161C] p-8 text-[#F3EFE6]">
-            <p className="text-sm tracking-[0.16em] text-[#A8A4FF] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
               Empfehlung
             </p>
             <h3 className="mt-3 text-3xl font-semibold">{chosen.resultTitle}</h3>
@@ -71,7 +71,7 @@ export function SchnellCheck() {
             </p>
             <Button
               asChild
-              className="mt-8 h-13 rounded-full bg-[#5B54E6] px-6 text-[1.05rem] text-white hover:bg-[#4A44D4]"
+              className="mt-8 h-13 rounded-full bg-[#198BE8] px-6 text-[1.05rem] text-white hover:bg-[#1576C4]"
             >
               <Link href="/termin">
                 Diesen Ablaufplan im 90-Minuten-Gespräch durchsprechen

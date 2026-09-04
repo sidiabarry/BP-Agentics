@@ -43,7 +43,7 @@ export function Pricing() {
   return (
     <section id="preise" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Preise
         </RevealIn>
         <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
@@ -61,7 +61,7 @@ export function Pricing() {
           variant="card"
           className="mt-12 rounded-[2rem] bg-[#14161C] p-7 text-[#F3EFE6] md:p-10"
         >
-          <p className="text-sm tracking-[0.2em] text-[#A8A4FF] uppercase">
+          <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
             Prozesslinie
           </p>
           <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
@@ -103,7 +103,7 @@ export function Pricing() {
             steht danach fest und ändert sich nicht.
           </p>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">
-            <p className="text-sm tracking-[0.16em] text-[#5B54E6] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
               Fördermittel
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
@@ -125,7 +125,7 @@ export function Pricing() {
               delay={index * 60}
               className={
                 plan.featured
-                  ? "flex h-full flex-col rounded-3xl bg-[#5B54E6] p-7 text-white"
+                  ? "flex h-full flex-col rounded-3xl bg-[#198BE8] p-7 text-white"
                   : "flex h-full flex-col rounded-3xl bg-white p-7"
               }
             >
@@ -154,7 +154,7 @@ export function Pricing() {
           className="mt-6 space-y-4 rounded-[1.6rem] bg-white p-7 md:p-8"
         >
           <div>
-            <p className="text-sm tracking-[0.16em] text-[#5B54E6] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
               In der Wartung enthalten
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
@@ -164,7 +164,7 @@ export function Pricing() {
             </p>
           </div>
           <div className="border-t border-black/10 pt-4">
-            <p className="text-sm tracking-[0.16em] text-[#5B54E6] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
               Eigentum und Kündigung
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">

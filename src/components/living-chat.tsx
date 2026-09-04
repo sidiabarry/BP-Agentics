@@ -39,7 +39,7 @@ function TypingDots({ from }: { from: "in" | "out" }) {
     <div
       className={cn(
         "flex max-w-[4.5rem] items-center gap-1 rounded-2xl px-4 py-3",
-        from === "in" ? "self-start bg-white" : "self-end bg-[#5B54E6]",
+        from === "in" ? "self-start bg-white" : "self-end bg-[#198BE8]",
       )}
     >
       {[0, 1, 2].map((dot) => (
@@ -66,7 +66,7 @@ function PhoneChat({
   const nextFrom = chatBeats[shown]?.from ?? "in";
 
   return (
-    <div className="rounded-[2.4rem] border-[10px] border-[#14161C] bg-[#EDE8FF] p-4 shadow-[0_30px_80px_-28px_rgba(91,84,230,0.55)]">
+    <div className="rounded-[2.4rem] border-[10px] border-[#14161C] bg-[#E8F4FC] p-4 shadow-[0_30px_80px_-28px_rgba(25,139,232,0.55)]">
       <div className="mb-4 flex items-center justify-between px-2 text-sm text-[#14161C]/60">
         <span>WhatsApp · Betrieb</span>
         <span>jetzt</span>
@@ -79,7 +79,7 @@ function PhoneChat({
               "chat-bubble max-w-[85%] rounded-2xl px-4 py-3 text-[1.05rem] leading-snug",
               beat.from === "in"
                 ? "origin-bottom-left self-start bg-white text-[#14161C]"
-                : "origin-bottom-right self-end bg-[#5B54E6] text-white",
+                : "origin-bottom-right self-end bg-[#198BE8] text-white",
             )}
           >
             {beat.text}
@@ -156,7 +156,7 @@ export function LivingChat() {
       >
         <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
-            <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+            <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
               Scharnier, greifbar
             </RevealIn>
             <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
@@ -177,9 +177,9 @@ export function LivingChat() {
                     className={cn(
                       "flex items-baseline gap-4 border-l-2 pl-4 transition-colors duration-300",
                       current
-                        ? "border-[#5B54E6] text-[#14161C]"
+                        ? "border-[#198BE8] text-[#14161C]"
                         : on
-                          ? "border-[#5B54E6]/40 text-[#14161C]"
+                          ? "border-[#198BE8]/40 text-[#14161C]"
                           : "border-[#14161C]/12 text-[#14161C]/35",
                     )}
                   >

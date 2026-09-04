@@ -315,7 +315,7 @@ export function HeroScrub() {
           style={{
             opacity: reduced ? 1 : 0,
             background:
-              "linear-gradient(180deg, #3d37c8 0%, #5B54E6 38%, #241c78 100%)",
+              "linear-gradient(180deg, #63A6EC 0%, #198BE8 38%, #0C5A9A 100%)",
           }}
         />
 
@@ -353,7 +353,7 @@ export function HeroScrub() {
             <div className="hero-cta mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
                 asChild
-                className="h-13 rounded-full bg-white px-7 text-[1.05rem] text-[#241c78] hover:bg-[#F3EFE6]"
+                className="h-13 rounded-full bg-white px-7 text-[1.05rem] text-[#0C5A9A] hover:bg-[#F3EFE6]"
               >
                 <Link href="/termin">Erstgespräch vereinbaren</Link>
               </Button>

@@ -11,7 +11,7 @@ export function Faq() {
   return (
     <section id="faq" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-3xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Einwände
         </RevealIn>
         <RevealIn as="h2" variant="rise" className="mt-3 text-4xl font-semibold tracking-[-0.03em] md:text-5xl">

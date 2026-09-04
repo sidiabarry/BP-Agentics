@@ -51,7 +51,7 @@
 :root {
   --background: #f3efe6;
   --foreground: #14161c;
-  --primary: #5b54e6;
+  --primary: #198be8;
   --primary-foreground: #ffffff;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

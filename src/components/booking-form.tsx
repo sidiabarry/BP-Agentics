@@ -60,7 +60,7 @@ export function BookingForm() {
         <p className="mt-4 text-[1.1rem] leading-relaxed text-white/80">{message}</p>
         <Button
           asChild
-          className="mt-8 h-13 rounded-full bg-[#5B54E6] px-6 text-white"
+          className="mt-8 h-13 rounded-full bg-[#198BE8] px-6 text-white"
         >
           <a href={mailto}>E-Mail jetzt öffnen</a>
         </Button>
@@ -104,7 +104,7 @@ export function BookingForm() {
       ) : null}
       <Button
         type="submit"
-        className="h-13 rounded-full bg-[#5B54E6] px-8 text-[1.08rem] text-white hover:bg-[#4A44D4]"
+        className="h-13 rounded-full bg-[#198BE8] px-8 text-[1.08rem] text-white hover:bg-[#1576C4]"
       >
         Terminwunsch senden
       </Button>
@@ -131,7 +131,7 @@ function Field({
     <div className="grid gap-2">
       <Label htmlFor={id} className="text-[1.02rem]">
         {label}
-        {required ? <span className="text-[#5B54E6]"> *</span> : null}
+        {required ? <span className="text-[#198BE8]"> *</span> : null}
       </Label>
       {children}
     </div>

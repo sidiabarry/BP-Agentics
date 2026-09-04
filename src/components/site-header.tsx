@@ -55,7 +55,7 @@ export function SiteHeader({
           ))}
           <Button
             asChild
-            className="h-11 rounded-full bg-[#5B54E6] px-5 text-base text-white hover:bg-[#4A44D4]"
+            className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
           >
             <Link href="/termin">Erstgespräch</Link>
           </Button>
@@ -105,7 +105,7 @@ export function SiteHeader({
               ))}
               <Button
                 asChild
-                className="mt-6 h-12 rounded-full bg-[#5B54E6] text-base text-white"
+                className="mt-6 h-12 rounded-full bg-[#198BE8] text-base text-white"
               >
                 <Link href="/termin" onClick={() => setOpen(false)}>
                   Erstgespräch vereinbaren

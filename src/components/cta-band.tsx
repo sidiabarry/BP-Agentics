@@ -5,7 +5,7 @@ import { RevealIn } from "@/components/reveal-in";
 export function CtaBand({ dark = false }: { dark?: boolean }) {
   return (
     <section
-      className={`px-5 py-16 md:px-8 ${dark ? "bg-[#14161C] text-white" : "bg-[#EDE8FF]"}`}
+      className={`px-5 py-16 md:px-8 ${dark ? "bg-[#14161C] text-white" : "bg-[#E8F4FC]"}`}
     >
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <RevealIn variant="rise" className="max-w-[40rem]">
@@ -19,7 +19,7 @@ export function CtaBand({ dark = false }: { dark?: boolean }) {
         <RevealIn variant="rise" delay={80}>
           <Button
             asChild
-            className="h-13 rounded-full bg-[#5B54E6] px-7 text-[1.05rem] text-white hover:bg-[#4A44D4]"
+            className="h-13 rounded-full bg-[#198BE8] px-7 text-[1.05rem] text-white hover:bg-[#1576C4]"
           >
             <Link href="/termin">Erstgespräch vereinbaren</Link>
           </Button>

@@ -161,7 +161,7 @@ export function ConsequenceReel() {
               onClick={() => goTo(itemIndex)}
               className={cn(
                 "size-2.5 rounded-full transition-colors",
-                itemIndex === index ? "bg-[#5B54E6]" : "bg-[#14161C]/20 hover:bg-[#14161C]/40",
+                itemIndex === index ? "bg-[#198BE8]" : "bg-[#14161C]/20 hover:bg-[#14161C]/40",
               )}
             />
           ))}

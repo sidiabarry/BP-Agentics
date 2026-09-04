@@ -14,7 +14,7 @@ export default function TerminPage() {
       <div className="relative bg-[#F3EFE6] pb-8">
         <SiteHeader tone="light" />
         <main className="mx-auto max-w-3xl px-5 pt-32 pb-24 md:px-8">
-          <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+          <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Vor Ort in Ihrem Betrieb
           </p>
           <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-6xl">

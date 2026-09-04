@@ -13,7 +13,7 @@ export function TradeSelector() {
   return (
     <section id="gewerke" className="bg-[#14161C] px-5 py-24 text-[#F3EFE6] md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#A8A4FF] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
           Welches Gewerk
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
@@ -28,7 +28,7 @@ export function TradeSelector() {
               className={cn(
                 "rounded-full px-4 py-2.5 text-[1.02rem] transition",
                 active === item.id
-                  ? "bg-[#5B54E6] text-white"
+                  ? "bg-[#198BE8] text-white"
                   : "bg-white/8 text-white/80 hover:bg-white/12",
               )}
             >
@@ -46,7 +46,7 @@ export function TradeSelector() {
             </p>
           </blockquote>
           <div key={`${current.id}-config`} className="trade-fade md:col-span-2">
-            <p className="text-sm tracking-[0.16em] text-[#A8A4FF] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
               Konfiguration
             </p>
             <p className="mt-2 text-xl">{current.config}</p>

@@ -35,7 +35,7 @@ export default async function IndustryPage({ params }: Props) {
     <div className="bg-[#F3EFE6]">
       <SiteHeader tone="light" />
       <main className="mx-auto max-w-5xl px-5 pt-32 pb-8 md:px-8">
-        <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           {page.title} · BP Agentics / Hagen
         </p>
         <h1 className="mt-4 max-w-[18ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
@@ -47,7 +47,7 @@ export default async function IndustryPage({ params }: Props) {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button
             asChild
-            className="h-13 rounded-full bg-[#5B54E6] px-7 text-[1.05rem] text-white hover:bg-[#4A44D4]"
+            className="h-13 rounded-full bg-[#198BE8] px-7 text-[1.05rem] text-white hover:bg-[#1576C4]"
           >
             <Link href="/termin">Erstgespräch vereinbaren</Link>
           </Button>
@@ -61,13 +61,13 @@ export default async function IndustryPage({ params }: Props) {
         </div>
         <div className="mt-16 grid gap-5 md:grid-cols-2">
           <article className="rounded-[1.8rem] bg-white p-7">
-            <p className="text-sm tracking-[0.16em] text-[#5B54E6] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
               Der Engpass
             </p>
             <p className="mt-3 text-[1.15rem] leading-relaxed">{page.bottleneck}</p>
           </article>
           <article className="rounded-[1.8rem] bg-[#14161C] p-7 text-[#F3EFE6]">
-            <p className="text-sm tracking-[0.16em] text-[#A8A4FF] uppercase">
+            <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
               Konfiguration
             </p>
             <p className="mt-3 text-2xl font-semibold">{page.config}</p>

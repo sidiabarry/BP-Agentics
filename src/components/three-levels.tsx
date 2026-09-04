@@ -6,7 +6,7 @@ export function ThreeLevels() {
   return (
     <section id="ebenen" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Drei Ebenen
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
@@ -26,7 +26,7 @@ export function ThreeLevels() {
               delay={index * 60}
               className="flex h-full flex-col rounded-[2rem] bg-[#14161C] p-7 text-[#F3EFE6]"
             >
-                <p className="text-sm tracking-[0.2em] text-[#A8A4FF] uppercase">
+                <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
                   {level.roman} · {level.kicker}
                 </p>
                 <h3 className="mt-4 text-3xl font-semibold">{level.name}</h3>
