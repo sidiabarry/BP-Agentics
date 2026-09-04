@@ -34,7 +34,7 @@ export function Proof() {
               type="button"
               onClick={() => setActiveIndex(index)}
               className={cn(
-                "flex h-full flex-col rounded-3xl p-7 text-left transition",
+                "flex h-full min-w-0 flex-col rounded-3xl p-7 text-left transition",
                 index === activeIndex
                   ? "bg-[#14161C] text-[#F3EFE6] ring-2 ring-[#198BE8]"
                   : "bg-white hover:bg-[#E8F4FC]",
@@ -48,7 +48,9 @@ export function Proof() {
               >
                 {item.label}
               </p>
-              <h3 className="mt-3 text-2xl font-semibold">{item.sub}</h3>
+              <h3 className="mt-3 min-w-0 text-lg leading-snug font-semibold hyphens-manual">
+                {item.sub}
+              </h3>
               <p
                 className={cn(
                   "mt-3 flex-1 text-[1.05rem] leading-relaxed",

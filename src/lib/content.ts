@@ -158,7 +158,7 @@ export const officeSlides = [
     time: "MO 17:15",
     caption: "Feierabend? Der Schreibtisch sagt: nein.",
     label: "Nacht",
-    sub: "Nur noch die Schreibtischlampe.",
+    sub: "Nur noch die Schreibtisch\u00adlampe.",
     body: "Das Lager hinter Glas ist dunkel. Der Laptop bleibt an, weil nichts im System steht.",
   },
 ] as const;
