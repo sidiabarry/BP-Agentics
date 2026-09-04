@@ -17,6 +17,30 @@ function motionSnapshot() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function OfficeStamp({ time, caption }: { time: string; caption: string }) {
+  const [day, clock] = time.split(/\s+/, 2);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-10">
+      <div
+        aria-hidden
+        className="absolute bottom-0 left-0 h-[38%] w-[52%] bg-gradient-to-tr from-[#14161C] via-[#14161C]/92 to-transparent"
+      />
+      <div className="absolute bottom-[10%] left-4 max-w-[13.5rem] sm:bottom-[12%] sm:left-6 sm:max-w-[17rem] md:left-8 md:max-w-[20rem]">
+        <p className="font-heading text-[0.7rem] tracking-[0.32em] text-white/75 uppercase sm:text-sm md:text-base">
+          {day}
+        </p>
+        <p className="font-heading mt-0.5 text-4xl leading-none font-semibold tracking-[-0.04em] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)] sm:text-5xl md:text-6xl">
+          {clock}
+        </p>
+        <p className="mt-3 max-w-[16ch] text-base leading-snug text-white sm:mt-4 sm:max-w-[20ch] sm:text-lg md:text-xl">
+          {caption}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function ConsequenceReel({
   activeIndex,
   onIndexChange,
@@ -176,22 +200,10 @@ export function ConsequenceReel({
             ))}
           </div>
         )}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/55 to-transparent px-3 pt-16 pb-3 sm:px-5 sm:pt-20 sm:pb-5 md:px-7 md:pb-7">
-          <div className="max-w-[22rem] rounded-2xl bg-[#14161C]/90 px-4 py-3 sm:max-w-[30rem] sm:px-5 sm:py-4 md:max-w-[36rem]">
-            <p className="inline-flex rounded-full bg-black/70 px-3 py-1 text-sm font-medium tracking-[0.16em] text-white sm:px-3.5 sm:py-1.5 sm:text-base md:text-lg">
-              {slide.time}
-            </p>
-            <p className="mt-2 text-xl leading-snug font-medium text-white sm:text-2xl md:text-[1.85rem]">
-              {slide.caption}
-            </p>
-          </div>
-        </div>
+        <OfficeStamp time={slide.time} caption={slide.caption} />
       </div>
       <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-        <p className="text-[1.15rem] text-[#14161C]">
-          <span className="font-semibold">{slide.time}</span>
-          <span className="text-[#3A3D45]"> — {slide.caption}</span>
-        </p>
+        <p className="text-[1.15rem] text-[#3A3D45]">{slide.caption}</p>
         <div className="flex items-center gap-2" role="tablist" aria-label="Tageszeit">
           {officeSlides.map((item, itemIndex) => (
             <button
