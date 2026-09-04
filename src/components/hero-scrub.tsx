@@ -7,14 +7,16 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/site-header";
 
-const HERO_VH = 340;
+const HERO_VH = 360;
 const VIDEO_ASPECT = 828 / 1108;
-const VIDEO_SCROLL = 0.66;
-const OVERLAY_AT = 0.72;
-const SCALE_FROM = 0.8;
+const VIDEO_END = 0.8;
+const SCALE_START = 0.7;
+const SCALE_END = 0.88;
+const OVERLAY_AT = 0.9;
+const OVERLAY_DUR = 0.07;
 const HEADER_SAFE = 96;
 const FOOT_SAFE = 32;
-const LERP = 0.28;
+const LERP = 0.34;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,7 +58,17 @@ function easeInOut(t: number) {
 }
 
 function overlayFrom(progress: number) {
-  return Math.min(1, Math.max(0, (progress - OVERLAY_AT) / 0.08));
+  return Math.min(1, Math.max(0, (progress - OVERLAY_AT) / OVERLAY_DUR));
+}
+
+function videoProgressFrom(progress: number) {
+  return Math.min(1, Math.max(0, progress / VIDEO_END));
+}
+
+function scaleFrom(progress: number) {
+  return easeInOut(
+    Math.min(1, Math.max(0, (progress - SCALE_START) / (SCALE_END - SCALE_START))),
+  );
 }
 
 const HERO_TAGS = ["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"];
@@ -91,11 +103,7 @@ export function HeroScrub() {
 
   const applyVisuals = useCallback(
     (progress: number) => {
-      const videoProgress = Math.min(1, progress / VIDEO_SCROLL);
-      const scaleT = easeInOut(
-        Math.min(1, Math.max(0, (videoProgress - SCALE_FROM) / (1 - SCALE_FROM))),
-      );
-      const scale = 1 + (coverScaleRef.current - 1) * scaleT;
+      const scale = 1 + (coverScaleRef.current - 1) * scaleFrom(progress);
       const overlay = reduced ? 1 : overlayFrom(progress);
 
       if (videoBoxRef.current) {
@@ -126,12 +134,19 @@ export function HeroScrub() {
   const pump = useCallback(() => {
     rafRef.current = 0;
     const video = videoRef.current;
-    if (video && hasMetaRef.current && video.duration && Number.isFinite(video.duration)) {
-      const videoProgress = Math.min(1, progressRef.current / VIDEO_SCROLL);
-      targetTimeRef.current = videoProgress * Math.max(video.duration - 0.04, 0);
-      displayedTimeRef.current += (targetTimeRef.current - displayedTimeRef.current) * LERP;
-      if (Math.abs(targetTimeRef.current - displayedTimeRef.current) < 0.012) {
-        displayedTimeRef.current = targetTimeRef.current;
+    if (video && video.duration && Number.isFinite(video.duration)) {
+      video.pause();
+      hasMetaRef.current = true;
+      const videoProgress = videoProgressFrom(progressRef.current);
+      const lastFrame = Math.max(video.duration - 1 / 24, 0);
+      targetTimeRef.current = videoProgress * lastFrame;
+      if (videoProgress >= 0.995) {
+        displayedTimeRef.current = lastFrame;
+      } else {
+        displayedTimeRef.current += (targetTimeRef.current - displayedTimeRef.current) * LERP;
+        if (Math.abs(targetTimeRef.current - displayedTimeRef.current) < 0.012) {
+          displayedTimeRef.current = targetTimeRef.current;
+        }
       }
       if (!seekingRef.current && Math.abs(video.currentTime - displayedTimeRef.current) >= 0.016) {
         seekingRef.current = true;
@@ -146,9 +161,8 @@ export function HeroScrub() {
   }, []);
 
   const requestPump = useCallback(() => {
-    if (!rafRef.current) {
-      rafRef.current = requestAnimationFrame(pump);
-    }
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(pump);
   }, [pump]);
 
   const readProgress = useCallback(() => {
@@ -166,7 +180,7 @@ export function HeroScrub() {
       const next = readProgress();
       progressRef.current = next;
       applyVisuals(next);
-      requestPump();
+      pump();
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -186,16 +200,38 @@ export function HeroScrub() {
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
   };
 
-  const markMeta = () => {
+  const markMeta = useCallback(() => {
     const video = videoRef.current;
     if (!video?.duration || !Number.isFinite(video.duration)) return;
     video.pause();
+    const already = hasMetaRef.current;
     hasMetaRef.current = true;
-    const videoProgress = Math.min(1, progressRef.current / VIDEO_SCROLL);
-    targetTimeRef.current = videoProgress * Math.max(video.duration - 0.04, 0);
-    displayedTimeRef.current = targetTimeRef.current;
+    if (!already) {
+      const videoProgress = videoProgressFrom(progressRef.current);
+      targetTimeRef.current = videoProgress * Math.max(video.duration - 1 / 24, 0);
+      displayedTimeRef.current = targetTimeRef.current;
+    }
     requestPump();
-  };
+  }, [requestPump]);
+
+  useEffect(() => {
+    if (reduced) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const syncVideo = () => {
+      if (video.readyState >= 1) markMeta();
+      if (video.readyState >= 2) setHasFrame(true);
+    };
+    syncVideo();
+    video.addEventListener("loadedmetadata", syncVideo);
+    video.addEventListener("loadeddata", syncVideo);
+    video.addEventListener("canplay", syncVideo);
+    return () => {
+      video.removeEventListener("loadedmetadata", syncVideo);
+      video.removeEventListener("loadeddata", syncVideo);
+      video.removeEventListener("canplay", syncVideo);
+    };
+  }, [reduced, markMeta]);
 
   return (
     <section
@@ -230,7 +266,10 @@ export function HeroScrub() {
             <video
               ref={(node) => {
                 videoRef.current = node;
-                if (node) node.setAttribute("fetchpriority", "high");
+                if (!node) return;
+                node.setAttribute("fetchpriority", "high");
+                if (node.readyState >= 1) markMeta();
+                if (node.readyState >= 2) setHasFrame(true);
               }}
               className="h-full w-full object-contain"
               src="/media/hero.mp4"
