@@ -16,10 +16,10 @@ export default function HomePage() {
       <HeroScrub />
       <ProblemWall />
       <TradeSelector />
+      <Process />
       <ThreeLevels />
       <LivingChat />
       <Proof />
-      <Process />
       <Pricing />
       <SchnellCheck />
       <Faq />

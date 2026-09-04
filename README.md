@@ -24,4 +24,4 @@ Texte folgen der Website-Konzeption für bpagentics.com. Das Hero-Video stammt a
 
 ## Hinweis zu Preisen
 
-Ausgewiesene Beträge sind Endpreise nach § 19 UStG (Kleinunternehmer).
+Ausgewiesene Beträge sind Endpreise. Der Hinweis nach § 19 UStG steht im Impressum und auf der Rechnung.

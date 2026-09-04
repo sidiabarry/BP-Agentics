@@ -53,7 +53,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-white/10 px-5 py-5 text-sm text-white/45 md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-1 sm:flex-row sm:justify-between">
-          <span>Kleinunternehmer nach § 19 UStG. Endpreise ohne Umsatzsteuer.</span>
+          <span>Alle Preise sind Endpreise.</span>
           <span>© {new Date().getFullYear()} {site.name}</span>
         </div>
       </div>

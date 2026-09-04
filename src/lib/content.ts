@@ -75,7 +75,7 @@ export const levels = [
       "Shop und App, iOS und Android",
     ],
     price: "Einbau 950 € bis ab 7.900 €",
-    run: "Betrieb ab 149 € / Monat",
+    run: "Wartung ab 149 € / Monat",
   },
   {
     id: "scharnier",
@@ -89,7 +89,7 @@ export const levels = [
       "Kalenderbuchung und Lead-Reaktivierung",
     ],
     price: "Einbau 1.900 €",
-    run: "Betrieb 149 € / Monat",
+    run: "Wartung 99 € / Monat",
   },
   {
     id: "innen",
@@ -103,7 +103,7 @@ export const levels = [
       "E-Rechnung, GoBD, Module nach Bedarf",
     ],
     price: "Fundament 2.900 €, Module 900 € bis 1.800 €",
-    run: "Betrieb ab 190 € / Monat",
+    run: "Wartung ab 190 € / Monat",
   },
 ];
 
@@ -125,8 +125,8 @@ export const steps = [
   },
   {
     n: "04",
-    title: "Laufender Betrieb",
-    body: "Hosting, Wartung, Änderungen auf Zuruf. Kein Ticketsystem. Ohne Betriebsvertrag bauen wir nichts, weil verwaiste Software nach zwei Jahren verfällt.",
+    title: "Wartungsvertrag",
+    body: "Hosting, Pflege, Sicherheitsupdates. Nach zwölf Monaten monatlich kündbar. Die Seite gehört Ihnen ab Zahlung des Einbaus — Sie zahlen für die Wartung, nicht für Ihr Eigentum.",
   },
 ];
 
@@ -162,15 +162,15 @@ export const faqs = [
   },
   {
     q: "Warum 149 € im Monat, wenn der Einbau schon bezahlt ist?",
-    a: "Ein System ist kein Möbelstück. Es läuft auf Servern, braucht Updates und ändert sich, wenn Preise, Adressen oder Mitarbeiter wechseln. Die Pauschale deckt Hosting, Wartung und inhaltliche Änderungen auf Zuruf. Ohne laufenden Betrieb bauen wir nicht, weil verwaiste Software beide Seiten unzufrieden macht. Quellcode geben wir nicht heraus. Das hält den Einbau für den Mittelstand bezahlbar.",
+    a: "Sie zahlen für die Wartung, nicht für Ihr Eigentum. Die Seite gehört Ihnen ab Zahlung des Einbaus. Die Pauschale deckt Hosting in Deutschland, SSL, Sicherheitsupdates, tägliche Backups, bis zu drei Textänderungen im Monat und Störungsbehebung innerhalb von 24 Stunden an Werktagen. Nach zwölf Monaten monatlich kündbar. Bei Kündigung übergeben wir Ihnen die vollständigen Dateien, kostenfrei.",
   },
   {
     q: "Wo liegen die Daten?",
     a: "Auf Servern in der Europäischen Union. Zu jedem Projekt gehört ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Die Hoheit bleibt beim Betrieb. Einen vollständigen Export können Sie jederzeit anfordern. Weiterverkauf oder Kaltakquise über zugekaufte Daten findet nicht statt.",
   },
   {
-    q: "Wird Umsatzsteuer ausgewiesen?",
-    a: "Nein. BP Agentics rechnet als Kleinunternehmer nach § 19 UStG. Die genannten Beträge sind Endpreise.",
+    q: "Sind das Endpreise?",
+    a: "Ja. Alle Preise sind Endpreise.",
   },
 ];
 
