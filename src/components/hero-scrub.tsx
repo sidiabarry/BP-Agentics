@@ -78,6 +78,7 @@ export function HeroScrub() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoBoxRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const phoneLayerRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const skipRef = useRef<HTMLButtonElement>(null);
   const seekingRef = useRef(false);
@@ -106,8 +107,13 @@ export function HeroScrub() {
       const scale = 1 + (coverScaleRef.current - 1) * scaleFrom(progress);
       const overlay = reduced ? 1 : overlayFrom(progress);
 
+      const phoneCover = reduced ? 1 : scaleFrom(progress);
+
       if (videoBoxRef.current) {
         videoBoxRef.current.style.transform = `scale(${scale})`;
+      }
+      if (phoneLayerRef.current) {
+        phoneLayerRef.current.style.opacity = String(phoneCover);
       }
       if (overlayRef.current) overlayRef.current.style.opacity = String(overlay);
       if (copyRef.current) {
@@ -125,7 +131,7 @@ export function HeroScrub() {
         skipRef.current.hidden = overlay >= 0.5;
       }
 
-      const nextTone = overlay > 0.35 ? "dark" : "light";
+      const nextTone = overlay > 0.35 || phoneCover > 0.4 ? "dark" : "light";
       setHeaderTone((prev) => (prev === nextTone ? prev : nextTone));
     },
     [reduced],
@@ -304,13 +310,28 @@ export function HeroScrub() {
         {reduced ? (
           <div
             className="relative min-h-dvh bg-cover bg-center"
-            style={{ backgroundImage: "url(/media/hero-end.jpg)" }}
+            style={{ backgroundImage: "url(/media/hero-phone.png)" }}
           />
-        ) : null}
+        ) : (
+          <div
+            ref={phoneLayerRef}
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{ opacity: 0 }}
+            aria-hidden="true"
+          >
+            <Image
+              src="/media/hero-phone.png"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
 
         <div
           ref={overlayRef}
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 z-[2]"
           style={{
             opacity: reduced ? 1 : 0,
             background:
@@ -320,7 +341,7 @@ export function HeroScrub() {
 
         <div
           ref={copyRef}
-          className={`absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24 ${
+          className={`absolute inset-0 z-[3] flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24 ${
             reduced ? "hero-copy-in pointer-events-auto" : "pointer-events-none"
           }`}
           style={{ opacity: reduced ? 1 : 0 }}
