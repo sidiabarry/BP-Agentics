@@ -127,7 +127,7 @@ export function ConsequenceReel({
 
   return (
     <div ref={wrapRef}>
-      <div className="overflow-hidden rounded-[2rem] bg-[#14161C]">
+      <div className="relative overflow-hidden rounded-[2rem] bg-[#14161C]">
         {reduced ? (
           <Image
             src={slide.poster}
@@ -176,9 +176,19 @@ export function ConsequenceReel({
             ))}
           </div>
         )}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/55 to-transparent px-3 pt-16 pb-3 sm:px-5 sm:pt-20 sm:pb-5 md:px-7 md:pb-7">
+          <div className="max-w-[22rem] rounded-2xl bg-[#14161C]/90 px-4 py-3 sm:max-w-[30rem] sm:px-5 sm:py-4 md:max-w-[36rem]">
+            <p className="inline-flex rounded-full bg-black/70 px-3 py-1 text-sm font-medium tracking-[0.16em] text-white sm:px-3.5 sm:py-1.5 sm:text-base md:text-lg">
+              {slide.time}
+            </p>
+            <p className="mt-2 text-xl leading-snug font-medium text-white sm:text-2xl md:text-[1.85rem]">
+              {slide.caption}
+            </p>
+          </div>
+        </div>
       </div>
       <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-        <p className="text-[1.05rem] text-[#14161C]">
+        <p className="text-[1.15rem] text-[#14161C]">
           <span className="font-semibold">{slide.time}</span>
           <span className="text-[#3A3D45]"> — {slide.caption}</span>
         </p>
