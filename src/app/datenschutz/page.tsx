@@ -20,6 +20,12 @@ export default function DatenschutzPage() {
           optional eine Notiz. Diese Angaben dienen ausschließlich der
           Terminvereinbarung.
         </p>
+        <h2 className="mt-10 text-2xl font-semibold">WhatsApp</h2>
+        <p className="mt-4">
+          Der WhatsApp-Button ist ein gewöhnlicher Link auf wa.me. Vor dem Klick
+          lädt diese Seite kein Skript von Meta und sendet keine Daten. Nach dem
+          Klick gelten die Datenschutzhinweise von WhatsApp / Meta.
+        </p>
         <h2 className="mt-10 text-2xl font-semibold">Server und Standort</h2>
         <p className="mt-4">
           Produktionsdaten der Systeme, die wir für Betriebe bauen, liegen auf

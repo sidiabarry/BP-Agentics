@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Source_Sans_3, Sora } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileDock } from "@/components/mobile-dock";
+import { WhatsAppFab } from "@/components/whatsapp-button";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <SiteFooter />
         <MobileDock />
+        <WhatsAppFab />
       </body>
     </html>
   );

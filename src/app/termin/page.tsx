@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { BookingForm } from "@/components/booking-form";
+import { WhatsAppInline } from "@/components/whatsapp-button";
 
 export const metadata: Metadata = {
   title: "Erstgespräch vereinbaren",
@@ -27,6 +28,10 @@ export default function TerminPage() {
           <div className="mt-12 rounded-[2rem] bg-white p-6 md:p-8">
             <BookingForm />
           </div>
+          <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
+            Lieber kurz schreiben?
+          </p>
+          <WhatsAppInline className="mt-3" />
         </main>
       </div>
     </>

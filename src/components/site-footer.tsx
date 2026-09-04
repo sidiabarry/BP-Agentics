@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
 import { site } from "@/lib/site";
+import { WhatsAppInline } from "@/components/whatsapp-button";
 
 export function SiteFooter() {
   return (
@@ -36,6 +37,11 @@ export function SiteFooter() {
             <a className="hover:text-white" href={`mailto:${site.email}`}>
               {site.email}
             </a>
+          </p>
+          <p className="mt-3">
+            <WhatsAppInline variant="quiet" className="text-[#25D366] hover:text-white">
+              Per WhatsApp schreiben
+            </WhatsAppInline>
           </p>
           <p className="mt-1 text-white/75">{site.city}</p>
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/60">

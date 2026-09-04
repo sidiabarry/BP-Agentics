@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
+import { WhatsAppInline } from "@/components/whatsapp-button";
 
 const systems = [
   {
@@ -184,12 +185,15 @@ export function Pricing() {
         </RevealIn>
 
         <p className="mt-8 text-[1.02rem] text-[#5C5F66]">Alle Preise sind Endpreise.</p>
-        <Button
-          asChild
-          className="mt-6 h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
-        >
-          <Link href="/termin">Diesen Plan vor Ort durchsprechen</Link>
-        </Button>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Button
+            asChild
+            className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
+          >
+            <Link href="/termin">Diesen Plan vor Ort durchsprechen</Link>
+          </Button>
+          <WhatsAppInline className="h-13 px-7 text-[1.05rem]" />
+        </div>
       </div>
     </section>
   );
