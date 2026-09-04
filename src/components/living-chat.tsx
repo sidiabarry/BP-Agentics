@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { RevealHeading } from "@/components/reveal-heading";
 import { chatBeats, chatSteps } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -157,9 +158,9 @@ export function LivingChat() {
             <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
               Scharnier, greifbar
             </p>
-            <h2 className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
+            <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
               Vier Nachrichten. Ein Termin im Kalender.
-            </h2>
+            </RevealHeading>
             <p className="mt-5 hidden max-w-[36rem] text-[1.15rem] leading-relaxed text-[#3A3D45] lg:block">
               Kunde schreibt, während der Meister auf dem Dach steht. Der Setter
               legt zwei Slots, holt die Zusage und schreibt den Termin in den

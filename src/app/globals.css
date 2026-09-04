@@ -187,3 +187,103 @@
     animation: none;
   }
 }
+
+@keyframes hero-kicker-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.62em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.28em;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-kicker {
+  opacity: 0;
+  letter-spacing: 0.62em;
+}
+
+.hero-line-1,
+.hero-line-2,
+.hero-lead,
+.hero-tags,
+.hero-cta {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.hero-copy-in .hero-kicker {
+  animation: hero-kicker-in 520ms ease-out both;
+}
+
+.hero-copy-in .hero-line-1 {
+  animation: hero-rise 420ms ease-out both;
+}
+
+.hero-copy-in .hero-line-2 {
+  animation: hero-rise 420ms 120ms ease-out both;
+}
+
+.hero-copy-in .hero-lead {
+  animation: hero-rise 420ms 200ms ease-out both;
+}
+
+.hero-copy-in .hero-tags {
+  animation: hero-rise 420ms 280ms ease-out both;
+}
+
+.hero-copy-in .hero-cta {
+  animation: hero-rise 420ms 360ms ease-out both;
+}
+
+@keyframes reveal-word-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.reveal-heading-on .reveal-word {
+  animation: reveal-word-up 420ms ease-out both;
+  animation-delay: calc(var(--i) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-kicker,
+  .hero-line-1,
+  .hero-line-2,
+  .hero-lead,
+  .hero-tags,
+  .hero-cta,
+  .reveal-word {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .hero-kicker {
+    letter-spacing: 0.28em;
+  }
+}

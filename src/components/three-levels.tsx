@@ -1,3 +1,4 @@
+import { RevealHeading } from "@/components/reveal-heading";
 import { levels } from "@/lib/content";
 
 export function ThreeLevels() {
@@ -7,9 +8,9 @@ export function ThreeLevels() {
         <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
           Drei Ebenen
         </p>
-        <h2 className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
           Sie starten dort, wo der Schmerz am größten ist.
-        </h2>
+        </RevealHeading>
         <p className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Kein monolithisches Großprojekt. Außen, Scharnier und Innen greifen ineinander,
           bleiben aber einzeln beauftragbar. Nachrüsten, wenn der Betrieb soweit ist.

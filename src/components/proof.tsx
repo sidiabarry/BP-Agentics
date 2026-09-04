@@ -1,4 +1,5 @@
 import { ConsequenceReel } from "@/components/consequence-reel";
+import { RevealHeading } from "@/components/reveal-heading";
 import { consequenceCards, workReferences } from "@/lib/content";
 
 export function Proof() {
@@ -8,9 +9,9 @@ export function Proof() {
         <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
           Ohne System
         </p>
-        <h2 className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
           Der Schreibtisch füllt sich. Der Auftrag nicht.
-        </h2>
+        </RevealHeading>
         <p className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Anfrage im Festnetz. Lieferschein auf dem Tisch. Lager hinter Glas. Das
           ist kein unfähiger Betrieb. Das ist ein Betrieb ohne Setter und ohne

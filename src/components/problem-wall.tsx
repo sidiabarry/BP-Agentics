@@ -1,3 +1,4 @@
+import { RevealHeading } from "@/components/reveal-heading";
 import { problems } from "@/lib/content";
 
 export function ProblemWall() {
@@ -7,9 +8,9 @@ export function ProblemWall() {
         <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
           Das Ablaufproblem
         </p>
-        <h2 className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] text-[#14161C] hyphens-auto md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] text-[#14161C] hyphens-auto md:text-5xl">
           Sie verlieren keine Aufträge, weil Sie schlecht arbeiten.
-        </h2>
+        </RevealHeading>
         <p className="mt-6 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Sie verlieren sie, weil Sie auf dem Dach oder beim Kunden stehen, wenn
           das Telefon klingelt. Weil Angebote abends um zehn geschrieben werden.
