@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { officeSlides } from "@/lib/content";
 
-const FADE_MS = 220;
+const FADE_MS = 580;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -22,18 +22,14 @@ function OfficeStamp({ time, caption }: { time: string; caption: string }) {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10">
-      <div
-        aria-hidden
-        className="absolute bottom-0 left-0 h-[38%] w-[52%] bg-gradient-to-tr from-[#14161C] via-[#14161C]/92 to-transparent"
-      />
       <div className="absolute bottom-[10%] left-4 max-w-[13.5rem] sm:bottom-[12%] sm:left-6 sm:max-w-[17rem] md:left-8 md:max-w-[20rem]">
-        <p className="font-heading text-[0.7rem] tracking-[0.32em] text-white/75 uppercase sm:text-sm md:text-base">
+        <p className="font-heading text-[0.7rem] tracking-[0.32em] text-white/80 uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] sm:text-sm md:text-base">
           {day}
         </p>
-        <p className="font-heading mt-0.5 text-4xl leading-none font-semibold tracking-[-0.04em] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)] sm:text-5xl md:text-6xl">
+        <p className="font-heading mt-0.5 text-4xl leading-none font-semibold tracking-[-0.04em] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] sm:text-5xl md:text-6xl">
           {clock}
         </p>
-        <p className="mt-3 max-w-[16ch] text-base leading-snug text-white sm:mt-4 sm:max-w-[20ch] sm:text-lg md:text-xl">
+        <p className="mt-3 max-w-[16ch] text-base leading-snug text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] sm:mt-4 sm:max-w-[20ch] sm:text-lg md:text-xl">
           {caption}
         </p>
       </div>
@@ -176,7 +172,7 @@ export function ConsequenceReel({
                   videosRef.current[index] = node;
                 }}
                 className={cn(
-                  "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity ease-out",
+                  "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out",
                   isShown(index) ? "opacity-100" : "opacity-0",
                 )}
                 style={{
