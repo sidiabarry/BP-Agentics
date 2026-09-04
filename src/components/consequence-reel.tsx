@@ -145,10 +145,16 @@ export function ConsequenceReel({
               aria-label={`${item.label}: ${item.time}`}
               onClick={() => goTo(itemIndex)}
               className={cn(
-                "size-2.5 rounded-full transition-colors",
-                itemIndex === activeIndex ? "bg-[#198BE8]" : "bg-[#14161C]/20 hover:bg-[#14161C]/40",
+                "flex size-11 items-center justify-center rounded-full",
               )}
-            />
+            >
+              <span
+                className={cn(
+                  "size-2.5 rounded-full transition-colors",
+                  itemIndex === activeIndex ? "bg-[#198BE8]" : "bg-[#14161C]/20",
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

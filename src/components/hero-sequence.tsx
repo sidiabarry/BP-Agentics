@@ -179,6 +179,7 @@ export function HeroSequence() {
   useEffect(() => {
     if (reduced) return;
     let cancelled = false;
+    let started = false;
     const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
     cacheRef.current = new Array(count);
 
@@ -203,16 +204,26 @@ export function HeroSequence() {
     };
 
     const run = async () => {
+      if (started || cancelled) return;
+      started = true;
       await loadRange(0, 0, 1);
       if (cancelled) return;
       paint();
       await loadRange(1, count - 1, 6);
       if (!cancelled) paint();
     };
-    void run();
+
+    const kick = () => {
+      void run();
+    };
+
+    window.addEventListener("scroll", kick, { passive: true });
+    window.addEventListener("pointerdown", kick, { passive: true });
 
     return () => {
       cancelled = true;
+      window.removeEventListener("scroll", kick);
+      window.removeEventListener("pointerdown", kick);
     };
   }, [kind, reduced, paint]);
 
