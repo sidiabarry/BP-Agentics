@@ -15,7 +15,7 @@ Dann http://127.0.0.1:43123 öffnen.
 
 ## Was enthalten ist
 
-- Startseite mit Video-Scroll, Problemwand, Gewerke-Selektor, drei Ebenen, lebendem Setter-Chat, Arbeitsproben, Ablauf, Preisen, Schnell-Check und FAQ
+- Startseite mit Video-Scroll, Problemwand, Gewerke-Selektor, drei Ebenen, scroll-gesteuertem Setter-Chat, Arbeitsproben, Ablauf, Preisen, Schnell-Check und FAQ
 - Branchenseiten unter `/dachdecker`, `/shk-haustechnik`, `/elektrotechnik`, `/kaeltetechnik`, `/spedition-container`, `/galabau`, `/metallbau`, `/nutzfahrzeuge`
 - Terminbuchung unter `/termin` (Name, Telefon, Betrieb, Wunschtermin; öffnet eine vorausgefüllte Mail an Sidia)
 - Impressum und Datenschutz

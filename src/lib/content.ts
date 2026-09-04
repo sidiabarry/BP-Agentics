@@ -325,8 +325,31 @@ export const industryList = Object.entries(industries).map(([slug, data]) => ({
 }));
 
 export const chatBeats = [
-  { from: "in" as const, text: "Anfrage kommt rein." },
-  { from: "out" as const, text: "Zwei Terminvorschläge, heute und morgen." },
-  { from: "in" as const, text: "Ja, das passt. Morgen um neun." },
-  { from: "out" as const, text: "Bestätigt. Steht im Kalender." },
+  {
+    from: "in" as const,
+    time: "16:41",
+    text: "Hallo, unser Dach tropft im Anbau. Kommen Sie diese Woche?",
+  },
+  {
+    from: "out" as const,
+    time: "16:41",
+    text: "Zwei Termine frei: morgen 09:00 oder Freitag 14:30.",
+  },
+  {
+    from: "in" as const,
+    time: "16:42",
+    text: "Ja, ja, das passt. Morgen um neun.",
+  },
+  {
+    from: "out" as const,
+    time: "16:42",
+    text: "Bestätigung! ✔ Morgen 09:00, Meister Schmidt.",
+  },
+];
+
+export const chatSteps = [
+  { n: "01", title: "Anfrage", hint: "Kunde schreibt auf WhatsApp." },
+  { n: "02", title: "Zwei Slots", hint: "Setter antwortet in Sekunden." },
+  { n: "03", title: "Zusage", hint: "Kein Telefon, keine Mailbox." },
+  { n: "04", title: "Kalender", hint: "Termin sitzt beim Meister." },
 ];
