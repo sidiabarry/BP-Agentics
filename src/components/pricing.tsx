@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { WhatsAppInline } from "@/components/whatsapp-button";
+import { DemoLoop, PhoneDemo } from "@/components/demo-player";
 
 const systems = [
   {
@@ -79,37 +80,48 @@ export function Pricing() {
             Wir lösen Papier und Excel ab. Angebote, Termine, Kundendaten,
             Nachfassen — in einem System, das Ihre Leute ohne Schulung bedienen.
           </p>
-          <div className="mt-8 divide-y divide-white/10 border-t border-white/10">
-            {systems.map((item) => (
-              <div
-                key={item.name}
-                className="grid gap-2 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8"
-              >
-                <div>
-                  <p className="text-xl font-semibold">{item.name}</p>
-                  <p className="mt-2 text-[1.05rem] leading-relaxed text-white/75">
-                    {item.body}
-                  </p>
-                </div>
-                <div className="md:text-right">
-                  <RevealIn
-                    as="p"
-                    variant="price"
-                    className="text-2xl font-semibold whitespace-nowrap md:text-3xl"
+          <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
+            <div>
+              <div className="divide-y divide-white/10 border-t border-white/10">
+                {systems.map((item) => (
+                  <div
+                    key={item.name}
+                    className="grid gap-2 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8"
                   >
-                    {item.price}
-                  </RevealIn>
-                  {"run" in item ? (
-                    <p className="mt-1 text-white/70">{item.run}</p>
-                  ) : null}
-                </div>
+                    <div>
+                      <p className="text-xl font-semibold">{item.name}</p>
+                      <p className="mt-2 text-[1.05rem] leading-relaxed text-white/75">
+                        {item.body}
+                      </p>
+                    </div>
+                    <div className="md:text-right">
+                      <RevealIn
+                        as="p"
+                        variant="price"
+                        className="text-2xl font-semibold whitespace-nowrap md:text-3xl"
+                      >
+                        {item.price}
+                      </RevealIn>
+                      {"run" in item ? (
+                        <p className="mt-1 text-white/70">{item.run}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+              <p className="mt-2 text-[1.08rem] leading-relaxed text-white/85">
+                Der Zuschnitt entsteht im 90-Minuten-Gespräch vor Ort. Der Preis
+                steht danach fest und ändert sich nicht.
+              </p>
+            </div>
+            <PhoneDemo
+              src="/demos/feinkost-loop.mp4"
+              poster="/demos/feinkost-poster.jpg"
+              fullSrc="/demos/feinkost-full.mp4"
+              caption="Bestellweg im Kundensystem Feinkost Kreta."
+              width={300}
+            />
           </div>
-          <p className="mt-2 text-[1.08rem] leading-relaxed text-white/85">
-            Der Zuschnitt entsteht im 90-Minuten-Gespräch vor Ort. Der Preis
-            steht danach fest und ändert sich nicht.
-          </p>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
               Fördermittel
@@ -155,6 +167,15 @@ export function Pricing() {
             </RevealIn>
           ))}
         </div>
+
+        <DemoLoop
+          src="/demos/dach-loop.mp4"
+          poster="/demos/dach-poster.jpg"
+          fullSrc="/demos/dach-full.mp4"
+          caption="Scroll-Choreografie einer Signature-Website."
+          note="Produktdemo · kein Echtbetrieb"
+          className="mt-10"
+        />
 
         <RevealIn
           as="div"
