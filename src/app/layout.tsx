@@ -40,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sourceSans.variable} ${sora.variable} h-full antialiased`}
     >
       <head>
+        <link rel="preload" as="image" href="/media/hero-start.jpg" />
         <link rel="preload" as="video" href="/media/hero.mp4" type="video/mp4" />
       </head>
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">

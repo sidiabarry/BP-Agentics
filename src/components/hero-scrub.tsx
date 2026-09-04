@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ const OVERLAY_AT = 0.72;
 const SCALE_FROM = 0.8;
 const HEADER_SAFE = 96;
 const FOOT_SAFE = 32;
+const LERP = 0.28;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -57,15 +59,21 @@ function overlayFrom(progress: number) {
   return Math.min(1, Math.max(0, (progress - OVERLAY_AT) / 0.08));
 }
 
+const HERO_TAGS = ["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"];
+
 export function HeroScrub() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoBoxRef = useRef<HTMLVideoElement>(null);
+  const videoBoxRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const skipRef = useRef<HTMLButtonElement>(null);
   const seekingRef = useRef(false);
+  const progressRef = useRef(0);
   const targetTimeRef = useRef(0);
+  const displayedTimeRef = useRef(0);
+  const hasMetaRef = useRef(false);
+  const rafRef = useRef(0);
   const coverScaleRef = useRef(1);
 
   const viewportKey = useSyncExternalStore(
@@ -78,17 +86,8 @@ export function HeroScrub() {
   const frame = startFrame(viewW, viewH);
   coverScaleRef.current = coverScale;
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
-  const [ready, setReady] = useState(false);
+  const [hasFrame, setHasFrame] = useState(false);
   const [headerTone, setHeaderTone] = useState<"light" | "dark">("light");
-
-  const flushSeek = useCallback(() => {
-    const video = videoRef.current;
-    if (!video || seekingRef.current || !video.duration) return;
-    const t = targetTimeRef.current;
-    if (Math.abs(video.currentTime - t) < 0.02) return;
-    seekingRef.current = true;
-    video.currentTime = t;
-  }, []);
 
   const applyVisuals = useCallback(
     (progress: number) => {
@@ -124,45 +123,60 @@ export function HeroScrub() {
     [reduced],
   );
 
-  const sync = useCallback(() => {
-    const wrap = wrapRef.current;
+  const pump = useCallback(() => {
+    rafRef.current = 0;
     const video = videoRef.current;
-    if (!wrap) return;
+    if (video && hasMetaRef.current && video.duration && Number.isFinite(video.duration)) {
+      const videoProgress = Math.min(1, progressRef.current / VIDEO_SCROLL);
+      targetTimeRef.current = videoProgress * Math.max(video.duration - 0.04, 0);
+      displayedTimeRef.current += (targetTimeRef.current - displayedTimeRef.current) * LERP;
+      if (Math.abs(targetTimeRef.current - displayedTimeRef.current) < 0.012) {
+        displayedTimeRef.current = targetTimeRef.current;
+      }
+      if (!seekingRef.current && Math.abs(video.currentTime - displayedTimeRef.current) >= 0.016) {
+        seekingRef.current = true;
+        video.currentTime = displayedTimeRef.current;
+      }
+    }
+    const catching =
+      Math.abs(targetTimeRef.current - displayedTimeRef.current) >= 0.012 || seekingRef.current;
+    if (catching) {
+      rafRef.current = requestAnimationFrame(pump);
+    }
+  }, []);
+
+  const requestPump = useCallback(() => {
+    if (!rafRef.current) {
+      rafRef.current = requestAnimationFrame(pump);
+    }
+  }, [pump]);
+
+  const readProgress = useCallback(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return 0;
     const rect = wrap.getBoundingClientRect();
     const total = wrap.offsetHeight - window.innerHeight;
     const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-    const next = total > 0 ? scrolled / total : 1;
-    applyVisuals(next);
-
-    if (!ready || !video?.duration || !Number.isFinite(video.duration)) return;
-    const videoProgress = Math.min(1, next / VIDEO_SCROLL);
-    targetTimeRef.current = videoProgress * Math.max(video.duration - 0.04, 0);
-    flushSeek();
-  }, [applyVisuals, flushSeek, ready]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || video.readyState < 3) return;
-    video.pause();
-    setReady(true);
+    return total > 0 ? scrolled / total : 1;
   }, []);
 
   useEffect(() => {
     if (reduced) return;
-    let raf = 0;
     const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(sync);
+      const next = readProgress();
+      progressRef.current = next;
+      applyVisuals(next);
+      requestPump();
     };
-    sync();
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [reduced, sync]);
+  }, [reduced, applyVisuals, readProgress, requestPump]);
 
   const skip = () => {
     const wrap = wrapRef.current;
@@ -170,6 +184,17 @@ export function HeroScrub() {
     const total = wrap.offsetHeight - window.innerHeight;
     const top = wrap.offsetTop + total * OVERLAY_AT;
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+  };
+
+  const markMeta = () => {
+    const video = videoRef.current;
+    if (!video?.duration || !Number.isFinite(video.duration)) return;
+    video.pause();
+    hasMetaRef.current = true;
+    const videoProgress = Math.min(1, progressRef.current / VIDEO_SCROLL);
+    targetTimeRef.current = videoProgress * Math.max(video.duration - 0.04, 0);
+    displayedTimeRef.current = targetTimeRef.current;
+    requestPump();
   };
 
   return (
@@ -188,18 +213,9 @@ export function HeroScrub() {
       >
         <SiteHeader tone={reduced ? "dark" : headerTone} />
         <div className="flex h-dvh w-full items-center justify-center pt-24 pb-8">
-          <video
-            ref={(node) => {
-              videoRef.current = node;
-              videoBoxRef.current = node;
-            }}
-            className={reduced ? "hidden" : "max-h-none max-w-none object-contain"}
-            src="/media/hero.mp4"
-            poster="/media/hero-start.jpg"
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
+          <div
+            ref={videoBoxRef}
+            className={reduced ? "hidden" : "relative overflow-hidden"}
             style={
               reduced
                 ? undefined
@@ -210,24 +226,42 @@ export function HeroScrub() {
                     transformOrigin: "50% 40%",
                   }
             }
-            onSeeked={() => {
-              seekingRef.current = false;
-              flushSeek();
-            }}
-            onCanPlayThrough={() => {
-              const video = videoRef.current;
-              if (video) {
-                video.pause();
-                setReady(true);
-              }
-            }}
-          />
+          >
+            <video
+              ref={(node) => {
+                videoRef.current = node;
+                if (node) node.setAttribute("fetchpriority", "high");
+              }}
+              className="h-full w-full object-contain"
+              src="/media/hero.mp4"
+              poster="/media/hero-start.jpg"
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+              onLoadedMetadata={markMeta}
+              onLoadedData={() => {
+                markMeta();
+                setHasFrame(true);
+              }}
+              onSeeked={() => {
+                seekingRef.current = false;
+                requestPump();
+              }}
+            />
+            {!reduced && !hasFrame ? (
+              <Image
+                src="/media/hero-start.jpg"
+                alt=""
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                className="object-contain"
+              />
+            ) : null}
+          </div>
         </div>
-        {!reduced && !ready ? (
-          <p className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-sm tracking-[0.18em] text-[#14161C]/50 uppercase">
-            Szene lädt
-          </p>
-        ) : null}
         {reduced ? (
           <div
             className="relative min-h-dvh bg-cover bg-center"
@@ -247,35 +281,34 @@ export function HeroScrub() {
 
         <div
           ref={copyRef}
-          className={`absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-16 md:justify-center md:px-12 md:pb-24 ${
+          className={`absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24 ${
             reduced ? "hero-copy-in pointer-events-auto" : "pointer-events-none"
           }`}
           style={{ opacity: reduced ? 1 : 0 }}
         >
           <div className="mx-auto w-full max-w-4xl">
-            <p className="hero-kicker text-[0.78rem] tracking-[0.28em] text-white/80 uppercase">
+            <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-white/80 uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
               Systems & Automation · BP Agentics / Hagen
             </p>
-            <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-white hyphens-auto sm:text-6xl md:text-7xl">
+            <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-white text-balance sm:text-6xl md:text-7xl">
               <span className="hero-line-1 block">Ihr Betrieb läuft.</span>
               <span className="hero-line-2 block">Nur digital nicht.</span>
             </h1>
-            <p className="hero-lead mt-6 max-w-[38rem] text-[1.15rem] leading-relaxed text-white/90 md:text-[1.25rem]">
+            <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-white/90 md:text-[1.25rem]">
               Websites und Systeme für mittelständische Betriebe, die noch mit
               Telefon, Zetteln und Excel arbeiten. Fester Festpreis, in Wochen
               einsatzbereit, ein persönlicher Ansprechpartner.
             </p>
             <div className="hero-tags mt-7 flex flex-wrap gap-2">
-              {["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md border border-white/25 bg-white/10 px-3 py-1.5 text-sm text-white"
-                  >
-                    {tag}
-                  </span>
-                ),
-              )}
+              {HERO_TAGS.map((tag, index) => (
+                <span
+                  key={tag}
+                  className="hero-tag rounded-md border border-white/25 bg-white/10 px-3 py-1.5 text-sm text-white"
+                  style={{ "--i": index } as CSSProperties}
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
             <div className="hero-cta mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
@@ -300,7 +333,7 @@ export function HeroScrub() {
             ref={skipRef}
             type="button"
             onClick={skip}
-            className="absolute right-5 bottom-6 z-10 inline-flex items-center gap-2 rounded-full bg-black/45 px-4 py-2 text-sm text-white backdrop-blur-sm md:right-8"
+            className="absolute right-5 bottom-24 z-10 inline-flex items-center gap-2 rounded-full bg-black/45 px-4 py-2 text-sm text-white backdrop-blur-sm md:right-8 md:bottom-6"
           >
             In den Bildschirm
             <ChevronDown className="size-4" />

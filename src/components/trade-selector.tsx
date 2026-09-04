@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { trades, type TradeId } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { RevealHeading } from "@/components/reveal-heading";
+import { RevealIn } from "@/components/reveal-in";
 
 export function TradeSelector() {
   const [active, setActive] = useState<TradeId>("bau");
@@ -11,12 +13,12 @@ export function TradeSelector() {
   return (
     <section id="gewerke" className="bg-[#14161C] px-5 py-24 text-[#F3EFE6] md:px-8">
       <div className="mx-auto max-w-6xl">
-        <p className="text-sm tracking-[0.2em] text-[#A8A4FF] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#A8A4FF] uppercase">
           Welches Gewerk
-        </p>
-        <h2 className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
+        </RevealIn>
+        <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Dieselbe Lücke. Anderer Tagesablauf.
-        </h2>
+        </RevealHeading>
         <div className="mt-10 flex flex-wrap gap-2">
           {trades.map((item) => (
             <button
@@ -36,10 +38,14 @@ export function TradeSelector() {
         </div>
         <div className="mt-10 grid gap-8 rounded-[2rem] bg-white/5 p-7 md:grid-cols-5 md:p-10">
           <blockquote className="md:col-span-3">
-            <p className="text-2xl leading-snug md:text-3xl">„{current.quote}“</p>
-            <p className="mt-4 text-white/65">{current.firm}</p>
+            <p key={current.id} className="trade-fade text-2xl leading-snug md:text-3xl">
+              „{current.quote}“
+            </p>
+            <p key={`${current.id}-firm`} className="trade-fade mt-4 text-white/65">
+              {current.firm}
+            </p>
           </blockquote>
-          <div className="md:col-span-2">
+          <div key={`${current.id}-config`} className="trade-fade md:col-span-2">
             <p className="text-sm tracking-[0.16em] text-[#A8A4FF] uppercase">
               Konfiguration
             </p>

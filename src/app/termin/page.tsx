@@ -17,7 +17,7 @@ export default function TerminPage() {
           <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
             Vor Ort in Ihrem Betrieb
           </p>
-          <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] hyphens-auto md:text-6xl">
+          <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-6xl">
             90 Minuten. Kostenlos. Danach liegt der Plan auf dem Tisch.
           </h1>
           <p className="mt-5 text-[1.15rem] leading-relaxed text-[#3A3D45]">

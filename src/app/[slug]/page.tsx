@@ -38,7 +38,7 @@ export default async function IndustryPage({ params }: Props) {
         <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
           {page.title} · BP Agentics / Hagen
         </p>
-        <h1 className="mt-4 max-w-[18ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] hyphens-auto md:text-6xl">
+        <h1 className="mt-4 max-w-[18ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
           {page.h1}
         </h1>
         <p className="mt-5 max-w-[38rem] text-[1.2rem] leading-relaxed text-[#3A3D45]">

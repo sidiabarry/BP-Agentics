@@ -124,8 +124,8 @@
   html {
     @apply font-sans;
     font-size: 18px;
-    hyphens: auto;
-    -webkit-hyphens: auto;
+    hyphens: none;
+    -webkit-hyphens: none;
   }
   body {
     @apply bg-background text-foreground;
@@ -140,6 +140,12 @@
   h2,
   h3 {
     font-family: var(--font-sora), var(--font-source), sans-serif;
+    hyphens: none;
+    -webkit-hyphens: none;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 }
 
@@ -191,11 +197,11 @@
 @keyframes hero-kicker-in {
   from {
     opacity: 0;
-    letter-spacing: 0.62em;
+    letter-spacing: 0.42em;
   }
   to {
     opacity: 1;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.2em;
   }
 }
 
@@ -212,14 +218,14 @@
 
 .hero-kicker {
   opacity: 0;
-  letter-spacing: 0.62em;
+  letter-spacing: 0.32em;
 }
 
 .hero-line-1,
 .hero-line-2,
 .hero-lead,
-.hero-tags,
-.hero-cta {
+.hero-cta,
+.hero-tag {
   opacity: 0;
   transform: translateY(12px);
 }
@@ -240,12 +246,12 @@
   animation: hero-rise 420ms 200ms ease-out both;
 }
 
-.hero-copy-in .hero-tags {
-  animation: hero-rise 420ms 280ms ease-out both;
+.hero-copy-in .hero-tag {
+  animation: hero-rise 420ms calc(280ms + var(--i) * 80ms) ease-out both;
 }
 
 .hero-copy-in .hero-cta {
-  animation: hero-rise 420ms 360ms ease-out both;
+  animation: hero-rise 420ms 440ms ease-out both;
 }
 
 @keyframes reveal-word-up {
@@ -261,6 +267,7 @@
 
 .reveal-word {
   display: inline-block;
+  hyphens: none;
 }
 
 .reveal-armed .reveal-word {
@@ -273,20 +280,124 @@
   animation-delay: calc(var(--i) * 70ms);
 }
 
+@keyframes reveal-in-kicker {
+  from {
+    opacity: 0;
+    letter-spacing: 0.4em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.2em;
+  }
+}
+
+@keyframes reveal-in-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-in-card {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-in-price {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.reveal-armed.reveal-in-kicker {
+  opacity: 0;
+  letter-spacing: 0.4em;
+}
+
+.reveal-armed.reveal-in-lead,
+.reveal-armed.reveal-in-rise,
+.reveal-armed.reveal-in-card {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.reveal-armed.reveal-in-price {
+  opacity: 0;
+  filter: blur(8px);
+}
+
+.reveal-in-on.reveal-in-kicker {
+  animation: reveal-in-kicker 520ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-in-on.reveal-in-lead {
+  animation: reveal-in-rise 480ms 80ms ease-out both;
+}
+
+.reveal-in-on.reveal-in-rise {
+  animation: reveal-in-rise 480ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-in-on.reveal-in-card {
+  animation: reveal-in-card 480ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-in-on.reveal-in-price {
+  animation: reveal-in-price 560ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes trade-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trade-fade {
+  animation: trade-fade 320ms ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-kicker,
   .hero-line-1,
   .hero-line-2,
   .hero-lead,
-  .hero-tags,
   .hero-cta,
-  .reveal-word {
+  .hero-tag,
+  .reveal-word,
+  .reveal-in,
+  .trade-fade {
     opacity: 1;
+    letter-spacing: inherit;
     transform: none;
+    filter: none;
     animation: none;
   }
 
   .hero-kicker {
-    letter-spacing: 0.28em;
+    letter-spacing: 0.2em;
   }
 }

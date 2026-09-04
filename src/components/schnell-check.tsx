@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { RevealHeading } from "@/components/reveal-heading";
+import { RevealIn } from "@/components/reveal-in";
 import { checkPaths, teamSizes } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,12 +16,12 @@ export function SchnellCheck() {
   return (
     <section id="check" className="bg-white px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <p className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
+        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#5B54E6] uppercase">
           Schnell-Check
-        </p>
-        <h2 className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] hyphens-auto md:text-5xl">
+        </RevealIn>
+        <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           An welcher Stelle verliert Ihr Betrieb gerade am meisten?
-        </h2>
+        </RevealHeading>
         <div className="mt-10 grid gap-3">
           {checkPaths.map((item) => (
             <button
