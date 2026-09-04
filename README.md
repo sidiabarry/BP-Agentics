@@ -1,27 +1,48 @@
 # BP Agentics
 
-Signature-Website für **BP Agentics** in Hagen: Websites und Betriebssysteme für mittelständische Betriebe, die noch mit Telefon, Zetteln und Excel arbeiten.
+Website für **BP Agentics** in Hagen: Websites, KI-Annahme und interne Abläufe für Betriebe in Nordrhein-Westfalen.
 
-Die Startseite ist als Scroll-Choreografie gebaut. Die Hero-Sequenz liegt unter `public/hero/` (71 Desktop-Frames, 48 Mobil-Frames). Die Kamera fährt per Scroll in das Smartphone. Am Ende des Shots liegt der Bildschirm voll im Viewport; die Fläche darunter übernimmt die Austrittsfarbe `--hero-exit`. `prefers-reduced-motion` zeigt nur das Poster.
+Canonical-Host: `https://bp-agentics.de`  
+NAP: `Kleiststraße 9, 58095 Hagen · +49 162 2843869`
+
+Die Startseite bleibt die Verkaufsstrecke (Scroll-Choreografie). Darunter liegt ein Hub mit eigenen URLs für Leistungen, MID-Förderung, Referenzen, Preise und Kontakt.
 
 ## Lokal starten
 
 ```bash
 npm install
-npm run dev -- --hostname 127.0.0.1 --port 43123
+npm run dev
 ```
 
-Dann http://127.0.0.1:43123 öffnen.
+Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
-## Was enthalten ist
+## Routen
 
-- Startseite mit Bildsequenz-Scroll, Problemwand, Gewerke-Selektor, Leistungen, scroll-gesteuertem Setter-Chat, Büro-Folie ohne System (drei Higgsfield-Clips), Ablauf, Preisen, Schnell-Check und FAQ
-- Branchenseiten unter `/dachdecker`, `/shk-haustechnik`, `/elektrotechnik`, `/kaeltetechnik`, `/spedition-container`, `/galabau`, `/metallbau`, `/nutzfahrzeuge`
-- Terminbuchung unter `/termin` (Name, Telefon, Betrieb, Wunschtermin; öffnet eine vorausgefüllte Mail an Sidia)
-- Impressum und Datenschutz
+- `/` — Verkaufsstrecke
+- `/leistungen`, `/leistungen/website`, `/leistungen/ki-setter`, `/leistungen/ablaeufe`
+- `/foerderung/mid-digitale-prozesse`
+- `/referenzen`, `/referenzen/feinkost-kreta`, `/referenzen/dachdecker-signature`
+- `/preise`, `/kontakt`, `/termin`
+- Gewerke: `/dachdecker`, `/shk-haustechnik`, `/elektrotechnik`, `/kaeltetechnik`, `/spedition-container`, `/galabau`, `/metallbau`, `/nutzfahrzeuge`
+- `/impressum`, `/datenschutz`
+- Crawl: `/sitemap.xml`, `/robots.txt`, `/llms.txt`
 
-Texte folgen der Website-Konzeption für bpagentics.com. Die Hero-Sequenz stammt aus der Higgsfield-Produktion vom 3. September 2026.
+## Technik auf der Seite
 
-## Hinweis zu Preisen
+Metadaten, JSON-LD (`ProfessionalService`, `Person`, `WebSite`, plus Service/FAQ/Video wo der Inhalt sichtbar ist), Canonicals, beschreibende Alternativtexte. Kein `hreflang`, keine erfundenen Bewertungen, keine SearchAction.
+
+## Was diese Website allein nicht rankt
+
+Abschnitt 7 des SEO-Briefs liegt außerhalb des Repos und muss von Hand geschehen, sonst bleibt die Technik unsichtbar:
+
+- Google Business Profile anlegen und NAP identisch halten
+- Einträge SIHK, wlw, OpenStreetMap, LinkedIn — dieselbe Anschrift, dasselbe Telefon
+- Search Console und Bing Webmaster, Property `bp-agentics.de`
+- 301 von der bisherigen Squarespace-Domain auf die jeweiligen neuen Pfade
+- echte Erwähnungen (Kunden, Kammern, lokale Seiten), keine gekauften Steckbriefe
+
+Ohne diese Schritte indexiert Google die Hub-Seiten langsamer oder gar nicht. Das ist kein Fehler im Code.
+
+## Preise
 
 Ausgewiesene Beträge sind Endpreise. Der Hinweis nach § 19 UStG steht im Impressum und auf der Rechnung.

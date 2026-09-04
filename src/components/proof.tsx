@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ConsequenceReel } from "@/components/consequence-reel";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
-import { officeSlides, workReferences } from "@/lib/content";
+import { officeSlides } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 export function Proof() {
@@ -62,7 +63,20 @@ export function Proof() {
             </button>
           ))}
         </div>
-        <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{workReferences}</p>
+        <p className="mt-8 text-[1.02rem] text-[#5C5F66]">
+          Danach gebaut:{" "}
+          <Link href="/referenzen/feinkost-kreta" className="text-[#198BE8] underline-offset-4 hover:underline">
+            Feinkost Kreta
+          </Link>
+          {" · "}
+          <Link href="/referenzen/dachdecker-signature" className="text-[#198BE8] underline-offset-4 hover:underline">
+            Dachdecker Signature
+          </Link>
+          {" · "}
+          <Link href="/leistungen/ablaeufe" className="text-[#198BE8] underline-offset-4 hover:underline">
+            Betriebsorganisation
+          </Link>
+        </p>
       </div>
     </section>
   );

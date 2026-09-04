@@ -151,6 +151,46 @@
   }
 }
 
+.doc-prose h2 {
+  margin-top: 2.4rem;
+  font-size: 1.55rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.doc-prose h3 {
+  margin-top: 1.6rem;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.doc-prose p,
+.doc-prose li {
+  margin-top: 0.9rem;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: #3a3d45;
+}
+
+.doc-prose .answer {
+  font-size: 1.12rem;
+  color: #14161c;
+}
+
+.doc-prose ul,
+.doc-prose ol {
+  padding-left: 1.2rem;
+}
+
+.doc-prose a {
+  color: #198be8;
+  text-underline-offset: 4px;
+}
+
+.doc-prose a:hover {
+  text-decoration: underline;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

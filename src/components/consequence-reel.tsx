@@ -131,7 +131,7 @@ export function ConsequenceReel({
         {reduced ? (
           <Image
             src={slide.poster}
-            alt={`${slide.time} — ${slide.caption}`}
+            alt={slide.alt}
             width={1600}
             height={900}
             className="aspect-video h-auto w-full object-cover"
@@ -140,7 +140,7 @@ export function ConsequenceReel({
           <div className="relative aspect-video w-full bg-[#14161C]">
             <Image
               src={held.poster}
-              alt=""
+              alt={held.alt}
               fill
               sizes="(min-width: 1152px) 1152px, 100vw"
               className="object-cover"

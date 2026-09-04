@@ -9,10 +9,31 @@ import { Pricing } from "@/components/pricing";
 import { SchnellCheck } from "@/components/schnell-check";
 import { Faq } from "@/components/faq";
 import { CtaBand } from "@/components/cta-band";
+import { JsonLd } from "@/components/json-ld";
+import { faqs } from "@/lib/content";
+import { faqPage } from "@/lib/json-ld";
+import { site } from "@/lib/site";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: site.defaultTitle,
+  },
+  description: site.defaultDescription,
+  alternates: {
+    canonical: site.url,
+  },
+};
 
 export default function HomePage() {
   return (
-    <>
+    <main id="inhalt">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [faqPage(faqs)],
+        }}
+      />
       <HeroSequence />
       <ProblemWall />
       <TradeSelector />
@@ -24,6 +45,6 @@ export default function HomePage() {
       <SchnellCheck />
       <Faq />
       <CtaBand dark />
-    </>
+    </main>
   );
 }

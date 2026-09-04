@@ -1,6 +1,22 @@
+import Link from "next/link";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { levels } from "@/lib/content";
+
+const levelHrefs: Record<string, { href: string; label: string }> = {
+  auftritt: {
+    href: "/leistungen/website",
+    label: "Website-Stufen und Endpreise nachlesen",
+  },
+  annahme: {
+    href: "/leistungen/ki-setter",
+    label: "KI-Setter für die Annahme nachlesen",
+  },
+  ablaeufe: {
+    href: "/leistungen/ablaeufe",
+    label: "Fundament und Module nachlesen",
+  },
+};
 
 export function ThreeLevels() {
   return (
@@ -43,6 +59,16 @@ export function ThreeLevels() {
                 </ul>
                 <p className="mt-8 text-[1.05rem]">{level.price}</p>
                 <p className="text-white/60">{level.run}</p>
+                {levelHrefs[level.id] ? (
+                  <p className="mt-5">
+                    <Link
+                      href={levelHrefs[level.id].href}
+                      className="text-[#9FD0F8] underline-offset-4 hover:underline"
+                    >
+                      {levelHrefs[level.id].label}
+                    </Link>
+                  </p>
+                ) : null}
             </RevealIn>
           ))}
         </div>

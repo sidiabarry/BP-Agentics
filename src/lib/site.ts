@@ -1,13 +1,60 @@
 export const site = {
   name: "BP Agentics",
-  shortName: "BP AGENTICS",
-  city: "Hagen",
-  tagline: "Systems & Automation",
+  legalName: "BP Agentics",
+  url: "https://bp-agentics.de",
+  locale: "de_DE",
+  language: "de",
   email: "sidiabarry@bpagentics.com",
-  url: "https://bpagentics.com",
-  owner: "Sidia Jerome Barry",
-  kleinunternehmer: true,
+  phoneDisplay: "+49 162 2843869",
+  phoneE164: "+491622843869",
+  phoneTel: "+491622843869",
+  whatsappUrl: "https://wa.me/491622843869",
+  streetAddress: "Kleiststraße 9",
+  postalCode: "58095",
+  addressLocality: "Hagen",
+  addressRegion: "Nordrhein-Westfalen",
+  addressCountry: "DE",
+  geo: {
+    latitude: 51.3595,
+    longitude: 7.4638,
+  },
+  founder: {
+    name: "Sidia Jerome Barry",
+    jobTitle: "Inhaber",
+  },
+  areaServed: [
+    "Nordrhein-Westfalen",
+    "Hagen",
+    "Iserlohn",
+    "Lüdenscheid",
+    "Witten",
+    "Schwelm",
+    "Ennepe-Ruhr-Kreis",
+    "Märkischer Kreis",
+  ],
+  knowsAbout: [
+    "Website für Handwerksbetriebe",
+    "KI-Telefonannahme",
+    "Prozessautomatisierung",
+    "MID Digitale Prozesse",
+    "Next.js",
+    "n8n",
+  ],
+  defaultTitle:
+    "BP Agentics — Systeme und Automatisierung für Betriebe in NRW",
+  defaultDescription:
+    "BP Agentics in Hagen baut Websites, KI-Annahme und interne Abläufe für Betriebe in NRW. Sidia Jerome Barry. Kleiststraße 9, 58095 Hagen.",
 } as const;
+
+export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;
+
+export const napShort = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality}`;
+
+export function absoluteUrl(path = "/") {
+  if (path.startsWith("http")) return path;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${site.url}${normalized === "/" ? "/" : normalized}`;
+}
 
 export const mailToTermin = (params: {
   name: string;

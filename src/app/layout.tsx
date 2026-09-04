@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Sora } from "next/font/google";
+import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileDock } from "@/components/mobile-dock";
 import { WhatsAppFab } from "@/components/whatsapp-button";
+import { organizationGraph } from "@/lib/json-ld";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -18,19 +21,38 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bpagentics.com"),
+  metadataBase: new URL(site.url),
   title: {
-    default: "BP Agentics · Hagen",
-    template: "%s · BP Agentics",
+    default: site.defaultTitle,
+    template: `%s | ${site.name}`,
   },
-  description:
-    "Websites und Systeme für mittelständische Betriebe, die noch mit Telefon, Zetteln und Excel arbeiten. Festpreis, in Wochen fertig, ein Ansprechpartner.",
+  description: site.defaultDescription,
+  alternates: {
+    canonical: site.url,
+  },
   openGraph: {
-    title: "Ihr Betrieb läuft. Nur digital nicht.",
-    description:
-      "BP Agentics baut Websites, den KI-Setter und digitale Betriebssysteme für Handwerk, Außendienst und Logistik. Entwickelt in Hagen. Daten in der EU.",
-    locale: "de_DE",
+    title: site.defaultTitle,
+    description: site.defaultDescription,
+    url: site.url,
+    locale: site.locale,
+    siteName: site.name,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.defaultTitle,
+    description: site.defaultDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -49,6 +71,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">
+        <a
+          href="#inhalt"
+          className="bg-foreground text-background focus:fixed focus:top-3 focus:left-3 focus:z-80 focus:rounded-full focus:px-4 focus:py-2 sr-only focus:not-sr-only"
+        >
+          Zum Inhalt springen
+        </a>
+        <JsonLd data={organizationGraph()} />
         {children}
         <SiteFooter />
         <MobileDock />

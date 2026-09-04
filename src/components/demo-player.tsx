@@ -130,6 +130,7 @@ type DemoLoopProps = {
   fullSrc?: string;
   caption?: string;
   note?: string;
+  posterAlt?: string;
   className?: string;
 };
 
@@ -139,6 +140,7 @@ export function DemoLoop({
   fullSrc,
   caption,
   note,
+  posterAlt,
   className = "",
 }: DemoLoopProps) {
   const wrapRef = useRef<HTMLElement>(null);
@@ -161,7 +163,7 @@ export function DemoLoop({
             loop
             playsInline
             preload="none"
-            aria-label={caption ?? "Produktdemo"}
+            aria-label={posterAlt ?? caption ?? "Produktdemo"}
             className="block h-auto w-full"
             onLoadedData={() => {
               if (inView) videoRef.current?.play().catch(() => {});
@@ -169,7 +171,7 @@ export function DemoLoop({
           />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={poster} alt={caption ?? "Produktdemo"} className="block h-auto w-full" />
+          <img src={poster} alt={posterAlt ?? caption ?? "Produktdemo"} className="block h-auto w-full" />
         )}
         {fullSrc ? (
           <button
@@ -203,6 +205,7 @@ export function PhoneDemo({
   fullSrc,
   caption,
   note,
+  posterAlt,
   className = "",
   width = 300,
 }: PhoneDemoProps) {
@@ -231,7 +234,7 @@ export function PhoneDemo({
               loop
               playsInline
               preload="none"
-              aria-label={caption ?? "App-Demo"}
+              aria-label={posterAlt ?? caption ?? "App-Demo"}
               className="block h-auto w-full"
               onLoadedData={() => {
                 if (inView) videoRef.current?.play().catch(() => {});
@@ -239,7 +242,7 @@ export function PhoneDemo({
             />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={poster} alt={caption ?? "App-Demo"} className="block h-auto w-full" />
+            <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} className="block h-auto w-full" />
           )}
         </div>
       </div>

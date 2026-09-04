@@ -111,16 +111,34 @@ export function Pricing() {
               </div>
               <p className="mt-2 text-[1.08rem] leading-relaxed text-white/85">
                 Der Zuschnitt entsteht im 90-Minuten-Gespräch vor Ort. Der Preis
-                steht danach fest und ändert sich nicht.
+                steht danach fest und ändert sich nicht.{" "}
+                <Link href="/leistungen/ablaeufe" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+                  Fundament und Module im Detail
+                </Link>
+                {" · "}
+                <Link href="/leistungen/ki-setter" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+                  KI-Setter für Annahme und Kalender
+                </Link>
+                {" · "}
+                <Link href="/preise" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+                  Alle Endpreise in einer Tabelle
+                </Link>
+                .
               </p>
             </div>
             <PhoneDemo
               src="/demos/feinkost-loop.mp4"
               poster="/demos/feinkost-poster.jpg"
               fullSrc="/demos/feinkost-full.mp4"
+              posterAlt="Smartphone-Ansicht des Bestellsystems von Feinkost Kreta mit Warenannahme und Kundendaten"
               caption="Bestellweg im Kundensystem Feinkost Kreta."
               width={300}
             />
+            <p className="mt-4 text-center text-sm text-white/70">
+              <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
+                Referenz Feinkost Kreta: Kundensystem und Demo
+              </Link>
+            </p>
           </div>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
@@ -128,10 +146,14 @@ export function Pricing() {
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
               Das Land NRW bezuschusst die Digitalisierung interner
-              Geschäftsprozesse über MID-Digitale Prozesse mit 50 Prozent, bis
+              Geschäftsprozesse über MID Digitale Prozesse mit 50 Prozent, bis
               zu 15.000 €. Wir begleiten den Antrag, bevor wir bauen — die
               Reihenfolge ist Vorschrift, nicht Kür. Das aktuelle Einreichfenster
-              läuft bis zum 1. Dezember 2026 und wird nach Eingang vergeben.
+              läuft bis zum 1. Dezember 2026 und wird nach Eingang vergeben.{" "}
+              <Link href="/foerderung/mid-digitale-prozesse" className="text-[#198BE8] underline-offset-4 hover:underline">
+                MID Digitale Prozesse: Zuschuss, Fenster und Reihenfolge vor dem Bescheid
+              </Link>
+              .
             </p>
           </div>
         </RevealIn>
@@ -164,6 +186,18 @@ export function Pricing() {
               <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
                 {plan.body}
               </p>
+              <p className="mt-5">
+                <Link
+                  href="/leistungen/website"
+                  className={
+                    plan.featured
+                      ? "text-white underline-offset-4 hover:underline"
+                      : "text-[#198BE8] underline-offset-4 hover:underline"
+                  }
+                >
+                  Website {plan.name.replace("Website ", "")}: Leistung und Wartung
+                </Link>
+              </p>
             </RevealIn>
           ))}
         </div>
@@ -172,10 +206,16 @@ export function Pricing() {
           src="/demos/dach-loop.mp4"
           poster="/demos/dach-poster.jpg"
           fullSrc="/demos/dach-full.mp4"
-          caption="Scroll-Choreografie einer Signature-Website."
+          posterAlt="Standbild einer Signature-Website für einen Dachdeckerbetrieb mit Dachaufnahme und Scroll-Choreografie"
+          caption="Scroll-Choreografie einer Signature-Website für einen Dachdeckerbetrieb."
           note="Produktdemo · kein Echtbetrieb"
           className="mt-10"
         />
+        <p className="mt-3 text-[1.02rem] text-[#5C5F66]">
+          <Link href="/referenzen/dachdecker-signature" className="text-[#198BE8] underline-offset-4 hover:underline">
+            Referenz Dachdecker Signature: Loop und Erklärung
+          </Link>
+        </p>
 
         <RevealIn
           as="div"

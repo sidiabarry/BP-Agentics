@@ -15,10 +15,11 @@ import {
 import { industryList } from "@/lib/content";
 
 const links = [
-  { href: "/#problem", label: "Problem" },
-  { href: "/#leistungen", label: "Leistungen" },
-  { href: "/#arbeiten", label: "Alltag" },
-  { href: "/#preise", label: "Preise" },
+  { href: "/leistungen", label: "Leistungen" },
+  { href: "/preise", label: "Preise" },
+  { href: "/referenzen", label: "Referenzen" },
+  { href: "/foerderung/mid-digitale-prozesse", label: "MID-Förderung" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export function SiteHeader({
@@ -39,7 +40,7 @@ export function SiteHeader({
         <Link href="/" aria-label="BP Agentics Startseite">
           <Wordmark invert={invert} />
         </Link>
-        <nav className="hidden items-center gap-7 text-[0.95rem] md:flex">
+        <nav className="hidden items-center gap-6 text-[0.95rem] lg:flex">
           {links.map((item) => (
             <Link
               key={item.href}
@@ -65,7 +66,7 @@ export function SiteHeader({
             <Button
               variant="ghost"
               size="icon-lg"
-              className={`md:hidden ${
+              className={`lg:hidden ${
                 invert
                   ? "bg-black/40 text-white hover:bg-black/55"
                   : "bg-black/80 text-white hover:bg-black"

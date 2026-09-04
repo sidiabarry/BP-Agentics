@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { BookingForm } from "@/components/booking-form";
 import { WhatsAppInline } from "@/components/whatsapp-button";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Erstgespräch vereinbaren",
+export const metadata: Metadata = pageMetadata({
+  title: "90-Minuten-Gespräch buchen",
   description:
-    "90 Minuten vor Ort, kostenlos. Danach wissen Sie, was sich für Ihren Betrieb lohnt.",
-};
+    "90 Minuten vor Ort, kostenlos. Hagen und NRW. Danach liegt der Systemplan auf dem Tisch.",
+  path: "/termin",
+});
 
 export default function TerminPage() {
   return (
     <>
       <div className="relative bg-[#F3EFE6] pb-8">
         <SiteHeader tone="light" />
-        <main className="mx-auto max-w-3xl px-5 pt-32 pb-24 md:px-8">
+        <main id="inhalt" className="mx-auto max-w-3xl px-5 pt-32 pb-24 md:px-8">
           <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Vor Ort in Ihrem Betrieb
           </p>
@@ -29,7 +32,11 @@ export default function TerminPage() {
             <BookingForm />
           </div>
           <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
-            Lieber kurz schreiben?
+            Lieber zuerst Anschrift und Telefon?{" "}
+            <Link href="/kontakt" className="text-[#198BE8] underline-offset-4 hover:underline">
+              Kontaktseite mit NAP in Hagen
+            </Link>
+            . Oder kurz schreiben:
           </p>
           <WhatsAppInline className="mt-3" />
         </main>
