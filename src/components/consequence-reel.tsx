@@ -2,8 +2,28 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
-import { consequenceClips } from "@/lib/content";
 import { cn } from "@/lib/utils";
+
+const CLIPS = [
+  {
+    src: "/media/buero-morgen.mp4",
+    poster: "/media/buero-morgen.jpg",
+    time: "Morgen",
+    caption: "Die erste Papierlage.",
+  },
+  {
+    src: "/media/buero-nachmittag.mp4",
+    poster: "/media/buero-nachmittag.jpg",
+    time: "Nachmittag",
+    caption: "Binder, Zettel, Excel.",
+  },
+  {
+    src: "/media/buero-nacht.mp4",
+    poster: "/media/buero-nacht.jpg",
+    time: "Nacht",
+    caption: "Nur noch die Schreibtischlampe.",
+  },
+] as const;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -21,7 +41,7 @@ export function ConsequenceReel() {
   const [index, setIndex] = useState(0);
   const [inView, setInView] = useState(false);
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
-  const clip = consequenceClips[index];
+  const clip = CLIPS[index] ?? CLIPS[0];
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -51,7 +71,7 @@ export function ConsequenceReel() {
   }, [playIfVisible, index]);
 
   const advance = () => {
-    setIndex((current) => (current + 1) % consequenceClips.length);
+    setIndex((current) => (current + 1) % CLIPS.length);
   };
 
   return (
@@ -87,7 +107,7 @@ export function ConsequenceReel() {
           <span className="text-[#3A3D45]"> — {clip.caption}</span>
         </p>
         <div className="flex items-center gap-2" role="tablist" aria-label="Tageszeit">
-          {consequenceClips.map((item, itemIndex) => (
+          {CLIPS.map((item, itemIndex) => (
             <button
               key={item.time}
               type="button"
