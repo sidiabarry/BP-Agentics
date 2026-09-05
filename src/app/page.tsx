@@ -1,5 +1,4 @@
 import { HeroSequence } from "@/components/hero-sequence";
-import { JumpBar } from "@/components/jump-bar";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { ThreeLevels } from "@/components/three-levels";
@@ -33,7 +32,6 @@ export default function HomePage() {
         }}
       />
       <HeroSequence />
-      <JumpBar />
       <ProblemWall />
       <HomeReferenzen />
       <ThreeLevels compact />

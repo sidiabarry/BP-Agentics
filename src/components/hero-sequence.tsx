@@ -236,6 +236,7 @@ export function HeroSequence() {
 
   return (
     <section
+      id="einstieg"
       ref={wrapRef}
       className="relative"
       style={{ height: reduced ? "auto" : `${HERO_VH}vh` }}
@@ -312,20 +313,19 @@ export function HeroSequence() {
                 </span>
               ))}
             </div>
-            <div className="hero-cta mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="hero-cta mt-8 flex flex-col items-start gap-4">
               <Button
                 asChild
                 className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
               >
                 <Link href="/termin">Erstgespräch vereinbaren</Link>
               </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-13 rounded-full border-[#14161C]/45 bg-white/55 px-7 text-[1.05rem] text-[#14161C] hover:bg-white"
+              <Link
+                href="/#referenzen"
+                className="inline-flex items-center text-[1.05rem] font-medium text-[#14161C] underline-offset-[5px] transition-colors hover:underline"
               >
-                <Link href="/#referenzen">Was schon läuft</Link>
-              </Button>
+                Zwei Systeme ansehen ↓
+              </Link>
             </div>
           </div>
         </div>

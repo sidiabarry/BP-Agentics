@@ -23,6 +23,13 @@ export const mainLinks = [
   { href: "/ueber-mich", label: "Über mich", spy: "warum" },
 ] as const;
 
+/** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
+export const homeExpandLinks = [
+  { href: "/#referenzen", label: "Referenzen", spy: "referenzen" },
+  { href: "/#preise", label: "Preise", spy: "preise" },
+  { href: "/foerderung/mid-digitale-prozesse", label: "Förderung", spy: null },
+] as const;
+
 export const mobileExtra = [
   { href: "/leistungen", label: "Leistungen im Überblick" },
   { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta" },

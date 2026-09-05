@@ -5,7 +5,7 @@ Website für **BP Agentics** in Hagen: Websites, KI-Annahme und interne Abläufe
 Canonical-Host: `https://bp-agentics.de`  
 NAP: `Kleiststraße 9, 58095 Hagen · +49 162 2843869`
 
-Die Startseite ist die Übersicht: acht Abschnitte, Sprungbalken, FAQ. Der volle Inhalt sitzt auf benannten Unterseiten.
+Die Startseite ist die Übersicht: acht Abschnitte, FAQ. Nach dem Hero erweitert sich die mitlaufende Kopfzeile um die Sprunglinks. Der volle Inhalt sitzt auf benannten Unterseiten.
 
 ## Lokal starten
 
