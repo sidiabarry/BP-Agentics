@@ -3,18 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Wordmark } from "@/components/brand";
+import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { industryList } from "@/lib/content";
-import { homeExpandLinks, leistungItems, mainLinks, mobileExtra } from "@/lib/nav";
+import { homeExpandLinks, leistungItems, mainLinks } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -143,78 +136,7 @@ export function SiteHeader() {
             </Button>
           </nav>
         </div>
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-lg"
-              className="rounded-full bg-black/80 text-white hover:bg-black lg:hidden"
-              aria-label="Menü öffnen"
-            >
-              <Menu className="size-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[min(100%,22rem)] overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Menü</SheetTitle>
-            </SheetHeader>
-            <div className="mt-4 flex flex-col gap-1 px-4 pb-8">
-              <p className="text-sm tracking-[0.16em] text-muted-foreground uppercase">Leistungen</p>
-              {leistungItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-2.5"
-                >
-                  <span className="block">{item.title}</span>
-                  <span className="block text-sm text-[#5C5F66]">{item.sub}</span>
-                </Link>
-              ))}
-              {mainLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-3 text-lg"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {mobileExtra.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-2.5"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <p className="mt-4 text-sm tracking-[0.16em] text-muted-foreground uppercase">
-                Gewerke
-              </p>
-              {industryList.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/${item.slug}`}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-2.5"
-                >
-                  {item.title}
-                </Link>
-              ))}
-              <Button
-                asChild
-                className="mt-6 h-12 rounded-full bg-[#198BE8] text-base text-white"
-              >
-                <Link href="/termin" onClick={() => setOpen(false)}>
-                  Erstgespräch vereinbaren
-                </Link>
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+        <MobileNav open={open} onOpenChange={setOpen} />
       </div>
     </header>
   );

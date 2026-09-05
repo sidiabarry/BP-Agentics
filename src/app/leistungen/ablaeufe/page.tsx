@@ -125,10 +125,10 @@ export default function AblaeufePage() {
       </p>
       <p>
         Gewerke mit Ablauf-Schmerz:{" "}
-        <Link href="/elektrotechnik">Elektrotechnik und VOB-Nachweise</Link>,{" "}
-        <Link href="/spedition-container">Spedition und Container</Link>,{" "}
-        <Link href="/galabau">Garten, Landschaft, Pool</Link>,{" "}
-        <Link href="/metallbau">Metallbau</Link>. Gesehen:{" "}
+        <Link href="/gewerke#elektrotechnik">Elektrotechnik und VOB-Nachweise</Link>,{" "}
+        <Link href="/gewerke#spedition-container">Spedition und Container</Link>,{" "}
+        <Link href="/gewerke#galabau">Garten, Landschaft, Pool</Link>,{" "}
+        <Link href="/gewerke#metallbau">Metallbau</Link>. Gesehen:{" "}
         <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link>.         Gespräch:{" "}
         <Link href="/termin">90 Minuten im Betrieb</Link>.
       </p>

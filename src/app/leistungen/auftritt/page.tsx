@@ -44,7 +44,7 @@ export default function AuftrittPage() {
         { href: "/leistungen/ablaeufe", label: "Abläufe: wenn nach dem Termin das Papier beginnt" },
         { href: "/referenzen/dachdecker-signature", label: "Signature-Choreografie eines Dachdeckerbetriebs" },
         { href: "/preise", label: "Endpreise aller Stufen in einer Tabelle" },
-        { href: "/dachdecker", label: "Dachdecker-Seite mit lokalem Zuschnitt" },
+        { href: "/gewerke#dachdecker", label: "Dachdecker: Engpass und Ebene" },
       ]}
     >
       <h2>Was ist eine Website von BP Agentics?</h2>
@@ -134,11 +134,11 @@ export default function AuftrittPage() {
         Texte schreibt ein Mensch, der den Betrieb gesehen hat. Keine Lorem-Seite, keine Stock-Belegschaft. Bilder und Choreografie sitzen dort, wo sie die Arbeitsprobe tragen. Hosting bleibt in Deutschland. Es gibt kein Baukasten-Login, in dem Sie nach sechs Monaten allein dastehen. Es gibt Dateien, die Ihnen gehören, und einen Wartungsvertrag, den Sie kündigen können.
       </p>
       <p>
-        Gewerke mit eigenem Einstieg:{" "}
-        <Link href="/dachdecker">Dachdecker</Link>,{" "}
-        <Link href="/shk-haustechnik">SHK und Haustechnik</Link>,{" "}
-        <Link href="/elektrotechnik">Elektrotechnik</Link>,{" "}
-        <Link href="/metallbau">Metallbau</Link>. Die Startseite bleibt die Übersicht. Diese Seite ist die Leistungsbeschreibung für Menschen, die „Website Handwerk Hagen Festpreis“ suchen und eine klare Stufe wollen. Der Preis nach dem Gespräch ändert sich nicht. Offene Stundensätze gibt es nicht.
+        Gewerke mit eigenem Einstieg auf einer Seite:{" "}
+        <Link href="/gewerke#dachdecker">Dachdecker</Link>,{" "}
+        <Link href="/gewerke#shk-haustechnik">SHK und Haustechnik</Link>,{" "}
+        <Link href="/gewerke#elektrotechnik">Elektrotechnik</Link>,{" "}
+        <Link href="/gewerke#metallbau">Metallbau</Link>. Die Startseite bleibt die Übersicht. Diese Seite ist die Leistungsbeschreibung für Menschen, die „Website Handwerk Hagen Festpreis“ suchen und eine klare Stufe wollen. Der Preis nach dem Gespräch ändert sich nicht. Offene Stundensätze gibt es nicht.
       </p>
 
       <PageFaqs items={auftrittFaqs} />

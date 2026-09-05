@@ -19,6 +19,11 @@ BP Agentics baut drei Schichten für Betriebe, die digital nachziehen müssen: d
 
 MID Digitale Prozesse der Landesregierung NRW kann bis zu 50 Prozent der förderfähigen Kosten übernehmen, höchstens 15.000 Euro. Antragsfenster bis 1. Dezember 2026, Windhundverfahren. Die Arbeit darf vor dem Förderbescheid nicht beginnen. Erklärung: https://bp-agentics.de/foerderung/mid-digitale-prozesse
 
+## Gewerke
+
+Acht Gewerke auf einer Seite, jeweils Engpass und Ebene: https://bp-agentics.de/gewerke
+Alte Adressen wie /dachdecker leiten auf den jeweiligen Abschnitt um.
+
 ## Referenzen
 
 - Feinkost Kreta: Bestell-App mit 1-Klick-Bestellung und Benachrichtigung. https://bp-agentics.de/referenzen/feinkost-kreta

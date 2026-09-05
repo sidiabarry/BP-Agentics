@@ -35,7 +35,7 @@ export default function DachdeckerSignaturePage() {
       ]}
       related={[
         { href: "/leistungen/auftritt", label: "Website Start, Betrieb und Signature" },
-        { href: "/dachdecker", label: "Dachdecker in Hagen: Engpass und Konfiguration" },
+        { href: "/gewerke#dachdecker", label: "Dachdecker in Hagen: Engpass und Ebene" },
         { href: "/referenzen/feinkost-kreta", label: "Die innere Ebene: Feinkost Kreta" },
         { href: "/preise", label: "Signature ab 7.900 Euro, Wartung 290 Euro" },
       ]}
@@ -82,8 +82,8 @@ export default function DachdeckerSignaturePage() {
         Die Signature-Seite holt die Anfrage; der Setter nimmt sie an, während der Meister auf dem Dach ist; Abläufe tragen Besichtigung und Auftrag — Hagen ist der Sitz, nicht nur ein Ortsname im Footer.
       </p>
       <p>
-        Die Gewerkeseite{" "}
-        <Link href="/dachdecker">Dachdecker bei BP Agentics</Link> beschreibt den Engpass ohne Demo. Die Leistungsseite{" "}
+        Der Abschnitt{" "}
+        <Link href="/gewerke#dachdecker">Dachdecker bei BP Agentics</Link> beschreibt den Engpass ohne Demo. Die Leistungsseite{" "}
         <Link href="/leistungen/auftritt">Website für Betriebe</Link> nennt die drei Stufen: Start neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro, Wartung einhundertneunundvierzig bis zweihundertneunzig Euro. Der{" "}
         <Link href="/leistungen/annahme">KI-Setter</Link> gehört dazu, wenn die Mailbox das Geschäft macht. MID Digitale Prozesse fördert in der Regel die inneren Prozesse, nicht diese öffentliche Fläche — erklärt unter{" "}
         <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link>.
@@ -103,7 +103,7 @@ export default function DachdeckerSignaturePage() {
         Ein Einseiter für neunhundertfünfzig Euro behebt jahrelanges Schweigen. Mehrseitig für dreitausendneunhundert Euro trägt Leistungsseiten, ohne Choreografie. Signature beginnt bei siebentausendneunhundert Euro, Wartung zweihundertneunzig Euro, weil die Fläche die Arbeitsprobe ist. Wer Signature kauft, um „modern zu wirken“, kauft den falschen Gegenstand. Wer Signature kauft, weil Preiskämpfer das Telefon zuhängen, kauft den richtigen.
       </p>
       <p>
-        Die Gewerkeseite bleibt kürzer und lokal. Diese Referenzseite trägt das Video und die Einordnung. Beide verlinken einander, ohne denselben Text zu kopieren. Das ist Absicht gegen thin content: eine Demo-Adresse, eine Engpass-Adresse, eine Leistungsadresse.
+        Der Gewerke-Abschnitt bleibt der Engpass, lokal und ohne Demo. Diese Referenzseite trägt das Video und die Einordnung. Beide verlinken einander, ohne denselben Text zu kopieren. Das ist Absicht gegen thin content: eine Demo-Adresse, eine Engpass-Adresse, eine Leistungsadresse.
       </p>
       <p>
         Canonical: https://bp-agentics.de/referenzen/dachdecker-signature. NAP: Kleiststraße 9, 58095 Hagen, +49 162 2843869. Keine zweite Sprache, keine erfundenen Profile. Wer Signature für das eigene Gewerk prüfen will, bringt Fotos und die drei letzten Anfragen mit — dann sehen wir, ob Start, Betrieb oder Signature der richtige Schnitt ist.

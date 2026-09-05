@@ -25,7 +25,7 @@ Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 - `/referenzen`, `/referenzen/feinkost-kreta`, `/referenzen/dachdecker-signature`
 - `/preise`, `/kontakt`, `/termin`
 - 301: `/leistungen/website` → `/leistungen/auftritt`, `/leistungen/ki-setter` → `/leistungen/annahme`
-- Gewerke: `/dachdecker`, `/shk-haustechnik`, `/elektrotechnik`, `/kaeltetechnik`, `/spedition-container`, `/galabau`, `/metallbau`, `/nutzfahrzeuge`
+- `/gewerke` — acht Gewerke auf einer Seite; alte Pfade wie `/dachdecker` leiten auf den Anker um
 - `/impressum`, `/datenschutz`
 - Crawl: `/sitemap.xml`, `/robots.txt`, `/llms.txt`
 

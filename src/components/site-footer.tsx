@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
+import { gewerkHref } from "@/lib/nav";
 import { napLine, site } from "@/lib/site";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 
@@ -108,8 +109,11 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:justify-between">
           <span>Alle Preise sind Endpreise.</span>
           <span className="flex flex-wrap gap-x-4 gap-y-1">
+            <Link href="/gewerke" className="hover:text-white">
+              Alle Gewerke
+            </Link>
             {industryList.map((item) => (
-              <Link key={item.slug} href={`/${item.slug}`} className="hover:text-white">
+              <Link key={item.slug} href={gewerkHref(item.slug)} scroll={false} className="hover:text-white">
                 {item.title}
               </Link>
             ))}

@@ -92,7 +92,8 @@ export default function LeistungenPage() {
         Typische Größen: ein bis fünf Mitarbeiter, wenn der Inhaber selbst auf der Baustelle oder im Fahrzeug steht. Sechs bis zwanzig, wenn Vorarbeiter Kolonnen leiten und das Büro zum Flaschenhals wird. Über zwanzig, wenn Teams, Standorte oder Fuhrpark Daten verlieren. Keine IT-Abteilung nötig. Gesellen und Fahrer bedienen das auf dem Handy.
       </p>
       <p>
-        Gewerkeseiten gibt es für Dachdecker, SHK und Haustechnik, Elektrotechnik, Kälte- und Klimatechnik, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jede Seite beschreibt den Engpass dieses Gewerks, nicht eine generische Agenturleistung.
+        Die acht Gewerke sitzen auf einer Seite — Dachdecker, SHK und Haustechnik, Elektrotechnik, Kälte- und Klimatechnik, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jeder Abschnitt beschreibt den Engpass dieses Gewerks, nicht eine generische Agenturleistung. Einstieg:{" "}
+        <Link href="/gewerke">Gewerke in NRW</Link>.
       </p>
       <ul>
         <li>

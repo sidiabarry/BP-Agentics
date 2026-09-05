@@ -95,7 +95,8 @@ export default function UeberMichPage() {
         Typische Größen: ein bis fünf Mitarbeiter, wenn der Inhaber selbst auf der Baustelle oder im Fahrzeug steht. Sechs bis zwanzig, wenn Vorarbeiter Kolonnen leiten und das Büro zum Flaschenhals wird. Über zwanzig, wenn Teams, Standorte oder Fuhrpark Daten verlieren. Keine IT-Abteilung nötig.
       </p>
       <p>
-        Gewerke mit eigenem Einstieg gibt es für Dachdecker, SHK, Elektrotechnik, Kälte, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jede Seite beschreibt den Engpass dieses Gewerks, nicht eine generische Agenturleistung. Der Schnell-Check unter{" "}
+        Acht Gewerke sitzen auf einer Seite: Dachdecker, SHK, Elektrotechnik, Kälte, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jeder Abschnitt beschreibt den Engpass, nicht eine generische Agenturleistung. Einstieg unter{" "}
+        <Link href="/gewerke">Gewerke in NRW</Link>. Der Schnell-Check unter{" "}
         <Link href="/passt-das">Passt das zu mir?</Link> sortiert in zwei Fragen, wo der Schmerz sitzt.
       </p>
       <p>

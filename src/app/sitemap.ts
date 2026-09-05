@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import type { MetadataRoute } from "next";
-import { industryList } from "@/lib/content";
 import { site } from "@/lib/site";
 
 function lastModified(relPath: string) {
@@ -24,6 +23,7 @@ const staticRoutes: {
   { path: "/leistungen/annahme", file: "src/app/leistungen/annahme/page.tsx", changeFrequency: "monthly", priority: 0.9 },
   { path: "/leistungen/ablaeufe", file: "src/app/leistungen/ablaeufe/page.tsx", changeFrequency: "monthly", priority: 0.9 },
   { path: "/passt-das", file: "src/app/passt-das/page.tsx", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/gewerke", file: "src/app/gewerke/page.tsx", changeFrequency: "monthly", priority: 0.8 },
   { path: "/ueber-mich", file: "src/app/ueber-mich/page.tsx", changeFrequency: "monthly", priority: 0.7 },
   {
     path: "/foerderung/mid-digitale-prozesse",
@@ -54,12 +54,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 
-  const tradePages: MetadataRoute.Sitemap = industryList.map((industry) => ({
-    url: `${site.url}/${industry.slug}`,
-    lastModified: lastModified("src/app/[slug]/page.tsx"),
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  return [...pages, ...tradePages];
+  return pages;
 }

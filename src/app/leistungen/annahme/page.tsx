@@ -125,10 +125,10 @@ export default function AnnahmePage() {
         </p>
         <p>
           Gewerke, bei denen die Annahme der erste Schmerz ist:{" "}
-          <Link href="/dachdecker">Dachdecker</Link>,{" "}
-          <Link href="/shk-haustechnik">SHK</Link>,{" "}
-          <Link href="/kaeltetechnik">Kälte- und Klimatechnik</Link>,{" "}
-          <Link href="/nutzfahrzeuge">Nutzfahrzeuge</Link>. Preise ohne Scroll:{" "}
+          <Link href="/gewerke#dachdecker">Dachdecker</Link>,{" "}
+          <Link href="/gewerke#shk-haustechnik">SHK</Link>,{" "}
+          <Link href="/gewerke#kaeltetechnik">Kälte- und Klimatechnik</Link>,{" "}
+          <Link href="/gewerke#nutzfahrzeuge">Nutzfahrzeuge</Link>. Preise ohne Scroll:{" "}
           <Link href="/preise">Endpreistabelle</Link>.
           Der Fragenkatalog entsteht im Gespräch, nicht aus einer Branchenfolie. Was der Setter fragt, ist das, was der Meister sonst auf dem Beifahrersitz notiert.
         </p>

@@ -64,7 +64,8 @@ export default function ReferenzenPage() {
         <Link href="/referenzen/dachdecker-signature">Dachdecker Signature-Website</Link>.
       </p>
       <p>
-        Weitere Gewerke beschreiben wir auf eigenen Seiten — Dachdecker, SHK, Elektro, Kälte, Spedition, Galabau, Metallbau, Nutzfahrzeuge — jeweils mit Engpass und Konfiguration, nicht mit einer erfundenen Erfolgsstory. Die Startseite bleibt die Verkaufsstrecke. Diese Hub-Seite ist der Index für Menschen und für Suchmaschinen, die „Referenz Hagen Handwerk System“ suchen.
+        Weitere Gewerke beschreiben wir auf einer Seite — Dachdecker, SHK, Elektro, Kälte, Spedition, Galabau, Metallbau, Nutzfahrzeuge — jeweils mit Engpass und Ebene, nicht mit einer erfundenen Erfolgsstory. Einstieg:{" "}
+        <Link href="/gewerke">Gewerke in NRW</Link>. Die Startseite bleibt die Verkaufsstrecke. Diese Hub-Seite ist der Index für Menschen und für Suchmaschinen, die „Referenz Hagen Handwerk System“ suchen.
       </p>
 
       <h2>Was ist eine Produktdemo — und was nicht?</h2>
@@ -88,7 +89,8 @@ export default function ReferenzenPage() {
         Wer Feinkost Kreta öffnet und denkt „das ist Handel, ich bin Dachdecker“, hat den Punkt verpasst. Das Muster ist dasselbe: Daten, die im Kopf oder auf Zetteln leben, gehören auf das Gerät, das sowieso in der Hand ist. Wer den Dachdecker öffnet und denkt „ich brauche keinen Film“, hat den anderen Punkt verpasst. Der Film ist die Fläche, auf der der Betrieb beweist, dass er nicht die Nummer aus der Anzeige ist.
       </p>
       <p>
-        Weitere Betriebe beschreiben wir auf den Gewerkeseiten, ohne so zu tun, als läge dort bereits eine gebaute Demo. Das ist Absicht. Eine ehrliche Website trennt gebaut und beschrieben. Suchmaschinen sollen das ebenfalls trennen: VideoObject nur dort, wo ein Video liegt. FAQPage nur dort, wo die Fragen sichtbar sind. Offer nur dort, wo Preise stehen.
+        Weitere Betriebe beschreiben wir unter{" "}
+        <Link href="/gewerke">Gewerke</Link>, ohne so zu tun, als läge dort bereits eine gebaute Demo. Das ist Absicht. Eine ehrliche Website trennt gebaut und beschrieben. Suchmaschinen sollen das ebenfalls trennen: VideoObject nur dort, wo ein Video liegt. FAQPage nur dort, wo die Fragen sichtbar sind. Offer nur dort, wo Preise stehen.
       </p>
       <p>
         NAP bleibt Kleiststraße 9, 58095 Hagen, +49 162 2843869. Dieselbe Zeile wie im Footer. Wer uns zitiert, soll uns wiederfinden.
