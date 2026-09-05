@@ -321,7 +321,7 @@ export function HeroSequence() {
                 <Link href="/termin">Erstgespräch vereinbaren</Link>
               </Button>
               <Link
-                href="/#referenzen"
+                href="#referenzen"
                 className="inline-flex items-center text-[1.05rem] font-medium text-[#14161C] underline-offset-[5px] transition-colors hover:underline"
               >
                 Zwei Systeme ansehen ↓

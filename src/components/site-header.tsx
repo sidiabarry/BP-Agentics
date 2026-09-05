@@ -32,9 +32,12 @@ export function SiteHeader() {
     if (!onHome) return;
     const hero = document.getElementById("einstieg");
     if (!hero) return;
+    const headerHeight = Math.ceil(
+      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+    );
     const observer = new IntersectionObserver(
       ([entry]) => setHeroState({ path: "/", inView: entry.isIntersecting }),
-      { threshold: 0 },
+      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` },
     );
     observer.observe(hero);
     return () => observer.disconnect();
@@ -86,7 +89,7 @@ export function SiteHeader() {
         >
           <nav
             className={cn(
-              "flex items-center gap-6 pr-1 whitespace-nowrap transition-[opacity,transform] duration-200 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none",
+              "flex items-center gap-6 pr-1 whitespace-nowrap transition-[opacity,translate] duration-200 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none",
               expanded ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0",
             )}
             aria-label="Hauptnavigation"
