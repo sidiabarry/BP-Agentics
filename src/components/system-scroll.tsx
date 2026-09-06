@@ -8,6 +8,8 @@ import {
   MOBILE_FRAMES,
   SMALL_MAX,
   frameSrc,
+  moduleDetails,
+  moduleNames,
   narratives,
   phaseFrom,
   phaseLabels,
@@ -31,8 +33,66 @@ export function SystemScroll() {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
   const [scenario, setScenario] = useState<ScenarioId>("angebot");
+  const [detailIndex, setDetailIndex] = useState(0);
+  const [detailOpen, setDetailOpen] = useState(false);
   const copy = scenarios[scenario];
+  const detail = moduleDetails(scenario)[detailIndex];
+
+  const openDetail = (index: number, button: HTMLButtonElement) => {
+    openerRef.current = button;
+    setDetailIndex(index);
+    setDetailOpen(true);
+  };
+
+  const closeDetail = () => {
+    dialogRef.current?.close();
+  };
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const onClose = () => {
+      setDetailOpen(false);
+      openerRef.current?.focus({ preventScroll: true });
+    };
+    const onBackdrop = (event: MouseEvent) => {
+      if (event.target === dialog) event.preventDefault();
+    };
+    dialog.addEventListener("close", onClose);
+    dialog.addEventListener("click", onBackdrop);
+    return () => {
+      dialog.removeEventListener("close", onClose);
+      dialog.removeEventListener("click", onBackdrop);
+    };
+  }, []);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (detailOpen) {
+      if (!dialog.open) dialog.showModal();
+      dialog.scrollTop = 0;
+      titleRef.current?.focus({ preventScroll: true });
+    } else if (dialog.open) {
+      dialog.close();
+    }
+  }, [detailOpen, detailIndex]);
+
+  useEffect(() => {
+    if (!detailOpen) return;
+    const y = window.scrollY;
+    const root = document.documentElement;
+    root.style.overflow = "hidden";
+    if (window.scrollY !== y) window.scrollTo(0, y);
+    return () => {
+      root.style.removeProperty("overflow");
+      if (window.scrollY !== y) window.scrollTo(0, y);
+    };
+  }, [detailOpen]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -56,12 +116,14 @@ export function SystemScroll() {
     const camera = section.querySelector<HTMLElement>(".system-scroll-camera");
     const opening = section.querySelector<HTMLElement>(".system-scroll-opening");
     const heading = section.querySelector<HTMLElement>(".system-scroll-heading");
+    const timeline = section.querySelector<HTMLElement>(".system-scroll-timeline");
     const narrative = section.querySelector("#narrative");
     const phaseCount = section.querySelector("#phase-count");
     const labels = [...section.querySelectorAll(".timeline-labels span")];
     const routeLength = paths instanceof SVGPathElement ? paths.getTotalLength() : 0;
 
     let enabled = false;
+    let ignoreObserve = false;
     let raf = 0;
     let progress = 0;
     let kind: "desktop" | "mobile" | "" = "";
@@ -216,6 +278,11 @@ export function SystemScroll() {
       }
       if (progressLine instanceof HTMLElement) progressLine.style.width = `${progress * 100}%`;
       section.dataset.progress = progress.toFixed(4);
+      const pinBox = pin.getBoundingClientRect();
+      section.toggleAttribute(
+        "data-pinned",
+        enabled && pinBox.top <= 1 && pinBox.bottom >= window.innerHeight * 0.7,
+      );
     };
 
     const clearStyles = () => {
@@ -226,10 +293,35 @@ export function SystemScroll() {
       if (paths instanceof SVGElement) paths.style.strokeDashoffset = "0";
     };
 
+    const fitEnhanced = () => {
+      if (!heading || !shell || !timeline) return false;
+      section.style.removeProperty("--system-top");
+      const height = pin.clientHeight;
+      const header = document.querySelector("header");
+      const headerHeight = header instanceof HTMLElement ? header.offsetHeight : 0;
+      const maxTop = timeline.offsetTop - shell.offsetHeight - 16;
+      const minTop = small.matches
+        ? heading.offsetTop + heading.offsetHeight + 10
+        : Math.max(32, headerHeight + 12);
+      const preferred = height * (small.matches ? 0.35 : 0.18);
+      if (minTop > maxTop) return false;
+      const top = Math.min(Math.max(preferred, minTop), maxTop);
+      section.style.setProperty("--system-top", `${Math.round(top)}px`);
+      return true;
+    };
+
     const configure = () => {
-      const next = !reduced.matches && window.innerHeight >= MIN_ENHANCED_HEIGHT;
+      if (ignoreObserve) return;
+      ignoreObserve = true;
+      let next = !reduced.matches && window.innerHeight >= MIN_ENHANCED_HEIGHT;
+      section.classList.toggle("system-scroll--enhanced", next);
+      if (next && !fitEnhanced()) next = false;
       enabled = next;
       section.classList.toggle("system-scroll--enhanced", enabled);
+      if (!enabled) {
+        section.style.removeProperty("--system-top");
+        section.removeAttribute("data-pinned");
+      }
       configureFrames();
       if (!enabled) {
         cancelAnimationFrame(raf);
@@ -241,6 +333,9 @@ export function SystemScroll() {
       } else {
         schedule();
       }
+      requestAnimationFrame(() => {
+        ignoreObserve = false;
+      });
     };
 
     const onVisibility = () => {
@@ -257,9 +352,18 @@ export function SystemScroll() {
     reduced.addEventListener("change", configure);
     small.addEventListener("change", configure);
     document.addEventListener("visibilitychange", onVisibility);
+    const observer = new ResizeObserver(configure);
+    if (shell) observer.observe(shell);
+    if (heading) observer.observe(heading);
+    let cancelled = false;
+    void document.fonts?.ready.then(() => {
+      if (!cancelled) configure();
+    });
     configure();
 
     return () => {
+      cancelled = true;
+      observer.disconnect();
       cancelAnimationFrame(raf);
       generation += 1;
       window.removeEventListener("scroll", schedule);
@@ -350,15 +454,23 @@ export function SystemScroll() {
                 </div>
                 <h3>Eine neue Anfrage.</h3>
                 <p className="system-scroll-message">
-                  „Ich möchte mein Projekt
-                  <br />
-                  mit Ihnen besprechen.“
+                  „Ich möchte mein Projekt mit Ihnen besprechen.“
                 </p>
                 <div className="system-scroll-field">
                   <span>Interesse</span>
                   <strong>{copy.interest}</strong>
                 </div>
                 <p className="system-scroll-badge">Website → Anfrage</p>
+                <button
+                  type="button"
+                  className="system-scroll-module-open"
+                  aria-label={`Details: ${moduleNames[0]}`}
+                  aria-haspopup="dialog"
+                  aria-controls="module-detail"
+                  onClick={(event) => openDetail(0, event.currentTarget)}
+                >
+                  <span>Details ansehen</span>
+                </button>
               </article>
 
               <article className="system-scroll-module" data-module="1">
@@ -376,6 +488,16 @@ export function SystemScroll() {
                   <strong>{copy.missing}</strong>
                 </div>
                 <p className="system-scroll-badge">{copy.clarifyBadge}</p>
+                <button
+                  type="button"
+                  className="system-scroll-module-open"
+                  aria-label={`Details: ${moduleNames[1]}`}
+                  aria-haspopup="dialog"
+                  aria-controls="module-detail"
+                  onClick={(event) => openDetail(1, event.currentTarget)}
+                >
+                  <span>Details ansehen</span>
+                </button>
               </article>
 
               <article className="system-scroll-module system-scroll-module-record" data-module="3">
@@ -384,17 +506,23 @@ export function SystemScroll() {
                   <span aria-hidden="true">▤</span>
                 </div>
                 <h3>Alles an einem Ort.</h3>
-                <p>
-                  Eine Übersicht.
-                  <br />
-                  Ein nachvollziehbarer nächster Schritt.
-                </p>
+                <p>Eine Übersicht. Ein nachvollziehbarer nächster Schritt.</p>
                 <div className="system-scroll-chips">
                   <span>Anfrage</span>
                   <span>Kontext</span>
                   <span>Zuständigkeit</span>
                 </div>
                 <p className="system-scroll-badge">Bereit für die Bearbeitung</p>
+                <button
+                  type="button"
+                  className="system-scroll-module-open"
+                  aria-label={`Details: ${moduleNames[3]}`}
+                  aria-haspopup="dialog"
+                  aria-controls="module-detail"
+                  onClick={(event) => openDetail(3, event.currentTarget)}
+                >
+                  <span>Details ansehen</span>
+                </button>
               </article>
 
               <article className="system-scroll-module" data-module="2">
@@ -412,6 +540,16 @@ export function SystemScroll() {
                   <strong>{copy.next}</strong>
                 </div>
                 <p className="system-scroll-badge">Menschliche Klärung vorgesehen</p>
+                <button
+                  type="button"
+                  className="system-scroll-module-open"
+                  aria-label={`Details: ${moduleNames[2]}`}
+                  aria-haspopup="dialog"
+                  aria-controls="module-detail"
+                  onClick={(event) => openDetail(2, event.currentTarget)}
+                >
+                  <span>Details ansehen</span>
+                </button>
               </article>
             </div>
           </div>
@@ -453,6 +591,50 @@ export function SystemScroll() {
       <p className="sr-only" aria-live="polite">
         {copy.status}
       </p>
+
+      <dialog
+        ref={dialogRef}
+        id="module-detail"
+        className="system-scroll-detail"
+        aria-labelledby="detail-title"
+        aria-describedby="detail-description"
+        closedby="closerequest"
+      >
+        <div className="system-scroll-detail-top">
+          <p className="system-scroll-eyebrow" id="detail-kicker">
+            {`0${detailIndex + 1} / Systemschritt`}
+          </p>
+          <button type="button" aria-label="Detailansicht schließen" onClick={closeDetail}>
+            Schließen
+          </button>
+        </div>
+        <h2 id="detail-title" ref={titleRef} tabIndex={-1}>
+          {detail.title}
+        </h2>
+        <p id="detail-description">{detail.description}</p>
+        <dl id="detail-fields">
+          {detail.fields.map(([label, value]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="system-scroll-detail-note">
+          Illustratives Beispiel. Es wird keine echte Anfrage versendet oder bearbeitet.
+        </p>
+        <div className="system-scroll-detail-actions">
+          <button
+            type="button"
+            onClick={() => setDetailIndex((index) => (index + 1) % moduleNames.length)}
+          >
+            {detailIndex === 3 ? "Zum Eingang zurück" : "Nächsten Schritt ansehen"}
+          </button>
+          <button type="button" onClick={closeDetail}>
+            Zur Systemansicht
+          </button>
+        </div>
+      </dialog>
     </section>
   );
 }
