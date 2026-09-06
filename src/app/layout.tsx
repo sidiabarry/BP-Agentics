@@ -62,14 +62,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="de"
       className={`${sourceSans.variable} ${sora.variable} h-full antialiased`}
     >
-      <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/hero/poster.avif"
-          type="image/avif"
-        />
-      </head>
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">
         <a
           href="#inhalt"

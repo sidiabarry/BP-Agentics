@@ -98,22 +98,18 @@ export function HeroSequence() {
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   const mobile = useSyncExternalStore(subscribeMobile, mobileSnapshot, () => false);
   const kind: "desktop" | "mobile" = mobile ? "mobile" : "desktop";
-  kindRef.current = kind;
+  useEffect(() => {
+    kindRef.current = kind;
+  }, [kind]);
 
   const applyVisuals = useCallback(
     (progress: number) => {
       const overlay = reduced ? 1 : overlayFrom(progress);
       if (overlayRef.current) overlayRef.current.style.opacity = String(overlay);
       if (copyRef.current) {
-        copyRef.current.style.opacity = String(overlay);
-        const entered = overlay > 0.55;
-        copyRef.current.classList.toggle("pointer-events-auto", entered);
-        copyRef.current.classList.toggle("pointer-events-none", !entered);
-        if (overlay > 0.55) {
-          copyRef.current.classList.add("hero-copy-in");
-        } else if (overlay <= 0.01) {
-          copyRef.current.classList.remove("hero-copy-in");
-        }
+        copyRef.current.style.opacity = "1";
+        copyRef.current.classList.add("hero-copy-in", "pointer-events-auto");
+        copyRef.current.classList.remove("pointer-events-none");
       }
       if (skipRef.current) {
         skipRef.current.hidden = overlay >= 0.5;
@@ -251,7 +247,6 @@ export function HeroSequence() {
       >
         <picture>
           <source srcSet="/hero/poster.avif" type="image/avif" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hero/poster-fallback.jpg"
             alt=""
@@ -284,10 +279,7 @@ export function HeroSequence() {
 
         <div
           ref={copyRef}
-          className={`absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24 ${
-            reduced ? "hero-copy-in pointer-events-auto" : "pointer-events-none"
-          }`}
-          style={{ opacity: reduced ? 1 : 0 }}
+          className="hero-copy-in pointer-events-auto absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24"
         >
           <div className="mx-auto w-full max-w-4xl">
             <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-[#0C5A9A] uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">

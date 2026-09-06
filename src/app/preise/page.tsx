@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DataTable, DocPage } from "@/components/doc-page";
 import { Pricing } from "@/components/pricing";
+import { formatRun, formatSetup, pricing } from "@/lib/pricing";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -24,13 +25,13 @@ export default function PreisePage() {
           "@type": "OfferCatalog",
           name: "Endpreise BP Agentics",
           itemListElement: [
-            { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "KI-Setter Einrichtung", price: "1900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "KI-Setter Wartung", price: "99", priceCurrency: "EUR", unitText: "MON" },
-            { "@type": "Offer", name: "Fundament", price: "2900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Modul", price: "900", priceCurrency: "EUR" },
+            { "@type": "Offer", name: pricing.websites.start.name, price: String(pricing.websites.start.setup), priceCurrency: "EUR" },
+            { "@type": "Offer", name: pricing.websites.betrieb.name, price: String(pricing.websites.betrieb.setup), priceCurrency: "EUR" },
+            { "@type": "Offer", name: pricing.websites.signature.name, price: String(pricing.websites.signature.setup), priceCurrency: "EUR" },
+            { "@type": "Offer", name: "KI-Setter Einrichtung", price: String(pricing.setter.setup), priceCurrency: "EUR" },
+            { "@type": "Offer", name: "KI-Setter Wartung", price: String(pricing.setter.run), priceCurrency: "EUR", unitText: "MON" },
+            { "@type": "Offer", name: pricing.fundament.name, price: String(pricing.fundament.setup), priceCurrency: "EUR" },
+            { "@type": "Offer", name: pricing.module.name, price: String(pricing.module.setup), priceCurrency: "EUR" },
           ],
         },
       ]}
@@ -53,12 +54,12 @@ export default function PreisePage() {
         caption="Endpreise Einbau und Wartung"
         headers={["Leistung", "Einbau", "Wartung", "Seite"]}
         rows={[
-          ["Website Start", "950 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Betrieb", "3.900 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Signature", "ab 7.900 Euro", "290 Euro / Monat", "Website"],
-          ["KI-Setter", "1.900 Euro", "99 Euro / Monat", "KI-Setter"],
-          ["Fundament", "2.900 Euro", "ab 190 Euro / Monat", "Abläufe"],
-          ["Modul", "900 bis 1.800 Euro", "in der Systemwartung", "Abläufe"],
+          [pricing.websites.start.name, formatSetup(pricing.websites.start), `${formatRun(pricing.websites.start)}, ${pricing.websites.start.termMonths} Monate`, "Website"],
+          [pricing.websites.betrieb.name, formatSetup(pricing.websites.betrieb), `${formatRun(pricing.websites.betrieb)}, ${pricing.websites.betrieb.termMonths} Monate`, "Website"],
+          [pricing.websites.signature.name, formatSetup(pricing.websites.signature), formatRun(pricing.websites.signature), "Website"],
+          [pricing.setter.name, formatSetup(pricing.setter), formatRun(pricing.setter), "KI-Setter"],
+          [pricing.fundament.name, formatSetup(pricing.fundament), formatRun(pricing.fundament), "Abläufe"],
+          [pricing.module.name, formatSetup(pricing.module), formatRun(pricing.module), "Abläufe"],
         ]}
       />
 

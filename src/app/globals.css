@@ -126,8 +126,9 @@
   html {
     @apply font-sans;
     font-size: 18px;
-    hyphens: none;
-    -webkit-hyphens: none;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
     scroll-padding-top: 5.5rem;
   }
   body {
@@ -143,8 +144,9 @@
   h2,
   h3 {
     font-family: var(--font-sora), var(--font-source), sans-serif;
-    hyphens: none;
-    -webkit-hyphens: none;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+    overflow-wrap: break-word;
     text-wrap: balance;
   }
   p {
@@ -443,4 +445,89 @@
   .hero-kicker {
     letter-spacing: 0.2em;
   }
+
+  .experience-card,
+  .experience-chip {
+    transition: none;
+  }
+}
+
+.experience-frame {
+  position: relative;
+}
+
+.experience-stage {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.experience-overlay {
+  margin-top: 1rem;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.experience-overlay-right {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .experience-overlay-right {
+    position: absolute;
+    top: 8%;
+    right: 4%;
+    width: min(42%, 20rem);
+    margin-top: 0;
+  }
+}
+
+.experience-card {
+  border-radius: 1rem;
+  background: rgba(243, 239, 230, 0.94);
+  color: #14161c;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 16px 36px -24px rgba(20, 22, 28, 0.7);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  font-weight: 600;
+}
+
+.experience-card-wide {
+  min-height: 8.5rem;
+}
+
+.experience-chip {
+  display: inline-flex;
+  border-radius: 999px;
+  background: #14161c;
+  color: #f3efe6;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.92rem;
+}
+
+.experience-chip-active {
+  background: #0c5a9a;
+}
+
+.experience-btn {
+  min-height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(20, 22, 28, 0.16);
+  background: white;
+  padding: 0.55rem 1.05rem;
+  font-size: 1rem;
+  color: #14161c;
+}
+
+.experience-btn:focus-visible {
+  outline: 3px solid #0c5a9a;
+  outline-offset: 2px;
+}
+
+.experience-btn-primary {
+  border-color: #14161c;
+  background: #14161c;
+  color: #f3efe6;
 }

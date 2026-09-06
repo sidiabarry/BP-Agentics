@@ -4,45 +4,46 @@ import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { DemoLoop, PhoneDemo } from "@/components/demo-player";
+import { formatRun, formatSetup, priceCopy, pricing } from "@/lib/pricing";
 
 const systems = [
   {
-    name: "Fundament",
-    price: "2.900 €",
+    name: pricing.fundament.name,
+    price: formatSetup(pricing.fundament),
     body: "Anbindung von Postfach, Kalender und Kundendaten. Ein Ort statt fünf.",
   },
   {
-    name: "Modul",
-    price: "900 € bis 1.800 €",
+    name: pricing.module.name,
+    price: formatSetup(pricing.module),
     body: "Ein Ablauf pro Modul: Angebotsversand, Nachfassen, Terminerinnerung, Auftragsdokumentation.",
   },
   {
-    name: "KI-Setter",
-    price: "1.900 €",
-    run: "99 € im Monat",
-    body: "Beantwortet Anfragen per Text und bucht Termine in Ihren Kalender.",
+    name: pricing.setter.name,
+    price: formatSetup(pricing.setter),
+    run: formatRun(pricing.setter),
+    body: "Beantwortet Anfragen per Text und legt Termine zur Abstimmung in Ihren Kalender.",
   },
 ] as const;
 
 const websites = [
   {
-    name: "Website Start",
-    price: "950 €",
-    run: "Wartungsvertrag 149 € / Monat, 12 Monate",
+    name: pricing.websites.start.name,
+    price: formatSetup(pricing.websites.start),
+    run: `Wartungsvertrag ${formatRun(pricing.websites.start)}, ${pricing.websites.start.termMonths} Monate`,
     body: "Einseiter, der Anfragen holt. Für Betriebe, deren Auftritt seit Jahren schweigt.",
     featured: false,
   },
   {
-    name: "Website Betrieb",
-    price: "3.900 €",
-    run: "plus 149 € / Monat, 12 Monate",
+    name: pricing.websites.betrieb.name,
+    price: formatSetup(pricing.websites.betrieb),
+    run: `plus ${formatRun(pricing.websites.betrieb)}, ${pricing.websites.betrieb.termMonths} Monate`,
     body: "Mehrseitig, mit Leistungsseiten und Referenzen. Für Betriebe, die gefunden werden wollen, ohne Sonderanfertigung.",
     featured: false,
   },
   {
-    name: "Website Signature",
-    price: "ab 7.900 €",
-    run: "Wartungsvertrag 290 € / Monat",
+    name: pricing.websites.signature.name,
+    price: formatSetup(pricing.websites.signature),
+    run: `Wartungsvertrag ${formatRun(pricing.websites.signature)}`,
     body: "Für Betriebe, die über die Website verkaufen. Der Auftritt ist die Arbeitsprobe.",
     featured: true,
   },
@@ -59,7 +60,7 @@ function WebsiteCards() {
           delay={index * 60}
           className={
             plan.featured
-              ? "flex h-full flex-col rounded-3xl bg-[#198BE8] p-7 text-white"
+              ? "flex h-full flex-col rounded-3xl bg-[#0C5A9A] p-7 text-white"
               : "flex h-full flex-col rounded-3xl bg-white p-7"
           }
         >
@@ -105,7 +106,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Preise
           </RevealIn>
           <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-            950 € Einbau. 149 € im Monat.
+            {priceCopy.teaserHeading}
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
             Drei Website-Stufen mit Festpreis. Setter, Fundament und Module stehen
@@ -131,7 +132,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           Preise
         </RevealIn>
         <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-          950 € Einbau. 149 € im Monat.
+          {priceCopy.teaserHeading}
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Mittelständische Kaufleute rechnen in Wartung, nicht in

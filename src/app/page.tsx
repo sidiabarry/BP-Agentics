@@ -1,7 +1,6 @@
 import { HeroSequence } from "@/components/hero-sequence";
-import { ProblemWall } from "@/components/problem-wall";
+import { ExperienceLab } from "@/components/experience-lab";
 import { HomeReferenzen } from "@/components/home-referenzen";
-import { ThreeLevels } from "@/components/three-levels";
 import { WhyTeaser } from "@/components/why-teaser";
 import { Pricing } from "@/components/pricing";
 import { HomeStart } from "@/components/home-start";
@@ -31,10 +30,10 @@ export default function HomePage() {
           "@graph": [faqPage(faqs)],
         }}
       />
+      <link rel="preload" as="image" href="/hero/poster.avif" type="image/avif" />
       <HeroSequence />
-      <ProblemWall />
+      <ExperienceLab />
       <HomeReferenzen />
-      <ThreeLevels compact />
       <WhyTeaser />
       <Pricing teaser />
       <HomeStart />

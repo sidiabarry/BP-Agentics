@@ -25,6 +25,14 @@ export default function TerminPage() {
           <p className="mt-5 text-[1.15rem] leading-relaxed text-[#3A3D45]">
             Wir kommen zu Ihnen. Sie beschreiben, wie Anfragen, Material und Personal
             heute durch den Betrieb laufen. Wir sagen, welche Ebene zuerst Sinn ergibt.
+            Das Formular unten bucht nichts — es öffnet einen E-Mail-Entwurf.
+          </p>
+          <p className="mt-4 text-[1.08rem] text-[#3A3D45]">
+            Lieber kürzer?{" "}
+            <Link href="/kontakt" className="text-[#0C5A9A] underline-offset-4 hover:underline">
+              Nachricht über die Kontaktseite
+            </Link>
+            {" "}oder WhatsApp, ohne Wunschdatum.
           </p>
           <div className="mt-12 rounded-[2rem] bg-white p-6 md:p-8">
             <BookingForm />

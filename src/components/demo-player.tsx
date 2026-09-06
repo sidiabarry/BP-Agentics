@@ -12,6 +12,11 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 function useNearAndPlaying(wrapRef: RefObject<HTMLElement | null>, motion: boolean) {
@@ -83,44 +88,22 @@ function useLoopPlayback(
 }
 
 function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [onClose]);
-
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Vollständige Produktdemo"
-      onClick={onClose}
-      className="fixed inset-0 z-[60] grid place-items-center bg-black/85 p-4 backdrop-blur-sm"
-    >
-      <video
-        src={src}
-        controls
-        autoPlay
-        playsInline
-        onClick={(e) => e.stopPropagation()}
-        className="max-h-[88dvh] w-auto max-w-full rounded-xl shadow-2xl"
-      />
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Schließen"
-        className="absolute top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-2xl leading-none text-white transition hover:bg-white/20"
+    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent
+        className="max-w-[min(96vw,72rem)] border-0 bg-black p-3 text-white sm:max-w-[min(96vw,72rem)]"
+        aria-describedby={undefined}
       >
-        ×
-      </button>
-    </div>
+        <DialogTitle className="sr-only">Vollständige Produktdemo</DialogTitle>
+        <video
+          src={src}
+          controls
+          autoPlay
+          playsInline
+          className="max-h-[88dvh] w-auto max-w-full justify-self-center rounded-xl"
+        />
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -164,14 +147,16 @@ export function DemoLoop({
             playsInline
             preload="none"
             aria-label={posterAlt ?? caption ?? "Produktdemo"}
-            className="block h-auto w-full"
+            width={1440}
+            height={810}
+            className="block aspect-video h-auto w-full"
             onLoadedData={() => {
               if (inView) videoRef.current?.play().catch(() => {});
             }}
           />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={poster} alt={posterAlt ?? caption ?? "Produktdemo"} className="block h-auto w-full" />
+          <img src={poster} alt={posterAlt ?? caption ?? "Produktdemo"} width={1440} height={810} className="block aspect-video h-auto w-full" />
         )}
         {fullSrc ? (
           <button
@@ -235,14 +220,16 @@ export function PhoneDemo({
               playsInline
               preload="none"
               aria-label={posterAlt ?? caption ?? "App-Demo"}
-              className="block h-auto w-full"
+              width={390}
+              height={844}
+              className="block aspect-[390/844] h-auto w-full"
               onLoadedData={() => {
                 if (inView) videoRef.current?.play().catch(() => {});
               }}
             />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} className="block h-auto w-full" />
+            <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} width={390} height={844} className="block aspect-[390/844] h-auto w-full" />
           )}
         </div>
       </div>

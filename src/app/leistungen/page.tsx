@@ -15,7 +15,7 @@ export default function LeistungenPage() {
     <DocPage
       kicker="Leistungen"
       title="Drei Ebenen, ein Betrieb"
-      lead="BP Agentics baut den öffentlichen Auftritt, die Annahme am Telefon und die internen Abläufe — einzeln oder nacheinander, ohne Großprojekt."
+      lead="BP Agentics baut den öffentlichen Auftritt, die Annahme von Anfragen über WhatsApp und die internen Abläufe — einzeln oder nacheinander, ohne Großprojekt."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       related={[
         { href: "/leistungen/auftritt", label: "Auftritt: Website Start, Betrieb, Signature" },

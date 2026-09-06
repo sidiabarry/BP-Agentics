@@ -12,7 +12,7 @@ export function HomeStart() {
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-4 sm:flex-row sm:items-center">
           <Button
             asChild
-            className="h-13 rounded-full bg-[#198BE8] px-7 text-[1.05rem] text-white hover:bg-[#1576C4]"
+            className="h-13 rounded-full bg-[#0C5A9A] px-7 text-[1.05rem] text-white hover:bg-[#0A4A80]"
           >
             <Link href="/termin">Erstgespräch vereinbaren</Link>
           </Button>

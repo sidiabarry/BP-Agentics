@@ -16,29 +16,9 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
   const [active, setActive] = useState<string | null>(null);
-  const [heroState, setHeroState] = useState({ path: onHome ? "/" : pathname, inView: true });
-  if (heroState.path !== (onHome ? "/" : pathname)) {
-    setHeroState({ path: onHome ? "/" : pathname, inView: true });
-  }
-
   useEffect(() => {
     if (!onHome) return;
-    const hero = document.getElementById("einstieg");
-    if (!hero) return;
-    const headerHeight = Math.ceil(
-      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
-    );
-    const observer = new IntersectionObserver(
-      ([entry]) => setHeroState({ path: "/", inView: entry.isIntersecting }),
-      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` },
-    );
-    observer.observe(hero);
-    return () => observer.disconnect();
-  }, [onHome]);
-
-  useEffect(() => {
-    if (!onHome) return;
-    const ids = ["problem", "referenzen", "leistungen", "warum", "preise", "start"];
+    const ids = ["leistungen", "referenzen", "warum", "preise", "start"];
     const nodes = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -56,7 +36,6 @@ export function SiteHeader() {
     return () => observer.disconnect();
   }, [onHome]);
 
-  const expanded = !onHome || !heroState.inView;
   const desktopLinks = onHome ? homeExpandLinks : mainLinks;
 
   const linkClass = (on: boolean) =>
@@ -71,22 +50,8 @@ export function SiteHeader() {
         <Link href="/" aria-label="BP Agentics Startseite">
           <Wordmark />
         </Link>
-        <div
-          className={cn(
-            "hidden overflow-hidden lg:block",
-            "transition-[max-width] duration-200 ease-out motion-reduce:transition-none",
-            expanded ? "max-w-[48rem]" : "max-w-0",
-          )}
-          aria-hidden={!expanded}
-          inert={!expanded || undefined}
-        >
-          <nav
-            className={cn(
-              "flex items-center gap-6 pr-1 whitespace-nowrap transition-[opacity,translate] duration-200 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none",
-              expanded ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0",
-            )}
-            aria-label="Hauptnavigation"
-          >
+        <div className="hidden lg:block">
+          <nav className="flex items-center gap-6 pr-1 whitespace-nowrap" aria-label="Hauptnavigation">
             <div
               className="relative"
               onMouseEnter={() => setDrop(true)}
@@ -130,7 +95,7 @@ export function SiteHeader() {
             ))}
             <Button
               asChild
-              className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
+              className="h-11 rounded-full bg-[#0C5A9A] px-5 text-base text-white hover:bg-[#0A4A80]"
             >
               <Link href="/termin">Erstgespräch</Link>
             </Button>

@@ -33,17 +33,17 @@ export const site = {
     "Märkischer Kreis",
   ],
   knowsAbout: [
-    "Website für Handwerksbetriebe",
-    "KI-Telefonannahme",
+    "Website für Betriebe",
+    "Anfragen bearbeiten",
+    "Abläufe digitalisieren",
+    "KI-Annahme über WhatsApp",
+    "App- und Shopentwicklung",
     "Prozessautomatisierung",
     "MID Digitale Prozesse",
-    "Next.js",
-    "n8n",
   ],
-  defaultTitle:
-    "BP Agentics — Systeme und Automatisierung für Betriebe NRW",
+  defaultTitle: "Websites & Prozessautomatisierung in Hagen | BP Agentics",
   defaultDescription:
-    "BP Agentics in Hagen baut Websites, KI-Annahme und interne Abläufe für Betriebe in NRW. Sidia Jerome Barry. Kleiststraße 9, 58095 Hagen.",
+    "BP Agentics in Hagen baut Websites, nimmt Anfragen an und digitalisiert Abläufe für Betriebe in NRW. Sidia Jerome Barry. Kleiststraße 9, 58095 Hagen.",
 } as const;
 
 export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;

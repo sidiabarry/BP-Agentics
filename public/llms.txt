@@ -1,14 +1,15 @@
 # BP Agentics
 
-> Systeme und Automatisierung für Betriebe in Nordrhein-Westfalen. Sitz: Kleiststraße 9, 58095 Hagen. Inhaber: Sidia Jerome Barry. Telefon: +49 162 2843869. E-Mail: sidiabarry@bpagentics.com.
+> Websites und Prozessautomatisierung in Hagen für Betriebe in Nordrhein-Westfalen. Sitz: Kleiststraße 9, 58095 Hagen. Inhaber: Sidia Jerome Barry. Telefon: +49 162 2843869. E-Mail: sidiabarry@bpagentics.com.
 
-BP Agentics baut drei Schichten für Betriebe, die digital nachziehen müssen: den öffentlichen Auftritt, die Annahme am Telefon und die internen Abläufe. Die Arbeit sitzt in Hagen und richtet sich an Handwerk, Handel und lokale Dienstleister im Ennepe-Ruhr-Kreis, im Märkischen Kreis und im weiteren NRW.
+BP Agentics baut drei Schichten für Betriebe, die digital nachziehen müssen: den öffentlichen Auftritt, die Annahme von Anfragen über WhatsApp und die internen Abläufe. Dazu gehören auch App- und Shopentwicklung. Die Arbeit sitzt in Hagen und richtet sich an Handwerk, Handel und lokale Dienstleister im Ennepe-Ruhr-Kreis, im Märkischen Kreis und im weiteren NRW.
 
 ## Kernangebote
 
-- Auftritt / Website für Betriebe: Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro im Monat. Seite: https://bp-agentics.de/leistungen/auftritt
-- Annahme / KI-Setter: Annahme am Telefon, Qualifizierung, Kalender. 1.900 Euro Einrichtung plus 99 Euro im Monat. Seite: https://bp-agentics.de/leistungen/annahme
-- Abläufe: Fundament 2.900 Euro, Module 900 bis 1.800 Euro. Seite: https://bp-agentics.de/leistungen/ablaeufe
+- Auftritt / Website für Betriebe: Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro im Monat, 12 Monate. Die Seite gehört dem Betrieb ab Zahlung des Einbaus. Seite: https://bp-agentics.de/leistungen/auftritt
+- Annahme / KI-Setter: Anfragen per WhatsApp annehmen, qualifizieren, Termine zur Abstimmung in den Kalender legen. 1.900 Euro Einrichtung plus 99 Euro im Monat. Keine Telefonstimme, die sich als Mitarbeiter ausgibt. Seite: https://bp-agentics.de/leistungen/annahme
+- Abläufe: Fundament 2.900 Euro, Module 900 bis 1.800 Euro, Wartung ab 190 Euro. Seite: https://bp-agentics.de/leistungen/ablaeufe
+- App und Shop: iOS, Android und Bestellwege, sichtbar in der Referenz Feinkost Kreta. Seite: https://bp-agentics.de/referenzen/feinkost-kreta
 
 ## Orientierung
 

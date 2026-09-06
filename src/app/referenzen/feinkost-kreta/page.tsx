@@ -54,7 +54,7 @@ export default function FeinkostPage() {
 
       <h2>Was ist das Kundensystem von Feinkost Kreta?</h2>
       <p className="answer">
-        Das Kundensystem von Feinkost Kreta ist eine Bestell-App: 1-Klick-Bestellung, Benachrichtigung an den Betrieb, Bestand im selben Weg — bedient auf dem Telefon, nicht in einem Ordner hinter der Theke.
+        Das Kundensystem von Feinkost Kreta ist eine Bestell-App: 1-Klick-Bestellung, Benachrichtigung an den Betrieb, Bestand im selben Weg — bedient auf dem Telefon, nicht in einem Ordner hinter der Theke. BP Agentics entwickelt solche Apps und Shop-Wege selbst; das ist dieselbe Kompetenz wie Website und Abläufe, nicht eine zugekaufte Spielerei.
       </p>
       <p>
         Ein Feinkostbetrieb verliert Geld, wenn niemand weiß, was da ist, was bestellt wurde und wer gerade anruft. Excel auf dem Ladenschreibtisch und Zettel am Kühlhaus sind dasselbe Muster, das ein Handwerksbetrieb mit Lieferscheinen kennt. Deshalb steht diese Referenz hier: Sie zeigt Abläufe, nicht eine schöne Startseite. Die Demo läuft als Hochformat im Telefonrahmen. Die längere Fassung öffnet sich auf Klick. Wer Bewegung reduziert, sieht das Poster mit beschreibendem Alternativtext.

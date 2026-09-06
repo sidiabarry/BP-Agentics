@@ -1,3 +1,5 @@
+import { priceCopy } from "@/lib/pricing";
+
 export type TradeId =
   | "bau"
   | "logistik"
@@ -74,8 +76,8 @@ export const levels = [
       "Website Signature mit Scroll-Choreografie",
       "Shop und App, iOS und Android",
     ],
-    price: "Einbau 950 € bis ab 7.900 €",
-    run: "Wartung 149 € bis 290 € / Monat",
+    price: priceCopy.levels.auftritt.price,
+    run: priceCopy.levels.auftritt.run,
   },
   {
     id: "annahme",
@@ -88,8 +90,8 @@ export const levels = [
       "Vorqualifizierung statt Mailbox",
       "Kalenderbuchung und Lead-Reaktivierung",
     ],
-    price: "Einbau 1.900 €",
-    run: "Wartung 99 € / Monat",
+    price: priceCopy.levels.annahme.price,
+    run: priceCopy.levels.annahme.run,
   },
   {
     id: "ablaeufe",
@@ -102,8 +104,8 @@ export const levels = [
       "Papier aufs Handy, Unterschrift im Browser",
       "E-Rechnung, GoBD, Module nach Bedarf",
     ],
-    price: "Fundament 2.900 €, Module 900 € bis 1.800 €",
-    run: "Wartung ab 190 € / Monat",
+    price: priceCopy.levels.ablaeufe.price,
+    run: priceCopy.levels.ablaeufe.run,
   },
 ];
 
