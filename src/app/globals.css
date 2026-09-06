@@ -446,88 +446,572 @@
     letter-spacing: 0.2em;
   }
 
-  .experience-card,
-  .experience-chip {
-    transition: none;
-  }
 }
 
-.experience-frame {
+.system-scroll {
   position: relative;
+  max-width: 100%;
+  overflow-x: clip;
+  background: var(--hero-exit);
 }
 
-.experience-stage {
-  aspect-ratio: 4 / 3;
+.system-scroll-pin {
+  position: relative;
+  overflow: hidden;
+  min-height: 940px;
+  background: var(--hero-exit);
+}
+
+.system-scroll-camera,
+.system-scroll-camera picture,
+.system-scroll-camera img,
+.system-scroll-camera canvas,
+.system-scroll-veil {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.experience-overlay {
-  margin-top: 1rem;
-  perspective: 1200px;
-  transform-style: preserve-3d;
+.system-scroll-camera {
+  height: 100svh;
+}
+
+.system-scroll-veil {
+  background: linear-gradient(135deg, #deedfa, #8ac0f0 45%, #167ed1);
+  opacity: 1;
   pointer-events: none;
 }
 
-.experience-overlay-right {
-  display: grid;
-  gap: 0.75rem;
+.system-scroll-opening {
+  position: relative;
+  z-index: 2;
+  max-width: 42rem;
+  padding: 8rem 5vw 3.5rem;
 }
 
-@media (min-width: 768px) {
-  .experience-overlay-right {
-    position: absolute;
-    top: 8%;
-    right: 4%;
-    width: min(42%, 20rem);
-    margin-top: 0;
-  }
+.system-scroll-eyebrow {
+  margin: 0 0 1.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0c5a9a;
 }
 
-.experience-card {
-  border-radius: 1rem;
-  background: rgba(243, 239, 230, 0.94);
-  color: #14161c;
-  padding: 0.85rem 1rem;
-  box-shadow: 0 16px 36px -24px rgba(20, 22, 28, 0.7);
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
+.system-scroll-opening h1 {
+  max-width: 16ch;
+  margin: 0 0 1.4rem;
+  font-size: clamp(2.1rem, 4.2vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
   font-weight: 600;
 }
 
-.experience-card-wide {
-  min-height: 8.5rem;
+.system-scroll-lead {
+  max-width: 24rem;
+  margin: 0 0 1.4rem;
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: #3a3d45;
 }
 
-.experience-chip {
-  display: inline-flex;
-  border-radius: 999px;
-  background: #14161c;
-  color: #f3efe6;
-  padding: 0.3rem 0.75rem;
+.system-scroll-textlink {
+  font-size: 1.02rem;
+  color: #0c5a9a;
+  text-underline-offset: 4px;
+}
+
+.system-scroll-textlink:hover {
+  text-decoration: underline;
+}
+
+.system-scroll-heading {
+  position: relative;
+  z-index: 2;
+  padding: 2rem 5vw 0;
+}
+
+.system-scroll-heading h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.7rem, 3.2vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.system-scroll-heading h2 em {
+  font-family: var(--font-sora), sans-serif;
+  font-style: normal;
+  color: #0c5a9a;
+}
+
+.system-scroll-heading > p:last-child {
+  max-width: 22rem;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #3a3d45;
+}
+
+.system-scroll-shell {
+  position: relative;
+  z-index: 3;
+  width: 90%;
+  max-width: 56rem;
+  margin: 2rem auto 3rem;
+}
+
+.system-scroll-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.25rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #34566f;
+}
+
+.system-scroll-perspective {
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+}
+
+.system-scroll-world {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.4rem 4rem;
+  transform-style: preserve-3d;
+}
+
+.system-scroll-routes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: translateZ(-16px);
+  pointer-events: none;
+}
+
+.system-scroll-routes .rail {
+  fill: none;
+  stroke: #24668f33;
+  stroke-width: 2;
+}
+
+#signal {
+  fill: none;
+  stroke: url(#route);
+  stroke-width: 4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+#packet {
+  fill: #fff;
+  filter: drop-shadow(0 0 7px #116cbc);
+}
+
+.system-scroll-module {
+  position: relative;
+  min-width: 0;
+  min-height: 13.5rem;
+  padding: 1.3rem;
+  border: 1px solid #fff9;
+  border-radius: 0.85rem;
+  background: linear-gradient(130deg, #fffefaee, #f1f7fbea);
+  box-shadow: 0 2px 1px #fff9 inset, 0 24px 45px -24px #174e7890;
+  transform-style: preserve-3d;
+}
+
+.system-scroll-module-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #34566f;
+}
+
+.system-scroll-module h3 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.system-scroll-module p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #405767;
+}
+
+.system-scroll-message {
+  font-size: 1.15rem !important;
+  line-height: 1.35 !important;
+  color: #14161c !important;
+}
+
+.system-scroll-field {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid #16345214;
+  font-size: 0.85rem;
+}
+
+.system-scroll-field span {
+  color: #4f6576;
+}
+
+.system-scroll-field strong {
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.system-scroll-badge {
+  padding-top: 0.6rem;
+  font-size: 0.78rem;
+  color: #21577d;
+}
+
+.system-scroll-module-record {
+  background: linear-gradient(135deg, #173b58, #102b40);
+  color: #fff;
+  border-color: #aacfe333;
+}
+
+.system-scroll-module-record .system-scroll-module-top,
+.system-scroll-module-record p,
+.system-scroll-module-record .system-scroll-badge {
+  color: #d0e5f2;
+}
+
+.system-scroll-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.8rem 0 0;
+}
+
+.system-scroll-chips span {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ffffff26;
+  border-radius: 0.3rem;
+  background: #ffffff14;
+  font-size: 0.75rem;
+}
+
+.system-scroll-scenario {
+  display: none;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.system-scroll--js .system-scroll-scenario {
+  display: flex;
+}
+
+.system-scroll-scenario legend {
+  margin-bottom: 0.6rem;
   font-size: 0.92rem;
+  color: #173b58;
 }
 
-.experience-chip-active {
-  background: #0c5a9a;
-}
-
-.experience-btn {
-  min-height: 2.75rem;
+.system-scroll-scenario button {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid #17405c55;
   border-radius: 999px;
-  border: 1px solid rgba(20, 22, 28, 0.16);
-  background: white;
-  padding: 0.55rem 1.05rem;
-  font-size: 1rem;
-  color: #14161c;
+  background: #ecf6ff77;
+  color: #143954;
 }
 
-.experience-btn:focus-visible {
+.system-scroll-scenario button[aria-pressed="true"] {
+  border-color: #173b58;
+  background: #173b58;
+  color: #fff;
+}
+
+.system-scroll-scenario button:focus-visible {
   outline: 3px solid #0c5a9a;
   outline-offset: 2px;
 }
 
-.experience-btn-primary {
-  border-color: #14161c;
-  background: #14161c;
-  color: #f3efe6;
+.system-scroll-timeline {
+  display: none;
+  pointer-events: none;
+}
+
+.system-scroll--enhanced {
+  height: 520svh;
+}
+
+.system-scroll--enhanced .system-scroll-pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 0;
+}
+
+.system-scroll--enhanced .system-scroll-camera {
+  height: 100%;
+}
+
+.system-scroll--enhanced .system-scroll-veil {
+  opacity: 0;
+}
+
+.system-scroll--enhanced .system-scroll-opening {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 22svh;
+}
+
+.system-scroll--enhanced .system-scroll-heading {
+  position: absolute;
+  left: 0;
+  top: 13%;
+  width: 39%;
+  padding: 0 0 0 5vw;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.system-scroll--enhanced .system-scroll-shell {
+  position: absolute;
+  right: 5vw;
+  top: 18%;
+  width: 57%;
+  max-width: 54rem;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.system-scroll--enhanced .system-scroll-timeline {
+  display: block;
+  position: absolute;
+  right: 5vw;
+  bottom: 1.6rem;
+  left: 5vw;
+  z-index: 4;
+}
+
+.timeline-line {
+  height: 1px;
+  background: #14395440;
+}
+
+.timeline-line > span {
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #173b58;
+}
+
+.timeline-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.timeline-labels span {
+  opacity: 0.45;
+}
+
+.timeline-labels span.current {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.system-scroll-timeline p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.9rem 0 0;
+  font-size: 0.8rem;
+  color: #244f6c;
+}
+
+@media (min-width: 1500px) {
+  .system-scroll--enhanced .system-scroll-shell {
+    top: 21%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .system-scroll--enhanced .system-scroll-heading {
+    width: 40%;
+    top: 15%;
+  }
+
+  .system-scroll--enhanced .system-scroll-shell {
+    top: 28%;
+  }
+
+  .system-scroll-world {
+    gap: 1.8rem;
+  }
+
+  .system-scroll-module {
+    min-height: 12rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .system-scroll-opening {
+    padding: 7.5rem 1.25rem 2.4rem;
+  }
+
+  .system-scroll-opening h1 {
+    font-size: 2rem;
+  }
+
+  .system-scroll-lead {
+    max-width: 20rem;
+    font-size: 0.95rem;
+  }
+
+  .system-scroll--enhanced {
+    height: 460svh;
+  }
+
+  .system-scroll--enhanced .system-scroll-opening {
+    top: auto;
+    bottom: 6.2rem;
+    width: 100%;
+    padding: 2.2rem 1.25rem 0.9rem;
+    background: linear-gradient(180deg, #f3efe600, #f3efe6ed 22%, #f3efe6f7);
+  }
+
+  .system-scroll--enhanced .system-scroll-heading {
+    top: 11%;
+    left: 1.25rem;
+    width: calc(100% - 2.5rem);
+    padding: 0;
+  }
+
+  .system-scroll--enhanced .system-scroll-shell {
+    top: 35%;
+    right: 1.25rem;
+    left: 1.25rem;
+    width: auto;
+  }
+
+  .system-scroll-heading {
+    padding: 1.8rem 1.25rem 0;
+  }
+
+  .system-scroll-heading h2 {
+    font-size: 1.7rem;
+  }
+
+  .system-scroll-shell {
+    width: calc(100% - 2.5rem);
+  }
+
+  .system-scroll-world {
+    gap: 1rem;
+  }
+
+  .system-scroll-module {
+    min-height: 9rem;
+    padding: 0.75rem;
+  }
+
+  .system-scroll-module h3 {
+    font-size: 0.98rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .system-scroll-message {
+    font-size: 0.92rem !important;
+  }
+
+  .system-scroll-field {
+    font-size: 0.72rem;
+    padding: 0.35rem 0;
+  }
+
+  .system-scroll--enhanced .system-scroll-timeline {
+    right: 1.25rem;
+    bottom: 1.1rem;
+    left: 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .system-scroll--enhanced .system-scroll-shell {
+    top: 31%;
+  }
+
+  .system-scroll--enhanced .system-scroll-opening {
+    bottom: 4.4rem;
+    padding: 1.3rem 1rem 0.55rem;
+  }
+
+  .system-scroll--enhanced .system-scroll-opening h1 {
+    font-size: 1.55rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .system-scroll--enhanced .system-scroll-lead {
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .system-scroll-heading h2 {
+    font-size: 1.5rem;
+  }
+
+  .system-scroll-module {
+    min-height: 8.2rem;
+    padding: 0.6rem;
+  }
+
+  .timeline-labels {
+    font-size: 0.5rem;
+    letter-spacing: 0;
+  }
+}
+
+@media (max-height: 680px) and (min-width: 701px) {
+  .system-scroll--enhanced .system-scroll-heading {
+    top: 10%;
+  }
+
+  .system-scroll--enhanced .system-scroll-shell {
+    top: 8%;
+    width: 54%;
+  }
+
+  .system-scroll-module {
+    min-height: 10rem;
+    padding: 0.8rem;
+  }
+
+  .system-scroll-world {
+    gap: 1.3rem 2.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-scroll-world {
+    transform: none;
+  }
 }

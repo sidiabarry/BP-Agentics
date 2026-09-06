@@ -1,5 +1,5 @@
-import { HeroSequence } from "@/components/hero-sequence";
-import { ExperienceLab } from "@/components/experience-lab";
+import { SystemScroll } from "@/components/system-scroll";
+import { ThreeLevels } from "@/components/three-levels";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { WhyTeaser } from "@/components/why-teaser";
 import { Pricing } from "@/components/pricing";
@@ -35,16 +35,16 @@ export default function HomePage() {
         rel="preload"
         as="image"
         href="/hero/sequence-desktop/0001.webp"
-        media="(min-width: 768px)"
+        media="(min-width: 701px)"
       />
       <link
         rel="preload"
         as="image"
         href="/hero/sequence-mobile/0001.webp"
-        media="(max-width: 767px)"
+        media="(max-width: 700px)"
       />
-      <HeroSequence />
-      <ExperienceLab />
+      <SystemScroll />
+      <ThreeLevels compact />
       <HomeReferenzen />
       <WhyTeaser />
       <Pricing teaser />
