@@ -1,4 +1,4 @@
-import { HeroSequence } from "@/components/hero-sequence";
+import { SystemScroll } from "@/components/system-scroll";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { ThreeLevels } from "@/components/three-levels";
@@ -31,7 +31,7 @@ export default function HomePage() {
           "@graph": [faqPage(faqs)],
         }}
       />
-      <HeroSequence />
+      <SystemScroll />
       <ProblemWall />
       <HomeReferenzen />
       <ThreeLevels compact />
