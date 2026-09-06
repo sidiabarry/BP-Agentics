@@ -48,10 +48,15 @@ function frameSrc(kind: "desktop" | "mobile", index: number) {
   return `/hero/sequence-${kind}/${String(index + 1).padStart(4, "0")}.webp`;
 }
 
-function loadImage(src: string) {
+function loadImage(src: string, priority = false) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new window.Image();
-    img.decoding = "async";
+    if (priority) {
+      img.fetchPriority = "high";
+      img.decoding = "sync";
+    } else {
+      img.decoding = "async";
+    }
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error(src));
     img.src = src;
@@ -107,9 +112,15 @@ export function HeroSequence() {
       const overlay = reduced ? 1 : overlayFrom(progress);
       if (overlayRef.current) overlayRef.current.style.opacity = String(overlay);
       if (copyRef.current) {
-        copyRef.current.style.opacity = "1";
-        copyRef.current.classList.add("hero-copy-in", "pointer-events-auto");
-        copyRef.current.classList.remove("pointer-events-none");
+        copyRef.current.style.opacity = String(overlay);
+        const entered = overlay > 0.55;
+        copyRef.current.classList.toggle("pointer-events-auto", entered);
+        copyRef.current.classList.toggle("pointer-events-none", !entered);
+        if (entered) {
+          copyRef.current.classList.add("hero-copy-in");
+        } else if (overlay <= 0.01) {
+          copyRef.current.classList.remove("hero-copy-in");
+        }
       }
       if (skipRef.current) {
         skipRef.current.hidden = overlay >= 0.5;
@@ -174,11 +185,11 @@ export function HeroSequence() {
   useEffect(() => {
     if (reduced) return;
     let cancelled = false;
-    let started = false;
     const count = kind === "mobile" ? MOBILE_FRAMES : DESKTOP_FRAMES;
     cacheRef.current = new Array(count);
+    const warmEnd = Math.min(count - 1, 15);
 
-    const loadRange = async (start: number, end: number, concurrency: number) => {
+    const loadRange = async (start: number, end: number, concurrency: number, priority = false) => {
       let cursor = start;
       const workers = Array.from({ length: concurrency }, async () => {
         while (!cancelled) {
@@ -186,10 +197,11 @@ export function HeroSequence() {
           cursor += 1;
           if (index > end) return;
           try {
-            const img = await loadImage(frameSrc(kind, index));
+            const img = await loadImage(frameSrc(kind, index), priority && index < 4);
             if (cancelled) return;
             cacheRef.current[index] = img;
-            if (index === 0) paint();
+            const needed = frameIndexFrom(progressRef.current, count);
+            if (index <= needed + 1) paint();
           } catch {
             // Frame failed; poster stays, nearestLoaded skips gaps.
           }
@@ -199,26 +211,20 @@ export function HeroSequence() {
     };
 
     const run = async () => {
-      if (started || cancelled) return;
-      started = true;
-      await loadRange(0, 0, 1);
+      await loadRange(0, 0, 1, true);
       if (cancelled) return;
       paint();
-      await loadRange(1, count - 1, 6);
+      await loadRange(1, warmEnd, 8, true);
+      if (cancelled) return;
+      paint();
+      await loadRange(warmEnd + 1, count - 1, 8);
       if (!cancelled) paint();
     };
 
-    const kick = () => {
-      void run();
-    };
-
-    window.addEventListener("scroll", kick, { passive: true });
-    window.addEventListener("pointerdown", kick, { passive: true });
+    void run();
 
     return () => {
       cancelled = true;
-      window.removeEventListener("scroll", kick);
-      window.removeEventListener("pointerdown", kick);
     };
   }, [kind, reduced, paint]);
 
@@ -238,6 +244,9 @@ export function HeroSequence() {
       style={{ height: reduced ? "auto" : `${HERO_VH}vh` }}
       aria-label="Einstieg"
     >
+      <noscript>
+        <style>{`.hero-copy-fallback,.hero-copy-fallback .hero-kicker,.hero-copy-fallback .hero-line-1,.hero-copy-fallback .hero-line-2,.hero-copy-fallback .hero-lead,.hero-copy-fallback .hero-cta,.hero-copy-fallback .hero-tag{opacity:1!important;transform:none}`}</style>
+      </noscript>
       <div
         className={
           reduced
@@ -279,7 +288,12 @@ export function HeroSequence() {
 
         <div
           ref={copyRef}
-          className="hero-copy-in pointer-events-auto absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24"
+          className={
+            reduced
+              ? "hero-copy-fallback hero-copy-in pointer-events-auto absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24"
+              : "hero-copy-fallback pointer-events-none absolute inset-0 flex flex-col justify-end px-5 pt-28 pb-28 md:justify-center md:px-12 md:pb-24"
+          }
+          style={{ opacity: reduced ? 1 : 0 }}
         >
           <div className="mx-auto w-full max-w-4xl">
             <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-[#0C5A9A] uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
