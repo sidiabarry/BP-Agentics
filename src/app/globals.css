@@ -487,8 +487,10 @@
 .system-scroll-opening {
   position: relative;
   z-index: 2;
-  max-width: 42rem;
-  padding: 8rem 5vw 3.5rem;
+  width: min(28vw, 18rem);
+  max-width: 28%;
+  padding: 8rem 5vw 3.5rem 5vw;
+  padding-right: 2rem;
 }
 
 .system-scroll-eyebrow {
@@ -501,24 +503,26 @@
 }
 
 .system-scroll-opening h1 {
-  max-width: 16ch;
-  margin: 0 0 1.4rem;
-  font-size: clamp(2.1rem, 4.2vw, 4rem);
-  line-height: 1.05;
+  max-width: 11ch;
+  margin: 0 0 1rem;
+  font-size: clamp(1.6rem, 2.4vw, 2.25rem);
+  line-height: 1.1;
   letter-spacing: -0.03em;
   font-weight: 600;
 }
 
 .system-scroll-lead {
-  max-width: 24rem;
-  margin: 0 0 1.4rem;
-  font-size: 1.08rem;
-  line-height: 1.65;
+  max-width: 18rem;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: #3a3d45;
 }
 
 .system-scroll-textlink {
-  font-size: 1.02rem;
+  display: inline-block;
+  max-width: 100%;
+  font-size: 0.95rem;
   color: #0c5a9a;
   text-underline-offset: 4px;
 }
@@ -776,7 +780,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding-top: 22svh;
+  width: min(28vw, 18rem);
+  max-width: 28%;
+  padding-top: 14svh;
+  padding-right: 2rem;
 }
 
 .system-scroll--enhanced .system-scroll-heading {
@@ -875,16 +882,19 @@
 
 @media (max-width: 700px) {
   .system-scroll-opening {
+    width: 100%;
+    max-width: none;
     padding: 7.5rem 1.25rem 2.4rem;
   }
 
   .system-scroll-opening h1 {
-    font-size: 2rem;
+    max-width: none;
+    font-size: 1.65rem;
   }
 
   .system-scroll-lead {
-    max-width: 20rem;
-    font-size: 0.95rem;
+    max-width: 18rem;
+    font-size: 0.88rem;
   }
 
   .system-scroll--enhanced {
@@ -893,10 +903,11 @@
 
   .system-scroll--enhanced .system-scroll-opening {
     top: auto;
-    bottom: 6.2rem;
+    bottom: 4.6rem;
     width: 100%;
-    padding: 2.2rem 1.25rem 0.9rem;
-    background: linear-gradient(180deg, #f3efe600, #f3efe6ed 22%, #f3efe6f7);
+    max-width: none;
+    padding: 2rem 1.25rem 0.85rem;
+    background: linear-gradient(180deg, #f3efe600 0%, #f3efe6 16%, #f3efe6 100%);
   }
 
   .system-scroll--enhanced .system-scroll-heading {
