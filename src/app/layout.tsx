@@ -66,16 +66,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link
           rel="preload"
           as="image"
-          href="/hero/sequence-desktop/0001.webp"
-          type="image/webp"
-          media="(min-width: 701px)"
+          href="/hero/poster.avif"
+          type="image/avif"
         />
         <link
           rel="preload"
           as="image"
-          href="/hero/sequence-mobile/0001.webp"
-          type="image/webp"
-          media="(max-width: 700px)"
+          href="/hero/poster-fallback.jpg"
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">

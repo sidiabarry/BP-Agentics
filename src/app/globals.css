@@ -449,14 +449,14 @@
   position: relative;
   max-width: 100%;
   overflow-x: clip;
-  background: var(--hero-exit);
+  background: #e8e6e2;
 }
 
 .system-scroll-pin {
   position: relative;
   overflow: hidden;
   min-height: 940px;
-  background: var(--hero-exit);
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
 .system-scroll-camera,
@@ -472,10 +472,17 @@
 }
 
 .system-scroll-camera {
+  z-index: 0;
   height: 100svh;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
+}
+
+.system-scroll-camera canvas {
+  z-index: 1;
 }
 
 .system-scroll-veil {
+  z-index: 1;
   background: linear-gradient(135deg, #deedfa, #8ac0f0 45%, #167ed1);
   opacity: 1;
   pointer-events: none;
@@ -489,7 +496,7 @@
 
 .system-scroll-opening {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: min(28vw, 18rem);
   max-width: 28%;
   padding: 8rem 5vw 3.5rem 5vw;
@@ -837,8 +844,7 @@
   left: 0;
   width: min(28vw, 18rem);
   max-width: 28%;
-  padding-top: 14svh;
-  padding-right: 2rem;
+  padding: 14svh 2rem 0 5vw;
 }
 
 .system-scroll--enhanced .system-scroll-heading {

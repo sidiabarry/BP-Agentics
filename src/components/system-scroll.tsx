@@ -349,6 +349,15 @@ export function SystemScroll() {
         schedule();
       }
       configureFrames();
+      if (enabled && cache.size === 0) {
+        const first = new window.Image();
+        first.decoding = "async";
+        first.onload = () => {
+          cache.set(0, first);
+          paint();
+        };
+        first.src = frameSrc(small.matches ? "mobile" : "desktop", 0);
+      }
       requestAnimationFrame(() => {
         ignoreObserve = false;
       });
@@ -400,13 +409,14 @@ export function SystemScroll() {
       <div className="system-scroll-pin" ref={pinRef}>
         <div className="system-scroll-camera" aria-hidden="true">
           <picture>
-            <source media={`(max-width: ${SMALL_MAX}px)`} srcSet="/hero/sequence-mobile/0001.webp" />
+            <source srcSet="/hero/poster.avif" type="image/avif" />
             <img
-              src="/hero/sequence-desktop/0001.webp"
+              src="/hero/poster-fallback.jpg"
               alt=""
               width={1440}
               height={810}
               fetchPriority="high"
+              decoding="sync"
             />
           </picture>
           <canvas ref={canvasRef} id="film" aria-hidden="true" />
