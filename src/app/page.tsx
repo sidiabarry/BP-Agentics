@@ -31,18 +31,6 @@ export default function HomePage() {
         }}
       />
       <link rel="preload" as="image" href="/hero/poster.avif" type="image/avif" />
-      <link
-        rel="preload"
-        as="image"
-        href="/hero/sequence-desktop/0001.webp"
-        media="(min-width: 701px)"
-      />
-      <link
-        rel="preload"
-        as="image"
-        href="/hero/sequence-mobile/0001.webp"
-        media="(max-width: 700px)"
-      />
       <SystemScroll />
       <ThreeLevels compact />
       <HomeReferenzen />
