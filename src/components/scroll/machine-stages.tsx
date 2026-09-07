@@ -40,8 +40,12 @@ export function StageAuftritt() {
         <div className="site__hero">
           <div className="site__photo" style={i(1)} />
           <div className="site__words">
-            <span className="site__h1" style={i(2)} />
-            <span className="site__h2" style={i(3)} />
+            <p className="site__h1" style={i(2)}>
+              Dach. Dicht. In Hagen.
+            </p>
+            <p className="site__h2" style={i(3)}>
+              Notdienst und Sanierung, kein Stockfoto.
+            </p>
             <span className="site__cta" style={i(4)}>
               Dach prüfen lassen
             </span>
@@ -114,6 +118,12 @@ const rows = [
   ["Lieferschein 4412", "Baustelle Hagen", "unterschrieben"],
   ["Stunden KW 37", "Kolonne 2", "freigegeben"],
   ["Rechnung R-2291", "Müller GmbH", "raus"],
+  ["Materialliste 88", "Dach Witten", "im Vorgang"],
+];
+const bits = [
+  ["Heute", "3 Belege durch"],
+  ["Offen", "1 Klärung"],
+  ["Rechnung", "am Einsatztag"],
 ];
 
 export function StageAblaeufe() {
@@ -146,6 +156,15 @@ export function StageAblaeufe() {
         ))}
       </div>
 
+      <ul className="ablaeufe__bits">
+        {bits.map(([k, v]) => (
+          <li key={k}>
+            <strong>{k}</strong>
+            <span>{v}</span>
+          </li>
+        ))}
+      </ul>
+
       <span className="ledger__paper" />
     </div>
   );
@@ -158,20 +177,43 @@ export function StageAblaeufe() {
 export function StageSystem() {
   return (
     <div className="stage stage--system">
-      <div className="combo">
-        <svg className="combo__wire" viewBox="0 0 520 20" preserveAspectRatio="none">
-          <path d="M70 10 H450" pathLength={1} />
-        </svg>
-        <span className="combo__piece combo__piece--browser" style={i(0)}>
-          Auftritt
-        </span>
-        <span className="combo__piece combo__piece--phone" style={i(1)}>
-          Annahme
-        </span>
-        <span className="combo__piece combo__piece--board" style={i(2)}>
-          Abläufe
-        </span>
+      <article className="combo__bit combo__bit--auftritt" style={i(0)}>
+        <p className="combo__index">1 · Auftritt</p>
+        <h4>Die Seite holt die Anfrage.</h4>
+        <p>Besucher wird zum Terminwunsch, nicht zur Mailbox.</p>
+      </article>
+
+      <div className="combo__phone" style={i(1)}>
+        <div className="combo__phone-bar">
+          <span className="combo__phone-avatar" />
+          <span>
+            Müller Bedachungen
+            <small>2 · Annahme — antwortet</small>
+          </span>
+        </div>
+        <div className="combo__phone-body">
+          <p className="combo__bubble combo__bubble--in">Dach tropft seit heute.</p>
+          <p className="combo__bubble combo__bubble--out">Di 14:30 — Kalender ist frei.</p>
+          <div className="combo__phone-slot">
+            <span>Di</span>
+            <span>
+              14:30 Besichtigung
+              <small>im Kalender des Meisters</small>
+            </span>
+          </div>
+        </div>
       </div>
+
+      <article className="combo__bit combo__bit--ablaeufe" style={i(2)}>
+        <p className="combo__index">3 · Abläufe</p>
+        <h4>Der Vorgang läuft durch.</h4>
+        <ul>
+          <li>Besichtigung gelegt</li>
+          <li>Beleg unterschrieben</li>
+          <li>Rechnung am Einsatztag</li>
+        </ul>
+      </article>
+
       <p className="combo__caption">
         Eine Anfrage, ein Weg, ein Vorgang — vom ersten Klick bis zur Rechnung.
       </p>

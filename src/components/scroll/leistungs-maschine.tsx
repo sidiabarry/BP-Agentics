@@ -37,7 +37,7 @@ const SHELL = [
   { w: 44, h: 27.5, r: 14 }, // Browserfenster
   { w: 18.5, h: 37, r: 38 }, // Handy
   { w: 43, h: 29, r: 16 }, // Dashboard
-  { w: 45, h: 25, r: 20 }, // Zusammenspiel
+  { w: 40, h: 32, r: 16 }, // Zusammenspiel: Handy rechts, Bits links
 ];
 
 const stations = [
@@ -130,6 +130,8 @@ export function LeistungsMaschine() {
       const s = shellAt(p);
       out["--shell-w"] = `${s.w.toFixed(2)}rem`;
       out["--shell-h"] = `${s.h.toFixed(2)}rem`;
+      out["--shell-wn"] = s.w.toFixed(2);
+      out["--shell-hn"] = s.h.toFixed(2);
       out["--shell-r"] = `${s.r.toFixed(1)}px`;
       return out;
     },

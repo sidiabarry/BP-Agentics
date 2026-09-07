@@ -13,14 +13,14 @@ export function WhyTeaser() {
         <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Ein Mensch. Ein Betrieb. Kein Account-Karussell.
         </RevealHeading>
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
           {whyPoints.map((item, index) => (
             <RevealIn
               key={item.title}
               as="article"
               variant="card"
               delay={index * 60}
-              className="rounded-[1.6rem] border border-white/10 p-7"
+              className="rounded-3xl border border-white/10 p-6 md:p-7"
             >
               <h3 className="text-xl font-semibold">{item.title}</h3>
               <p className="mt-3 text-[1.08rem] leading-relaxed text-white/75">
@@ -30,7 +30,7 @@ export function WhyTeaser() {
           ))}
         </div>
         <p className="mt-10">
-          <Link href="/ueber-mich" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+          <Link href="/ueber-mich" className="font-semibold text-[#9FD0F8] underline-offset-4 hover:underline">
             Wer Sidia Jerome Barry ist und wie die Zusammenarbeit läuft
           </Link>
         </p>

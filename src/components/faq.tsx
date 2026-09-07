@@ -10,11 +10,11 @@ import { faqs } from "@/lib/content";
 export function Faq() {
   return (
     <section id="faq" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Einwände
         </RevealIn>
-        <RevealIn as="h2" variant="rise" className="mt-3 text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
+        <RevealIn as="h2" variant="rise" className="mt-3 max-w-[22ch] text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
           Was Inhaber uns zuerst sagen.
         </RevealIn>
         <Accordion type="single" collapsible className="mt-10">

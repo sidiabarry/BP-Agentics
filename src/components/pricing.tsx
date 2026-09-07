@@ -111,11 +111,29 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Drei Website-Stufen mit Festpreis. Setter, Fundament und Module stehen
             in der Preistabelle — inklusive Wartung und Eigentum.
           </RevealIn>
-          <div className="mt-12">
+          <div className="mt-12 grid items-stretch gap-4 md:grid-cols-3">
+            {systems.map((item, index) => (
+              <RevealIn
+                key={item.name}
+                as="article"
+                variant="card"
+                delay={index * 60}
+                className="flex h-full flex-col rounded-3xl bg-white p-6 md:p-7"
+              >
+                <h3 className="text-xl font-semibold">{item.name}</h3>
+                <p className="mt-2 text-[1.65rem] leading-tight font-semibold">{item.price}</p>
+                {"run" in item ? (
+                  <p className="mt-1 text-[#5C5F66]">{item.run}</p>
+                ) : null}
+                <p className="mt-4 flex-1 text-[#3A3D45]">{item.body}</p>
+              </RevealIn>
+            ))}
+          </div>
+          <div className="mt-6">
             <WebsiteCards />
           </div>
           <p className="mt-8 text-[1.08rem]">
-            <Link href="/preise" className="text-[#198BE8] underline-offset-4 hover:underline">
+            <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
               Alle Endpreise, Wartung und Eigentum in einer Tabelle
             </Link>
           </p>

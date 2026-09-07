@@ -12,7 +12,6 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
   const [path, setPath] = useState<string | null>(null);
   const [size, setSize] = useState<string | null>(null);
   const chosen = checkPaths.find((item) => item.id === path);
-  const first = checkPaths[0];
 
   if (teaser) {
     return (
@@ -24,11 +23,18 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
           <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
             An welcher Stelle verliert Ihr Betrieb gerade am meisten?
           </RevealHeading>
-          <p className="mt-8 rounded-2xl border border-black/10 bg-[#F3EFE6] px-5 py-4 text-[1.08rem] leading-snug">
-            {first.label}
-          </p>
+          <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
+            {checkPaths.map((item) => (
+              <p
+                key={item.id}
+                className="h-full rounded-3xl border border-black/10 bg-[#F3EFE6] px-5 py-5 text-[1.05rem] leading-snug text-[#14161C]"
+              >
+                {item.label}
+              </p>
+            ))}
+          </div>
           <p className="mt-6">
-            <Link href="/passt-das" className="text-[#198BE8] underline-offset-4 hover:underline">
+            <Link href="/passt-das" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
               Reibungspunkt und Teamstärke im vollen Schnell-Check wählen
             </Link>
           </p>
