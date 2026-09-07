@@ -68,68 +68,91 @@ export function DocPage({
       </nav>
       <article
         id="inhalt"
-        className="doc-prose mx-auto max-w-3xl px-5 pt-6 pb-20 md:px-8"
+        className="mx-auto max-w-3xl px-5 pt-6 pb-20 md:px-8"
       >
-        {kicker ? (
-          <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">{kicker}</p>
-        ) : null}
-        <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
-          {title}
-        </h1>
-        <p className="lead mt-5 text-[1.18rem] leading-relaxed text-[#3A3D45]">{lead}</p>
-        {reviewed ? (
-          <p className="mt-3 text-sm text-[#5C5F66]">
-            Zuletzt geprüft:{" "}
-            <time dateTime={reviewed}>
-              {new Date(`${reviewed}T12:00:00`).toLocaleDateString("de-DE", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </time>
-          </p>
-        ) : null}
-        {children}
-        {related && related.length > 0 ? (
-          <section className="mt-16 border-t border-black/10 pt-10" aria-labelledby="verwandt">
-            <h2 id="verwandt" className="text-2xl font-semibold tracking-[-0.03em]">
-              Weiterlesen auf dieser Website
+        <div className="doc-prose">
+          {kicker ? (
+            <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">{kicker}</p>
+          ) : null}
+          <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
+            {title}
+          </h1>
+          <p className="lead mt-5 text-[1.18rem] leading-relaxed text-[#3A3D45]">{lead}</p>
+          {reviewed ? (
+            <p className="mt-3 text-sm text-[#5C5F66]">
+              Zuletzt geprüft:{" "}
+              <time dateTime={reviewed}>
+                {new Date(`${reviewed}T12:00:00`).toLocaleDateString("de-DE", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </time>
+            </p>
+          ) : null}
+          {children}
+          {related && related.length > 0 ? (
+            <section className="mt-16 border-t border-black/10 pt-10" aria-labelledby="verwandt">
+              <h2 id="verwandt" className="text-2xl font-semibold tracking-[-0.03em]">
+                Weiterlesen auf dieser Website
+              </h2>
+              <ul className="mt-4 space-y-2">
+                {related.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className="text-[#198BE8] underline-offset-4 hover:underline">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </div>
+        <section
+          className="mt-14 grid gap-5 rounded-3xl border border-black/10 bg-white p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:items-stretch md:gap-6 md:p-7"
+          aria-labelledby="doc-naechster-schritt"
+        >
+          <div className="flex min-w-0 flex-col">
+            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
+              Nächster Schritt
+            </p>
+            <h2
+              id="doc-naechster-schritt"
+              className="mt-2 text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]"
+            >
+              Wollen Sie das für Ihren Betrieb prüfen?
             </h2>
-            <ul className="mt-4 space-y-2">
-              {related.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-[#198BE8] underline-offset-4 hover:underline">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
-        <section className="mt-14 rounded-[1.8rem] bg-[#14161C] p-7 text-[#F3EFE6] md:p-8">
-          <h2 className="text-2xl font-semibold tracking-[-0.03em]">
-            Wollen Sie das für Ihren Betrieb prüfen?
-          </h2>
-          <p className="answer mt-3 text-[1.08rem] leading-relaxed text-white/80">
-            Das 90-Minuten-Gespräch ist kostenlos und findet in Ihrem Betrieb statt.
-            Sidia Jerome Barry kommt nach {site.addressLocality} und in die Nachbarstädte
-            in Nordrhein-Westfalen.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button
-              asChild
-              className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
-            >
-              <Link href="/kontakt">Kontakt und Anschrift in Hagen</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="h-12 rounded-full border-white/20 bg-transparent px-6 text-white hover:bg-white/10"
-            >
-              <Link href="/">Zurück zur Startseite von BP Agentics</Link>
-            </Button>
+            <p className="mt-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
+              Sidia Jerome Barry kommt nach {site.addressLocality} und in die
+              Nachbarstädte in Nordrhein-Westfalen.
+            </p>
+            <div className="mt-5 flex flex-col gap-3 sm:mt-auto sm:flex-row sm:pt-6">
+              <Button
+                asChild
+                className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
+              >
+                <Link href="/termin">Erstgespräch vereinbaren</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="h-12 rounded-full border-black/15 bg-transparent px-6 text-[#14161C] hover:bg-[#F3EFE6]"
+              >
+                <Link href="/">Zur Startseite</Link>
+              </Button>
+            </div>
           </div>
+          <ul className="grid h-full gap-3 sm:grid-cols-3 md:grid-cols-1 md:grid-rows-3">
+            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+              90 Minuten im Betrieb
+            </li>
+            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+              Kostenlos, ohne Folie
+            </li>
+            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+              Danach liegt der Plan da
+            </li>
+          </ul>
         </section>
       </article>
     </div>

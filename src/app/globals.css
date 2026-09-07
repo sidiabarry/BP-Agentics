@@ -184,12 +184,12 @@
   padding-left: 1.2rem;
 }
 
-.doc-prose a {
+.doc-prose a:not([data-slot="button"]) {
   color: #198be8;
   text-underline-offset: 4px;
 }
 
-.doc-prose a:hover {
+.doc-prose a:not([data-slot="button"]):hover {
   text-decoration: underline;
 }
 
