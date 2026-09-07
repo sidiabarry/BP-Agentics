@@ -1,5 +1,3 @@
-export const DESKTOP_FRAMES = 71;
-export const MOBILE_FRAMES = 48;
 export const SMALL_MAX = 700;
 export const MIN_ENHANCED_HEIGHT = 680;
 
@@ -110,10 +108,6 @@ export function moduleDetails(scenario: ScenarioId): ModuleDetail[] {
       ],
     },
   ];
-}
-
-export function frameSrc(kind: "desktop" | "mobile", index: number) {
-  return `/hero/sequence-${kind}/${String(index + 1).padStart(4, "0")}.webp`;
 }
 
 export function phaseFrom(progress: number) {

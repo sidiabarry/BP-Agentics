@@ -3,11 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  DESKTOP_FRAMES,
   MIN_ENHANCED_HEIGHT,
-  MOBILE_FRAMES,
   SMALL_MAX,
-  frameSrc,
   moduleDetails,
   moduleNames,
   narratives,
@@ -32,7 +29,7 @@ function smooth(value: number) {
 export function SystemScroll() {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const openerRef = useRef<HTMLButtonElement | null>(null);
@@ -97,10 +94,13 @@ export function SystemScroll() {
   useEffect(() => {
     const section = sectionRef.current;
     const pin = pinRef.current;
-    const canvas = canvasRef.current;
-    if (!section || !pin || !canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const video = videoRef.current;
+    if (!section || !pin) return;
+
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+    }
 
     section.classList.add("system-scroll--js");
 
@@ -126,115 +126,34 @@ export function SystemScroll() {
     let ignoreObserve = false;
     let raf = 0;
     let progress = 0;
-    let kind: "desktop" | "mobile" | "" = "";
-    let count = 0;
-    let target = 0;
-    let generation = 0;
+    let inView = true;
     let lastPhase = -1;
-    const cache = new Map<number, HTMLImageElement>();
-    const pending = new Set<number>();
-    const failed = new Set<number>();
 
     const schedule = () => {
       if (!raf && !document.hidden) raf = requestAnimationFrame(render);
     };
 
-    const trim = () => {
-      while (cache.size > 6) {
-        let worst = -1;
-        let distance = -1;
-        for (const index of cache.keys()) {
-          const next = Math.abs(index - target);
-          if (next > distance) {
-            worst = index;
-            distance = next;
-          }
-        }
-        cache.delete(worst);
-      }
-    };
-
-    const pump = () => {
-      if (!enabled || document.hidden || section.getBoundingClientRect().bottom < 0 || progress > 0.45) {
+    const syncVideo = () => {
+      if (!video) return;
+      const fadedOut = enabled && progress >= 0.42;
+      if (reduced.matches || document.hidden || !inView || fadedOut) {
+        video.pause();
         return;
       }
-      const desired = [target, target + 1, target - 1, target + 2, target - 2].filter(
-        (index) => index >= 0 && index < count,
-      );
-      for (const index of desired) {
-        if (pending.size >= 2) break;
-        if (cache.has(index) || pending.has(index) || failed.has(index)) continue;
-        const epoch = generation;
-        const img = new window.Image();
-        pending.add(index);
-        img.decoding = "async";
-        img.onload = () => {
-          if (epoch !== generation) return;
-          pending.delete(index);
-          cache.set(index, img);
-          trim();
-          schedule();
-          pump();
-        };
-        img.onerror = () => {
-          if (epoch !== generation) return;
-          pending.delete(index);
-          failed.add(index);
-          pump();
-        };
-        img.src = frameSrc(kind === "mobile" ? "mobile" : "desktop", index);
-      }
-    };
-
-    const configureFrames = () => {
-      const next = small.matches ? "mobile" : "desktop";
-      if (next === kind) return;
-      kind = next;
-      count = small.matches ? MOBILE_FRAMES : DESKTOP_FRAMES;
-      generation += 1;
-      cache.clear();
-      pending.clear();
-      failed.clear();
-    };
-
-    const paint = () => {
-      const rect = pin.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const width = Math.round(rect.width * dpr);
-      const height = Math.round(rect.height * dpr);
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
-      let best: HTMLImageElement | null = null;
-      let delta = Infinity;
-      for (const [index, img] of cache) {
-        const next = Math.abs(index - target);
-        if (next < delta) {
-          best = img;
-          delta = next;
-        }
-      }
-      if (!best) return;
-      const scale = Math.max(width / best.naturalWidth, height / best.naturalHeight);
-      ctx.clearRect(0, 0, width, height);
-      ctx.drawImage(
-        best,
-        (width - best.naturalWidth * scale) / 2,
-        (height - best.naturalHeight * scale) / 2,
-        best.naturalWidth * scale,
-        best.naturalHeight * scale,
-      );
+      const play = video.play();
+      if (play) play.catch(() => {});
     };
 
     const render = () => {
       raf = 0;
-      if (!enabled) return;
       const rect = section.getBoundingClientRect();
-      progress = clamp(-rect.top / Math.max(1, section.offsetHeight - pin.offsetHeight));
-      target = Math.round(range(progress, 0, 0.34) * (count - 1));
-      pump();
-      if (progress < 0.46) paint();
+      progress = enabled
+        ? clamp(-rect.top / Math.max(1, section.offsetHeight - pin.offsetHeight))
+        : 0;
+      if (!enabled) {
+        syncVideo();
+        return;
+      }
 
       const reveal = smooth(range(progress, 0.34, 0.45));
       if (veil) veil.style.opacity = String(reveal);
@@ -283,6 +202,7 @@ export function SystemScroll() {
         "data-pinned",
         enabled && pinBox.top <= 1 && pinBox.bottom >= window.innerHeight * 0.7,
       );
+      syncVideo();
     };
 
     const clearStyles = () => {
@@ -321,18 +241,14 @@ export function SystemScroll() {
       if (!enabled) {
         section.style.removeProperty("--system-top");
         section.removeAttribute("data-pinned");
-      }
-      configureFrames();
-      if (!enabled) {
         cancelAnimationFrame(raf);
         raf = 0;
-        generation += 1;
-        pending.clear();
-        cache.clear();
+        progress = 0;
         clearStyles();
       } else {
         schedule();
       }
+      syncVideo();
       requestAnimationFrame(() => {
         ignoreObserve = false;
       });
@@ -342,8 +258,10 @@ export function SystemScroll() {
       if (document.hidden) {
         cancelAnimationFrame(raf);
         raf = 0;
+        video?.pause();
       } else {
         schedule();
+        syncVideo();
       }
     };
 
@@ -355,6 +273,15 @@ export function SystemScroll() {
     const observer = new ResizeObserver(configure);
     if (shell) observer.observe(shell);
     if (heading) observer.observe(heading);
+    const playObserver = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+        syncVideo();
+      },
+      { threshold: [0, 0.2, 0.5, 1] },
+    );
+    playObserver.observe(pin);
+    video?.addEventListener("loadeddata", syncVideo);
     let cancelled = false;
     void document.fonts?.ready.then(() => {
       if (!cancelled) configure();
@@ -364,8 +291,10 @@ export function SystemScroll() {
     return () => {
       cancelled = true;
       observer.disconnect();
+      playObserver.disconnect();
       cancelAnimationFrame(raf);
-      generation += 1;
+      video?.pause();
+      video?.removeEventListener("loadeddata", syncVideo);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", configure);
       reduced.removeEventListener("change", configure);
@@ -384,16 +313,32 @@ export function SystemScroll() {
       <div className="system-scroll-pin" ref={pinRef}>
         <div className="system-scroll-camera" aria-hidden="true">
           <picture>
-            <source media={`(max-width: ${SMALL_MAX}px)`} srcSet="/hero/sequence-mobile/0001.webp" />
+            <source srcSet="/hero/poster.avif" type="image/avif" />
             <img
-              src="/hero/sequence-desktop/0001.webp"
+              src="/hero/poster-fallback.jpg"
               alt=""
-              width={1440}
-              height={810}
+              width={828}
+              height={1108}
               fetchPriority="high"
             />
           </picture>
-          <canvas ref={canvasRef} id="film" aria-hidden="true" />
+          <video
+            ref={videoRef}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="auto"
+            poster="/hero/poster-fallback.jpg"
+            width={828}
+            height={1108}
+          >
+            <source
+              src="/hero/hero.mp4"
+              type="video/mp4"
+              media="(prefers-reduced-motion: no-preference)"
+            />
+          </video>
         </div>
         <div className="system-scroll-veil" aria-hidden="true" />
 
