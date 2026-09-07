@@ -12,7 +12,10 @@ export function Process({
   const shown = limit ? steps.slice(0, limit) : steps;
 
   return (
-    <section id={headingId} className="bg-[#14161C] px-5 py-24 text-[#F3EFE6] md:px-8">
+    <section
+      id={headingId}
+      className={`bg-[#14161C] px-5 text-[#F3EFE6] md:px-8 ${limit ? "py-16" : "py-24"}`}
+    >
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
           {limit ? "Die ersten drei Schritte" : "Vier Schritte"}
@@ -23,7 +26,7 @@ export function Process({
         <ol
           className={
             limit === 3
-              ? "mt-12 grid items-stretch gap-4 md:grid-cols-3"
+              ? "mt-8 grid items-stretch gap-4 md:grid-cols-3"
               : "mt-12 grid items-stretch gap-4 md:grid-cols-2"
           }
         >

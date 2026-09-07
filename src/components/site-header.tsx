@@ -38,7 +38,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!onHome) return;
-    const ids = ["problem", "referenzen", "leistungen", "warum", "preise", "start"];
+    const ids = ["problem", "referenzen", "leistungen", "preise", "start"];
     const nodes = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));

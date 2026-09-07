@@ -3,7 +3,6 @@ import { LeistungsMaschine } from "@/components/scroll/leistungs-maschine";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { ThreeLevels } from "@/components/three-levels";
-import { WhyTeaser } from "@/components/why-teaser";
 import { Pricing } from "@/components/pricing";
 import { HomeStart } from "@/components/home-start";
 import { Faq } from "@/components/faq";
@@ -37,7 +36,6 @@ export default function HomePage() {
       <ProblemWall />
       <HomeReferenzen />
       <ThreeLevels compact />
-      <WhyTeaser />
       <Pricing teaser />
       <HomeStart />
       <Faq />

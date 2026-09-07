@@ -9,7 +9,7 @@ import { faqs } from "@/lib/content";
 
 export function Faq() {
   return (
-    <section id="faq" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
+    <section id="faq" className="bg-[#F3EFE6] px-5 py-16 md:px-8">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Einwände

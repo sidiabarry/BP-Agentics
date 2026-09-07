@@ -5,7 +5,7 @@ import { RevealIn } from "@/components/reveal-in";
 
 export function HomeReferenzen() {
   return (
-    <section id="referenzen" className="bg-white px-5 py-24 md:px-8">
+    <section id="referenzen" className="bg-white px-5 py-16 md:px-8">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Referenzen

@@ -48,6 +48,15 @@ const websites = [
   },
 ] as const;
 
+const teaserRows = [
+  { name: "Fundament", price: "2.900 €", run: "ab 190 € / Monat" },
+  { name: "Modul", price: "900 € bis 1.800 €", run: "in der Systemwartung" },
+  { name: "KI-Setter", price: "1.900 €", run: "99 € / Monat" },
+  { name: "Website Start", price: "950 €", run: "149 € / Monat" },
+  { name: "Website Betrieb", price: "3.900 €", run: "149 € / Monat" },
+  { name: "Website Signature", price: "ab 7.900 €", run: "290 € / Monat" },
+] as const;
+
 function WebsiteCards() {
   return (
     <div className="grid items-stretch gap-4 md:grid-cols-3">
@@ -99,7 +108,7 @@ function WebsiteCards() {
 export function Pricing({ teaser = false }: { teaser?: boolean }) {
   if (teaser) {
     return (
-      <section id="preise" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
+      <section id="preise" className="bg-[#F3EFE6] px-5 py-16 md:px-8">
         <div className="mx-auto max-w-6xl">
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Preise
@@ -108,33 +117,26 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             950 € Einbau. 149 € im Monat.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-            Drei Website-Stufen mit Festpreis. Setter, Fundament und Module stehen
-            in der Preistabelle — inklusive Wartung und Eigentum.
+            Festpreis für Website, Setter und Abläufe — inklusive Wartung und Eigentum.
           </RevealIn>
-          <div className="mt-12 grid items-stretch gap-4 md:grid-cols-3">
-            {systems.map((item, index) => (
+          <ul className="mt-8 divide-y divide-black/10 overflow-hidden rounded-3xl bg-white">
+            {teaserRows.map((item, index) => (
               <RevealIn
                 key={item.name}
-                as="article"
+                as="li"
                 variant="card"
-                delay={index * 60}
-                className="flex h-full flex-col rounded-3xl bg-white p-6 md:p-7"
+                delay={index * 40}
+                className="grid gap-1 px-5 py-4 sm:grid-cols-[minmax(0,1.1fr)_auto_minmax(0,1fr)] sm:items-baseline sm:gap-6"
               >
-                <h3 className="text-xl font-semibold">{item.name}</h3>
-                <p className="mt-2 text-[1.65rem] leading-tight font-semibold">{item.price}</p>
-                {"run" in item ? (
-                  <p className="mt-1 text-[#5C5F66]">{item.run}</p>
-                ) : null}
-                <p className="mt-4 flex-1 text-[#3A3D45]">{item.body}</p>
+                <p className="font-semibold tracking-[-0.02em]">{item.name}</p>
+                <p className="whitespace-nowrap font-semibold">{item.price}</p>
+                <p className="text-[#5C5F66] sm:text-right">{item.run}</p>
               </RevealIn>
             ))}
-          </div>
-          <div className="mt-6">
-            <WebsiteCards />
-          </div>
-          <p className="mt-8 text-[1.08rem]">
+          </ul>
+          <p className="mt-6 text-[1.08rem]">
             <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Alle Endpreise, Wartung und Eigentum in einer Tabelle
+              Alle Endpreise in der Tabelle
             </Link>
           </p>
         </div>

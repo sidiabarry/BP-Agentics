@@ -20,7 +20,7 @@ export const mainLinks = [
   { href: "/referenzen", label: "Referenzen", spy: "referenzen" },
   { href: "/preise", label: "Preise", spy: "preise" },
   { href: "/foerderung/mid-digitale-prozesse", label: "Förderung", spy: null },
-  { href: "/ueber-mich", label: "Über mich", spy: "warum" },
+  { href: "/ueber-mich", label: "Über mich", spy: null },
 ] as const;
 
 /** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */

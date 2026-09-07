@@ -20,7 +20,10 @@ const levelHrefs: Record<string, { href: string; label: string }> = {
 
 export function ThreeLevels({ compact = false }: { compact?: boolean }) {
   return (
-    <section id="leistungen" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
+    <section
+      id="leistungen"
+      className={`bg-[#F3EFE6] px-5 md:px-8 ${compact ? "py-16" : "py-24"}`}
+    >
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Leistungen
@@ -33,28 +36,25 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
           bleiben aber einzeln beauftragbar. Nachrüsten, wenn der Betrieb soweit ist.
         </RevealIn>
         {compact ? (
-          <div className="mt-12 grid items-stretch gap-4 md:grid-cols-3">
+          <ul className="mt-8 divide-y divide-black/10 border-y border-black/10">
             {levels.map((level, index) => (
               <RevealIn
                 key={level.id}
                 id={level.id}
-                as="article"
+                as="li"
                 variant="card"
                 delay={index * 60}
-                className="flex h-full flex-col rounded-3xl bg-[#14161C] p-6 text-[#F3EFE6] md:p-7"
+                className="grid gap-1 py-4 md:grid-cols-[10rem_minmax(0,1fr)_auto] md:items-baseline md:gap-6"
               >
-                <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
+                <p className="font-semibold tracking-[-0.02em] text-[#14161C]">
                   {level.roman} · {level.name}
                 </p>
-                <p className="mt-3 text-[1.05rem] text-[#9FD0F8]">{level.sub}</p>
-                <p className="mt-4 flex-1 text-[1.08rem] leading-relaxed text-white/75">
-                  {level.lead}
-                </p>
+                <p className="text-[1.05rem] leading-snug text-[#3A3D45]">{level.sub}</p>
                 {levelHrefs[level.id] ? (
-                  <p className="mt-5">
+                  <p>
                     <Link
                       href={levelHrefs[level.id].href}
-                      className="text-[#9FD0F8] underline-offset-4 hover:underline"
+                      className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
                     >
                       {levelHrefs[level.id].label}
                     </Link>
@@ -62,7 +62,7 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
                 ) : null}
               </RevealIn>
             ))}
-          </div>
+          </ul>
         ) : (
           <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
             {levels.map((level, index) => (
