@@ -48,7 +48,7 @@
 
 .hero-portal {
   position: relative;
-  background: var(--hero-exit);
+  background: #e8e6e2;
   overflow-x: clip;
   color: var(--ink);
 }
@@ -58,11 +58,13 @@
   height: 100svh;
   min-height: 34rem;
   overflow: hidden;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
 .hero-portal__film {
   position: absolute;
   inset: 0;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
 .hero-portal__film img,
@@ -75,7 +77,7 @@
   object-fit: cover;
 }
 
-/* Das Poster liegt immer darunter. Der Canvas übernimmt erst, wenn er kann. */
+/* Canvas bleibt unsichtbar, bis der erste Frame wirklich gezeichnet ist. */
 .hero-portal__film canvas {
   opacity: 0;
 }
@@ -197,6 +199,10 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__film canvas {
+  opacity: 0;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__film canvas[data-ready] {
   /* Der Canvas dimmt ab, sobald das Display aufgeht. */
   --dim: clamp(0, calc((var(--p) - 0.62) / 0.2), 1);
   opacity: calc(1 - var(--dim) * 0.35);

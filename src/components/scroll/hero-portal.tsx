@@ -101,6 +101,9 @@ export function HeroPortal() {
       img.decoding = "async";
       img.onload = () => {
         s.inflight -= 1;
+        const canvas = canvasRef.current;
+        const pin = pinRef.current;
+        if (canvas && pin) paint(canvas, pin, 0);
         pump(kind);
       };
       img.onerror = () => {
@@ -145,6 +148,7 @@ export function HeroPortal() {
 
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(best, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    canvas.dataset.ready = "";
   }
 
   return (
@@ -157,17 +161,14 @@ export function HeroPortal() {
       <div className="hero-portal__pin" ref={pinRef}>
         <div className="hero-portal__film" aria-hidden="true">
           <picture>
-            <source
-              media={`(max-width: ${SMALL_MAX}px)`}
-              srcSet={frameSrc("mobile", 0)}
-            />
+            <source srcSet="/hero/poster.avif" type="image/avif" />
             <img
-              src={frameSrc("desktop", 0)}
+              src="/hero/poster-fallback.jpg"
               alt=""
               width={1440}
               height={810}
               fetchPriority="high"
-              decoding="async"
+              decoding="sync"
             />
           </picture>
           <canvas ref={canvasRef} />
