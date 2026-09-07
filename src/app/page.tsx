@@ -1,4 +1,5 @@
-import { SystemScroll } from "@/components/system-scroll";
+import { HeroPortal } from "@/components/scroll/hero-portal";
+import { LeistungsMaschine } from "@/components/scroll/leistungs-maschine";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { ThreeLevels } from "@/components/three-levels";
@@ -31,7 +32,8 @@ export default function HomePage() {
           "@graph": [faqPage(faqs)],
         }}
       />
-      <SystemScroll />
+      <HeroPortal />
+      <LeistungsMaschine />
       <ProblemWall />
       <HomeReferenzen />
       <ThreeLevels compact />

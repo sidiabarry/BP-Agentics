@@ -1,0 +1,1094 @@
+/* ==========================================================================
+   BP Agentics — Scroll-Choreografie
+   An globals.css anhängen (oder per @import einbinden).
+
+   Aufbau dieser Datei:
+     1. Registrierte Custom Properties (damit calc() sauber typisiert ist)
+     2. Tokens für die beiden inszenierten Sektionen
+     3. AKT I  — Hero-Portal
+     4. AKT III — Leistungs-Maschine (Rahmen, Text, Schiene)
+     5. Die vier Bühnen im Gerät
+     6. Kleine Viewports und reduzierte Bewegung
+
+   Grundregel: Der statische Zustand steht IMMER zuerst und ist vollständig
+   lesbar. Alles Inszenierte hängt an [data-scroll-ready]. Ohne JS, bei
+   prefers-reduced-motion und auf kurzen Viewports fällt die Seite auf eine
+   ruhige, vollständige Fassung zurück — nie auf eine leere Fläche.
+   ========================================================================== */
+
+@property --p    { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f    { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --i    { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --intro{ syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --rail { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.hero-portal,
+.machine {
+  --ink: #0b1a27;
+  --ink-2: #12293b;
+  --mist: #d8e6f2;
+  --signal: #198be8;
+  --signal-deep: #0b5ea8;
+  --paper: #f3efe6;
+  --marker: #b4762a; /* nur für Zustände VOR dem System */
+  --hair: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* ==========================================================================
+   3. AKT I — Hero-Portal
+   ========================================================================== */
+
+.hero-portal {
+  position: relative;
+  background: var(--hero-exit);
+  overflow-x: clip;
+  color: var(--ink);
+}
+
+.hero-portal__pin {
+  position: relative;
+  height: 100svh;
+  min-height: 34rem;
+  overflow: hidden;
+}
+
+.hero-portal__film {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-portal__film img,
+.hero-portal__film canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Das Poster liegt immer darunter. Der Canvas übernimmt erst, wenn er kann. */
+.hero-portal__film canvas {
+  opacity: 0;
+}
+
+.hero-portal__copy {
+  position: absolute;
+  left: max(5vw, 1.5rem);
+  bottom: 12svh;
+  z-index: 3;
+  width: min(30rem, 46vw);
+}
+
+.hero-portal__kicker {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+
+.hero-portal__copy h1 {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.hero-portal__lead {
+  margin: 0 0 1.6rem;
+  max-width: 34ch;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
+}
+
+.hero-portal__link {
+  display: inline-block;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid currentColor;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--signal-deep);
+}
+
+.hero-portal__cue {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  z-index: 3;
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: color-mix(in srgb, var(--ink) 50%, transparent);
+}
+
+/* Portal und Ankunft sind ohne Inszenierung unsichtbar. */
+.hero-portal__portal,
+.hero-portal__arrival {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-portal__portal {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 2;
+  width: 100vmax;
+  height: 100vmax;
+  margin: -50vmax 0 0 -50vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 42% 34%,
+    #d9ecfc 0%,
+    #7cbcf1 30%,
+    #2288d8 60%,
+    #0b5ea8 100%
+  );
+}
+
+.hero-portal__arrival {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 4;
+  padding: 0 max(5vw, 1.5rem) 16svh;
+  color: #fff;
+  text-shadow: 0 1px 30px #0b5ea855;
+}
+
+.hero-portal__arrival p {
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+
+.hero-portal__arrival h2 {
+  margin: 0;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+/* --- inszeniert ---------------------------------------------------------- */
+
+.hero-portal[data-scroll-ready] {
+  height: var(--hero-scroll, 380svh);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__film canvas {
+  /* Der Canvas dimmt ab, sobald das Display aufgeht. */
+  --dim: clamp(0, calc((var(--p) - 0.62) / 0.2), 1);
+  opacity: calc(1 - var(--dim) * 0.35);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__copy,
+.hero-portal[data-scroll-ready] .hero-portal__cue {
+  --out: clamp(0, calc((var(--p) - 0.04) / 0.15), 1);
+  opacity: calc(1 - var(--out));
+  transform: translate3d(0, calc(var(--out) * -26px), 0);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__cue {
+  transform: translate3d(-50%, calc(var(--out) * 14px), 0);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__portal {
+  --open: clamp(0, calc((var(--p) - 0.62) / 0.16), 1);
+  opacity: clamp(0, calc(var(--open) * 5), 1);
+  transform: scale(calc(0.3 + var(--open) * 2.5));
+  border-radius: calc(50% - var(--open) * 30%);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival {
+  --in: clamp(0, calc((var(--p) - 0.76) / 0.11), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 18px), 0);
+}
+
+/* ==========================================================================
+   4. AKT III — Leistungs-Maschine
+   ========================================================================== */
+
+.machine {
+  position: relative;
+  overflow-x: clip;
+  padding: 6rem 0 7rem;
+  color: #eaf3fa;
+  background:
+    linear-gradient(var(--hero-exit) 0, var(--ink) 26svh),
+    var(--ink);
+}
+
+/* Blaupausen-Raster, sehr leise. */
+.machine::before {
+  content: "";
+  position: absolute;
+  inset: 26svh 0 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(#ffffff0a 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  mask-image: linear-gradient(#000 0, #000 70%, transparent 100%);
+}
+
+.machine__pin {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 3rem;
+  width: min(100rem, 90vw);
+  margin: 0 auto;
+}
+
+.machine__intro {
+  grid-column: 1 / -1;
+  max-width: 46ch;
+  margin-bottom: 1rem;
+}
+
+.machine__intro h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.machine__intro p {
+  margin: 0;
+  color: #ffffff9c;
+}
+
+/* --- Schiene ------------------------------------------------------------- */
+
+.machine__rail {
+  display: flex;
+  gap: 1.4rem;
+  grid-column: 1 / -1;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.machine__rail li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff70;
+}
+
+.machine__tick {
+  width: 1.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+/* --- Textspalte ---------------------------------------------------------- */
+
+.machine__copy {
+  display: grid;
+  gap: 3.5rem;
+}
+
+.station__index {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--signal);
+}
+
+.station h3 {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.5rem, 2.4vw, 2.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  max-width: 20ch;
+}
+
+.station__text {
+  margin: 0 0 1.2rem;
+  max-width: 42ch;
+  line-height: 1.62;
+  color: #ffffffb8;
+}
+
+.station__facts {
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+  max-width: 40ch;
+}
+
+.station__facts li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.95rem;
+  color: #ffffffcf;
+}
+
+.station__facts li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 0.7rem;
+  height: 1px;
+  background: var(--signal);
+}
+
+.station__link {
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #ffffff40;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+}
+
+.station__link:hover {
+  border-color: var(--signal);
+}
+
+/* --- Gerät --------------------------------------------------------------- */
+
+.machine__stage {
+  display: flex;
+  justify-content: center;
+}
+
+.machine__shell {
+  position: relative;
+  width: var(--shell-w, 44rem);
+  height: var(--shell-h, 27.5rem);
+  border-radius: var(--shell-r, 14px);
+  overflow: hidden;
+  background: #f6f8fa;
+  color: var(--ink);
+  transform: scale(var(--shell-scale, 1));
+  box-shadow:
+    0 0 0 1px #ffffff26,
+    0 46px 80px -34px #000c,
+    0 0 90px -30px #198be866;
+}
+
+.machine__glass {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(150deg, #ffffff40 0 28%, transparent 46%);
+}
+
+.machine__shadow {
+  display: none;
+}
+
+.machine__progress {
+  grid-column: 1 / -1;
+  height: 1px;
+  margin-top: 2.5rem;
+  background: #ffffff1f;
+}
+
+.machine__progress span {
+  display: block;
+  height: 1px;
+  width: calc(var(--p, 0) * 100%);
+  background: var(--signal);
+}
+
+/* --- inszeniert ---------------------------------------------------------- */
+
+.machine[data-scroll-ready] {
+  height: var(--machine-scroll, 560svh);
+  padding: 0;
+}
+
+.machine[data-scroll-ready] .machine__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  align-content: center;
+  grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+.machine[data-scroll-ready] .machine__intro {
+  --out: clamp(0, calc((var(--p) - 0.03) / 0.06), 1);
+  opacity: calc(1 - var(--out) * 0.86);
+  transform: translate3d(0, calc(var(--out) * -10px), 0);
+}
+
+.machine[data-scroll-ready] .machine__rail li {
+  --near: calc(var(--rail) * 4 - var(--i));
+  --on: calc(
+    clamp(0, calc(var(--near) * 5), 1) - clamp(0, calc((var(--near) - 1) * 5), 1)
+  );
+  color: color-mix(in srgb, #fff calc(38% + var(--on) * 62%), transparent);
+}
+
+.machine[data-scroll-ready] .machine__rail .machine__tick {
+  width: calc(1.5rem + var(--on) * 1.6rem);
+  background: color-mix(in srgb, var(--signal) calc(var(--on) * 100%), currentColor);
+}
+
+/* Alle Stationen liegen übereinander und werden ein- und ausgeblendet. */
+.machine[data-scroll-ready] .machine__copy {
+  position: relative;
+  grid-row: 3;
+  grid-column: 1;
+  align-self: center;
+  min-height: 22rem;
+}
+
+.machine[data-scroll-ready] .station {
+  position: absolute;
+  inset: 0;
+  visibility: var(--v, visible);
+  opacity: var(--f, 1);
+  transform: translate3d(0, calc((1 - var(--f, 1)) * 22px), 0);
+}
+
+.machine[data-scroll-ready] .machine__stage {
+  grid-row: 3;
+  grid-column: 2;
+  align-self: center;
+}
+
+.machine[data-scroll-ready] .machine__shell {
+  transform: scale(var(--shell-scale, 1))
+    translate3d(0, calc((1 - var(--intro)) * 46px), 0);
+  opacity: var(--intro);
+}
+
+/* ==========================================================================
+   5. Die vier Bühnen
+   ========================================================================== */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  padding: 1.2rem;
+  background: #f6f8fa;
+  font-size: 0.82rem;
+}
+
+/* Ohne Inszenierung zeigt das Gerät nur die erste Bühne. */
+.stage + .stage {
+  display: none;
+}
+
+.machine[data-scroll-ready] .stage + .stage {
+  display: block;
+}
+
+.machine[data-scroll-ready] .stage--auftritt { opacity: clamp(0, calc(var(--s1) * 8), 1); }
+.machine[data-scroll-ready] .stage--annahme  { opacity: clamp(0, calc(var(--s2) * 8), 1); }
+.machine[data-scroll-ready] .stage--ablaeufe { opacity: clamp(0, calc(var(--s3) * 8), 1); }
+.machine[data-scroll-ready] .stage--system   { opacity: clamp(0, calc(var(--s4) * 8), 1); }
+
+/* --- Bühne 1: die Website baut sich auf ---------------------------------- */
+
+.stage--auftritt {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.browser {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--hair);
+  background: #eef2f6;
+}
+
+.browser__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #c9d3dc;
+}
+
+.browser__url {
+  margin-left: 0.8rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #5c6b78;
+  font-size: 0.72rem;
+}
+
+.site {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem 1.2rem 1.2rem;
+  min-height: 0;
+}
+
+.site__nav,
+.site__photo,
+.site__h1,
+.site__h2,
+.site__cta,
+.site__grid > span {
+  --in: 1;
+}
+
+.machine[data-scroll-ready] .site__nav,
+.machine[data-scroll-ready] .site__photo,
+.machine[data-scroll-ready] .site__h1,
+.machine[data-scroll-ready] .site__h2,
+.machine[data-scroll-ready] .site__cta,
+.machine[data-scroll-ready] .site__grid > span {
+  --in: clamp(0, calc((var(--s1) - 0.06 - var(--i) * 0.07) * 14), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 10px), 0);
+}
+
+.site__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--hair);
+  font-size: 0.7rem;
+  color: #66757f;
+}
+
+.site__nav strong {
+  margin-right: auto;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.site__nav em {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--signal);
+  color: #fff;
+  font-style: normal;
+}
+
+.site__hero {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.site__photo {
+  border-radius: 8px;
+  background:
+    radial-gradient(120% 90% at 20% 10%, #b9d6ee 0, #6ea8d6 55%, #2c5f88 100%);
+}
+
+.site__words {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.site__h1,
+.site__h2 {
+  display: block;
+  height: 0.85rem;
+  border-radius: 3px;
+  background: #d5dde4;
+}
+
+.site__h1 { width: 92%; height: 1.15rem; background: #2a3a46; }
+.site__h2 { width: 66%; }
+
+.site__cta {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.site__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  height: 3.2rem;
+}
+
+.site__grid > span {
+  border-radius: 6px;
+  background: #e6ecf1;
+}
+
+.site__pointer,
+.site__toast {
+  position: absolute;
+  opacity: 0;
+}
+
+.machine[data-scroll-ready] .site__pointer {
+  left: 46%;
+  top: 52%;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: #ffffffb0;
+  --go: clamp(0, calc((var(--s1) - 0.6) / 0.16), 1);
+  --hit: clamp(0, calc((var(--s1) - 0.74) / 0.05), 1);
+  opacity: clamp(0, calc(var(--go) * 6), calc(1 - var(--hit)));
+  transform: translate3d(calc(var(--go) * -2.5rem), calc(var(--go) * 1.1rem), 0)
+    scale(calc(1 - var(--hit) * 0.35));
+}
+
+.machine[data-scroll-ready] .site__toast {
+  right: 1.1rem;
+  bottom: 1.1rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.74rem;
+  --in: clamp(0, calc((var(--s1) - 0.78) / 0.06), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 12px), 0);
+}
+
+/* --- Bühne 2: der Setter antwortet --------------------------------------- */
+
+.stage--annahme {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: #e9eef2;
+}
+
+.chat__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.chat__bar small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.66rem;
+  color: #ffffff8c;
+}
+
+.chat__avatar {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.9rem;
+  list-style: none;
+  overflow: hidden;
+}
+
+.chat li {
+  max-width: 84%;
+  padding: 0.5rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.chat__in {
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+  background: #fff;
+}
+
+.chat__out {
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+  background: #d6ecff;
+}
+
+.machine[data-scroll-ready] .chat li {
+  --in: clamp(0, calc((var(--s2) - 0.08 - var(--i) * 0.115) * 12), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 8px), 0) scale(calc(0.96 + var(--in) * 0.04));
+}
+
+.chat__slot {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0.9rem 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.chat__slot small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.66rem;
+  color: #ffffff8c;
+}
+
+.chat__slot-day {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  background: var(--signal);
+}
+
+.machine[data-scroll-ready] .chat__slot {
+  --in: clamp(0, calc((var(--s2) - 0.72) / 0.08), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 20px), 0);
+}
+
+.chat__stamp {
+  position: absolute;
+  top: 3.4rem;
+  right: 0.9rem;
+  margin: 0;
+  font-size: 0.62rem;
+  color: var(--marker);
+}
+
+.machine[data-scroll-ready] .chat__stamp {
+  opacity: clamp(0, calc(1 - (var(--s2) - 0.55) * 8), 1);
+}
+
+/* --- Bühne 3: der Vorgang läuft durch ------------------------------------ */
+
+.stage--ablaeufe {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.4rem 1.2rem 1.2rem;
+}
+
+.flow {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.6rem;
+}
+
+.flow__wire {
+  position: absolute;
+  inset: 50% 0 auto;
+  width: 100%;
+  height: 2.6rem;
+  transform: translateY(-50%);
+}
+
+.flow__wire path {
+  fill: none;
+  stroke: #c2d0da;
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.machine[data-scroll-ready] .flow__wire path {
+  stroke: var(--signal);
+  stroke-dashoffset: calc(1 - clamp(0, calc((var(--s3) - 0.05) / 0.4), 1));
+}
+
+.flow__node {
+  position: relative;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #cbd7e0;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.machine[data-scroll-ready] .flow__node {
+  --in: clamp(0, calc((var(--s3) - 0.08 - var(--i) * 0.11) * 12), 1);
+  opacity: calc(0.25 + var(--in) * 0.75);
+  border-color: color-mix(in srgb, var(--signal) calc(var(--in) * 100%), #cbd7e0);
+  transform: scale(calc(0.94 + var(--in) * 0.06));
+}
+
+.flow__packet {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-top: -0.275rem;
+  border-radius: 50%;
+  background: var(--signal);
+  opacity: 0;
+}
+
+.machine[data-scroll-ready] .flow__packet {
+  --go: clamp(0, calc((var(--s3) - 0.08) / 0.44), 1);
+  opacity: calc(var(--go) * (1 - clamp(0, calc((var(--s3) - 0.5) * 12), 1)));
+  left: 2%;
+  transform: translateX(calc(var(--go) * 96cqw));
+  box-shadow: 0 0 12px var(--signal);
+}
+
+.ledger {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ledger__head,
+.ledger__row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.74rem;
+}
+
+.ledger__head {
+  background: #eef2f6;
+  color: #64737e;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+.ledger__row {
+  border-top: 1px solid var(--hair);
+}
+
+.ledger__state {
+  color: var(--signal-deep);
+  font-weight: 600;
+}
+
+.machine[data-scroll-ready] .ledger__row {
+  --in: clamp(0, calc((var(--s3) - 0.34 - var(--i) * 0.1) * 12), 1);
+  opacity: var(--in);
+  transform: translate3d(calc((1 - var(--in)) * -14px), 0, 0);
+}
+
+.ledger__paper {
+  position: absolute;
+  opacity: 0;
+}
+
+.machine[data-scroll-ready] .ledger__paper {
+  left: 1.2rem;
+  bottom: 1.2rem;
+  width: 2.4rem;
+  height: 3.2rem;
+  border-radius: 3px;
+  border: 1px solid var(--marker);
+  background: repeating-linear-gradient(
+    #fff 0 5px,
+    color-mix(in srgb, var(--marker) 35%, transparent) 5px 6px
+  );
+  --go: clamp(0, calc((var(--s3) - 0.3) / 0.18), 1);
+  opacity: calc(clamp(0, calc((var(--s3) - 0.22) * 14), 1) * (1 - var(--go)));
+  transform: translate3d(calc(var(--go) * 6rem), calc(var(--go) * -2.4rem), 0)
+    rotate(calc(var(--go) * 14deg)) scale(calc(1 - var(--go) * 0.5));
+}
+
+/* --- Bühne 4: das Zusammenspiel ------------------------------------------ */
+
+.stage--system {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 1.6rem;
+  background: linear-gradient(160deg, #f7fafc, #e7eef4);
+}
+
+.combo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.combo__wire {
+  position: absolute;
+  inset: 50% 0 auto;
+  width: 100%;
+  height: 1.2rem;
+  transform: translateY(-50%);
+}
+
+.combo__wire path {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.machine[data-scroll-ready] .combo__wire path {
+  stroke-dashoffset: calc(1 - clamp(0, calc((var(--s4) - 0.18) / 0.34), 1));
+}
+
+.combo__piece {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.4rem;
+  border: 1.5px solid var(--ink);
+  background: #fff;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.combo__piece--browser { width: 5.6rem; height: 3.6rem; border-radius: 5px; }
+.combo__piece--phone   { width: 2.6rem; height: 4.6rem; border-radius: 10px; }
+.combo__piece--board   { width: 5.6rem; height: 4rem;  border-radius: 5px; }
+
+.machine[data-scroll-ready] .combo__piece {
+  --in: clamp(0, calc((var(--s4) - 0.05 - var(--i) * 0.13) * 12), 1);
+  opacity: var(--in);
+  transform: translate3d(0, calc((1 - var(--in)) * 16px), 0);
+}
+
+.combo__caption {
+  margin: 0;
+  max-width: 32ch;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #40525f;
+}
+
+.machine[data-scroll-ready] .combo__caption {
+  --in: clamp(0, calc((var(--s4) - 0.55) / 0.16), 1);
+  opacity: var(--in);
+}
+
+/* ==========================================================================
+   6. Kleine Viewports und reduzierte Bewegung
+   ========================================================================== */
+
+@media (max-width: 1280px) {
+  .machine__shell { --shell-scale: 0.84; }
+}
+
+@media (max-width: 1024px) {
+  .machine__pin { grid-template-columns: minmax(0, 1fr); }
+  .machine[data-scroll-ready] .machine__stage { grid-column: 1; }
+  .machine__shell { --shell-scale: 0.7; }
+}
+
+@media (max-width: 700px) {
+  .hero-portal__copy {
+    width: min(30rem, 88vw);
+    bottom: 16svh;
+  }
+
+  .machine {
+    padding: 4rem 0 5rem;
+  }
+
+  .machine__pin {
+    width: 90vw;
+    gap: 1.6rem;
+  }
+
+  .machine[data-scroll-ready] .machine__pin {
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  }
+
+  .machine[data-scroll-ready] .machine__stage {
+    grid-row: 3;
+  }
+
+  .machine[data-scroll-ready] .machine__copy {
+    grid-row: 4;
+    min-height: 17rem;
+  }
+
+  .machine__shell { --shell-scale: 0.56; }
+
+  .station h3 { font-size: 1.35rem; }
+  .station__facts { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portal,
+  .machine {
+    height: auto !important;
+  }
+
+  .hero-portal__pin,
+  .machine__pin {
+    position: relative !important;
+  }
+
+  .machine .station {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
