@@ -29,7 +29,7 @@ export default function FeinkostPage() {
             "Produktdemo: Annahme und Warenweg auf dem Smartphone im System von Feinkost Kreta.",
           thumbnailUrl: "/demos/feinkost-poster.jpg",
           contentUrl: "/demos/feinkost-loop.mp4",
-          duration: "PT29S",
+          duration: "PT12S",
           uploadDate: "2026-08-15",
         }),
       ]}

@@ -45,7 +45,7 @@ export default function ReferenzenPage() {
           [
             "Dachdecker Signature",
             "Auftritt",
-            "Loop der Scroll-Choreografie, fünfzehn Sekunden",
+            "Loop der Scroll-Choreografie, zwölf Sekunden",
             "Signature-Website",
           ],
         ]}
