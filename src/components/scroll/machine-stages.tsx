@@ -178,46 +178,57 @@ export function StageAblaeufe() {
 export function StageSystem() {
   return (
     <div className="stage stage--system">
-      <article className="combo__bit combo__bit--auftritt" style={i(0)}>
-        <p className="combo__index">1 · Websites</p>
-        <h4>Die Seite erklärt die Arbeit.</h4>
-        <p>Besucher findet Leistungen, Referenzen und einen Anfrageweg.</p>
-      </article>
+      <div className="combo">
+        <div className="combo__steps">
+          <article className="combo__step combo__step--site" style={i(0)}>
+            <span className="combo__num">1</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Websites</p>
+              <h4>Die Seite erklärt die Arbeit.</h4>
+              <p className="combo__lede">Besucher findet Leistungen, Referenzen und einen Anfrageweg.</p>
+            </div>
+          </article>
 
-      <div className="combo__phone" style={i(1)}>
-        <div className="combo__phone-bar">
-          <span className="combo__phone-avatar" />
-          <span>
-            Müller Bedachungen
-            <small>2 · Nachrichten-Assistent</small>
-          </span>
-        </div>
-        <div className="combo__phone-body">
-          <p className="combo__bubble combo__bubble--in">Sanierung Garagendach in Hagen — Besichtigung möglich?</p>
-          <p className="combo__bubble combo__bubble--out">Im Beispiel: Donnerstag 9:00 Uhr.</p>
-          <div className="combo__phone-slot">
-            <span>Do</span>
-            <span>
-              9:00 Besichtigung
-              <small>Beispiel · keine echte Buchung</small>
-            </span>
+          <article className="combo__step combo__step--msg" style={i(1)}>
+            <span className="combo__num">2</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Nachrichten-Assistent</p>
+              <p className="combo__lede">Antwortet per WhatsApp und E-Mail.</p>
+            </div>
+          </article>
+
+          <div className="combo__thread" style={i(1)}>
+            <p className="combo__bubble combo__bubble--in">
+              Sanierung Garagendach in Hagen — Besichtigung möglich?
+            </p>
+            <p className="combo__bubble combo__bubble--out">Im Beispiel: Donnerstag 9:00 Uhr.</p>
+            <div className="combo__slot">
+              <span>Do</span>
+              <span>
+                9:00 Besichtigung
+                <small>Beispiel · keine echte Buchung</small>
+              </span>
+            </div>
           </div>
+
+          <article className="combo__step combo__step--office" style={i(2)}>
+            <span className="combo__num">3</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Büroabläufe</p>
+              <h4>Die Angaben stehen zusammen.</h4>
+              <ul>
+                <li>Besichtigung</li>
+                <li>Angaben zum Vorhaben</li>
+                <li>Übergabe an das Team</li>
+              </ul>
+            </div>
+          </article>
         </div>
+
+        <p className="combo__caption" style={i(3)}>
+          Eine Anfrage, ein Weg, ein Vorgang — vom ersten Kontakt zur Übergabe.
+        </p>
       </div>
-
-      <article className="combo__bit combo__bit--ablaeufe" style={i(2)}>
-        <p className="combo__index">3 · Büroabläufe</p>
-        <h4>Die Angaben stehen zusammen.</h4>
-        <ul>
-          <li>Besichtigung im Beispielkalender</li>
-          <li>Angaben zum Vorhaben</li>
-          <li>Übergabe an das Team</li>
-        </ul>
-      </article>
-
-      <p className="combo__caption">
-        Eine Anfrage, ein Weg, ein Vorgang — vom ersten Kontakt zur Übergabe.
-      </p>
     </div>
   );
 }
