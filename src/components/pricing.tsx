@@ -27,7 +27,7 @@ export function WebsiteCards({
   showDetailLink?: boolean;
 }) {
   return (
-    <div className="grid items-stretch gap-4 md:grid-cols-3">
+    <div className="grid items-stretch gap-4 lg:grid-cols-3">
       {websitePackages.map((plan, index) => (
         <RevealIn
           key={plan.name}
@@ -36,16 +36,14 @@ export function WebsiteCards({
           delay={index * 60}
           className={
             plan.featured
-              ? "flex h-full flex-col rounded-3xl bg-[#198BE8] p-7 text-white"
-              : "flex h-full flex-col rounded-3xl bg-white p-7"
+              ? "flex h-full min-w-0 flex-col rounded-3xl bg-[#198BE8] p-5 text-white md:p-7"
+              : "flex h-full min-w-0 flex-col rounded-3xl bg-white p-5 md:p-7"
           }
         >
-          {"badge" in plan && plan.badge ? (
-            <p className={plan.featured ? "text-sm text-white/80" : "text-sm text-[#198BE8]"}>
-              {plan.badge}
-            </p>
-          ) : null}
-          <h3 className="text-xl font-semibold">{plan.name}</h3>
+          <p className={plan.featured ? "min-h-[1.25rem] text-sm text-white/80" : "min-h-[1.25rem] text-sm text-[#198BE8]"}>
+            {"badge" in plan && plan.badge ? plan.badge : "\u00a0"}
+          </p>
+          <h3 className="mt-1 min-h-[3.2rem] text-xl leading-snug font-semibold">{plan.name}</h3>
           <RevealIn
             as="p"
             variant="price"
@@ -54,7 +52,7 @@ export function WebsiteCards({
           >
             {plan.once}
           </RevealIn>
-          <p className={plan.featured ? "mt-1 text-white/80" : "mt-1 text-[#5C5F66]"}>
+          <p className={plan.featured ? "mt-1 min-h-[2.8rem] text-white/80" : "mt-1 min-h-[2.8rem] text-[#5C5F66]"}>
             {plan.run} · {plan.year} mit 12 Monaten Betreuung
           </p>
           <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>

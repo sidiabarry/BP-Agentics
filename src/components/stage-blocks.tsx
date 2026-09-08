@@ -19,7 +19,7 @@ export function StageCard({
   return (
     <article
       className={cn(
-        "flex h-full min-w-0 flex-col rounded-[1.6rem] p-6 md:p-7",
+        "flex h-full min-w-0 flex-col rounded-[1.6rem] p-5 md:p-7",
         tone === "white" && "bg-white text-[#14161C]",
         tone === "cream" && "bg-[#EDE7DA] text-[#14161C]",
         tone === "ink" && "bg-[#14161C] text-[#F3EFE6]",
@@ -40,7 +40,7 @@ export function StageCard({
         </p>
       ) : null}
       {title ? (
-        <h3 className="mt-3 text-2xl leading-snug font-semibold tracking-[-0.03em] md:text-[1.7rem]">
+        <h3 className="mt-3 min-h-[3.4rem] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]">
           {title}
         </h3>
       ) : null}
@@ -61,6 +61,57 @@ export function StageCard({
   );
 }
 
+export function StagePanel({
+  kicker,
+  title,
+  body,
+  visual,
+  tone = "white",
+  className,
+}: {
+  kicker: string;
+  title: string;
+  body: string;
+  visual: ReactNode;
+  tone?: "white" | "ink";
+  className?: string;
+}) {
+  return (
+    <article
+      className={cn(
+        "flex h-full min-w-0 flex-col overflow-hidden rounded-[1.8rem]",
+        tone === "ink" ? "bg-[#14161C] text-[#F3EFE6]" : "bg-white text-[#14161C]",
+        className,
+      )}
+    >
+      <div className="flex h-[11.5rem] shrink-0 items-stretch justify-stretch overflow-hidden md:h-[12.5rem]">
+        {visual}
+      </div>
+      <div className="flex flex-1 flex-col px-5 py-5">
+        <p
+          className={cn(
+            "text-sm tracking-[0.16em] uppercase",
+            tone === "ink" ? "text-[#9FD0F8]" : "text-[#198BE8]",
+          )}
+        >
+          {kicker}
+        </p>
+        <h3 className="mt-2 min-h-[3.4rem] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em]">
+          {title}
+        </h3>
+        <p
+          className={cn(
+            "mt-3 min-h-[6.8rem] text-[1.05rem] leading-relaxed",
+            tone === "ink" ? "text-white/72" : "text-[#3A3D45]",
+          )}
+        >
+          {body}
+        </p>
+      </div>
+    </article>
+  );
+}
+
 export function StageGrid({
   children,
   cols = 3,
@@ -74,7 +125,7 @@ export function StageGrid({
     <div
       className={cn(
         "grid items-stretch gap-4",
-        cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3",
+        cols === 2 ? "md:grid-cols-2" : "lg:grid-cols-3",
         className,
       )}
     >
@@ -97,17 +148,19 @@ export function StageSteps({
           {heading}
         </h2>
       ) : null}
-      <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-6 grid gap-4 lg:grid-cols-4">
         {items.map((item, index) => (
           <li
             key={item.title}
-            className="rounded-[1.4rem] bg-white p-5"
+            className="flex h-full min-w-0 flex-col rounded-[1.4rem] bg-white p-5"
           >
             <p className="text-[1.6rem] leading-none font-semibold tracking-[-0.04em] text-[#198BE8]">
               {String(index + 1).padStart(2, "0")}
             </p>
-            <h3 className="mt-3 text-lg leading-snug font-semibold">{item.title}</h3>
-            <p className="mt-2 text-[1.02rem] leading-relaxed text-[#3A3D45]">
+            <h3 className="mt-3 min-h-[3.2rem] text-lg leading-snug font-semibold">
+              {item.title}
+            </h3>
+            <p className="mt-2 flex-1 text-[1.02rem] leading-relaxed text-[#3A3D45]">
               {item.body}
             </p>
           </li>

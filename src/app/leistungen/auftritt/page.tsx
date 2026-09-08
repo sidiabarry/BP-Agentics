@@ -78,10 +78,9 @@ export default function AuftrittPage() {
       <StageGrid className="mt-10" cols={2}>
         <StageCard kicker="Welche Stufe" title="So finden wir den Umfang.">
           <p>
-            Die passende Stufe hängt davon ab, wie viele Leistungen und Projekte
-            erklärt werden sollen und welche Inhalte bereits vorliegen. Eine klare
-            Anfragemöglichkeit gehört zu jedem Auftritt. Den genauen Umfang halten
-            wir im Angebot fest.
+            Die Stufe richtet sich nach Leistungen, Projekten und vorhandenen
+            Inhalten. Eine klare Anfrage gehört zu jedem Auftritt. Den Umfang
+            halten wir im Angebot fest.
           </p>
         </StageCard>
         <StageCard kicker="Nach der Einrichtung" title="Betreuung ist optional.">

@@ -111,7 +111,7 @@ export function StagePage({
                 {kicker}
               </p>
             ) : null}
-            <h1 className="mt-3 max-w-[16ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
+            <h1 className="mt-3 max-w-[18ch] text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] md:text-6xl">
               {title}
             </h1>
             <p

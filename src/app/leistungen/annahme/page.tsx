@@ -88,17 +88,16 @@ export default function AnnahmePage() {
       <StageGrid className="mt-10" cols={2}>
         <StageCard kicker="Vor der Einrichtung" title="Was wir festlegen.">
           <p>
-            Welche Anfragen der Assistent bearbeitet, welche Angaben erforderlich
-            sind, welche Termine angeboten werden und wann ein Mensch übernimmt.
-            Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und
-            Ihres Kalenders werden vorab geprüft.
+            Welche Anfragen der Assistent bearbeitet, welche Angaben nötig sind,
+            welche Termine angeboten werden und wann ein Mensch übernimmt.
+            WhatsApp, E-Mail und Kalender prüfen wir vorab.
           </p>
         </StageCard>
         <StageCard kicker="Passt das?" title="Wenn Anfragen wiederkehren.">
           <p>
-            Sinnvoll ist der Assistent, wenn Kunden per WhatsApp oder E-Mail
-            anfragen und wiederkehrende Fragen oder Terminabstimmungen anfallen.
-            Im Gespräch prüfen wir das anhand Ihres Anfragewegs.
+            Sinnvoll, wenn Kunden per WhatsApp oder E-Mail anfragen und
+            wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch
+            prüfen wir Ihren Anfrageweg.
           </p>
         </StageCard>
       </StageGrid>

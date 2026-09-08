@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageFaqs } from "@/components/page-faqs";
 import { Proof } from "@/components/proof";
-import { StageCard, StageLimit } from "@/components/stage-blocks";
+import { StageCard, StageGrid, StageLimit, StagePanel } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { TradeSelector } from "@/components/trade-selector";
 import { ablaeufeFaqs } from "@/lib/content";
@@ -19,115 +19,84 @@ export const metadata: Metadata = pageMetadata({
 
 function AblaeufePanels() {
   return (
-    <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">
-      <article className="flex min-w-0 flex-col overflow-hidden rounded-[1.8rem] bg-[#14161C] text-[#F3EFE6]">
-        <div className="bg-[#198BE8] px-5 py-5">
-          <p className="text-[0.72rem] tracking-[0.18em] text-white/75 uppercase">
-            Beispiel · kein Echtbetrieb
-          </p>
-          <div className="mt-3 rounded-2xl bg-[#F3EFE6] px-4 py-4 text-[#14161C] shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)]">
-            <div className="flex items-baseline justify-between gap-3 text-sm text-[#5C5F66]">
-              <span>Lieferschein</span>
-              <span>LS-1042</span>
+    <StageGrid className="mt-10">
+      <StagePanel
+        tone="ink"
+        kicker="Einstieg"
+        title="Digitaler Lieferschein"
+        body="Angaben zum Auftrag werden mobil erfasst und dem Büro bereitgestellt. Felder, Freigaben und Programme legt der Ablauf fest."
+        visual={
+          <div className="flex h-full w-full flex-col justify-center bg-[#198BE8] px-5">
+            <p className="text-[0.72rem] tracking-[0.18em] text-white/75 uppercase">
+              Beispiel · kein Echtbetrieb
+            </p>
+            <div className="mt-3 rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[#14161C]">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-sm text-[#5C5F66]">
+                <span>Lieferschein</span>
+                <span>LS-1042</span>
+              </div>
+              <p className="mt-1 text-[1.05rem] leading-snug font-semibold">
+                Hagen-Haspe · Garagendach
+              </p>
+              <p className="mt-2 inline-flex flex-wrap rounded-full bg-[#198BE8] px-3 py-1 text-sm text-white">
+                unterwegs · Büro sieht mit
+              </p>
             </div>
-            <p className="mt-2 text-[1.15rem] leading-snug font-semibold">
-              Hagen-Haspe · Garagendach
-            </p>
-            <p className="mt-3 inline-flex rounded-full bg-[#198BE8] px-3 py-1 text-sm text-white">
-              unterwegs · Büro sieht mit
-            </p>
           </div>
-        </div>
-        <div className="flex flex-1 flex-col px-6 py-6">
-          <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
-            Ein möglicher Einstieg
-          </p>
-          <h3 className="mt-2 text-[1.45rem] leading-snug font-semibold tracking-[-0.03em]">
-            Digitaler Lieferschein
-          </h3>
-          <p className="mt-3 flex-1 text-[1.05rem] leading-relaxed text-white/72">
-            Angaben zum Auftrag werden mobil erfasst und dem Büro zur weiteren
-            Bearbeitung bereitgestellt. Welche Felder, Freigaben und Programme
-            dazugehören, wird anhand Ihres Ablaufs festgelegt.
-          </p>
-        </div>
-      </article>
-
-      <article className="flex min-w-0 flex-col overflow-hidden rounded-[1.8rem] bg-white">
-        <div className="bg-[#EDE7DA] px-5 py-5">
-          <ol className="space-y-2">
-            {[
-              { n: "01", label: "Ihr Programm" },
-              { n: "02", label: "Datenbasis" },
-              { n: "03", label: "1 Modul" },
-            ].map((step, index) => (
-              <li key={step.n}>
-                <span className="flex items-center gap-3 rounded-2xl bg-[#14161C] px-4 py-3 text-[#F3EFE6]">
+        }
+      />
+      <StagePanel
+        kicker="Vorhandenes"
+        title="Auf dem Vorhandenen aufbauen."
+        body="Im Gespräch prüfen wir, welche Programme zuverlässig laufen und wo eine Verbindung hilft. Eine Datenbasis ist keine kaufmännische Software."
+        visual={
+          <div className="flex h-full w-full flex-col justify-center bg-[#EDE7DA] px-5">
+            <ol className="space-y-1.5">
+              {[
+                { n: "01", label: "Ihr Programm" },
+                { n: "02", label: "Datenbasis" },
+                { n: "03", label: "1 Modul" },
+              ].map((step) => (
+                <li
+                  key={step.n}
+                  className="flex items-center gap-3 rounded-xl bg-[#14161C] px-3 py-2 text-[#F3EFE6]"
+                >
                   <span className="text-sm tracking-[0.16em] text-[#9FD0F8]">
                     {step.n}
                   </span>
-                  <span className="text-[1.02rem] font-semibold">{step.label}</span>
-                </span>
-                {index < 2 ? (
-                  <span
-                    aria-hidden="true"
-                    className="mx-auto block h-2 w-px bg-[#198BE8]"
-                  />
-                ) : null}
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className="flex flex-1 flex-col px-6 py-6">
-          <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-            Vorhandenes
-          </p>
-          <h3 className="mt-2 text-[1.45rem] leading-snug font-semibold tracking-[-0.03em]">
-            Auf dem aufbauen, was schon läuft.
-          </h3>
-          <p className="mt-3 flex-1 text-[1.05rem] leading-relaxed text-[#3A3D45]">
-            Im Gespräch wird geprüft, welche Programme bereits zuverlässig arbeiten
-            und an welcher Stelle eine Verbindung hilfreich ist. Eine gemeinsame
-            Datenbasis ist nicht der vollständige Umfang einer kaufmännischen
-            Software.
-          </p>
-        </div>
-      </article>
-
-      <article className="flex min-w-0 flex-col overflow-hidden rounded-[1.8rem] bg-white">
-        <div className="grid grid-cols-2">
-          <div className="bg-[#14161C] px-4 py-5 text-[#F3EFE6] sm:px-5">
-            <p className="text-[0.7rem] tracking-[0.16em] text-[#9FD0F8] uppercase">
-              Büro
-            </p>
-            <p className="mt-2 text-[1.05rem] leading-snug font-semibold">
-              sieht denselben Stand
-            </p>
+                  <span className="text-[0.98rem] font-semibold">{step.label}</span>
+                </li>
+              ))}
+            </ol>
           </div>
-          <div className="bg-[#198BE8] px-4 py-5 text-white sm:px-5">
-            <p className="text-[0.7rem] tracking-[0.16em] text-white/70 uppercase">
-              Außendienst
-            </p>
-            <p className="mt-2 text-[1.05rem] leading-snug font-semibold">
-              erfasst unterwegs
-            </p>
+        }
+      />
+      <StagePanel
+        kicker="Team"
+        title="Büro und Außendienst im Blick."
+        body="Informationen, Zuständigkeiten und die Einführung stehen im Projektplan. Fachliche Freigaben bleiben im Betrieb."
+        visual={
+          <div className="grid h-full w-full grid-cols-2">
+            <div className="flex flex-col justify-center bg-[#14161C] px-4 text-[#F3EFE6]">
+              <p className="text-[0.7rem] tracking-[0.16em] text-[#9FD0F8] uppercase">
+                Büro
+              </p>
+              <p className="mt-2 text-sm leading-snug font-semibold">
+                sieht denselben Stand
+              </p>
+            </div>
+            <div className="flex flex-col justify-center bg-[#198BE8] px-4 text-white">
+              <p className="text-[0.7rem] tracking-[0.16em] text-white/70 uppercase">
+                Außendienst
+              </p>
+              <p className="mt-2 text-sm leading-snug font-semibold">
+                erfasst unterwegs
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-1 flex-col px-6 py-6">
-          <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-            Team
-          </p>
-          <h3 className="mt-2 text-[1.45rem] leading-snug font-semibold tracking-[-0.03em]">
-            Büro und Außendienst stimmen mit.
-          </h3>
-          <p className="mt-3 flex-1 text-[1.05rem] leading-relaxed text-[#3A3D45]">
-            Die benötigten Informationen, Zuständigkeiten und die Einführung in
-            den neuen Ablauf stehen im Projektplan. Fachliche Freigaben bleiben
-            im Betrieb.
-          </p>
-        </div>
-      </article>
-    </div>
+        }
+      />
+    </StageGrid>
   );
 }
 
