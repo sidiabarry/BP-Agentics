@@ -112,50 +112,48 @@ export function DocPage({
         </div>
         {showCta ? (
         <section
-          className="mt-14 grid gap-5 rounded-3xl border border-black/10 bg-white p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:items-stretch md:gap-6 md:p-7"
+          className="mt-14 rounded-3xl border border-black/10 bg-white p-6 md:p-8"
           aria-labelledby="doc-naechster-schritt"
         >
-          <div className="flex min-w-0 flex-col">
-            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              Nächster Schritt
-            </p>
-            <h2
-              id="doc-naechster-schritt"
-              className="mt-2 text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]"
-            >
-              Was soll für Ihren Betrieb leichter werden?
-            </h2>
-            <p className="mt-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
-              90 Minuten vor Ort in Nordrhein-Westfalen. Den Wunschtermin
-              bestätigen wir persönlich.
-            </p>
-            <div className="mt-5 flex flex-col gap-3 sm:mt-auto sm:flex-row sm:pt-6">
-              <Button
-                asChild
-                className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
-              >
-                <Link href={cta.href}>{cta.primary}</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-12 rounded-full border-black/15 bg-transparent px-6 text-[#14161C] hover:bg-[#F3EFE6]"
-              >
-                <Link href="/kontakt">Kontakt aufnehmen</Link>
-              </Button>
-            </div>
-          </div>
-          <ul className="grid h-full gap-3 sm:grid-cols-3 md:grid-cols-1 md:grid-rows-3">
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+          <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
+            Nächster Schritt
+          </p>
+          <h2
+            id="doc-naechster-schritt"
+            className="mt-2 max-w-[22ch] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]"
+          >
+            Was soll für Ihren Betrieb leichter werden?
+          </h2>
+          <p className="mt-3 max-w-[40rem] text-[1.05rem] leading-relaxed text-[#3A3D45]">
+            90 Minuten vor Ort in Nordrhein-Westfalen. Den Wunschtermin
+            bestätigen wir persönlich.
+          </p>
+          <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
               90 Minuten im Betrieb
             </li>
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
               Kostenloses Erstgespräch
             </li>
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
-              Terminwunsch, persönlich bestätigt
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
+              Persönlich bestätigt
             </li>
           </ul>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button
+              asChild
+              className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
+            >
+              <Link href={cta.href}>{cta.primary}</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-12 rounded-full border-black/15 bg-transparent px-6 text-[#14161C] hover:bg-[#F3EFE6]"
+            >
+              <Link href="/kontakt">Kontakt aufnehmen</Link>
+            </Button>
+          </div>
         </section>
         ) : (
           <p className="mt-10 text-[1.02rem] text-[#5C5F66]">
