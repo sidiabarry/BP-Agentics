@@ -18,7 +18,7 @@ import {
 const teaserRows = offerTable.map((item) => ({
   name: item.name,
   price: item.once,
-  run: `${item.month} monatlich`,
+  run: item.run,
 }));
 
 function WebsiteCards() {
@@ -131,10 +131,8 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Gemeinsame Datenbasis und ein Modul
           </h3>
           <p className="mt-4 max-w-[40rem] text-[1.12rem] leading-relaxed text-white/80">
-            Die gemeinsame Datenbasis kostet {automationOffer.basis}. Ein Modul kostet
-            je nach vereinbartem Ablauf {automationOffer.module}. Daraus ergeben sich
-            mindestens {automationOffer.combined} für Datenbasis und ein Modul. Die
-            Betreuung beginnt bei {automationOffer.month.replace("ab ", "")} im Monat.
+            Datenbasis und ein Prozessmodul kosten zusammen {automationOffer.combined}.
+            Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten.
           </p>
           <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
             <div>

@@ -11,7 +11,7 @@ import { PRICE_NOTE, cta, whatsappOffer } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "WhatsApp- und E-Mail-Anfragen vorbereiten. Termine leichter abstimmen.",
   description:
-    "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten. 1.900 € Einrichtung + 99 € monatlich.",
+    "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten. 1.290 € Einrichtung + 99 € monatlich.",
   path: "/leistungen/annahme",
 });
 
@@ -33,7 +33,7 @@ export default function AnnahmePage() {
               "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten.",
             path: "/leistungen/annahme",
             offers: [
-              { name: "Nachrichten-Assistent Einrichtung", price: "1900" },
+              { name: "Nachrichten-Assistent Einrichtung", price: "1290" },
               { name: "Nachrichten-Assistent Betreuung", price: "99", unit: "MON" },
             ],
           }),

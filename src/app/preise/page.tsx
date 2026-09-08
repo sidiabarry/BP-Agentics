@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = pageMetadata({
   title: "Was Einrichtung und laufende Betreuung kosten",
   description:
-    "Website Start 950 €, Betrieb 3.900 €, Signature ab 7.900 €, Nachrichten-Assistent 1.900 €, Datenbasis + 1 Modul ab 3.800 €. Endpreise ohne Umsatzsteuer.",
+    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €, Nachrichten-Assistent 1.290 €, Datenbasis + 1 Modul ab 2.490 € ohne monatliche Betreuung. Endpreise ohne Umsatzsteuer.",
   path: "/preise",
 });
 
@@ -33,13 +33,12 @@ export default function PreisePage() {
             "@type": "OfferCatalog",
             name: "Leistungen BP Agentics",
             itemListElement: [
-              { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "Nachrichten-Assistent Einrichtung", price: "1900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Website Start", price: "690", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Website Betrieb", price: "1790", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Website Signature", price: "3490", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Nachrichten-Assistent Einrichtung", price: "1290", priceCurrency: "EUR" },
               { "@type": "Offer", name: "Nachrichten-Assistent Betreuung", price: "99", priceCurrency: "EUR", unitText: "MON" },
-              { "@type": "Offer", name: "Gemeinsame Datenbasis", price: "2900", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "Prozessmodul", price: "900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Datenbasis + 1 Prozessmodul", price: "2490", priceCurrency: "EUR" },
             ],
           },
         ]}
@@ -62,12 +61,11 @@ export default function PreisePage() {
           Websites gilt die unten beschriebene Betreuung.
         </p>
 
-        <h2>Aufschlüsselung Automatisierung</h2>
+        <h2>Datenbasis und ein Prozessmodul</h2>
         <p>
-          Die gemeinsame Datenbasis kostet {automationOffer.basis}. Ein Modul kostet
-          je nach vereinbartem Ablauf {automationOffer.module}. Daraus ergeben sich
-          mindestens {automationOffer.combined} für Datenbasis und ein Modul. Die
-          Betreuung beginnt bei {automationOffer.month.replace("ab ", "")} im Monat.
+          Datenbasis und ein Prozessmodul kosten zusammen {automationOffer.combined}.
+          Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten.
+          Weitere Anschlüsse und zusätzliche Abläufe werden im Angebot ausgewiesen.
         </p>
 
         <h2>Was nach der Einrichtung dazugehört</h2>

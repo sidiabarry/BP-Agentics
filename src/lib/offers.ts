@@ -24,48 +24,53 @@ export const websiteOwnership =
   "Nach Zahlung der Erstellung gehört Ihnen die Website. Der Betreuungsvertrag hat eine Mindestlaufzeit von 12 Monaten und ist danach monatlich kündbar. Bei Kündigung erhalten Sie die vereinbarten Website-Dateien kostenfrei. Nutzungsrechte an fremden Medien oder Diensten werden im Angebot gesondert benannt.";
 
 export const yearTableHint =
-  "Die 12-Monats-Rechnung umfasst die einmalige Leistung und 12 monatliche Zahlungen zu den genannten Preisen. Bei „ab“-Preisen ist dies der Mindestbetrag. Zusätzliche Leistungen und vereinbarte Fremdkosten werden im Angebot ausgewiesen.";
+  "Die 12-Monats-Rechnung umfasst die einmalige Leistung und 12 monatliche Zahlungen zu den genannten Preisen. Bei „ab“-Preisen ist dies der Mindestbetrag. Wo keine monatliche Betreuung ausgewiesen ist, entspricht die Vergleichsspalte dem einmaligen Endpreis. Zusätzliche Leistungen und vereinbarte Fremdkosten werden im Angebot ausgewiesen.";
 
 export const offerTable = [
   {
     id: "start",
     name: "Website Start",
-    once: "950 €",
+    once: "690 €",
     month: "149 €",
-    year: "2.738 €",
+    year: "2.478 €",
+    run: "149 € monatlich",
     href: "/leistungen/auftritt",
   },
   {
     id: "betrieb",
     name: "Website Betrieb",
-    once: "3.900 €",
+    once: "1.790 €",
     month: "149 €",
-    year: "5.688 €",
+    year: "3.578 €",
+    run: "149 € monatlich",
     href: "/leistungen/auftritt",
     badge: "Für mehrere Leistungen und Referenzen",
   },
   {
     id: "signature",
     name: "Website Signature",
-    once: "ab 7.900 €",
+    once: "ab 3.490 €",
     month: "290 €",
-    year: "ab 11.380 €",
+    year: "ab 6.970 €",
+    run: "290 € monatlich",
     href: "/leistungen/auftritt",
   },
   {
     id: "whatsapp",
     name: "Nachrichten-Assistent",
-    once: "1.900 €",
+    once: "1.290 €",
     month: "99 €",
-    year: "3.088 €",
+    year: "2.478 €",
+    run: "99 € monatlich",
     href: "/leistungen/annahme",
   },
   {
     id: "automation",
     name: "Datenbasis + 1 Prozessmodul",
-    once: "ab 3.800 €",
-    month: "ab 190 €",
-    year: "ab 6.080 €",
+    once: "ab 2.490 €",
+    month: "—",
+    year: "ab 2.490 €",
+    run: "ohne monatliche Betreuung",
     href: "/leistungen/ablaeufe",
   },
 ] as const;
@@ -73,26 +78,26 @@ export const offerTable = [
 export const websitePackages = [
   {
     name: "Website Start",
-    once: "950 €",
+    once: "690 €",
     month: "149 €",
-    year: "2.738 €",
+    year: "2.478 €",
     body: "Ein kompakter Einseiter für einen klaren Überblick über Leistungen, Betrieb und Kontakt.",
     featured: false,
   },
   {
     name: "Website Betrieb",
-    once: "3.900 €",
+    once: "1.790 €",
     month: "149 €",
-    year: "5.688 €",
+    year: "3.578 €",
     body: "Eine mehrseitige Website mit Raum für einzelne Leistungen und Referenzen.",
     featured: true,
     badge: "Für mehrere Leistungen und Referenzen",
   },
   {
     name: "Website Signature",
-    once: "ab 7.900 €",
+    once: "ab 3.490 €",
     month: "290 €",
-    year: "ab 11.380 €",
+    year: "ab 6.970 €",
     body: "Ein individuell gestalteter Auftritt mit besonderer Bild- und Bewegungsführung.",
     featured: false,
   },
@@ -100,15 +105,14 @@ export const websitePackages = [
 
 export const whatsappOffer = {
   name: "Nachrichten-Assistent",
-  once: "1.900 €",
+  once: "1.290 €",
   month: "99 €",
-  year: "3.088 €",
+  year: "2.478 €",
 } as const;
 
 export const automationOffer = {
-  basis: "2.900 €",
-  module: "900–1.800 €",
-  combined: "ab 3.800 €",
-  month: "ab 190 €",
-  year: "ab 6.080 €",
+  combined: "ab 2.490 €",
+  month: "—",
+  year: "ab 2.490 €",
+  run: "ohne monatliche Betreuung",
 } as const;

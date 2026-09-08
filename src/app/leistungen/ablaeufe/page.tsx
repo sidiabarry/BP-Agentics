@@ -12,7 +12,7 @@ import { PRICE_NOTE, automationOffer, cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Informationen einmal erfassen und im passenden Ablauf weitergeben",
   description:
-    "Gemeinsame Datenbasis 2.900 €, ein Prozessmodul 900–1.800 €, zusammen ab 3.800 €. Betreuung ab 190 € im Monat.",
+    "Datenbasis und ein Prozessmodul zusammen ab 2.490 €. Ohne monatliche Betreuung.",
   path: "/leistungen/ablaeufe",
 });
 
@@ -34,9 +34,7 @@ export default function AblaeufePage() {
               "Gemeinsame Datenbasis und Prozessmodule für wiederkehrende Büroabläufe.",
             path: "/leistungen/ablaeufe",
             offers: [
-              { name: "Gemeinsame Datenbasis", price: "2900" },
-              { name: "Prozessmodul", price: "900" },
-              { name: "Betreuung Automatisierung", price: "190", unit: "MON" },
+              { name: "Datenbasis + 1 Prozessmodul", price: "2490" },
             ],
           }),
           faqPage(ablaeufeFaqs),
@@ -57,17 +55,8 @@ export default function AblaeufePage() {
 
         <h2>Preisaufbau</h2>
         <p>
-          Gemeinsame Datenbasis: {automationOffer.basis} Einrichtung.
-          <br />
-          Ein vereinbartes Prozessmodul: {automationOffer.module}.
-          <br />
-          Laufende Betreuung: {automationOffer.month} im Monat.
-        </p>
-        <p>
-          <strong>
-            Datenbasis und ein Modul zusammen: {automationOffer.combined} Einrichtung.
-            Mit 12 Monaten Betreuung: {automationOffer.year}.
-          </strong>
+          Datenbasis und ein Prozessmodul kosten zusammen {automationOffer.combined}.
+          Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten.
         </p>
         <p>
           Weitere Anschlüsse und zusätzliche Abläufe werden im Angebot ausgewiesen.
@@ -79,19 +68,14 @@ export default function AblaeufePage() {
           headers={["Baustein", "Aufgabe", "Preis"]}
           rows={[
             [
-              "Gemeinsame Datenbasis",
-              "Vereinbarte Informationen an einem Ort",
-              automationOffer.basis,
+              "Datenbasis + 1 Prozessmodul",
+              "Vereinbarte Informationen und ein erster Ablauf",
+              automationOffer.combined,
             ],
             [
-              "Prozessmodul",
-              "Ein vereinbarter Ablauf",
-              automationOffer.module,
-            ],
-            [
-              "Betreuung",
-              "Laufender Betrieb nach dem Angebot",
-              `${automationOffer.month} / Monat`,
+              "Monatliche Betreuung",
+              "Im Einstieg nicht enthalten",
+              automationOffer.run,
             ],
           ]}
         />

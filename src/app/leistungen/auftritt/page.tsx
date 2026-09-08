@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = pageMetadata({
   title: "Eine Website, die Ihre Leistungen verständlich macht",
   description:
-    "Website Start 950 €, Betrieb 3.900 €, Signature ab 7.900 €. Monatliche Betreuung 149 € bzw. 290 €. Für Betriebe in NRW.",
+    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Monatliche Betreuung 149 € bzw. 290 €. Für Betriebe in NRW.",
   path: "/leistungen/auftritt",
 });
 
@@ -37,9 +37,9 @@ export default function AuftrittPage() {
             "Website Start, Betrieb und Signature für Betriebe in Nordrhein-Westfalen.",
           path: "/leistungen/auftritt",
           offers: [
-            { name: "Website Start", price: "950" },
-            { name: "Website Betrieb", price: "3900" },
-            { name: "Website Signature", price: "7900" },
+            { name: "Website Start", price: "690" },
+            { name: "Website Betrieb", price: "1790" },
+            { name: "Website Signature", price: "3490" },
             { name: "Betreuung Start und Betrieb", price: "149", unit: "MON" },
             { name: "Betreuung Signature", price: "290", unit: "MON" },
           ],
@@ -59,9 +59,9 @@ export default function AuftrittPage() {
         und Kontakt.
       </p>
       <p>
-        <strong>950 € Erstellung + 149 € Betreuung im Monat</strong>
+        <strong>{websitePackages[0].once} Erstellung + {websitePackages[0].month} Betreuung im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: 2.738 €
+        Erstellung und 12 Monate Betreuung: {websitePackages[0].year}
       </p>
 
       <h2>Website Betrieb</h2>
@@ -70,9 +70,9 @@ export default function AuftrittPage() {
         Passend, wenn unterschiedliche Angebote verständlich erklärt werden sollen.
       </p>
       <p>
-        <strong>3.900 € Erstellung + 149 € Betreuung im Monat</strong>
+        <strong>{websitePackages[1].once} Erstellung + {websitePackages[1].month} Betreuung im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: 5.688 €
+        Erstellung und 12 Monate Betreuung: {websitePackages[1].year}
       </p>
 
       <h2>Website Signature</h2>
@@ -82,9 +82,9 @@ export default function AuftrittPage() {
         Gestaltung präsentiert werden sollen.
       </p>
       <p>
-        <strong>ab 7.900 € Erstellung + 290 € Betreuung im Monat</strong>
+        <strong>{websitePackages[2].once} Erstellung + {websitePackages[2].month} Betreuung im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: ab 11.380 €
+        Erstellung und 12 Monate Betreuung: {websitePackages[2].year}
       </p>
 
       <DataTable

@@ -70,7 +70,7 @@ export const levels = [
       "Website Betrieb, mehrere Leistungen und Referenzen",
       "Website Signature, individuelle Gestaltung",
     ],
-    price: "ab 950 € einmalig + ab 149 € monatliche Betreuung",
+    price: "ab 690 € einmalig + ab 149 € monatliche Betreuung",
     run: "ab 149 € monatlich",
     href: "/leistungen/auftritt",
     linkLabel: "Website-Pakete ansehen",
@@ -102,8 +102,8 @@ export const levels = [
       "Ein vereinbartes Prozessmodul",
       "Weitere Abläufe bei Bedarf",
     ],
-    price: `Gemeinsame Datenbasis + 1 Modul: ${automationOffer.combined} Einrichtung + ${automationOffer.month} monatlich`,
-    run: `${automationOffer.month} monatlich`,
+    price: `Datenbasis + 1 Prozessmodul: ${automationOffer.combined}, ${automationOffer.run}`,
+    run: automationOffer.run,
     href: "/leistungen/ablaeufe",
     linkLabel: "Büroabläufe ansehen",
   },
@@ -193,7 +193,7 @@ export const whyPoints = [
 export const auftrittFaqs = [
   {
     q: "Was kostet eine Website insgesamt?",
-    a: "Website Start kostet 950 € einmalig plus 149 € monatlich. Website Betrieb kostet 3.900 € plus 149 € monatlich. Signature beginnt bei 7.900 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
+    a: "Website Start kostet 690 € einmalig plus 149 € monatlich. Website Betrieb kostet 1.790 € plus 149 € monatlich. Signature beginnt bei 3.490 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
   },
   {
     q: "Welche Stufe passt?",
@@ -220,7 +220,7 @@ export const annahmeFaqs = [
   },
   {
     q: "Was kostet der Nachrichten-Assistent?",
-    a: "1.900 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 3.088 €. Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres Kalenders werden vorab geprüft.",
+    a: "1.290 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 2.478 €. Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres Kalenders werden vorab geprüft.",
   },
   {
     q: "Passt das zum Betrieb?",
@@ -235,7 +235,7 @@ export const ablaeufeFaqs = [
   },
   {
     q: "Was kostet der Einstieg?",
-    a: "Die gemeinsame Datenbasis kostet 2.900 €. Ein Modul kostet je nach vereinbartem Ablauf 900–1.800 €. Daraus ergeben sich mindestens 3.800 € für Datenbasis und ein Modul. Die Betreuung beginnt bei 190 € im Monat. Mit 12 Monaten Betreuung: ab 6.080 €.",
+    a: "Datenbasis und ein Prozessmodul kosten zusammen ab 2.490 €. Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten. Weitere Anschlüsse und zusätzliche Abläufe werden im Angebot ausgewiesen.",
   },
   {
     q: "Wie wird das Team einbezogen?",
@@ -258,7 +258,7 @@ export const faqs = [
   },
   {
     q: "Was kostet eine Website insgesamt?",
-    a: "Website Start kostet 950 € einmalig plus 149 € monatlich. Website Betrieb kostet 3.900 € plus 149 € monatlich. Signature beginnt bei 7.900 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
+    a: "Website Start kostet 690 € einmalig plus 149 € monatlich. Website Betrieb kostet 1.790 € plus 149 € monatlich. Signature beginnt bei 3.490 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
   },
   {
     q: "Wie wird der genaue Preis festgelegt?",
