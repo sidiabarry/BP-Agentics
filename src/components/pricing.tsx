@@ -21,7 +21,11 @@ const teaserRows = offerTable.map((item) => ({
   run: item.run,
 }));
 
-function WebsiteCards() {
+export function WebsiteCards({
+  showDetailLink = true,
+}: {
+  showDetailLink?: boolean;
+}) {
   return (
     <div className="grid items-stretch gap-4 md:grid-cols-3">
       {websitePackages.map((plan, index) => (
@@ -56,25 +60,33 @@ function WebsiteCards() {
           <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
             {plan.body}
           </p>
-          <p className="mt-5">
-            <Link
-              href="/leistungen/auftritt"
-              className={
-                plan.featured
-                  ? "text-white underline-offset-4 hover:underline"
-                  : "text-[#198BE8] underline-offset-4 hover:underline"
-              }
-            >
-              Website-Pakete ansehen
-            </Link>
-          </p>
+          {showDetailLink ? (
+            <p className="mt-5">
+              <Link
+                href="/leistungen/auftritt"
+                className={
+                  plan.featured
+                    ? "text-white underline-offset-4 hover:underline"
+                    : "text-[#198BE8] underline-offset-4 hover:underline"
+                }
+              >
+                Website-Pakete ansehen
+              </Link>
+            </p>
+          ) : null}
         </RevealIn>
       ))}
     </div>
   );
 }
 
-export function Pricing({ teaser = false }: { teaser?: boolean }) {
+export function Pricing({
+  teaser = false,
+  embedded = false,
+}: {
+  teaser?: boolean;
+  embedded?: boolean;
+}) {
   if (teaser) {
     return (
       <section id="preise" className="bg-[#F3EFE6] px-5 py-16 md:px-8">
@@ -116,8 +128,11 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
   }
 
   return (
-    <section id="preise-detail" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
-      <div className="mx-auto max-w-6xl">
+    <section
+      id="preise-detail"
+      className={embedded ? "" : "bg-[#F3EFE6] px-5 py-24 md:px-8"}
+    >
+      <div className={embedded ? "" : "mx-auto max-w-6xl"}>
         <WebsiteCards />
 
         <RevealIn
@@ -227,6 +242,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
         </RevealIn>
 
         <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{PRICE_NOTE}</p>
+        {embedded ? null : (
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Button
             asChild
@@ -236,6 +252,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           </Button>
           <WhatsAppInline className="h-13 px-7 text-[1.05rem]" />
         </div>
+        )}
       </div>
     </section>
   );

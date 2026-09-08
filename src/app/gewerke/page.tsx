@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/seo";
 import { tradePages } from "@/lib/trade-pages";
 import { cta } from "@/lib/offers";
 
-const title = "Beispiele aus Handwerk, Service und Logistik";
+const title = "Derselbe Weg. Anderer Arbeitsalltag.";
 const description =
   "Anwendungsbeispiele für Websites und Automatisierung. Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen Programmen ab.";
 
@@ -51,14 +51,12 @@ export default function GewerkePage() {
         <p className="mt-6 text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Anwendungsbeispiele
         </p>
-        <h1 className="mt-4 max-w-[22ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
-          Beispiele aus Handwerk, Service und Logistik
+        <h1 className="mt-4 max-w-[16ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
+          Derselbe Weg. Anderer Arbeitsalltag.
         </h1>
         <p className="mt-5 max-w-[40rem] text-[1.2rem] leading-relaxed text-[#3A3D45]">
-          Unterschiedliche Betriebe brauchen unterschiedliche Abläufe. Die folgenden
-          Beispiele zeigen mögliche Einsatzbereiche für Websites und Automatisierung.
-          Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen
-          Programmen ab.
+          Anwendungsbeispiele, keine Referenzen. Welcher Weg passt, hängt von Ihrem
+          Vorhaben und den vorhandenen Programmen ab.
         </p>
         <nav
           aria-label="Gewerke auf dieser Seite"
@@ -75,36 +73,38 @@ export default function GewerkePage() {
           ))}
         </nav>
 
-        <div className="mt-16 space-y-16">
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
           {industryList.map((item) => {
             const seo = tradePages[item.slug];
             return (
               <article
                 key={item.slug}
                 id={item.slug}
-                className="doc-prose scroll-mt-[5.5rem] border-t border-black/8 pt-12"
+                className="scroll-mt-[5.5rem] rounded-[1.6rem] bg-white p-6 md:p-7"
               >
                 <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
                   Anwendungsbeispiel · {item.title}
                 </p>
-                <h2 className="mt-3 !text-3xl md:!text-4xl">{seo.hub.heading}</h2>
+                <h2 className="mt-3 text-2xl leading-snug font-semibold tracking-[-0.03em] md:text-3xl">
+                  {seo.hub.heading}
+                </h2>
                 {seo.hub.paragraphs.map((paragraph) => (
-                  <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                  <p key={paragraph.slice(0, 48)} className="mt-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
+                    {paragraph}
+                  </p>
                 ))}
-                <p>
-                  <Link href={seo.leistung.href}>{seo.leistung.label}</Link>
-                  {" · "}
-                  <Link href={seo.second.href}>{seo.second.label}</Link>
+                <p className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-[1.02rem]">
+                  <Link href={seo.leistung.href} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+                    {seo.leistung.label}
+                  </Link>
+                  <Link href={seo.second.href} className="text-[#198BE8] underline-offset-4 hover:underline">
+                    {seo.second.label}
+                  </Link>
                   {item.slug === "dachdecker" ? (
-                    <>
-                      {" · "}
-                      <Link href="/referenzen/dachdecker-signature">
-                        Website-Demo ansehen
-                      </Link>
-                    </>
+                    <Link href="/referenzen/dachdecker-signature" className="text-[#198BE8] underline-offset-4 hover:underline">
+                      Website-Demo ansehen
+                    </Link>
                   ) : null}
-                  {" · "}
-                  <Link href={cta.href}>Vorhaben für Ihren Betrieb besprechen</Link>
                 </p>
               </article>
             );

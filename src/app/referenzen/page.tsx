@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { DocPage } from "@/components/doc-page";
+import { DemoPair } from "@/components/home-referenzen";
+import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Arbeiten und Produktdemos",
+  title: "So können die Lösungen aussehen",
   description:
     "Zwei Beispiele: eine Bestell-App und eine Website-Präsentation. Beschreibungen erklären, was zu sehen ist — ohne behauptete Umsatzzahlen.",
   path: "/referenzen",
@@ -13,10 +13,10 @@ export const metadata: Metadata = pageMetadata({
 
 export default function ReferenzenPage() {
   return (
-    <DocPage
+    <StagePage
       kicker="Arbeiten und Demos"
-      title="Arbeiten und Produktdemos"
-      lead="Hier sehen Sie zwei unterschiedliche Aufgaben: einen digitalen Bestellweg und eine Website-Präsentation. Die Beschreibungen erklären, was die Beispiele zeigen und wofür ein ähnlicher Ansatz genutzt werden kann."
+      title="So können die Lösungen aussehen."
+      lead="Zwei unterschiedliche Aufgaben: ein digitaler Bestellweg und eine Website-Präsentation. Die Beschreibungen erklären, was zu sehen ist — ohne behauptete Umsatzzahlen."
       crumbs={[{ name: "Arbeiten und Demos", path: "/referenzen" }]}
       related={[
         { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
@@ -24,34 +24,15 @@ export default function ReferenzenPage() {
         { href: "/leistungen", label: "Leistungen" },
         { href: "/kontakt", label: "Kontakt" },
       ]}
+      next={{
+        title: "Ähnlichen Weg für Ihren Betrieb prüfen",
+        body: "Die Demos zeigen Prinzipien, keine versprochenen Ergebnisse. Im Gespräch klären wir, welcher Ansatz zu Ihrem Vorhaben passt.",
+        chips: ["Produktdemo", "Kein Umsatzversprechen", "90 Minuten vor Ort"],
+        primary: { href: cta.href, label: cta.primary },
+        secondary: { href: "/leistungen", label: "Leistungen ansehen" },
+      }}
     >
-      <h2>Feinkost Kreta — Bestell-App</h2>
-      <p>
-        Die Demo zeigt eine Bestellung und die Benachrichtigung an den Betrieb. Ein
-        Beispiel dafür, wie Informationen in einem zusammenhängenden Ablauf
-        weitergegeben werden.
-      </p>
-      <p>
-        Kennzeichnung: <strong>Projektbeispiel · Produktdemo</strong>
-      </p>
-      <p>
-        <Link href="/referenzen/feinkost-kreta">Bestell-App ansehen</Link>
-      </p>
-
-      <h2>Dachdecker — Website Signature</h2>
-      <p>
-        Die Demo verbindet Bilder, Leistungsbeschreibung und einen Anfrageweg. Sie
-        zeigt eine mögliche Gestaltung für einen Dachdeckerbetrieb.
-      </p>
-      <p>
-        Kennzeichnung: <strong>Produktdemo · kein Echtbetrieb</strong>
-      </p>
-      <p>
-        <Link href="/referenzen/dachdecker-signature">Website-Demo ansehen</Link>
-      </p>
-      <p>
-        <Link href={cta.href}>{cta.primary}</Link>
-      </p>
-    </DocPage>
+      <DemoPair surface="white" />
+    </StagePage>
   );
 }

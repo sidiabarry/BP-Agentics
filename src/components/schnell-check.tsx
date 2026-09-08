@@ -8,7 +8,13 @@ import { checkPaths } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
+export function SchnellCheck({
+  teaser = false,
+  embedded = false,
+}: {
+  teaser?: boolean;
+  embedded?: boolean;
+}) {
   const [path, setPath] = useState<string | null>(null);
   const chosen = checkPaths.find((item) => item.id === path);
 
@@ -43,15 +49,26 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
   }
 
   return (
-    <section id="check" className="bg-white px-5 py-24 md:px-8">
-      <div className="mx-auto max-w-6xl">
+    <section
+      id="check"
+      className={embedded ? "" : "bg-white px-5 py-24 md:px-8"}
+    >
+      <div className={embedded ? "" : "mx-auto max-w-6xl"}>
+        {embedded ? (
+          <h2 className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">
+            Eine Angabe genügt.
+          </h2>
+        ) : (
+          <>
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Orientierung
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Welcher Einstieg passt zu Ihrem Vorhaben?
         </RevealHeading>
-        <div className="mt-10 grid gap-3">
+          </>
+        )}
+        <div className={embedded ? "mt-6 grid gap-3" : "mt-10 grid gap-3"}>
           {checkPaths.map((item) => (
             <button
               key={item.id}
@@ -61,7 +78,9 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
                 "rounded-2xl border px-5 py-4 text-left text-[1.08rem] leading-snug transition",
                 path === item.id
                   ? "border-[#198BE8] bg-[#E8F4FC]"
-                  : "border-black/10 bg-[#F3EFE6] hover:border-black/25",
+                  : embedded
+                    ? "min-h-14 border-black/10 bg-white hover:border-black/25"
+                    : "border-black/10 bg-[#F3EFE6] hover:border-black/25",
               )}
             >
               {item.label}

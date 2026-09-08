@@ -3,6 +3,48 @@ import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { levels } from "@/lib/content";
 
+export function LevelCards() {
+  return (
+    <div className="grid items-stretch gap-5 lg:grid-cols-3">
+      {levels.map((level, index) => (
+        <RevealIn
+          key={level.id}
+          id={level.id}
+          as="article"
+          variant="card"
+          delay={index * 60}
+          className="flex h-full flex-col rounded-3xl bg-[#14161C] p-7 text-[#F3EFE6]"
+        >
+          <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
+            {level.roman}
+          </p>
+          <h3 className="mt-4 text-3xl font-semibold">{level.name}</h3>
+          <p className="mt-2 text-[1.05rem] text-[#9FD0F8]">{level.sub}</p>
+          <p className="mt-4 flex-1 text-[1.08rem] leading-relaxed text-white/75">
+            {level.lead}
+          </p>
+          <ul className="mt-6 space-y-2 text-[1.02rem]">
+            {level.items.map((item) => (
+              <li key={item} className="border-t border-white/10 pt-2">
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-[1.02rem] text-white/60">{level.price}</p>
+          <p className="mt-4">
+            <Link
+              href={level.href}
+              className="text-[#9FD0F8] underline-offset-4 hover:underline"
+            >
+              {level.linkLabel}
+            </Link>
+          </p>
+        </RevealIn>
+      ))}
+    </div>
+  );
+}
+
 export function ThreeLevels({ compact = false }: { compact?: boolean }) {
   return (
     <section
@@ -50,41 +92,8 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
             ))}
           </ul>
         ) : (
-          <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
-            {levels.map((level, index) => (
-              <RevealIn
-                key={level.id}
-                id={level.id}
-                as="article"
-                variant="card"
-                delay={index * 60}
-                className="flex h-full flex-col rounded-3xl bg-[#14161C] p-7 text-[#F3EFE6]"
-              >
-                <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
-                  {level.roman}
-                </p>
-                <h3 className="mt-4 text-3xl font-semibold">{level.name}</h3>
-                <p className="mt-2 text-[1.05rem] text-[#9FD0F8]">{level.sub}</p>
-                <p className="mt-4 flex-1 text-[1.08rem] leading-relaxed text-white/75">
-                  {level.lead}
-                </p>
-                <ul className="mt-6 space-y-2 text-[1.02rem]">
-                  {level.items.map((item) => (
-                    <li key={item} className="border-t border-white/10 pt-2">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4">
-                  <Link
-                    href={level.href}
-                    className="text-[#9FD0F8] underline-offset-4 hover:underline"
-                  >
-                    {level.linkLabel}
-                  </Link>
-                </p>
-              </RevealIn>
-            ))}
+          <div className="mt-12">
+            <LevelCards />
           </div>
         )}
       </div>

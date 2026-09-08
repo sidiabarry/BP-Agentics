@@ -13,7 +13,10 @@ export function PageFaqs({
   heading?: string;
 }) {
   return (
-    <section className="mt-12" aria-labelledby="seiten-faq">
+    <section
+      className="mt-12 rounded-[1.6rem] bg-white px-5 py-6 md:px-7 md:py-7"
+      aria-labelledby="seiten-faq"
+    >
       <h2 id="seiten-faq" className="text-2xl font-semibold tracking-[-0.03em]">
         {heading}
       </h2>
