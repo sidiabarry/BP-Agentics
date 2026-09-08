@@ -16,6 +16,16 @@ npm run dev
 
 Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
+## Terminformular
+
+Das Formular unter `/termin` und `/kontakt` schickt den Wunsch an `sidiabarry@bpagentics.com` über [Web3Forms](https://web3forms.com) — der Besucher muss kein Mailprogramm öffnen.
+
+1. Kostenlosen Access Key holen auf [web3forms.com](https://web3forms.com). E-Mail für den Key: `sidiabarry@bpagentics.com`.
+2. Lokal in `.env.local` setzen: `WEB3FORMS_ACCESS_KEY=…` (Vorlage: `.env.example`).
+3. Später dieselbe Variable in Vercel setzen.
+
+Ohne Key antwortet `/api/termin` mit einem Fehler; das Formular bietet dann noch `mailto:` als Notausgang.
+
 ## Routen
 
 - `/` — Übersicht (acht Abschnitte plus FAQ)
