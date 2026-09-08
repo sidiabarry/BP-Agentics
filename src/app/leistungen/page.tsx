@@ -22,7 +22,7 @@ export default function LeistungenPage() {
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
         { href: "/preise", label: "Preise" },
         { href: "/referenzen", label: "Arbeiten und Demos" },
       ]}

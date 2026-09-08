@@ -27,6 +27,7 @@ export default function KontaktPage() {
         { href: "/preise", label: "Preise" },
         { href: "/impressum", label: "Impressum" },
       ]}
+      showCta={false}
     >
       <h2>Erreichbarkeit</h2>
       <address className="not-italic">

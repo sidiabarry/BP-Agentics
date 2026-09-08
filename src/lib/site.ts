@@ -37,8 +37,6 @@ export const site = {
     "Nachrichten-Assistent für WhatsApp und E-Mail",
     "Prozessautomatisierung",
     "MID Digitale Prozesse",
-    "Next.js",
-    "n8n",
   ],
   defaultTitle:
     "BP Agentics — Websites und Software für Betriebe in NRW",

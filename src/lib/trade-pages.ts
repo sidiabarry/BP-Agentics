@@ -57,7 +57,7 @@ export const tradePages: Record<
       "Fachliche Dringlichkeit und Einsatzentscheidungen bleiben bei den zuständigen Personen im Betrieb.",
     ],
     leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-    second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    second: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     hub: {
       heading: "Geplante Projekte und Servicemeldungen geordnet erfassen.",
       stuck: "Anwendungsbeispiel, kein Referenzprojekt.",
@@ -79,7 +79,7 @@ export const tradePages: Record<
       "Angaben, Fotos und Freigaben können dem jeweiligen Auftrag zugeordnet und dem Büro bereitgestellt werden.",
       "Welche Nachweise erforderlich sind, wird für Ihren Anwendungsfall fachlich geklärt. Das Ziel ist eine verlässlichere Übergabe zwischen Baustelle und Büro.",
     ],
-    leistung: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    leistung: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     second: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
     hub: {
       heading: "Erbrachte Arbeiten nachvollziehbar dokumentieren.",
@@ -104,7 +104,7 @@ export const tradePages: Record<
       "Diagnose, Dringlichkeit und notwendige Dokumentation werden vom Fachbetrieb beurteilt.",
     ],
     leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-    second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    second: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     hub: {
       heading: "Anlageninformationen vor dem Einsatz zusammenführen.",
       stuck: "Anwendungsbeispiel, kein Referenzprojekt.",
@@ -126,7 +126,7 @@ export const tradePages: Record<
       "Angaben zu Lieferung, Standzeit und Auftrag können mobil erfasst und für die weitere Bearbeitung bereitgestellt werden.",
       "Eine Rechnungsanbindung wird passend zur vorhandenen Software vereinbart. Welche Angaben und Freigaben nötig sind, klären wir am konkreten Ablauf.",
     ],
-    leistung: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    leistung: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     second: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
     hub: {
       heading: "Lieferscheine vom Einsatz ins Büro bringen.",
@@ -150,7 +150,7 @@ export const tradePages: Record<
       "Ein abgestimmter Ablauf kann Materialinformationen, Termine und Zuständigkeiten zusammenführen. Eine Website zeigt abgeschlossene Arbeiten und die angebotenen Leistungen.",
       "Ob zuerst Planung oder Auftritt im Vordergrund steht, richtet sich nach dem Bedarf des Betriebs.",
     ],
-    leistung: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    leistung: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     second: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
     hub: {
       heading: "Material und Einsätze gemeinsam im Blick behalten.",
@@ -173,7 +173,7 @@ export const tradePages: Record<
       "Vorhandene Positionen, Projektangaben und Freigaben können in einem passenden Ablauf zusammenkommen. Spezialsoftware für Kalkulation oder Fertigung wird dabei berücksichtigt.",
       "Gemeinsam wird geprüft, wo eine Verbindung die tägliche Arbeit unterstützt.",
     ],
-    leistung: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    leistung: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     second: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
     hub: {
       heading: "Wiederkehrende Angebots- und Dokumentationsschritte vereinfachen.",
@@ -197,7 +197,7 @@ export const tradePages: Record<
       "Dafür wird festgelegt, welche Daten zuverlässig verfügbar sind und wer verbindliche Auskünfte erteilt. Solche Funktionen werden passend zum Werkstattsystem vereinbart.",
     ],
     leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-    second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+    second: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
     hub: {
       heading: "Status und Freigaben zum Werkstattauftrag bündeln.",
       stuck: "Anwendungsbeispiel, kein Referenzprojekt.",

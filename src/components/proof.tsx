@@ -73,7 +73,7 @@ export function Proof() {
           </Link>
           {" · "}
           <Link href="/leistungen/ablaeufe" className="text-[#198BE8] underline-offset-4 hover:underline">
-            Betriebsorganisation
+            Büroabläufe
           </Link>
         </p>
       </div>

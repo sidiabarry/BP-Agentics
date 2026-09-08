@@ -60,7 +60,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/passt-das" className="hover:text-white">
-                Passt das zu mir?
+                Welcher Einstieg passt?
               </Link>
             </li>
             <li>

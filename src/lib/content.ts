@@ -105,7 +105,7 @@ export const levels = [
     price: `Gemeinsame Datenbasis + 1 Modul: ${automationOffer.combined} Einrichtung + ${automationOffer.month} monatlich`,
     run: `${automationOffer.month} monatlich`,
     href: "/leistungen/ablaeufe",
-    linkLabel: "Automatisierung ansehen",
+    linkLabel: "Büroabläufe ansehen",
   },
 ];
 
@@ -249,7 +249,7 @@ export const ablaeufeFaqs = [
 
 export const faqs = [
   {
-    q: "Was passt zu meinem Betrieb?",
+    q: "Was passt zu Ihrem Betrieb?",
     a: "Eine Website hilft dabei, Leistungen und Referenzen verständlich zu präsentieren. Ein Nachrichten-Assistent unterstützt Anfragen per WhatsApp und E-Mail. Automatisierung verbindet wiederkehrende Arbeitsschritte. Im Gespräch klären wir, welches Vorhaben zuerst sinnvoll ist.",
   },
   {
@@ -265,7 +265,7 @@ export const faqs = [
     a: "Vor der Beauftragung erhalten Sie ein Angebot mit Leistungsumfang, einmaligem Preis und laufenden Kosten. Zusätzliche Wünsche werden vor ihrer Umsetzung gesondert angeboten.",
   },
   {
-    q: "Ist nach dem Formular mein Termin schon gebucht?",
+    q: "Ist nach dem Formular der Termin schon gebucht?",
     a: "Sie senden zunächst einen Terminwunsch. Ich melde mich unter der angegebenen Nummer und bestätige den Termin persönlich.",
   },
   foerderungFaq,

@@ -104,7 +104,7 @@ export default function GewerkePage() {
                     </>
                   ) : null}
                   {" · "}
-                  <Link href={cta.href}>Vorhaben für meinen Betrieb besprechen</Link>
+                  <Link href={cta.href}>Vorhaben für Ihren Betrieb besprechen</Link>
                 </p>
               </article>
             );

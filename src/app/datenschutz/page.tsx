@@ -44,8 +44,10 @@ export default function DatenschutzPage() {
 
       <h2>Wo werden Daten verarbeitet?</h2>
       <p>
-        Das Hosting der Website liegt in Deutschland. Weitere Dienste, etwa
-        Nachrichten über WhatsApp oder der E-Mail-Versand von Terminwünschen,
+        Das Hosting der Website liegt in Deutschland. Terminwünsche werden per
+        E-Mail über den Versanddienst Resend übermittelt. Rechtsgrundlage für
+        diese Angaben ist Artikel 6 Absatz 1 Buchstabe b der DSGVO
+        (Vertragsanbahnung). Weitere Dienste, etwa Nachrichten über WhatsApp,
         verarbeiten Daten nach den jeweiligen Anbieterangaben. Der genaue
         Dienstweg eines Projekts steht im Angebot und im
         Auftragsverarbeitungsvertrag.
