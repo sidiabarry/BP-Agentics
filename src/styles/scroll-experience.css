@@ -86,11 +86,11 @@
 
 .hero-portal__copy {
   position: absolute;
-  top: 6.5vh;
+  top: 6vh;
   left: max(3.5vw, 1.15rem);
   z-index: 3;
-  width: min(20rem, 32vw);
-  padding: 0 0 0 1.15rem;
+  width: min(18.5rem, 30vw);
+  padding: 0;
   background: none;
   border: none;
   box-shadow: none;
@@ -98,74 +98,7 @@
   -webkit-backdrop-filter: none;
 }
 
-.hero-portal__copy::before {
-  content: "";
-  position: absolute;
-  top: 0.7em;
-  bottom: 1.25em;
-  left: 0;
-  width: 1px;
-  background: color-mix(in srgb, var(--ink) 22%, transparent);
-}
-
-.hero-portal__copy h1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0;
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: normal;
-  line-height: inherit;
-}
-
-.hero-portal__step {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.22rem;
-}
-
-.hero-portal__step::before {
-  content: "";
-  position: absolute;
-  top: 0.68em;
-  left: calc(-1.15rem - 2.5px);
-  width: 5px;
-  height: 5px;
-  background: var(--ink);
-  transform: rotate(45deg);
-}
-
-.hero-portal__step strong {
-  font-family: var(--font-heading, inherit);
-  font-size: clamp(1.4rem, 2.7vw, 2.15rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.hero-portal__step > span {
-  font-size: clamp(0.78rem, 1vw, 0.9rem);
-  line-height: 1.35;
-  color: color-mix(in srgb, var(--ink) 55%, transparent);
-}
-
-.hero-portal__join {
-  display: block;
-  margin: 0.95rem 0 0.85rem;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 42%, transparent);
-}
-
 .hero-portal__kicker {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
   margin: 0 0 0.55rem;
   font-size: 0.62rem;
   font-weight: 600;
@@ -174,60 +107,35 @@
   color: color-mix(in srgb, var(--ink) 58%, transparent);
 }
 
-.hero-portal__lead {
-  margin: 0 0 1rem;
-  max-width: 42ch;
-  font-size: clamp(0.86rem, 1vw, 0.98rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--ink) 78%, transparent);
-}
-
-.hero-portal__actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
-  margin-top: 1.15rem;
-}
-
-.hero-portal__cta {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  padding: 0.48rem 0.9rem;
-  border-radius: 999px;
-  background: var(--signal);
-  color: #fff;
+.hero-portal__copy h1 {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.25rem, 2.2vw, 1.85rem);
   font-weight: 600;
-  font-size: 0.78rem;
-  line-height: 1.2;
-  text-decoration: none;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
 }
 
-.hero-portal__note {
-  margin: 0;
+.hero-portal__accent {
+  color: var(--signal-deep);
+}
+
+.hero-portal__lead {
+  margin: 0 0 0.85rem;
   max-width: 28ch;
-  font-size: 0.7rem;
-  line-height: 1.4;
-  color: color-mix(in srgb, var(--ink) 64%, transparent);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
 }
 
 .hero-portal__link {
   display: inline-block;
-  padding-bottom: 0.2rem;
+  padding-bottom: 0.15rem;
   border-bottom: 1px solid currentColor;
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   text-decoration: none;
   color: var(--signal-deep);
-}
-
-.hero-portal__trust {
-  margin: 0.85rem 0 0;
-  max-width: 38ch;
-  font-size: 0.76rem;
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--ink) 62%, transparent);
 }
 
 .hero-portal__cue {
@@ -1407,25 +1315,25 @@
   .hero-portal__copy {
     top: 4.5vh;
     left: 0.95rem;
-    width: min(16.5rem, 48vw);
-    padding: 0 0 0 1rem;
+    width: min(15.5rem, 46vw);
   }
 
-  .hero-portal__step::before {
-    left: calc(-1rem - 2.5px);
+  .hero-portal__copy h1 {
+    font-size: clamp(1.12rem, 5.4vw, 1.45rem);
   }
 
-  .hero-portal__step strong {
-    font-size: clamp(1.28rem, 6.4vw, 1.7rem);
-  }
-
-  .hero-portal__join {
-    margin: 0.8rem 0 0.7rem;
+  .hero-portal__kicker {
+    font-size: 0.58rem;
+    margin-bottom: 0.4rem;
   }
 
   .hero-portal__lead {
-    font-size: 0.8rem;
-    margin-bottom: 0.6rem;
+    font-size: 0.76rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .hero-portal__link {
+    font-size: 0.78rem;
   }
 
   .hero-portal__arrival h2 {
