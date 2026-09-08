@@ -6,7 +6,7 @@ const WINDOW_MS = 60 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
 
-const PRODUCTION_FROM = "BP Agentics <termin@bpagentics.com>";
+const PRODUCTION_FROM = "BP Agentics <termin@send.bpagentics.com>";
 const DEV_FROM = "BP Agentics <onboarding@resend.dev>";
 
 function clientIp(request: NextRequest) {

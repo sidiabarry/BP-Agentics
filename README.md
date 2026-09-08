@@ -20,10 +20,10 @@ Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
 Das Formular unter `/termin` und `/kontakt` schickt den Wunsch an `sidiabarry@bpagentics.com` über [Resend](https://resend.com) — der Besucher muss kein Mailprogramm öffnen.
 
-1. API-Key in Resend anlegen. Nicht ins Git legen.
-2. Lokal in `.env.local`: `RESEND_API_KEY=…` (Vorlage: `.env.example`).
-3. Absender: in Production `BP Agentics <termin@bpagentics.com>` — Domain `bpagentics.com` muss in Resend verifiziert sein. Lokal ohne Domain: `BP Agentics <onboarding@resend.dev>` (automatisch, solange `NODE_ENV` nicht `production` ist). Override: `RESEND_FROM=`.
-4. Production-Deploy nur nach Ops-Freigabe. Denselben Key dann in der Hosting-Umgebung setzen, nicht vorher.
+1. Resend-Key `bp-agentics-website` (sending_access) in `.env.local` als `RESEND_API_KEY=…`. Nicht ins Git legen.
+2. Absender nach DNS-Verify von `send.bpagentics.com`: `BP Agentics <termin@send.bpagentics.com>`. Lokal ohne Verify: `BP Agentics <onboarding@resend.dev>` (automatisch, solange `NODE_ENV` nicht `production` ist). Override: `RESEND_FROM=`.
+3. Empfänger ist `sidiabarry@bpagentics.com`.
+4. Production-Deploy nur nach Ops-Freigabe und verifizierter Domain. Denselben Key dann in der Hosting-Umgebung setzen, nicht vorher.
 
 Ohne Key antwortet `/api/termin` mit einem Fehler; das Formular bietet dann noch `mailto:` als Notausgang.
 
