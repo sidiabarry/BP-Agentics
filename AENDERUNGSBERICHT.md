@@ -40,6 +40,7 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 - Kein extra Hintergrund hinter dem Einstiegstext.
 - Schrift läuft als Stufen an einer linken Achse nach unten: **Websites**, dann **Software**.
 - Positionierung: nicht nur Websites; Software steht gleichwertig daneben (Nachrichten und Abläufe).
+- Erstgespräch-Button und 90-Minuten-Hinweis sind vom ersten Bildschirm genommen. Die Stufen nutzen die linke Höhe.
 
 ## Geprüft
 

@@ -17,7 +17,6 @@
  *    Zweifel die ganze Inszenierung abschaltet.
  */
 
-import Link from "next/link";
 import { useRef } from "react";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
 
@@ -188,14 +187,6 @@ export function HeroPortal() {
               <span>für Nachrichten und Abläufe</span>
             </span>
           </h1>
-          <div className="hero-portal__actions">
-            <Link href="/termin" className="hero-portal__cta">
-              Erstgespräch anfragen
-            </Link>
-            <p className="hero-portal__note">
-              90 Minuten vor Ort. Den Termin stimmen wir persönlich ab.
-            </p>
-          </div>
         </div>
 
         <p className="hero-portal__cue" aria-hidden="true">
