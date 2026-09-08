@@ -51,7 +51,7 @@ export default function GewerkePage() {
         <p className="mt-6 text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Anwendungsbeispiele
         </p>
-        <h1 className="mt-4 max-w-[16ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
+        <h1 className="mt-4 max-w-[16ch] text-[1.85rem] leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
           Derselbe Weg. Anderer Arbeitsalltag.
         </h1>
         <p className="mt-5 max-w-[40rem] text-[1.2rem] leading-relaxed text-[#3A3D45]">

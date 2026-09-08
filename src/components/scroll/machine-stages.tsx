@@ -70,12 +70,12 @@ export function StageAuftritt() {
 /* ------------------------------------------------------------------ */
 
 const chat = [
-  { from: "in", text: "Guten Tag, wir planen die Sanierung unseres Garagendachs in Hagen. Können wir einen Besichtigungstermin vereinbaren?" },
-  { from: "out", text: "Guten Tag, ich bin der digitale Assistent des Betriebs. In welchem Stadtteil liegt die Garage, und wie groß ist die Dachfläche ungefähr?" },
-  { from: "in", text: "In Haspe, ungefähr 30 Quadratmeter." },
-  { from: "out", text: "Danke. Für dieses Beispiel sind Dienstag um 14:30 Uhr oder Donnerstag um 9:00 Uhr frei. Welcher Termin passt?" },
-  { from: "in", text: "Donnerstag um 9:00 Uhr." },
-  { from: "out", text: "Im Beispiel wird Donnerstag um 9:00 Uhr im Kalender eingetragen." },
+  { from: "in", text: "Hallo, Garagendach in Hagen — geht eine Besichtigung?" },
+  { from: "out", text: "Gern. Stadtteil und Dachfläche?" },
+  { from: "in", text: "Haspe, ca. 30 m²." },
+  { from: "out", text: "Im Beispiel frei: Di 14:30 oder Do 9:00. Was passt?" },
+  { from: "in", text: "Donnerstag 9:00." },
+  { from: "out", text: "Do 9:00 steht im Beispielkalender." },
 ];
 
 export function StageAnnahme() {

@@ -218,10 +218,10 @@ export function PhoneDemo({
   const close = useCallback(() => setOpen(false), []);
 
   return (
-    <figure ref={wrapRef} className={cn("flex flex-col items-center", className)}>
+    <figure ref={wrapRef} className={cn("flex w-full max-w-full flex-col items-center", className)}>
       <div
-        style={{ width }}
-        className="relative rounded-[2.2rem] bg-[#14161C] p-2 shadow-2xl ring-1 ring-black/20"
+        style={{ maxWidth: Math.min(width, 240) }}
+        className="relative w-[min(100%,13.25rem)] rounded-[2.2rem] bg-[#14161C] p-2 shadow-2xl ring-1 ring-black/20"
       >
         <div className="absolute top-3 left-1/2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-white/20" />
         <div className="overflow-hidden rounded-[1.7rem] bg-black">

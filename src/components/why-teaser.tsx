@@ -5,13 +5,13 @@ import { whyPoints } from "@/lib/content";
 
 export function WhyTeaser() {
   return (
-    <section id="warum" className="bg-[#F3EFE6] px-5 py-20 md:px-8">
+    <section id="warum" className="bg-[#F3EFE6] px-5 py-16 md:px-8 md:py-20">
       <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
         <div>
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Ansprechpartner
           </RevealIn>
-          <RevealHeading className="mt-3 max-w-[16ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+          <RevealHeading className="mt-3 max-w-[16ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
             Ihr Ansprechpartner: Sidia Jerome Barry.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[36rem] text-[1.12rem] leading-relaxed text-[#3A3D45]">

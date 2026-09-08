@@ -55,7 +55,7 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Leistungen
         </RevealIn>
-        <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[20ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Drei Einstiege, einzeln beauftragbar.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">

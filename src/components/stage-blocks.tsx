@@ -40,7 +40,7 @@ export function StageCard({
         </p>
       ) : null}
       {title ? (
-        <h3 className="mt-3 min-h-[3.4rem] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]">
+        <h3 className="mt-3 min-h-0 text-[1.25rem] leading-snug font-semibold tracking-[-0.03em] md:min-h-[3.4rem] md:text-[1.5rem]">
           {title}
         </h3>
       ) : null}
@@ -96,12 +96,12 @@ export function StagePanel({
         >
           {kicker}
         </p>
-        <h3 className="mt-2 min-h-[3.4rem] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em]">
+        <h3 className="mt-2 min-h-0 text-[1.25rem] leading-snug font-semibold tracking-[-0.03em] md:min-h-[3.4rem] md:text-[1.35rem]">
           {title}
         </h3>
         <p
           className={cn(
-            "mt-3 min-h-[6.8rem] text-[1.05rem] leading-relaxed",
+            "mt-3 min-h-0 text-[1.05rem] leading-relaxed md:min-h-[6.8rem]",
             tone === "ink" ? "text-white/72" : "text-[#3A3D45]",
           )}
         >

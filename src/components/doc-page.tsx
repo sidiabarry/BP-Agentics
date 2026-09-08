@@ -76,7 +76,7 @@ export function DocPage({
           {kicker ? (
             <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">{kicker}</p>
           ) : null}
-          <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
+          <h1 className="mt-3 text-[1.85rem] leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
             {title}
           </h1>
           <p className="lead mt-5 text-[1.18rem] leading-relaxed text-[#3A3D45]">{lead}</p>

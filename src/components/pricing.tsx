@@ -92,7 +92,7 @@ export function Pricing({
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Preise
           </RevealIn>
-          <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
+          <RevealHeading className="mt-3 text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
             Was Einrichtung und laufende Betreuung kosten.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">

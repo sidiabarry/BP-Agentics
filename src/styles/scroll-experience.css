@@ -439,6 +439,8 @@
   border-radius: var(--shell-r, 14px);
   overflow: hidden;
   margin-left: auto;
+  container-type: size;
+  container-name: shell;
   background: #f6f8fa;
   color: var(--ink);
   box-shadow:
@@ -562,10 +564,12 @@
   opacity: var(--intro);
 }
 
-@supports (width: 1cqh) {
-  .machine[data-scroll-ready] .machine__shell {
-    width: min(100%, max(14rem, calc(100cqh * var(--shell-wn, 44) / var(--shell-hn, 27.5))));
-    height: 100%;
+@media (min-width: 701px) {
+  @supports (width: 1cqh) {
+    .machine[data-scroll-ready] .machine__shell {
+      width: min(100%, max(14rem, calc(100cqh * var(--shell-wn, 44) / var(--shell-hn, 27.5))));
+      height: 100%;
+    }
   }
 }
 
@@ -1273,99 +1277,163 @@
 }
 
 @media (max-width: 700px) {
+  .hero-portal {
+    --header-offset: 4.15rem;
+  }
+
+  .hero-portal__pin {
+    height: calc(100svh - var(--header-offset));
+    min-height: 28rem;
+  }
+
+  .hero-portal[data-scroll-ready] .hero-portal__pin {
+    top: var(--header-offset);
+    height: calc(100svh - var(--header-offset));
+  }
+
+  .hero-portal__film img,
+  .hero-portal__film canvas {
+    transform: translate3d(0, 12%, 0) scale(1.12);
+    transform-origin: 50% 100%;
+  }
+
   .hero-portal__copy {
-    top: 4.5vh;
-    left: 0.95rem;
-    width: min(15.5rem, 46vw);
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 0.55rem 1rem 0.75rem;
+    background: #e8e6e2;
   }
 
   .hero-portal__copy h1 {
-    font-size: clamp(1.12rem, 5.4vw, 1.45rem);
+    font-size: clamp(1.18rem, 5.8vw, 1.4rem);
+    margin-bottom: 0.35rem;
+    line-height: 1.08;
+    max-width: 16ch;
   }
 
   .hero-portal__kicker {
-    font-size: 0.58rem;
-    margin-bottom: 0.4rem;
+    display: none;
   }
 
   .hero-portal__lead {
-    font-size: 0.76rem;
-    margin-bottom: 0.7rem;
+    display: none;
   }
 
   .hero-portal__link {
     font-size: 0.78rem;
   }
 
+  .hero-portal__arrival {
+    padding-bottom: 10svh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .hero-portal__arrival h2 {
-    font-size: clamp(1.15rem, 5.2vw, 1.55rem);
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
   }
 
   .machine {
-    --header-offset: 4.25rem;
+    --header-offset: 4.15rem;
     padding: 3.5rem 0 4.5rem;
   }
 
   .machine__pin {
     padding-left: 1rem;
-    padding-right: 0.7rem;
-    gap: 0.9rem 1rem;
+    padding-right: 1rem;
+    gap: 0.55rem;
+  }
+
+  .machine__rail {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    font-size: 0.68rem;
   }
 
   .machine[data-scroll-ready] .machine__pin {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    grid-template-rows: auto auto minmax(0, 1fr) auto;
-  }
-
-  .machine[data-scroll-ready] .machine__stage {
-    grid-row: 3;
-    grid-column: 2;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
   }
 
   .machine[data-scroll-ready] .machine__copy {
     grid-row: 3;
     grid-column: 1;
+    min-height: 7.1rem;
+  }
+
+  .machine[data-scroll-ready] .station {
+    justify-content: flex-start;
+  }
+
+  .machine[data-scroll-ready] .machine__stage {
+    grid-row: 4;
+    grid-column: 1;
+    align-items: center;
+    justify-content: center;
     min-height: 0;
   }
 
-  .station h3 { font-size: 1.22rem; max-width: none; }
+  /*
+    Höhere Spezifität als height:100% vom Desktop-Gerät.
+    Kompaktes Handy, nicht die 37-rem-Säule.
+  */
+  .machine[data-scroll-ready] .machine__stage .machine__shell {
+    width: min(15.5rem, 74vw);
+    height: min(21.5rem, 34svh);
+    max-width: 74vw;
+    max-height: 34svh;
+    margin: 0 auto;
+  }
+
+  .station h3 { font-size: 1.08rem; max-width: none; }
+  .station__index { margin-bottom: 0.45rem; }
   .station__text {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin-bottom: 0.7rem;
   }
-  .station__facts li:nth-child(n + 3) { display: none; }
+  .station__facts {
+    display: none;
+  }
+
+  .stage {
+    padding: 0.7rem;
+    font-size: 0.76rem;
+  }
 
   .stage--system {
-    padding: 0.6rem;
+    padding: 0.5rem;
   }
 
   .combo__steps {
     gap: 0.5rem;
-    padding: 0.75rem 0.75rem 0.65rem 0.65rem;
+    padding: 0.65rem 0.65rem 0.55rem 0.55rem;
   }
 
   .combo__steps::before {
-    top: 1.55rem;
-    bottom: 1.45rem;
-    left: calc(0.65rem + 0.8rem);
+    top: 1.45rem;
+    bottom: 1.35rem;
+    left: calc(0.55rem + 0.75rem);
   }
 
   .combo__step {
-    grid-template-columns: 1.6rem minmax(0, 1fr);
-    gap: 0.55rem;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.5rem;
   }
 
   .combo__num {
-    width: 1.6rem;
-    height: 1.6rem;
-    font-size: 0.68rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.64rem;
     box-shadow: 0 0 0 3px #fff;
   }
 
   .combo__copy h4 {
-    font-size: 0.86rem;
+    font-size: 0.8rem;
   }
 
   .combo__lede {
@@ -1373,14 +1441,63 @@
   }
 
   .combo__caption {
-    padding: 0.55rem 0.75rem 0.6rem;
-    font-size: 0.72rem;
+    padding: 0.5rem 0.65rem 0.55rem;
+    font-size: 0.68rem;
   }
 
   .ledger__head span:nth-child(2),
   .ledger__row span:nth-child(2) { display: none; }
   .ledger__head,
   .ledger__row { grid-template-columns: 1.3fr 0.8fr; }
+
+  .chat {
+    gap: 0.35rem;
+    padding: 0.65rem;
+  }
+
+  .chat li {
+    max-width: 86%;
+    font-size: 0.72rem;
+    line-height: 1.32;
+    padding: 0.36rem 0.55rem;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
+  .chat li:nth-child(n + 4) {
+    display: none;
+  }
+
+  .chat__slot,
+  .chat__stamp {
+    display: none;
+  }
+
+  .chat__bar {
+    font-size: 0.66rem;
+    padding: 0.5rem 0.6rem;
+  }
+}
+
+@media (max-width: 700px) {
+  @supports (width: 1cqh) {
+    .machine[data-scroll-ready] .machine__stage .machine__shell {
+      width: min(15.5rem, 74vw);
+      height: min(21.5rem, 34svh);
+    }
+  }
+}
+
+@container shell (max-height: 26rem) {
+  .chat li:nth-child(n + 5) {
+    display: none;
+  }
+
+  .site__grid,
+  .ablaeufe__bits,
+  .chat__stamp {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

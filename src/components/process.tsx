@@ -14,13 +14,13 @@ export function Process({
   return (
     <section
       id={headingId}
-      className={`bg-white px-5 text-[#14161C] md:px-8 ${limit ? "py-16" : "py-24"}`}
+      className={`bg-white px-5 text-[#14161C] md:px-8 ${limit ? "py-16" : "py-16 md:py-24"}`}
     >
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Zusammenarbeit
         </RevealIn>
-        <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] text-[#14161C] md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[18ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] text-[#14161C] md:text-5xl">
           Vom ersten Gespräch zum passenden Baustein.
         </RevealHeading>
         <ol

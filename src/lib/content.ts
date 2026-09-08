@@ -430,12 +430,12 @@ export const chatBeats = [
   {
     from: "in" as const,
     time: "09:12",
-    text: "Guten Tag, wir planen die Sanierung unseres Garagendachs in Hagen. Können wir einen Besichtigungstermin vereinbaren?",
+    text: "Guten Tag, wir wollen unser Garagendach in Hagen sanieren. Geht ein Besichtigungstermin?",
   },
   {
     from: "out" as const,
     time: "09:12",
-    text: "Guten Tag, ich bin der digitale Assistent des Betriebs. In welchem Stadtteil liegt die Garage, und wie groß ist die Dachfläche ungefähr?",
+    text: "Guten Tag, digitaler Assistent des Betriebs. Welcher Stadtteil, und wie groß ist die Fläche ungefähr?",
   },
   {
     from: "in" as const,
@@ -445,7 +445,7 @@ export const chatBeats = [
   {
     from: "out" as const,
     time: "09:13",
-    text: "Danke. Für dieses Beispiel sind Dienstag um 14:30 Uhr oder Donnerstag um 9:00 Uhr frei. Welcher Termin passt?",
+    text: "Danke. Im Beispiel frei: Dienstag 14:30 oder Donnerstag 9:00. Was passt?",
   },
   {
     from: "in" as const,
@@ -455,7 +455,7 @@ export const chatBeats = [
   {
     from: "out" as const,
     time: "09:14",
-    text: "Im Beispiel wird Donnerstag um 9:00 Uhr im Kalender eingetragen. Die Angaben zum Vorhaben stehen dem Team für die Besichtigung zur Verfügung.",
+    text: "Donnerstag 9:00 ist im Beispielkalender eingetragen.",
   },
 ];
 

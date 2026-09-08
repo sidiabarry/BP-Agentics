@@ -25,7 +25,7 @@ export function SchnellCheck({
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Schnell-Check
           </RevealIn>
-        <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[22ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Welcher Einstieg passt zu Ihrem Vorhaben?
         </RevealHeading>
           <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
@@ -63,7 +63,7 @@ export function SchnellCheck({
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Orientierung
         </RevealIn>
-        <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+        <RevealHeading className="mt-3 max-w-[22ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
           Welcher Einstieg passt zu Ihrem Vorhaben?
         </RevealHeading>
           </>
