@@ -1,7 +1,7 @@
 export const site = {
   name: "BP Agentics",
   legalName: "BP Agentics",
-  url: "https://bp-agentics.de",
+  url: "https://bpagentics.com",
   locale: "de_DE",
   language: "de",
   email: "sidiabarry@bpagentics.com",
