@@ -26,8 +26,8 @@ export function Process({
         <ol
           className={
             limit === 3
-              ? "mt-8 grid items-stretch gap-4 md:grid-cols-3"
-              : "mt-12 grid items-stretch gap-4 md:grid-cols-2"
+              ? "mt-12 grid items-start gap-10 md:grid-cols-3"
+              : "mt-12 grid items-start gap-10 sm:grid-cols-2 lg:grid-cols-4"
           }
         >
           {shown.map((step, index) => (
@@ -36,11 +36,20 @@ export function Process({
               as="li"
               variant="card"
               delay={index * 60}
-              className="flex h-full flex-col rounded-3xl border border-white/10 p-6 md:p-7"
+              className="relative min-w-0"
             >
-              <p className="text-sm tracking-[0.2em] text-[#9FD0F8]">{step.n}</p>
-              <h3 className="mt-3 text-2xl font-semibold">{step.title}</h3>
-              <p className="mt-3 flex-1 text-[1.08rem] leading-relaxed text-white/75">
+              {index < shown.length - 1 ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute top-4 left-[2.6rem] hidden h-px bg-white/20 lg:block"
+                  style={{ right: "-1.25rem" }}
+                />
+              ) : null}
+              <p className="text-[2rem] leading-none font-semibold tracking-[-0.04em] text-[#9FD0F8]">
+                {step.n}
+              </p>
+              <h3 className="mt-4 text-xl leading-snug font-semibold">{step.title}</h3>
+              <p className="mt-3 text-[1.02rem] leading-relaxed text-white/70">
                 {step.body}
               </p>
             </RevealIn>

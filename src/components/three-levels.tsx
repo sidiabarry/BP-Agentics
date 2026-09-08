@@ -37,7 +37,6 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
                 </p>
                 <div>
                   <p className="text-[1.05rem] leading-snug text-[#3A3D45]">{level.sub}</p>
-                  <p className="mt-1 text-[0.98rem] text-[#14161C]">{level.price}</p>
                 </div>
                 <p>
                   <Link
@@ -76,7 +75,6 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-5 text-[1.05rem] font-semibold">{level.price}</p>
                 <p className="mt-4">
                   <Link
                     href={level.href}
@@ -89,6 +87,11 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
             ))}
           </div>
         )}
+        <p className="mt-8 text-[1.08rem]">
+          <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+            Preise ansehen
+          </Link>
+        </p>
       </div>
     </section>
   );

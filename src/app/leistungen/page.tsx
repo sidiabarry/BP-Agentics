@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DataTable, DocPage } from "@/components/doc-page";
+import { DocPage } from "@/components/doc-page";
 import { pageMetadata } from "@/lib/seo";
 import { levels } from "@/lib/content";
-import { PRICE_NOTE, cta, offerTable } from "@/lib/offers";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Websites und Software für Ihren Betrieb",
@@ -28,24 +28,21 @@ export default function LeistungenPage() {
       ]}
     >
       <h2>Drei Leistungszugänge</h2>
-      <DataTable
-        caption="Leistungen, Einrichtung und Betreuung"
-        headers={["Leistung", "Einmalig", "Monatlich", "12 Monate inkl. Einrichtung"]}
-        rows={offerTable.map((row) => [row.name, row.once, row.month, row.year])}
-      />
       <ul>
         {levels.map((level) => (
           <li key={level.id}>
             <Link href={level.href}>{level.name}</Link>
             {" — "}
-            {level.lead} {level.price}.
+            {level.lead}
           </li>
         ))}
       </ul>
       <p>
         Jeder Baustein ist einzeln beauftragbar. Im Gespräch klären wir, ob eine
         Website, ein Assistent oder ein einzelner automatisierter Ablauf den
-        passenden Anfang macht.
+        passenden Anfang macht. Die Größenordnung für Einrichtung und Betreuung
+        steht auf der{" "}
+        <Link href="/preise">Preisseite</Link>.
       </p>
 
       <h2>So können die Lösungen aussehen</h2>
@@ -73,7 +70,6 @@ export default function LeistungenPage() {
           Hosting, Pflege und Unterstützung richten sich nach dem gewählten Angebot.
         </li>
       </ol>
-      <p>{PRICE_NOTE}</p>
       <p>
         <Link href={cta.href}>{cta.primary}</Link>
         {" — "}
