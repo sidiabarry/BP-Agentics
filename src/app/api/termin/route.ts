@@ -6,8 +6,7 @@ const WINDOW_MS = 60 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
 
-const PRODUCTION_FROM = "BP Agentics <termin@send.bpagentics.com>";
-const DEV_FROM = "BP Agentics <onboarding@resend.dev>";
+const FROM = "BP Agentics <termin@send.bpagentics.com>";
 
 function clientIp(request: NextRequest) {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -57,7 +56,7 @@ function escapeHtml(value: string) {
 function fromAddress() {
   const override = process.env.RESEND_FROM?.trim();
   if (override) return override;
-  return process.env.NODE_ENV === "production" ? PRODUCTION_FROM : DEV_FROM;
+  return FROM;
 }
 
 export async function POST(request: NextRequest) {
