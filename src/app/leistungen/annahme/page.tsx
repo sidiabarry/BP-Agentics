@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LivingChat } from "@/components/living-chat";
 import { PageFaqs } from "@/components/page-faqs";
-import { StageCard, StageGrid, StageLimit, StageSteps } from "@/components/stage-blocks";
+import { StageCard, StageLimit, StageSteps } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { annahmeFaqs } from "@/lib/content";
 import { faqPage, serviceOffer } from "@/lib/json-ld";
@@ -85,22 +85,14 @@ export default function AnnahmePage() {
         ]}
       />
 
-      <StageGrid className="mt-10" cols={2}>
-        <StageCard kicker="Vor der Einrichtung" title="Was wir festlegen.">
-          <p>
-            Welche Anfragen der Assistent bearbeitet, welche Angaben nötig sind,
-            welche Termine angeboten werden und wann ein Mensch übernimmt.
-            WhatsApp, E-Mail und Kalender prüfen wir vorab.
-          </p>
-        </StageCard>
-        <StageCard kicker="Passt das?" title="Wenn Anfragen wiederkehren.">
-          <p>
-            Sinnvoll, wenn Kunden per WhatsApp oder E-Mail anfragen und
-            wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch
-            prüfen wir Ihren Anfrageweg.
-          </p>
-        </StageCard>
-      </StageGrid>
+      <StageCard className="mt-10" kicker="Umfang" title="Was wir festlegen — und wann es passt.">
+        <p>
+          Welche Anfragen der Assistent bearbeitet, welche Angaben nötig sind,
+          welche Termine angeboten werden und wann ein Mensch übernimmt.
+          WhatsApp, E-Mail und Kalender prüfen wir vorab. Sinnvoll, wenn Kunden
+          per WhatsApp oder E-Mail anfragen und Fragen oder Termine wiederkehren.
+        </p>
+      </StageCard>
 
       <StageLimit title="Textnachrichten, kein Telefon.">
         <p>
@@ -109,37 +101,6 @@ export default function AnnahmePage() {
           hier beschriebenen Assistenten.
         </p>
       </StageLimit>
-
-      <div className="mt-10 overflow-x-auto rounded-[1.4rem] bg-white p-4 md:p-6">
-        <table className="w-full min-w-[28rem] border-collapse text-left text-[1.02rem]">
-          <caption className="mb-3 text-left text-sm tracking-[0.14em] text-[#198BE8] uppercase">
-            Nachrichten-Assistent
-          </caption>
-          <thead>
-            <tr className="border-b border-black/10">
-              <th scope="col" className="py-2 pr-4 font-semibold">Position</th>
-              <th scope="col" className="py-2 pr-4 font-semibold">Inhalt</th>
-              <th scope="col" className="py-2 pr-4 font-semibold">Preis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b border-black/5 align-top">
-              <th scope="row" className="py-3 pr-4 font-medium">Einrichtung</th>
-              <td className="py-3 pr-4 text-[#3A3D45]">
-                Fragenkatalog, WhatsApp- und E-Mail-Anbindung, Kalenderregeln
-              </td>
-              <td className="py-3 pr-4 text-[#3A3D45]">{whatsappOffer.once}</td>
-            </tr>
-            <tr className="align-top">
-              <th scope="row" className="py-3 pr-4 font-medium">Betreuung</th>
-              <td className="py-3 pr-4 text-[#3A3D45]">
-                Laufender Betrieb nach dem vereinbarten Angebot
-              </td>
-              <td className="py-3 pr-4 text-[#3A3D45]">{whatsappOffer.month} / Monat</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
       <PageFaqs items={annahmeFaqs} />
     </StagePage>

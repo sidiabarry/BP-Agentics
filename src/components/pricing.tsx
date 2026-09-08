@@ -167,14 +167,14 @@ export function Pricing({
               poster="/demos/feinkost-poster.jpg"
               fullSrc="/demos/feinkost-full.mp4"
               posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta"
-              caption="Bestell-App Feinkost Kreta: Bestellung und Benachrichtigung."
-              note="Projektbeispiel · Produktdemo"
+              caption="Projekt Feinkost Kreta: angemeldet bestellen."
+              note="Projekt · Feinkost Kreta"
               width={300}
             />
           </div>
           <p className="mt-4 text-center text-sm text-white/70">
             <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
-              Bestell-App ansehen
+              Projekt Feinkost Kreta
             </Link>
           </p>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">

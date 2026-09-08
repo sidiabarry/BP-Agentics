@@ -66,7 +66,7 @@ export default function UeberMichPage() {
         <StageCard kicker="Arbeiten und Demos" title="Zwei Wege, die man sehen kann.">
           <p>
             <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Bestell-App Feinkost Kreta
+              Projekt Feinkost Kreta
             </Link>
             {" · "}
             <Link href="/referenzen/dachdecker-signature" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">

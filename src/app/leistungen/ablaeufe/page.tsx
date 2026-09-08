@@ -147,7 +147,7 @@ export default function AblaeufePage() {
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
+        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/preise", label: "Preise" },
       ]}
       next={{
@@ -155,7 +155,7 @@ export default function AblaeufePage() {
         body: "Im Gespräch prüfen wir, welche Programme schon zuverlässig arbeiten und welcher Schritt den passenden Anfang macht. 90 Minuten vor Ort.",
         chips: ["Datenbasis + 1 Modul", "Ohne monatliche Betreuung", "Weitere Abläufe im Angebot"],
         primary: { href: cta.href, label: "Ersten Ablauf besprechen" },
-        secondary: { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
+        secondary: { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
       }}
       visual={<LedgerPreview />}
       appendix={
@@ -183,39 +183,10 @@ export default function AblaeufePage() {
         </p>
       </StageLimit>
 
-      <div className="mt-10 overflow-x-auto rounded-[1.4rem] bg-white p-4 md:p-6">
-        <table className="w-full min-w-[28rem] border-collapse text-left text-[1.02rem]">
-          <caption className="mb-3 text-left text-sm tracking-[0.14em] text-[#198BE8] uppercase">
-            Preisaufbau Automatisierung
-          </caption>
-          <thead>
-            <tr className="border-b border-black/10">
-              <th scope="col" className="py-2 pr-4 font-semibold">Baustein</th>
-              <th scope="col" className="py-2 pr-4 font-semibold">Aufgabe</th>
-              <th scope="col" className="py-2 pr-4 font-semibold">Preis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b border-black/5 align-top">
-              <th scope="row" className="py-3 pr-4 font-medium">Datenbasis + 1 Prozessmodul</th>
-              <td className="py-3 pr-4 text-[#3A3D45]">
-                Vereinbarte Informationen und ein erster Ablauf
-              </td>
-              <td className="py-3 pr-4 text-[#3A3D45]">{automationOffer.combined}</td>
-            </tr>
-            <tr className="align-top">
-              <th scope="row" className="py-3 pr-4 font-medium">Monatliche Betreuung</th>
-              <td className="py-3 pr-4 text-[#3A3D45]">Im Einstieg nicht enthalten</td>
-              <td className="py-3 pr-4 text-[#3A3D45]">{automationOffer.run}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
       <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
-        Ein verwandtes Prinzip zeigt die{" "}
+        Wie ein Bestellweg in einem Laden aussehen kann, zeigt die Kundengeschichte{" "}
         <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-          Bestell-App Feinkost Kreta
+          Projekt Feinkost Kreta
         </Link>
         .
       </p>

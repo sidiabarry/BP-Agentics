@@ -5,9 +5,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "So können die Lösungen aussehen",
+  title: "Ein Projekt. Eine Demo.",
   description:
-    "Zwei Beispiele: eine Bestell-App und eine Website-Präsentation. Beschreibungen erklären, was zu sehen ist — ohne behauptete Umsatzzahlen.",
+    "Projekt Feinkost Kreta: angemeldet bestellen. Produktdemo Dachdecker: eine mögliche Website. Ohne Umsatzzahlen.",
   path: "/referenzen",
 });
 
@@ -15,19 +15,19 @@ export default function ReferenzenPage() {
   return (
     <StagePage
       kicker="Arbeiten und Demos"
-      title="So können die Lösungen aussehen."
-      lead="Zwei unterschiedliche Aufgaben: ein digitaler Bestellweg und eine Website-Präsentation. Die Beschreibungen erklären, was zu sehen ist — ohne behauptete Umsatzzahlen."
+      title="Ein Projekt. Eine Demo."
+      lead="Ein Projekt zeigt einen Bestellweg. Eine Produktdemo zeigt eine mögliche Website. Ohne Umsatzzahlen."
       crumbs={[{ name: "Arbeiten und Demos", path: "/referenzen" }]}
       related={[
-        { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
+        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
         { href: "/leistungen", label: "Leistungen" },
         { href: "/kontakt", label: "Kontakt" },
       ]}
       next={{
         title: "Ähnlichen Weg für Ihren Betrieb prüfen",
-        body: "Die Demos zeigen Prinzipien, keine versprochenen Ergebnisse. Im Gespräch klären wir, welcher Ansatz zu Ihrem Vorhaben passt.",
-        chips: ["Produktdemo", "Kein Umsatzversprechen", "90 Minuten vor Ort"],
+        body: "Im Gespräch klären wir, welcher Ansatz zu Ihrem Vorhaben passt.",
+        chips: ["Ein Projekt, eine Demo", "90 Minuten vor Ort"],
         primary: { href: cta.href, label: cta.primary },
         secondary: { href: "/leistungen", label: "Leistungen ansehen" },
       }}

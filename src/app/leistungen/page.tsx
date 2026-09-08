@@ -57,11 +57,11 @@ export default function LeistungenPage() {
       <h2 className="sr-only">Drei Leistungszugänge</h2>
       <LevelCards />
       <p className="mt-8 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
-        Die Größenordnung für Einrichtung und Betreuung steht auf der{" "}
+        Einrichtung und Betreuung stehen auf der{" "}
         <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
           Preisseite
         </Link>
-        . Der verbindliche Umfang steht vor der Beauftragung im Angebot.
+        .
       </p>
     </StagePage>
   );
