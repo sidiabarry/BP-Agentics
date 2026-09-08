@@ -93,19 +93,19 @@
 }
 
 .hero-portal__kicker {
-  margin: 0 0 1rem;
-  font-size: 0.78rem;
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: color-mix(in srgb, var(--ink) 62%, transparent);
 }
 
 .hero-portal__copy h1 {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.85rem;
   font-family: var(--font-heading, inherit);
-  font-size: clamp(1.7rem, 3.4vw, 2.85rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.2rem, 2.1vw, 1.7rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
   font-weight: 600;
 }
 
@@ -127,18 +127,18 @@
 .hero-portal__cta {
   display: inline-flex;
   align-items: center;
-  padding: 0.68rem 1.15rem;
+  padding: 0.55rem 1rem;
   border-radius: 999px;
   background: var(--signal-deep, #198be8);
   color: #fff;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.84rem;
   text-decoration: none;
 }
 
 .hero-portal__note {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   line-height: 1.4;
   color: color-mix(in srgb, var(--ink) 72%, transparent);
 }
@@ -217,8 +217,8 @@
 .hero-portal__arrival h2 {
   margin: 0;
   font-family: var(--font-heading, inherit);
-  font-size: clamp(2rem, 5vw, 4rem);
-  line-height: 1;
+  font-size: clamp(1.25rem, 2.8vw, 2rem);
+  line-height: 1.15;
   letter-spacing: -0.03em;
   font-weight: 600;
 }
@@ -1338,17 +1338,21 @@
   }
 
   .hero-portal__copy h1 {
-    font-size: clamp(1.55rem, 7vw, 2.05rem);
+    font-size: clamp(1.12rem, 4.8vw, 1.45rem);
   }
 
   .hero-portal__kicker {
-    font-size: 0.68rem;
-    margin-bottom: 0.65rem;
+    font-size: 0.62rem;
+    margin-bottom: 0.4rem;
   }
 
   .hero-portal__lead {
-    font-size: 0.86rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-portal__arrival h2 {
+    font-size: clamp(1.15rem, 5.2vw, 1.55rem);
   }
 
   .machine {

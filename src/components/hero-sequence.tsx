@@ -82,7 +82,7 @@ function nearestLoaded(cache: Array<HTMLImageElement | undefined>, index: number
   return undefined;
 }
 
-const HERO_TAGS = ["NRW", "5–20 Mitarbeitende", "Festpreis nach dem Gespräch"];
+const HERO_TAGS = ["NRW", "Festpreis nach dem Gespräch"];
 
 export function HeroSequence() {
   const wrapRef = useRef<HTMLDivElement>(null);

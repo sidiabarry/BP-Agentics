@@ -43,7 +43,7 @@ export const site = {
   defaultTitle:
     "BP Agentics — Websites und Automatisierung für Betriebe in NRW",
   defaultDescription:
-    "BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende Büroabläufe. Für Betriebe mit 5–20 Mitarbeitenden in NRW. Sidia Jerome Barry, Hagen.",
+    "BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende Büroabläufe. Für Betriebe in NRW. Sidia Jerome Barry, Hagen.",
 } as const;
 
 export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;

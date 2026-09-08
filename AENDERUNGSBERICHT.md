@@ -23,6 +23,13 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 - Kontakt-Button „Per WhatsApp schreiben“ bleibt der Kontaktweg zu BP Agentics, nicht die Produktbeschreibung.
 - Beispieldialog (LivingChat / Maschine) bleibt visuell ein WhatsApp-Dialog und ist als Beispiel gekennzeichnet.
 
+## Nachzug: Angebot offen, Hero kürzer
+
+- Keine Zielgruppe „Betriebe mit 5–20 Mitarbeitenden“ mehr in Hero, Metadaten, Check und `llms.txt`.
+- Orientierung fragt nur noch, was leichter werden soll — nicht nach Teamgröße.
+- Hero-Einstieg: kurzer Kicker, Überschrift, CTA und eine Zeile darunter. Langer Lead und Extra-Zeilen entfallen.
+- Überschrift und Ankunftstext im Hero kleiner gesetzt.
+
 ## Geprüft
 
 - `npx tsc --noEmit`: ohne Fehler.

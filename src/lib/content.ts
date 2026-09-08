@@ -318,24 +318,6 @@ export const checkPaths = [
   },
 ];
 
-export const teamSizes = [
-  {
-    id: "s",
-    label: "1–4 Mitarbeitende",
-    hint: "Die Erklärung richtet sich nach Ihrem Vorhaben, nicht automatisch nach der kleinsten oder größten Stufe.",
-  },
-  {
-    id: "m",
-    label: "5–20 Mitarbeitende",
-    hint: "Das ist die Zielgröße von BP Agentics. Welche Leistung zuerst passt, hängt von der Aufgabe ab.",
-  },
-  {
-    id: "l",
-    label: "Mehr als 20 Mitarbeitende",
-    hint: "Die Größe allein legt kein Paket fest. Im Gespräch klären wir, welcher Einstieg sinnvoll ist.",
-  },
-];
-
 export type IndustrySlug =
   | "dachdecker"
   | "shk-haustechnik"

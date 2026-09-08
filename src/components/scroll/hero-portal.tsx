@@ -178,34 +178,20 @@ export function HeroPortal() {
         <div className="hero-portal__portal" aria-hidden="true" />
 
         <div className="hero-portal__copy">
-          <p className="hero-portal__kicker">
-            Websites und Automatisierung für Betriebe mit 5–20 Mitarbeitenden in NRW
-          </p>
+          <p className="hero-portal__kicker">Websites und Automatisierung</p>
           <h1>
             Websites, die Ihre Arbeit zeigen.
             <br />
             Abläufe, die Ihr Team entlasten.
           </h1>
-          <p className="hero-portal__lead">
-            BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp
-            und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende
-            Büroabläufe. Gemeinsam klären wir, welcher Baustein zu Ihrem Betrieb
-            passt. Sie erhalten ein Angebot mit klarem Umfang und Festpreis.
-          </p>
           <div className="hero-portal__actions">
             <Link href="/termin" className="hero-portal__cta">
               Kostenloses Erstgespräch anfragen
             </Link>
             <p className="hero-portal__note">
-              90 Minuten in Ihrem Betrieb. Den Termin stimmen wir persönlich ab.
+              90 Minuten vor Ort. Den Termin stimmen wir persönlich ab.
             </p>
-            <Link href="#referenzen" className="hero-portal__link">
-              Arbeiten und Demos ansehen
-            </Link>
           </div>
-          <p className="hero-portal__trust">
-            Persönlicher Ansprechpartner · Klarer Leistungsumfang · Einzeln beauftragbar
-          </p>
         </div>
 
         <p className="hero-portal__cue" aria-hidden="true">
