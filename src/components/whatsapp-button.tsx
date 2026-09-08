@@ -115,11 +115,12 @@ export function WhatsAppInline({
       target="_blank"
       rel="noopener noreferrer"
       data-analytics="whatsapp-inline"
+      data-slot="button"
       className={cn(
         "inline-flex items-center gap-2.5 rounded-full font-medium transition-colors",
         "outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/40",
         variant === "solid"
-          ? "bg-[#25D366] px-5 py-3 text-white hover:bg-[#1FBE59]"
+          ? "bg-[#25D366] px-5 py-3 text-white hover:bg-[#1FBE59] hover:text-white"
           : "text-[#128C4A] underline-offset-4 hover:underline",
         className,
       )}

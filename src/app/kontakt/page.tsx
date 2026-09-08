@@ -29,7 +29,7 @@ export default function KontaktPage() {
       ]}
     >
       <h2>Erreichbarkeit</h2>
-      <p>
+      <address className="not-italic">
         {site.name}
         <br />
         {site.founder.name}
@@ -37,17 +37,30 @@ export default function KontaktPage() {
         {site.streetAddress}
         <br />
         {site.postalCode} {site.addressLocality}
-      </p>
-      <p>
-        Telefon:{" "}
-        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
-        <br />
-        E-Mail:{" "}
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-      </p>
-      <p>
-        <WhatsAppInline>Per WhatsApp schreiben</WhatsAppInline>
-      </p>
+      </address>
+      <div className="mt-6 overflow-hidden rounded-[1.5rem] bg-white">
+        <a
+          href={`tel:${site.phoneTel}`}
+          data-slot="button"
+          className="flex flex-col gap-0.5 border-b border-black/8 px-5 py-4 text-[#14161C] no-underline hover:bg-[#F8F5EF]"
+        >
+          <span className="text-sm text-[#5C5F66]">Telefon</span>
+          <span className="font-semibold">{site.phoneDisplay}</span>
+        </a>
+        <a
+          href={`mailto:${site.email}`}
+          data-slot="button"
+          className="flex flex-col gap-0.5 border-b border-black/8 px-5 py-4 text-[#14161C] no-underline hover:bg-[#F8F5EF]"
+        >
+          <span className="text-sm text-[#5C5F66]">E-Mail</span>
+          <span className="font-semibold">{site.email}</span>
+        </a>
+        <div className="px-5 py-4">
+          <WhatsAppInline className="w-full justify-center">
+            Per WhatsApp schreiben
+          </WhatsAppInline>
+        </div>
+      </div>
       <p>
         Vor-Ort-Gespräche in Nordrhein-Westfalen. Die Anfahrt und den Termin stimmen
         wir vorab ab.
