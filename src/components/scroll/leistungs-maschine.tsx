@@ -135,6 +135,11 @@ export function LeistungsMaschine() {
       out["--shell-r"] = `${s.r.toFixed(1)}px`;
       return out;
     },
+    onFrame: (p, el) => {
+      const raw = clamp01((p - LEAD) / (SEG * STATIONS)) * STATIONS;
+      const station = String(Math.min(STATIONS, Math.max(1, Math.floor(raw) + 1)));
+      if (el.dataset.station !== station) el.dataset.station = station;
+    },
   });
 
   return (

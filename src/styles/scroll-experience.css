@@ -1360,11 +1360,24 @@
   .machine[data-scroll-ready] .machine__copy {
     grid-row: 3;
     grid-column: 1;
-    min-height: 7.1rem;
+    min-height: 7.4rem;
   }
 
   .machine[data-scroll-ready] .station {
     justify-content: flex-start;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .machine[data-scroll-ready][data-station="1"] .station:nth-child(1),
+  .machine[data-scroll-ready][data-station="2"] .station:nth-child(2),
+  .machine[data-scroll-ready][data-station="3"] .station:nth-child(3),
+  .machine[data-scroll-ready][data-station="4"] .station:nth-child(4) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .machine[data-scroll-ready] .machine__stage {
@@ -1375,15 +1388,12 @@
     min-height: 0;
   }
 
-  /*
-    Höhere Spezifität als height:100% vom Desktop-Gerät.
-    Kompaktes Handy, nicht die 37-rem-Säule.
-  */
+  /* Gerät behält seine Form, wird aber nicht zur Vollhöhe gestreckt. */
   .machine[data-scroll-ready] .machine__stage .machine__shell {
-    width: min(15.5rem, 74vw);
-    height: min(21.5rem, 34svh);
-    max-width: 74vw;
-    max-height: 34svh;
+    width: min(100%, 86vw, calc(min(24rem, 38svh) * var(--shell-wn, 44) / var(--shell-hn, 27.5)));
+    height: min(24rem, 38svh);
+    max-width: 86vw;
+    max-height: 38svh;
     margin: 0 auto;
   }
 
@@ -1445,10 +1455,18 @@
     font-size: 0.68rem;
   }
 
+  .flow__node:nth-child(n + 5),
+  .ledger__paper,
+  .ablaeufe__bits {
+    display: none;
+  }
+
   .ledger__head span:nth-child(2),
   .ledger__row span:nth-child(2) { display: none; }
   .ledger__head,
   .ledger__row { grid-template-columns: 1.3fr 0.8fr; }
+  .ledger__row:nth-child(n + 4) { display: none; }
+  .ledger__state { color: #0b5ea8; }
 
   .chat {
     gap: 0.35rem;
@@ -1482,8 +1500,8 @@
 @media (max-width: 700px) {
   @supports (width: 1cqh) {
     .machine[data-scroll-ready] .machine__stage .machine__shell {
-      width: min(15.5rem, 74vw);
-      height: min(21.5rem, 34svh);
+      width: min(100%, 86vw, calc(min(24rem, 38svh) * var(--shell-wn, 44) / var(--shell-hn, 27.5)));
+      height: min(24rem, 38svh);
     }
   }
 }

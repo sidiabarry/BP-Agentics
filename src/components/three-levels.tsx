@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LeistungPicker } from "@/components/leistung-picker";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { levels } from "@/lib/content";
@@ -64,33 +65,9 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
           passenden Anfang macht.
         </RevealIn>
         {compact ? (
-          <ul className="mt-8 divide-y divide-black/10 border-y border-black/10">
-            {levels.map((level, index) => (
-              <RevealIn
-                key={level.id}
-                id={level.id}
-                as="li"
-                variant="card"
-                delay={index * 60}
-                className="grid gap-1 py-4 md:grid-cols-[10rem_minmax(0,1fr)_auto] md:items-baseline md:gap-6"
-              >
-                <p className="font-semibold tracking-[-0.02em] text-[#14161C]">
-                  {level.roman} · {level.name}
-                </p>
-                <div>
-                  <p className="text-[1.05rem] leading-snug text-[#3A3D45]">{level.sub}</p>
-                </div>
-                <p>
-                  <Link
-                    href={level.href}
-                    className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
-                  >
-                    {level.linkLabel}
-                  </Link>
-                </p>
-              </RevealIn>
-            ))}
-          </ul>
+          <RevealIn variant="card" className="mt-2">
+            <LeistungPicker />
+          </RevealIn>
         ) : (
           <div className="mt-12">
             <LevelCards />
