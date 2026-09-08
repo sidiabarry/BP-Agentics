@@ -87,11 +87,6 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
             ))}
           </div>
         )}
-        <p className="mt-8 text-[1.08rem]">
-          <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-            Preise ansehen
-          </Link>
-        </p>
       </div>
     </section>
   );
