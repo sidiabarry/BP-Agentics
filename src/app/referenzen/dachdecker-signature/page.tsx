@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Dachdecker Signature-Website",
   description:
-    "Signature-Website für einen Dachdeckerbetrieb: Scroll-Choreografie, fünfzehn Sekunden Loop, gebaut als Auftritt statt Visitenkarte.",
+    "Signature-Website für einen Dachdeckerbetrieb: Scroll-Choreografie, zwölf Sekunden Loop, gebaut als Auftritt statt Visitenkarte.",
   path: "/referenzen/dachdecker-signature",
 });
 
@@ -17,7 +17,7 @@ export default function DachdeckerSignaturePage() {
     <DocPage
       kicker="Referenz · Äußere Ebene"
       title="Dachdecker Signature: der Auftritt ist die Arbeitsprobe"
-      lead="Eine Scroll-Choreografie für Steildach und Sanierung. Fünfzehn Sekunden Loop, längere Demo auf Klick, gebaut als Verkaufsfläche — nicht als Archiv."
+      lead="Eine Scroll-Choreografie für Steildach und Sanierung. Zwölf Sekunden Loop, längere Demo auf Klick, gebaut als Verkaufsfläche — nicht als Archiv."
       crumbs={[
         { name: "Referenzen", path: "/referenzen" },
         { name: "Dachdecker Signature", path: "/referenzen/dachdecker-signature" },
@@ -26,10 +26,10 @@ export default function DachdeckerSignaturePage() {
         videoObject({
           name: "Scroll-Choreografie einer Dachdecker-Signature-Website",
           description:
-            "Produktdemo: fünfzehn Sekunden Loop der Signature-Website für einen Dachdeckerbetrieb.",
+            "Produktdemo: zwölf Sekunden Loop der Signature-Website für einen Dachdeckerbetrieb.",
           thumbnailUrl: "/demos/dach-poster.jpg",
           contentUrl: "/demos/dach-loop.mp4",
-          duration: "PT15S",
+          duration: "PT12S",
           uploadDate: "2026-08-15",
         }),
       ]}
@@ -46,7 +46,7 @@ export default function DachdeckerSignaturePage() {
         fullSrc="/demos/dach-full.mp4"
         posterAlt="Standbild einer Signature-Website für einen Dachdeckerbetrieb mit Dachaufnahme und Scroll-Choreografie"
         caption="Scroll-Choreografie einer Signature-Website für einen Dachdeckerbetrieb."
-        note="Produktdemo · fünfzehn Sekunden Loop · kein Echtbetrieb"
+        note="Produktdemo · zwölf Sekunden Loop · kein Echtbetrieb"
         className="mt-10"
       />
 
@@ -60,21 +60,21 @@ export default function DachdeckerSignaturePage() {
 
       <h2>Was sehen Sie in der Demo?</h2>
       <p className="answer">
-        Sie sehen einen fünfzehnsekündigen Loop der Scroll-Choreografie und auf Klick die längere Fassung; das Poster trägt einen beschreibenden Alternativtext.
+        Sie sehen einen zwölfsekündigen Loop der Scroll-Choreografie und auf Klick die längere Fassung; das Poster trägt einen beschreibenden Alternativtext.
       </p>
 
       <DataTable
         caption="Signature-Demo, Dateien und Dauer"
         headers={["Datei", "Rolle", "Dauer"]}
         rows={[
-          ["dach-loop.mp4", "Schleife im Hub und auf der Startseite", "15 Sekunden"],
+          ["dach-loop.mp4", "Schleife im Hub und auf der Startseite", "12 Sekunden"],
           ["dach-full.mp4", "Längere Fassung im Overlay", "Vollversion"],
           ["dach-poster.jpg", "Erstes Bild und Variante ohne Bewegung", "Standbild"],
         ]}
       />
 
       <p>
-        Dieselbe Demo sitzt auf der Startseite unter den Website-Karten. Hier hat sie eine eigene Adresse, einen eigenen Titel und VideoObject-Markup mit Poster, Inhalt und Dauer PT15S. Es gibt keine Kundenbewertung im Schema und keinen erfundenen Auftragswert.
+        Dieselbe Demo sitzt auf der Startseite unter den Website-Karten. Hier hat sie eine eigene Adresse, einen eigenen Titel und VideoObject-Markup mit Poster, Inhalt und Dauer PT12S. Es gibt keine Kundenbewertung im Schema und keinen erfundenen Auftragswert.
       </p>
 
       <h2>Wie hängt das mit Setter, Abläufen und Hagen zusammen?</h2>

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState, type ReactNode } from "react";
+import { cloneElement, FormEvent, isValidElement, useState, type ReactElement } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -163,15 +163,20 @@ function Field({
   id: string;
   label: string;
   required?: boolean;
-  children: ReactNode;
+  children: ReactElement<{ required?: boolean; "aria-required"?: string }>;
 }) {
+  const input =
+    required && isValidElement(children)
+      ? cloneElement(children, { required: true, "aria-required": "true" })
+      : children;
+
   return (
     <div className="grid gap-2">
       <Label htmlFor={id} className="text-[1.02rem]">
         {label}
         {required ? <span className="text-[#198BE8]"> *</span> : null}
       </Label>
-      {children}
+      {input}
     </div>
   );
 }

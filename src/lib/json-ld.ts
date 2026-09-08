@@ -1,4 +1,4 @@
-import { site, napShort } from "@/lib/site";
+import { site, napShort, deploymentAbsoluteUrl } from "@/lib/site";
 
 export const orgId = `${site.url}/#org`;
 export const personId = `${site.url}/#sidia`;
@@ -16,10 +16,10 @@ export function organizationGraph() {
         url: site.url,
         email: site.email,
         telephone: site.phoneDisplay,
-        image: `${site.url}/icon.svg`,
+        image: deploymentAbsoluteUrl("/icon.svg"),
         logo: {
           "@type": "ImageObject",
-          url: `${site.url}/icon.svg`,
+          url: deploymentAbsoluteUrl("/icon.svg"),
         },
         founder: { "@id": personId },
         address: {
@@ -213,8 +213,8 @@ export function videoObject({
     "@type": "VideoObject",
     name,
     description,
-    thumbnailUrl: `${site.url}${thumbnailUrl}`,
-    contentUrl: `${site.url}${contentUrl}`,
+    thumbnailUrl: deploymentAbsoluteUrl(thumbnailUrl),
+    contentUrl: deploymentAbsoluteUrl(contentUrl),
     uploadDate,
     duration,
     inLanguage: "de",
