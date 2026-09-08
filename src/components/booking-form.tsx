@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState, type ReactNode } from "react";
+import { cloneElement, FormEvent, isValidElement, useState, type ReactElement } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,21 +85,21 @@ export function BookingForm() {
       </div>
       <div className="grid gap-5 md:grid-cols-2">
         <Field id="name" label="Vor- und Nachname" required>
-          <Input id="name" name="name" required aria-required="true" autoComplete="name" className="h-12 text-[1.05rem]" />
+          <Input id="name" name="name" autoComplete="name" className="h-12 text-[1.05rem]" />
         </Field>
         <Field id="phone" label="Telefon" required>
-          <Input id="phone" name="phone" required aria-required="true" type="tel" autoComplete="tel" className="h-12 text-[1.05rem]" />
+          <Input id="phone" name="phone" type="tel" autoComplete="tel" className="h-12 text-[1.05rem]" />
         </Field>
       </div>
       <Field id="company" label="Betrieb" required>
-        <Input id="company" name="company" required aria-required="true" autoComplete="organization" className="h-12 text-[1.05rem]" />
+        <Input id="company" name="company" autoComplete="organization" className="h-12 text-[1.05rem]" />
       </Field>
       <div className="grid gap-5 md:grid-cols-2">
         <Field id="date" label="Wunschdatum" required>
-          <Input id="date" name="date" required aria-required="true" type="date" className="h-12 text-[1.05rem]" />
+          <Input id="date" name="date" type="date" className="h-12 text-[1.05rem]" />
         </Field>
         <Field id="time" label="Uhrzeit" required>
-          <Input id="time" name="time" required aria-required="true" type="time" className="h-12 text-[1.05rem]" />
+          <Input id="time" name="time" type="time" className="h-12 text-[1.05rem]" />
         </Field>
       </div>
       <Field id="note" label="Woran hakt es gerade? (optional)">
@@ -139,15 +139,20 @@ function Field({
   id: string;
   label: string;
   required?: boolean;
-  children: ReactNode;
+  children: ReactElement<{ required?: boolean; "aria-required"?: string }>;
 }) {
+  const input =
+    required && isValidElement(children)
+      ? cloneElement(children, { required: true, "aria-required": "true" })
+      : children;
+
   return (
     <div className="grid gap-2">
       <Label htmlFor={id} className="text-[1.02rem]">
         {label}
         {required ? <span className="text-[#198BE8]"> *</span> : null}
       </Label>
-      {children}
+      {input}
     </div>
   );
 }
