@@ -50,6 +50,22 @@ export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.address
 
 export const napShort = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality}`;
 
+/**
+ * URL where this deployment is actually reachable — used for metadataBase
+ * so og:image and other generated URLs point to a host that serves them.
+ */
+export function getDeploymentUrl(): string {
+  const vercel =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
+    process.env.VERCEL_URL;
+  if (vercel) return `https://${vercel}`;
+
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/+$/, "");
+
+  return site.url;
+}
+
 export function absoluteUrl(path = "/") {
   if (path.startsWith("http")) return path;
   const normalized = path.startsWith("/") ? path : `/${path}`;
