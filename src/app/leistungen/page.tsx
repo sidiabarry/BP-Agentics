@@ -6,7 +6,7 @@ import { levels } from "@/lib/content";
 import { PRICE_NOTE, cta, offerTable } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Websites und Automatisierung für Ihren Betrieb",
+  title: "Websites und Software für Ihren Betrieb",
   description:
     "Eine Website macht Leistungen verständlich. Ein Nachrichten-Assistent bereitet WhatsApp- und E-Mail-Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
   path: "/leistungen",
@@ -16,7 +16,7 @@ export default function LeistungenPage() {
   return (
     <DocPage
       kicker="Leistungen"
-      title="Websites und Automatisierung für Ihren Betrieb"
+      title="Websites und Software für Ihren Betrieb"
       lead="Eine Website macht Leistungen und Referenzen verständlich. Ein Nachrichten-Assistent bereitet Kundenanfragen per WhatsApp und E-Mail vor. Automatisierte Abläufe verbinden Informationen zwischen Büro und Außendienst. Wählen Sie den Bereich, der zu Ihrem aktuellen Vorhaben passt."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       related={[

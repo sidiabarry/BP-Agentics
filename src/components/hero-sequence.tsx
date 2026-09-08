@@ -291,11 +291,11 @@ export function HeroSequence() {
         >
           <div className="mx-auto w-full max-w-4xl">
             <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-[#0C5A9A] uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
-              Websites und Automatisierung · BP Agentics / NRW
+              Websites und Software · BP Agentics / NRW
             </p>
             <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-[#14161C] text-balance sm:text-6xl md:text-7xl">
               <span className="hero-line-1 block">Websites, die Ihre Arbeit zeigen.</span>
-              <span className="hero-line-2 block">Abläufe, die Ihr Team entlasten.</span>
+              <span className="hero-line-2 block">Software für Nachrichten und Abläufe.</span>
             </h1>
             <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-[#3A3D45] md:text-[1.25rem]">
               BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp

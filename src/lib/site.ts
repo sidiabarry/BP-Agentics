@@ -33,7 +33,7 @@ export const site = {
     "Märkischer Kreis",
   ],
   knowsAbout: [
-    "Website für Handwerksbetriebe",
+    "Software für Betriebe",
     "Nachrichten-Assistent für WhatsApp und E-Mail",
     "Prozessautomatisierung",
     "MID Digitale Prozesse",
@@ -41,9 +41,9 @@ export const site = {
     "n8n",
   ],
   defaultTitle:
-    "BP Agentics — Websites und Automatisierung für Betriebe in NRW",
+    "BP Agentics — Websites und Software für Betriebe in NRW",
   defaultDescription:
-    "BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende Büroabläufe. Für Betriebe in NRW. Sidia Jerome Barry, Hagen.",
+    "BP Agentics entwickelt Websites und Software: Auftritt, Nachrichten-Assistent und Büroabläufe. Für Betriebe in NRW. Sidia Jerome Barry, Hagen.",
 } as const;
 
 export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;

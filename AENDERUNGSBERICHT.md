@@ -32,8 +32,14 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 
 ## Nachzug: Hero-Text oben links
 
-- Einstiegstext sitzt oben links in einem kompakten Feld, schmal genug, dass er die Frau im Bild nicht berührt.
+- Einstiegstext sitzt oben links, schmal genug, dass er die Frau im Bild nicht berührt.
 - Button im Hero kurz: **Erstgespräch anfragen**.
+
+## Nachzug: Stufen links, Websites und Software
+
+- Kein extra Hintergrund hinter dem Einstiegstext.
+- Schrift läuft als Stufen an einer linken Achse nach unten: **Websites**, dann **Software**.
+- Positionierung: nicht nur Websites; Software steht gleichwertig daneben (Nachrichten und Abläufe).
 
 ## Geprüft
 

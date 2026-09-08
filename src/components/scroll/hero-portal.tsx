@@ -178,11 +178,15 @@ export function HeroPortal() {
         <div className="hero-portal__portal" aria-hidden="true" />
 
         <div className="hero-portal__copy">
-          <p className="hero-portal__kicker">Websites und Automatisierung</p>
           <h1>
-            Websites, die Ihre Arbeit zeigen.
-            <br />
-            Abläufe, die Ihr Team entlasten.
+            <span className="hero-portal__step">
+              <strong>Websites</strong>
+              <span>die Ihre Arbeit zeigen</span>
+            </span>
+            <span className="hero-portal__step">
+              <strong>Software</strong>
+              <span>für Nachrichten und Abläufe</span>
+            </span>
           </h1>
           <div className="hero-portal__actions">
             <Link href="/termin" className="hero-portal__cta">
@@ -200,7 +204,7 @@ export function HeroPortal() {
 
         {/* Ankunft: der Moment, in dem wir im Display sind. */}
         <div className="hero-portal__arrival">
-          <p>Websites, Nachrichten, Büroabläufe.</p>
+          <p>Websites, Software, Abläufe.</p>
           <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
         </div>
       </div>
