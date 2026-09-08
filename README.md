@@ -16,6 +16,17 @@ npm run dev
 
 Der Dev-Server lauscht auf [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
+## Terminformular
+
+Das Formular unter `/termin` und `/kontakt` schickt den Wunsch an `sidiabarry@bpagentics.com` über [Resend](https://resend.com) — der Besucher muss kein Mailprogramm öffnen.
+
+1. Resend-Key `bp-agentics-website` (sending_access) in `.env.local` als `RESEND_API_KEY=…`. Nicht ins Git legen.
+2. Absender: `BP Agentics <termin@send.bpagentics.com>` (`send.bpagentics.com` ist verifiziert). Nur falls nötig: `RESEND_FROM=BP Agentics <onboarding@resend.dev>`.
+3. Empfänger ist `sidiabarry@bpagentics.com`.
+4. Production-Deploy nur nach Ops-Freigabe. Denselben Key dann in der Hosting-Umgebung setzen, nicht vorher.
+
+Ohne Key antwortet `/api/termin` mit einem Fehler; das Formular bietet dann noch `mailto:` als Notausgang.
+
 ## Routen
 
 - `/` — Übersicht (acht Abschnitte plus FAQ)
