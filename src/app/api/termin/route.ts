@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { site } from "@/lib/site";
 
 const WINDOW_MS = 60 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
+const MAX_PER_WINDOW = 20;
 const hits = new Map<string, number[]>();
 
 const FROM = "BP Agentics <termin@send.bpagentics.com>";

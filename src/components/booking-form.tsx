@@ -52,8 +52,32 @@ export function BookingForm() {
     }
 
     if (!response.ok) {
+      let apiError = "";
+      try {
+        const json = (await response.json()) as { error?: string };
+        apiError = json.error ?? "";
+      } catch {
+        /* response had no JSON body */
+      }
+
       setStatus("error");
-      setMessage("Die Anfrage ist nicht durchgegangen. Schreiben Sie uns direkt per E-Mail.");
+
+      if (response.status === 429) {
+        setMessage(
+          "Zu viele Anfragen. Bitte in einer Stunde erneut versuchen oder per E-Mail schreiben.",
+        );
+      } else if (response.status === 503) {
+        setMessage(
+          apiError || "E-Mail-Versand ist nicht konfiguriert. Bitte schreiben Sie uns direkt per E-Mail.",
+        );
+      } else {
+        setMessage(
+          apiError
+            ? `Terminwunsch konnte nicht übermittelt werden: ${apiError}`
+            : "Terminwunsch konnte nicht übermittelt werden. Schreiben Sie uns direkt per E-Mail.",
+        );
+      }
+
       setMailto(mailToTermin(payload));
       return;
     }
