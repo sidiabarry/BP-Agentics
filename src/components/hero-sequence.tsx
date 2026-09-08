@@ -82,7 +82,7 @@ function nearestLoaded(cache: Array<HTMLImageElement | undefined>, index: number
   return undefined;
 }
 
-const HERO_TAGS = ["Aus Hagen", "Alle Daten in der EU", "Feste Preise, keine Stundenzettel"];
+const HERO_TAGS = ["NRW", "5–20 Mitarbeitende", "Festpreis nach dem Gespräch"];
 
 export function HeroSequence() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -291,16 +291,15 @@ export function HeroSequence() {
         >
           <div className="mx-auto w-full max-w-4xl">
             <p className="hero-kicker text-[0.72rem] tracking-[0.16em] text-[#0C5A9A] uppercase sm:text-[0.78rem] sm:tracking-[0.28em]">
-              Systems & Automation · BP Agentics / Hagen
+              Websites und Automatisierung · BP Agentics / NRW
             </p>
             <h1 className="mt-4 max-w-[18ch] text-[2.35rem] leading-[1.05] font-semibold tracking-[-0.03em] text-[#14161C] text-balance sm:text-6xl md:text-7xl">
-              <span className="hero-line-1 block">Ihr Betrieb läuft.</span>
-              <span className="hero-line-2 block">Nur digital nicht.</span>
+              <span className="hero-line-1 block">Websites, die Ihre Arbeit zeigen.</span>
+              <span className="hero-line-2 block">Abläufe, die Ihr Team entlasten.</span>
             </h1>
             <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-[#3A3D45] md:text-[1.25rem]">
-              Websites und Systeme für mittelständische Betriebe, die noch mit
-              Telefon, Zetteln und Excel arbeiten. Fester Festpreis, in Wochen
-              einsatzbereit, ein persönlicher Ansprechpartner.
+              BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem
+              WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe.
             </p>
             <div className="hero-tags mt-7 flex flex-wrap gap-2">
               {HERO_TAGS.map((tag, index) => (
@@ -318,13 +317,13 @@ export function HeroSequence() {
                 asChild
                 className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
               >
-                <Link href="/termin">Erstgespräch vereinbaren</Link>
+                <Link href="/termin">Kostenloses Erstgespräch anfragen</Link>
               </Button>
               <Link
                 href="#referenzen"
                 className="inline-flex items-center text-[1.05rem] font-medium text-[#14161C] underline-offset-[5px] transition-colors hover:underline"
               >
-                Zwei Systeme ansehen ↓
+                Arbeiten und Demos ansehen ↓
               </Link>
             </div>
           </div>

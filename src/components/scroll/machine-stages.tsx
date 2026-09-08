@@ -44,7 +44,7 @@ export function StageAuftritt() {
               Dach. Dicht. In Hagen.
             </p>
             <p className="site__h2" style={i(3)}>
-              Notdienst und Sanierung, kein Stockfoto.
+              Sanierung und Dacharbeiten in Hagen.
             </p>
             <span className="site__cta" style={i(4)}>
               Dach prüfen lassen
@@ -66,15 +66,16 @@ export function StageAuftritt() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Station 2 — der Setter schreibt zurück                              */
+/* Station 2 — der WhatsApp-Assistent schreibt zurück                  */
 /* ------------------------------------------------------------------ */
 
 const chat = [
-  { from: "in", text: "Guten Abend, bei uns tropft es seit heute durchs Dach." },
-  { from: "out", text: "Danke für die Nachricht. Steht aktuell Wasser im Raum?" },
-  { from: "in", text: "Nur ein Eimer, aber es läuft weiter." },
-  { from: "out", text: "Verstanden. Passt Dienstag 14:30 für eine Besichtigung?" },
-  { from: "in", text: "Ja, das geht." },
+  { from: "in", text: "Guten Tag, wir planen die Sanierung unseres Garagendachs in Hagen. Können wir einen Besichtigungstermin vereinbaren?" },
+  { from: "out", text: "Guten Tag, ich bin der digitale Assistent des Betriebs. In welchem Stadtteil liegt die Garage, und wie groß ist die Dachfläche ungefähr?" },
+  { from: "in", text: "In Haspe, ungefähr 30 Quadratmeter." },
+  { from: "out", text: "Danke. Für dieses Beispiel sind Dienstag um 14:30 Uhr oder Donnerstag um 9:00 Uhr frei. Welcher Termin passt?" },
+  { from: "in", text: "Donnerstag um 9:00 Uhr." },
+  { from: "out", text: "Im Beispiel wird Donnerstag um 9:00 Uhr im Kalender eingetragen." },
 ];
 
 export function StageAnnahme() {
@@ -84,7 +85,7 @@ export function StageAnnahme() {
         <span className="chat__avatar" />
         <span>
           Müller Bedachungen
-          <small>antwortet sofort</small>
+          <small>KI-Assistent · Beispiel</small>
         </span>
       </div>
 
@@ -97,14 +98,14 @@ export function StageAnnahme() {
       </ol>
 
       <div className="chat__slot">
-        <span className="chat__slot-day">Di</span>
+        <span className="chat__slot-day">Do</span>
         <span>
-          14:30 Besichtigung
-          <small>im Kalender des Meisters</small>
+          9:00 Besichtigung
+          <small>Beispiel · keine echte Buchung</small>
         </span>
       </div>
 
-      <p className="chat__stamp">21:47 Uhr — niemand im Büro</p>
+      <p className="chat__stamp">Beispieldialog · keine echte Buchung</p>
     </div>
   );
 }
@@ -123,7 +124,7 @@ const rows = [
 const bits = [
   ["Heute", "3 Belege durch"],
   ["Offen", "1 Klärung"],
-  ["Rechnung", "am Einsatztag"],
+  ["Weitergabe", "an das Büro"],
 ];
 
 export function StageAblaeufe() {
@@ -178,9 +179,9 @@ export function StageSystem() {
   return (
     <div className="stage stage--system">
       <article className="combo__bit combo__bit--auftritt" style={i(0)}>
-        <p className="combo__index">1 · Auftritt</p>
-        <h4>Die Seite holt die Anfrage.</h4>
-        <p>Besucher wird zum Terminwunsch, nicht zur Mailbox.</p>
+        <p className="combo__index">1 · Websites</p>
+        <h4>Die Seite erklärt die Arbeit.</h4>
+        <p>Besucher findet Leistungen, Referenzen und einen Anfrageweg.</p>
       </article>
 
       <div className="combo__phone" style={i(1)}>
@@ -188,34 +189,34 @@ export function StageSystem() {
           <span className="combo__phone-avatar" />
           <span>
             Müller Bedachungen
-            <small>2 · Annahme — antwortet</small>
+            <small>2 · WhatsApp-Assistent</small>
           </span>
         </div>
         <div className="combo__phone-body">
-          <p className="combo__bubble combo__bubble--in">Dach tropft seit heute.</p>
-          <p className="combo__bubble combo__bubble--out">Di 14:30 — Kalender ist frei.</p>
+          <p className="combo__bubble combo__bubble--in">Sanierung Garagendach in Hagen — Besichtigung möglich?</p>
+          <p className="combo__bubble combo__bubble--out">Im Beispiel: Donnerstag 9:00 Uhr.</p>
           <div className="combo__phone-slot">
-            <span>Di</span>
+            <span>Do</span>
             <span>
-              14:30 Besichtigung
-              <small>im Kalender des Meisters</small>
+              9:00 Besichtigung
+              <small>Beispiel · keine echte Buchung</small>
             </span>
           </div>
         </div>
       </div>
 
       <article className="combo__bit combo__bit--ablaeufe" style={i(2)}>
-        <p className="combo__index">3 · Abläufe</p>
-        <h4>Der Vorgang läuft durch.</h4>
+        <p className="combo__index">3 · Büroabläufe</p>
+        <h4>Die Angaben stehen zusammen.</h4>
         <ul>
-          <li>Besichtigung gelegt</li>
-          <li>Beleg unterschrieben</li>
-          <li>Rechnung am Einsatztag</li>
+          <li>Besichtigung im Beispielkalender</li>
+          <li>Angaben zum Vorhaben</li>
+          <li>Übergabe an das Team</li>
         </ul>
       </article>
 
       <p className="combo__caption">
-        Eine Anfrage, ein Weg, ein Vorgang — vom ersten Klick bis zur Rechnung.
+        Eine Anfrage, ein Weg, ein Vorgang — vom ersten Kontakt zur Übergabe.
       </p>
     </div>
   );

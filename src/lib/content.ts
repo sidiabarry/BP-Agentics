@@ -1,64 +1,60 @@
-export type TradeId =
-  | "bau"
-  | "logistik"
-  | "notdienst"
-  | "spezial";
+import { foerderungFaq } from "@/lib/foerderung";
+import { automationOffer, whatsappOffer } from "@/lib/offers";
+
+export type TradeId = "bau" | "logistik" | "notdienst" | "spezial";
 
 export const trades = [
   {
     id: "bau" as const,
     label: "Bau und Ausbau",
-    quote: "Alles läuft über mein Telefon. Ich verliere Aufträge.",
-    firm: "Dachdeckerbetrieb, 8 Mitarbeiter",
-    config: "Signature-Website plus KI-Setter",
+    quote:
+      "Anfragen sollen den Betrieb erreichen, während das Team auf der Baustelle arbeitet.",
+    firm: "Anwendungsbeispiel · Dachdeckerbetrieb",
+    config: "Website und WhatsApp-Assistent",
     outcome:
-      "Anfragen werden in Sekunden per WhatsApp vorqualifiziert und als Besichtigung in den Meisterkalender gelegt. Sie bleiben auf dem Dach.",
+      "Leistungen und Referenzen werden online erklärt. Projektangaben und Besichtigungswünsche können per WhatsApp erfasst werden.",
   },
   {
     id: "logistik" as const,
     label: "Logistik und Transport",
-    quote: "Wir ertrinken in Papier.",
-    firm: "Containerdienst, 40 Mitarbeiter",
-    config: "Fundament plus Papier aufs Handy und Rechnungen",
+    quote: "Angaben zu Lieferung und Auftrag sollen vom Einsatz ins Büro gelangen.",
+    firm: "Anwendungsbeispiel · Containerdienst",
+    config: "Gemeinsame Datenbasis und digitaler Lieferschein",
     outcome:
-      "Fahrer lassen Lieferscheine im Browser gegenzeichnen. Die Rechnung geht am Einsatztag raus, ohne App-Zwang.",
+      "Angaben können mobil erfasst und dem Büro zur weiteren Bearbeitung bereitgestellt werden. Eine Rechnungsanbindung wird passend zur vorhandenen Software vereinbart.",
   },
   {
     id: "notdienst" as const,
     label: "Technischer Außendienst",
-    quote: "Der Notdienst klingelt nachts durch. Niemand filtert.",
-    firm: "Kälte- und Klimabetrieb, 12 Mitarbeiter",
-    config: "KI-Setter plus Wartungsmodule",
+    quote: "Servicemeldungen und geplante Projekte sollen geordnet erfasst werden.",
+    firm: "Anwendungsbeispiel · Kälte- und Klimabetrieb",
+    config: "WhatsApp-Assistent und abgestimmter Ablauf",
     outcome:
-      "Störungen werden nach Kältemittel, Anlagennummer und Fehlerbild erfasst. Der Techniker fährt vorbereitet aus.",
+      "Eine strukturierte Meldung kann Anlagennummer, beobachteten Fehler und vorhandene Fotos erfassen. Diagnose und Dringlichkeit bleiben beim Fachbetrieb.",
   },
   {
     id: "spezial" as const,
     label: "Werkstatt und Spezialbetrieb",
-    quote: "Ich weiß nie, was im Lager liegt. Die Saison ist kurz.",
-    firm: "Pool- und Gartenbau, 15 Mitarbeiter",
-    config: "Fundament plus Module für Lager und Termine",
+    quote: "Material, Termine und Zuständigkeiten sollen gemeinsam im Blick bleiben.",
+    firm: "Anwendungsbeispiel · Garten- und Landschaftsbau",
+    config: "Gemeinsame Datenbasis und ein erstes Modul",
     outcome:
-      "Material und Kolonnen sind synchron. Stillstand in der kurzen Saison fällt weg.",
+      "Ein abgestimmter Ablauf kann Materialinformationen, Termine und Zuständigkeiten zusammenführen. Fachliche Freigaben bleiben im Betrieb.",
   },
 ];
 
 export const problems = [
   {
-    title: "Erreichbarkeit",
-    line: "Die Anfrage kam am Montagmorgen. Zurückgerufen habe ich erst am Mittwochabend.",
+    title: "Leistungen online erklären",
+    line: "Interessenten sollen erkennen, welche Arbeiten der Betrieb übernimmt und wie sie anfragen können.",
   },
   {
-    title: "Büro nach Feierabend",
-    line: "Tagsüber leite ich die Baustellen. Angebote schreibe ich um zehn.",
+    title: "WhatsApp-Anfragen vorbereiten",
+    line: "Projektangaben und Terminwünsche sollen vorliegen, bevor das persönliche Gespräch beginnt.",
   },
   {
-    title: "Lager und Material",
-    line: "Ich weiß nicht verlässlich, was im Lager liegt, bis der Monteur vor einem leeren Regal steht.",
-  },
-  {
-    title: "Website ohne Auftrag",
-    line: "Unsere Firmenwebsite ist veraltet und hat seit zwei Jahren keinen rentablen Auftrag gebracht.",
+    title: "Unterlagen zusammenführen",
+    line: "Auftragsdaten sollen dort verfügbar sein, wo Büro und Außendienst sie benötigen.",
   },
 ];
 
@@ -66,67 +62,73 @@ export const levels = [
   {
     id: "auftritt",
     roman: "01",
-    name: "Auftritt",
-    sub: "Damit die richtigen Anfragen kommen.",
-    lead: "Website, Web-App oder Shop, der Premium-Anfragen holt statt Preiskämpfer.",
+    name: "Websites",
+    sub: "Leistungen, Referenzen und Einsatzgebiet verständlich zeigen.",
+    lead: "Vom kompakten Einseiter bis zum individuell gestalteten Auftritt.",
     items: [
-      "Website Start, Einseiter",
-      "Website Signature mit Scroll-Choreografie",
-      "Shop und App, iOS und Android",
+      "Website Start, kompakter Einseiter",
+      "Website Betrieb, mehrere Leistungen und Referenzen",
+      "Website Signature, individuelle Gestaltung",
     ],
-    price: "Einbau 950 € bis ab 7.900 €",
-    run: "Wartung 149 € bis 290 € / Monat",
+    price: "ab 950 € einmalig + ab 149 € monatliche Betreuung",
+    run: "ab 149 € monatlich",
+    href: "/leistungen/auftritt",
+    linkLabel: "Website-Pakete ansehen",
   },
   {
     id: "annahme",
     roman: "02",
-    name: "Annahme",
-    sub: "Damit keine Anfrage liegen bleibt.",
-    lead: "Der KI-Setter nimmt Anfragen über WhatsApp an, qualifiziert und schreibt Termine in den Kalender.",
+    name: "WhatsApp-Assistent",
+    sub: "Anfragen per Text beantworten, Angaben erfassen und Termine anbieten.",
+    lead: "Der KI-Assistent für WhatsApp-Anfragen erfasst vereinbarte Angaben und bietet Termine aus dem angebundenen Kalender an.",
     items: [
-      "WhatsApp Business, Antwort in Sekunden",
-      "Vorqualifizierung statt Mailbox",
-      "Kalenderbuchung und Lead-Reaktivierung",
+      "Antworten per WhatsApp",
+      "Vereinbarte Angaben zum Vorhaben erfassen",
+      "Termine nach festgelegten Kalenderregeln anbieten",
     ],
-    price: "Einbau 1.900 €",
-    run: "Wartung 99 € / Monat",
+    price: `${whatsappOffer.once} Einrichtung + ${whatsappOffer.month} monatlich`,
+    run: `${whatsappOffer.month} monatlich`,
+    href: "/leistungen/annahme",
+    linkLabel: "WhatsApp-Assistent ansehen",
   },
   {
     id: "ablaeufe",
     roman: "03",
-    name: "Abläufe",
-    sub: "Damit die Arbeit nicht am Schreibtisch hängen bleibt.",
-    lead: "Kunden, Aufträge, Stundenzettel, Lieferscheine, Lager und Rechnung in einem Datenfundament.",
+    name: "Büroabläufe automatisieren",
+    sub: "Zum Beispiel Lieferscheine digital erfassen oder Auftragsinformationen weitergeben.",
+    lead: "Der erste Ablauf wird auf die vorhandenen Programme und die tägliche Arbeit abgestimmt.",
     items: [
-      "Fundament auf Postgres",
-      "Papier aufs Handy, Unterschrift im Browser",
-      "E-Rechnung, GoBD, Module nach Bedarf",
+      "Gemeinsame Datenbasis",
+      "Ein vereinbartes Prozessmodul",
+      "Weitere Abläufe bei Bedarf",
     ],
-    price: "Fundament 2.900 €, Module 900 € bis 1.800 €",
-    run: "Wartung ab 190 € / Monat",
+    price: `Gemeinsame Datenbasis + 1 Modul: ${automationOffer.combined} Einrichtung + ${automationOffer.month} monatlich`,
+    run: `${automationOffer.month} monatlich`,
+    href: "/leistungen/ablaeufe",
+    linkLabel: "Automatisierung ansehen",
   },
 ];
 
 export const steps = [
   {
     n: "01",
-    title: "Erstgespräch",
-    body: "90 Minuten vor Ort, kostenlos. Drei Fragen: Wie kommen Anfragen rein, warum sitzen Sie abends im Büro, was ist zuletzt schiefgelaufen.",
+    title: "Betrieb und Aufgabe kennenlernen",
+    body: "Im kostenlosen 90-Minuten-Gespräch vor Ort sehen wir uns an, wie Anfragen und Informationen heute durch den Betrieb laufen und was leichter werden soll.",
   },
   {
     n: "02",
-    title: "Systemplan",
-    body: "In drei Werktagen ein verbindliches Konzept: Bausteine, Zeitrahmen, Festpreis und eine Ausschlussliste. Nichts Offenes.",
+    title: "Umfang und Preis festhalten",
+    body: "Sie erhalten einen Projektplan mit den vereinbarten Leistungen, einem Zeitrahmen und einem Festpreis. Zusätzliche Wünsche werden vor der Umsetzung gesondert angeboten.",
   },
   {
     n: "03",
-    title: "Einbau",
-    body: "Schlüsselfertig in höchstens sechs Wochen. Ein 30-Minuten-Termin pro Woche. Der Betrieb läuft weiter.",
+    title: "Einrichten und übergeben",
+    body: "Website oder Ablauf werden für den vereinbarten Einsatz eingerichtet. Wie die Einführung mit Ihrem Team aussieht, klären wir im Projektplan.",
   },
   {
     n: "04",
-    title: "Wartungsvertrag",
-    body: "Hosting, Pflege, Sicherheitsupdates. Nach zwölf Monaten monatlich kündbar. Die Seite gehört Ihnen ab Zahlung des Einbaus — Sie zahlen für die Wartung, nicht für Ihr Eigentum.",
+    title: "Laufend betreuen",
+    body: "Hosting, Pflege und Unterstützung richten sich nach dem gewählten Angebot. Die laufenden Kosten sehen Sie vor der Beauftragung.",
   },
 ];
 
@@ -139,8 +141,8 @@ export const officeSlides = [
     alt: "Papierstapel und Festnetztelefon auf einem Handwerks-Schreibtisch am Montagmorgen",
     caption: "Der Tag fängt geordnet an.",
     label: "Morgen",
-    sub: "Die erste Papierlage.",
-    body: "Die Anfrage liegt auf dem Tisch. Zurückgerufen wird später, wenn die Tour es zulässt.",
+    sub: "Anfragen und Unterlagen.",
+    body: "Wenn Anfragen über mehrere Kanäle eintreffen, braucht das Team einen Überblick, bevor die Tour beginnt.",
   },
   {
     id: "nachmittag",
@@ -148,10 +150,10 @@ export const officeSlides = [
     poster: "/media/buero-nachmittag.jpg",
     time: "MO 14:20",
     alt: "Ordner, Zettel und Excel-Ausdruck auf einem überladenen Büroschreibtisch am Nachmittag",
-    caption: "Drei Anrufe, vier Aufträge, kein System.",
+    caption: "Anfragen, Aufträge, Rückfragen.",
     label: "Nachmittag",
-    sub: "Binder, Zettel, Excel.",
-    body: "Der Meister ist auf der Baustelle. Das Büro sammelt Papier, nicht Aufträge.",
+    sub: "Übergaben im Büro.",
+    body: "Wenn Unterlagen erst später im Büro ankommen, entstehen zusätzliche Rückfragen.",
   },
   {
     id: "nacht",
@@ -159,157 +161,178 @@ export const officeSlides = [
     poster: "/media/buero-nacht.jpg",
     time: "MO 17:15",
     alt: "Leeres Büro am Abend, nur die Schreibtischlampe brennt über offenen Unterlagen",
-    caption: "Feierabend? Der Schreibtisch sagt: nein.",
-    label: "Nacht",
-    sub: "Nur noch die Schreibtisch\u00adlampe.",
-    body: "Das Lager hinter Glas ist dunkel. Der Laptop bleibt an, weil nichts im System steht.",
+    caption: "Was noch übertragen werden muss.",
+    label: "Abend",
+    sub: "Wiederkehrende Büroarbeit.",
+    body: "Digitale Unterstützung kann Übergaben vereinfachen und wiederkehrende Arbeitsschritte übernehmen.",
   },
 ] as const;
 
 export const workReferences =
-  "Danach gebaut: Feinkost Kreta · Dachdecker Signature · Betriebsorganisation";
+  "Danach zu sehen: Feinkost Kreta · Dachdecker Signature · Automatisierung";
 
 export const whyPoints = [
   {
+    title: "Die Erfahrung Ihres Teams gehört in den Ablauf",
+    body: "Die Mitarbeitenden kennen die täglichen Handgriffe und Ausnahmen. Im Gespräch klären wir, welche Informationen sie brauchen, wo doppelte Eingaben entstehen und wie der neue Ablauf eingeführt werden soll. Fachliche Entscheidungen und Freigaben bleiben im Betrieb.",
+  },
+  {
     title: "Ein Ansprechpartner",
-    body: "Sidia Jerome Barry kommt selbst. Keine Account-Staffel, keine Partneragentur dazwischen.",
+    body: "Ich bin Inhaber von BP Agentics und entwickle Websites und digitale Abläufe für Betriebe in NRW. Während der Umsetzung sprechen Sie direkt mit mir über die vereinbarten Schritte.",
   },
   {
-    title: "Vor Ort, nicht im Foyer",
-    body: "90 Minuten im Betrieb, kostenlos. Drei Fragen, danach der Systemplan in drei Werktagen.",
+    title: "Klarer Leistungsumfang",
+    body: "Vor der Beauftragung erhalten Sie ein Angebot mit Leistungsumfang, einmaligem Preis und laufenden Kosten. Zusätzliche Wünsche werden vor ihrer Umsetzung gesondert angeboten.",
   },
   {
-    title: "Festpreis nach dem Gespräch",
-    body: "Keine offenen Stundensätze. Zusätzliches nur über ein neues Angebot, das Sie vorher freigeben.",
-  },
-  {
-    title: "Die Dateien gehören Ihnen",
-    body: "Ab Zahlung des Einbaus. Sie zahlen für die Wartung, nicht für Ihr Eigentum.",
+    title: "Einzeln beauftragbar",
+    body: "Websites, WhatsApp-Assistent und interne Abläufe sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein den passenden Anfang macht.",
   },
 ];
 
 export const auftrittFaqs = [
   {
-    q: "Welche Website-Stufe braucht ein Betrieb zuerst?",
-    a: "Start, wenn die Seite seit Jahren schweigt. Betrieb, wenn Leistungsseiten und Referenzen fehlen. Signature, wenn die Website selbst verkaufen soll.",
+    q: "Was kostet eine Website insgesamt?",
+    a: "Website Start kostet 950 € einmalig plus 149 € monatlich. Website Betrieb kostet 3.900 € plus 149 € monatlich. Signature beginnt bei 7.900 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
   },
   {
-    q: "Was kostet die Website — und was die Wartung?",
-    a: "Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 Euro im Monat bei Start und Betrieb, 290 Euro bei Signature. Alle Beträge sind Endpreise.",
+    q: "Welche Stufe passt?",
+    a: "Die passende Stufe hängt davon ab, wie viele Leistungen und Projekte erklärt werden sollen und welche Inhalte bereits vorliegen. Eine klare Anfragemöglichkeit gehört zu jedem Auftritt. Den genauen Umfang halten wir im Angebot fest.",
   },
   {
-    q: "Wem gehört die Seite nach dem Einbau?",
-    a: "Ihnen, ab Zahlung des Einbaus. Die Wartung ist Pflege, nicht Miete. Nach zwölf Monaten monatlich kündbar. Bei Kündigung übergeben wir die Dateien kostenfrei.",
+    q: "Was zur Website gehört",
+    a: "Im Angebot steht, welche Seiten, Texte, Bilder und Funktionen umgesetzt werden. WhatsApp-Automatisierung und interne Abläufe werden bei Bedarf separat vereinbart.",
   },
   {
-    q: "Gehört die Annahme zur Website?",
-    a: "Nein. Die Website holt Anfragen. Der KI-Setter nimmt sie an. Abläufe tragen den Auftrag. Die Ebenen bleiben einzeln beauftragbar.",
+    q: "Wer kümmert sich um die Website nach dem Start?",
+    a: "BP Agentics übernimmt die vereinbarte Betreuung. Welche Pflegeleistungen enthalten sind und welche Laufzeit gilt, steht im Angebot und auf der Preisseite.",
   },
 ];
 
 export const annahmeFaqs = [
   {
-    q: "Was tut der KI-Setter in der ersten Minute?",
-    a: "Er antwortet per Text, stellt die Qualifizierungsfragen und legt einen Termin in Ihren Kalender. Zwei freie Slots, Zusage, Eintrag.",
+    q: "Nimmt der WhatsApp-Assistent auch Telefonanrufe an?",
+    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
   },
   {
-    q: "Was kostet der Setter?",
-    a: "1.900 Euro Einrichtung und 99 Euro im Monat. Endpreise. WhatsApp bleibt Ihre Nummer, der Kalender bleibt Ihrer.",
+    q: "Wie läuft eine Anfrage ab?",
+    a: "Eine Person schreibt dem Betrieb auf WhatsApp. Der Assistent erfasst die vereinbarten Angaben zum Vorhaben, bietet verfügbare Termine nach den festgelegten Kalenderregeln an und trägt die Auswahl im angebundenen Kalender ein.",
   },
   {
-    q: "Ist das ein Chatbot auf der Website?",
-    a: "Nein. Der Setter hängt an WhatsApp, kennt Ihre Slots und schließt bis zum Kalendereintrag. Ein Website-Chat, der nur eine Mailadresse sammelt, ist das nicht.",
+    q: "Was kostet der WhatsApp-Assistent?",
+    a: "1.900 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 3.088 €. Voraussetzungen Ihrer WhatsApp-Nummer und Ihres Kalenders werden vorab geprüft.",
   },
   {
-    q: "Was tut der Setter nicht?",
-    a: "Er diagnostiziert keine Havarie, ersetzt keinen Meister und schreibt keine Rechnung. Dafür gibt es Abläufe.",
+    q: "Passt das zum Betrieb?",
+    a: "Sinnvoll ist der Assistent, wenn Kunden WhatsApp nutzen und wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
   },
 ];
 
 export const ablaeufeFaqs = [
   {
-    q: "Was ist das Fundament — und was ein Modul?",
-    a: "Das Fundament bindet Postfach, Kalender und Kundendaten an einem Ort für 2.900 Euro. Ein Modul schließt danach genau einen Ablauf für 900 bis 1.800 Euro.",
+    q: "Kann unsere vorhandene Software bleiben?",
+    a: "Im Gespräch wird geprüft, welche Programme genutzt werden und welche Anbindungen möglich sind. Daraus ergibt sich, ob ein ergänzender Ablauf genügt oder eine gemeinsame Datenbasis gebraucht wird.",
   },
   {
-    q: "Warum keine fertige Branchensoftware?",
-    a: "Weil sie oft zwanzig Funktionen mitbringt, von denen der Betrieb drei braucht — und genau die eine, die weh tut, unsauber abbildet.",
+    q: "Was kostet der Einstieg?",
+    a: "Die gemeinsame Datenbasis kostet 2.900 €. Ein Modul kostet je nach vereinbartem Ablauf 900–1.800 €. Daraus ergeben sich mindestens 3.800 € für Datenbasis und ein Modul. Die Betreuung beginnt bei 190 € im Monat. Mit 12 Monaten Betreuung: ab 6.080 €.",
   },
   {
-    q: "Kann MID Digitale Prozesse das tragen?",
-    a: "Innere Prozesse sind der Kern der Richtlinie: 50 Prozent, höchstens 15.000 Euro, Antrag vor Arbeitsbeginn, Fenster bis zum 1. Dezember 2026.",
+    q: "Wie wird das Team einbezogen?",
+    a: "Wir klären, wer den Ablauf täglich nutzt, welche Informationen benötigt werden und wie die Einführung erfolgen soll. Fachliche Entscheidungen und Freigaben bleiben bei den zuständigen Personen im Betrieb.",
   },
   {
-    q: "Was bleibt draußen?",
-    a: "DATEV, Lohn und Software, die der Steuerberater bereits sauber führt. Wir schließen den Medienbruch zwischen Hof, Kabine, Baustelle und Büro.",
+    q: "Ersetzt das DATEV oder die Branchensoftware?",
+    a: "Nein. Eine gemeinsame Datenbasis ist nicht der vollständige Umfang einer kaufmännischen Software. Vorhandene Programme, die zuverlässig arbeiten, bleiben. Eine Verbindung wird nur dort eingerichtet, wo sie vereinbart ist.",
   },
 ];
 
 export const faqs = [
   {
-    q: "Wir haben keine IT-Kenntnisse im Betrieb.",
-    a: "Das ist der Normalzustand, nicht das Problem. Sie müssen keine Schnittstellen verstehen. Im Erstgespräch beschreiben Sie, wie Aufträge, Material und Personal heute durch den Betrieb laufen. Wir bauen um diese Gewohnheiten herum. Gesellen und Fahrer bedienen das auf dem Handy, ohne Schulungsmarathon.",
+    q: "Was passt zu meinem Betrieb?",
+    a: "Eine Website hilft dabei, Leistungen und Referenzen verständlich zu präsentieren. Ein WhatsApp-Assistent unterstützt Anfragen per Nachricht. Automatisierung verbindet wiederkehrende Arbeitsschritte. Im Gespräch klären wir, welches Vorhaben zuerst sinnvoll ist.",
   },
   {
-    q: "Was, wenn nachträglich Kosten kommen?",
-    a: "Nach dem Gespräch erhalten Sie einen Systemplan mit unverrückbarem Festpreis und Fertigstellungstermin. Keine offenen Stundensätze. Zusätzliche Wünsche laufen nur über ein separates Angebot, das Sie vorher freigeben.",
+    q: "Muss ich alle Leistungen zusammen beauftragen?",
+    a: "Nein. Websites, WhatsApp-Assistent und interne Abläufe sind einzeln beauftragbar. Erweiterungen werden bei Bedarf separat vereinbart.",
   },
   {
-    q: "Warum 149 € im Monat, wenn der Einbau schon bezahlt ist?",
-    a: "Sie zahlen für die Wartung, nicht für Ihr Eigentum. Die Seite gehört Ihnen ab Zahlung des Einbaus. Die Pauschale deckt Hosting in Deutschland, SSL, Sicherheitsupdates, tägliche Backups, bis zu drei Textänderungen im Monat und Störungsbehebung innerhalb von 24 Stunden an Werktagen. Nach zwölf Monaten monatlich kündbar. Bei Kündigung übergeben wir Ihnen die vollständigen Dateien, kostenfrei.",
+    q: "Was kostet eine Website insgesamt?",
+    a: "Website Start kostet 950 € einmalig plus 149 € monatlich. Website Betrieb kostet 3.900 € plus 149 € monatlich. Signature beginnt bei 7.900 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
   },
   {
-    q: "Wo liegen die Daten?",
-    a: "Auf Servern in der Europäischen Union. Zu jedem Projekt gehört ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Die Hoheit bleibt beim Betrieb. Einen vollständigen Export können Sie jederzeit anfordern. Weiterverkauf oder Kaltakquise über zugekaufte Daten findet nicht statt.",
+    q: "Wie wird der genaue Preis festgelegt?",
+    a: "Vor der Beauftragung erhalten Sie ein Angebot mit Leistungsumfang, einmaligem Preis und laufenden Kosten. Zusätzliche Wünsche werden vor ihrer Umsetzung gesondert angeboten.",
   },
   {
-    q: "Sind das Endpreise?",
-    a: "Ja. Alle Preise sind Endpreise.",
+    q: "Ist nach dem Formular mein Termin schon gebucht?",
+    a: "Sie senden zunächst einen Terminwunsch. Ich melde mich unter der angegebenen Nummer und bestätige den Termin persönlich.",
+  },
+  foerderungFaq,
+];
+
+export const moreFaqs = [
+  {
+    q: "Kann unsere vorhandene Software bleiben?",
+    a: "Im Gespräch wird geprüft, welche Programme genutzt werden und welche Anbindungen möglich sind. Daraus ergibt sich, ob ein ergänzender Ablauf genügt oder eine gemeinsame Datenbasis gebraucht wird.",
+  },
+  {
+    q: "Wie wird das Team einbezogen?",
+    a: "Wir klären, wer den Ablauf täglich nutzt, welche Informationen benötigt werden und wie die Einführung erfolgen soll. Fachliche Entscheidungen und Freigaben bleiben bei den zuständigen Personen im Betrieb.",
+  },
+  {
+    q: "Nimmt der WhatsApp-Assistent auch Telefonanrufe an?",
+    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
+  },
+  {
+    q: "Was passiert im Erstgespräch?",
+    a: "In 90 Minuten vor Ort sprechen wir über Ihr Vorhaben, vorhandene Programme und den Arbeitsalltag. Danach wird festgehalten, welcher Leistungsumfang und welches weitere Vorgehen passen.",
+  },
+  {
+    q: "Wer kümmert sich um die Website nach dem Start?",
+    a: "BP Agentics übernimmt die vereinbarte Betreuung. Welche Pflegeleistungen enthalten sind und welche Laufzeit gilt, steht im Angebot und auf der Preisseite.",
   },
 ];
 
 export const checkPaths = [
   {
     id: "a",
-    label:
-      "Zu wenige oder die falschen Anfragen. Die Website wirkt veraltet und spricht Preiskämpfer an.",
-    resultTitle: "Wir fangen bei Ihrem Auftritt an.",
+    label: "Leistungen und Referenzen online zeigen",
+    resultTitle: "Eine Website könnte zu Ihrem Vorhaben passen.",
     result:
-      "Eine Signature-Website positioniert den Betrieb als Qualitätsführer in der Region. Danach kommen die richtigen Anfragen.",
+      "Welche Stufe sinnvoll ist, hängt von Ihren Leistungen, vorhandenen Inhalten und dem gewünschten Umfang ab. Das ist eine erste Richtung, keine Wirtschaftlichkeitsprüfung.",
   },
   {
     id: "b",
-    label:
-      "Wir verpassen Anfragen, weil tagsüber niemand ans Telefon geht und Rückrufe zu lange dauern.",
-    resultTitle: "Wir fangen bei den Anfragen an.",
+    label: "WhatsApp-Anfragen und Termine vorbereiten",
+    resultTitle: "Ein WhatsApp-Assistent könnte wiederkehrende Fragen und Terminabstimmungen unterstützen.",
     result:
-      "Der KI-Setter fängt Anfragen in Sekunden über WhatsApp ab, qualifiziert und bucht Besichtigungen in den Kalender.",
+      "Voraussetzung ist, dass dieser Kanal zu Ihren Kundenanfragen passt. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
   },
   {
     id: "c",
-    label:
-      "Wir ersticken in Papier, Stundenzetteln und Lieferscheinen. Angebote und Rechnungen bleiben bis zum Abend liegen.",
-    resultTitle: "Wir fangen bei Ihren Abläufen an.",
+    label: "Wiederkehrende Büroabläufe verbinden",
+    resultTitle: "Ein einzelner automatisierter Ablauf könnte den passenden Anfang bilden.",
     result:
-      "Fundament plus die Module, die den Engpass schließen: Papier aufs Handy, Lager oder Rechnung. Feierabendarbeit fällt weg.",
+      "Im Gespräch prüfen wir die vorhandenen Programme und den ersten Arbeitsschritt. Daraus ergibt sich, ob eine gemeinsame Datenbasis benötigt wird.",
   },
 ];
 
 export const teamSizes = [
   {
     id: "s",
-    label: "1 bis 5 Mitarbeiter",
-    hint: "Der Inhaber arbeitet auf der Baustelle oder im Fahrzeug mit.",
+    label: "1–4 Mitarbeitende",
+    hint: "Die Erklärung richtet sich nach Ihrem Vorhaben, nicht automatisch nach der kleinsten oder größten Stufe.",
   },
   {
     id: "m",
-    label: "6 bis 20 Mitarbeiter",
-    hint: "Vorarbeiter leiten Kolonnen. Disposition im Büro wird zum Flaschenhals.",
+    label: "5–20 Mitarbeitende",
+    hint: "Das ist die Zielgröße von BP Agentics. Welche Leistung zuerst passt, hängt von der Aufgabe ab.",
   },
   {
     id: "l",
-    label: "Über 20 Mitarbeiter",
-    hint: "Verteilte Teams, mehrere Standorte oder Fuhrpark. Medienbrüche zwischen Zentrale und Außendienst.",
+    label: "Mehr als 20 Mitarbeitende",
+    hint: "Die Größe allein legt kein Paket fest. Im Gespräch klären wir, welcher Einstieg sinnvoll ist.",
   },
 ];
 
@@ -336,83 +359,83 @@ export const industries: Record<
 > = {
   dachdecker: {
     title: "Dachdecker",
-    h1: "Wenn Sie auf dem Dach stehen, holt unser System Ihre Aufträge rein.",
-    h2: "Dach, Wand und Abdichtung. Premium-Auftritt statt Mailbox.",
+    h1: "Sanierungsprojekte zeigen. Besichtigungen vorbereiten.",
+    h2: "Website und WhatsApp-Assistent als Anwendungsbeispiel.",
     bottleneck:
-      "Steildach- und Sanierungsanfragen gehen verloren, sobald der Meister auf der Baustelle ist.",
-    config: "Signature-Website plus KI-Setter",
+      "Planbare Anfragen sollen Angaben zum Vorhaben und einen Besichtigungstermin enthalten.",
+    config: "Website und WhatsApp-Assistent",
     argument:
-      "Die Website filtert Preiskämpfer. Der Setter terminiert Besichtigungen direkt in den Kalender.",
+      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der WhatsApp-Assistent Angaben erfassen und Besichtigungstermine anbieten.",
   },
   "shk-haustechnik": {
     title: "SHK und Haustechnik",
-    h1: "Heizungsausfall wartet nicht. Ihr Notdienst-System auch nicht.",
-    h2: "Badsanierung planen, Havarie triagieren.",
+    h1: "Geplante Projekte und Servicemeldungen geordnet erfassen.",
+    h2: "Anwendungsbeispiel für strukturierte Angaben.",
     bottleneck:
-      "Planbare Sanierungen und akute Notfälle laufen über dieselbe Nummer. Die Bereitschaft überlastet.",
-    config: "KI-Setter plus Fundament",
+      "Angaben zu Badsanierung, Wartung oder Service sollen beim passenden Ansprechpartner ankommen.",
+    config: "Abgestimmter digitaler Ablauf",
     argument:
-      "Automatische Notfall-Triage, Schadensfotos und digitale Monteurberichte.",
+      "Ein abgestimmter digitaler Ablauf kann diese Informationen strukturiert erfassen. Fachliche Dringlichkeit und Einsatzentscheidungen bleiben bei den zuständigen Personen im Betrieb.",
   },
   elektrotechnik: {
     title: "Elektrotechnik",
-    h1: "Schluss mit unbezahlten Regiestunden auf Großbaustellen.",
-    h2: "Nachweise nach VOB/B, solange der Auftraggeber noch da ist.",
+    h1: "Erbrachte Arbeiten nachvollziehbar dokumentieren.",
+    h2: "Übergabe zwischen Baustelle und Büro.",
     bottleneck:
-      "Zusatzarbeiten werden nicht erfasst. Gegenüber dem Generalunternehmer fehlt der Nachweis.",
-    config: "Fundament plus Papier aufs Handy",
+      "Angaben, Fotos und Freigaben sollen dem jeweiligen Auftrag zugeordnet werden.",
+    config: "Dokumentationsablauf",
     argument:
-      "Digitale Bautagesberichte mit Unterschrift und Live-Export ins Büro.",
+      "Welche Nachweise erforderlich sind, wird für Ihren Anwendungsfall fachlich geklärt. Das Ziel ist eine verlässlichere Übergabe zwischen Baustelle und Büro.",
   },
   kaeltetechnik: {
     title: "Kälte- und Klimatechnik",
-    h1: "Kühlhaus ausgefallen? Strukturierte Störungsmeldung in Sekunden.",
-    h2: "F-Gase, Dichtheit, Notdienst ohne Rätselraten.",
+    h1: "Anlageninformationen vor dem Einsatz zusammenführen.",
+    h2: "Strukturierte Meldung als Anwendungsbeispiel.",
     bottleneck:
-      "Techniker rücken ohne Kältemittel, Anlagentyp oder Fehlerbild aus.",
-    config: "KI-Setter plus Wartungsmodule",
+      "Anlagennummer, beobachteter Fehler und vorhandene Fotos sollen zusammen vorliegen.",
+    config: "Strukturierte Meldung",
     argument:
-      "Abfrage vor der Ausfahrt. Digitale Prüfprotokolle nach der Instandsetzung.",
+      "So erhält der zuständige Techniker die verfügbaren Angaben zusammen. Diagnose, Dringlichkeit und notwendige Dokumentation werden vom Fachbetrieb beurteilt.",
   },
   "spedition-container": {
     title: "Spedition und Container",
-    h1: "Vom Lieferschein bis zur Rechnung: papierlos aus dem Fahrerhaus.",
-    h2: "Ohne App-Download, im Browser des Mobilgeräts.",
+    h1: "Lieferscheine vom Einsatz ins Büro bringen.",
+    h2: "Digitaler Lieferschein als möglicher Einstieg.",
     bottleneck:
-      "Wiegescheine, Standzeiten und Lieferscheine bleiben Tage in der Kabine. Die Rechnung wartet.",
-    config: "Fundament plus digitaler Lieferschein",
+      "Angaben zu Lieferung, Standzeit und Auftrag sollen mobil erfasst werden.",
+    config: "Digitaler Lieferschein",
     argument:
-      "Kundensignatur im Browser. Rechnungsanstoß am Einsatztag.",
+      "Eine Rechnungsanbindung wird passend zur vorhandenen Software vereinbart. Welche Angaben und Freigaben nötig sind, klären wir am konkreten Ablauf.",
   },
   galabau: {
-    title: "Garten, Landschaft, Pool",
-    h1: "Volle Bücher, kurze Saison. Behalten Sie Material und Maschinen im Blick.",
-    h2: "Keine Stillstände wegen fehlender Kleinteile.",
+    title: "Garten- und Landschaftsbau",
+    h1: "Material und Einsätze gemeinsam im Blick behalten.",
+    h2: "Ablauf und Website nach Bedarf.",
     bottleneck:
-      "Schüttgut, Bagger und Kolonnen sind nicht synchron. Die Saison verzeiht das nicht.",
-    config: "Fundament plus Module für Lager und Termine",
+      "Materialinformationen, Termine und Zuständigkeiten sollen zusammengeführt werden.",
+    config: "Abgestimmter Ablauf und Website",
     argument:
-      "Einsatz und Materialdisposition in einem System, bevor das Wetter kippt.",
+      "Eine Website zeigt abgeschlossene Arbeiten und die angebotenen Leistungen. Ob zuerst Planung oder Auftritt im Vordergrund steht, richtet sich nach dem Bedarf des Betriebs.",
   },
   metallbau: {
     title: "Metallbau",
-    h1: "75 Tage Bürokratie im Jahr sind genug. Holen Sie sich die Werkstattzeit zurück.",
-    h2: "EN 1090, Sonderbauten, Angebote ohne Nachtarbeit.",
+    h1: "Wiederkehrende Angebots- und Dokumentationsschritte vereinfachen.",
+    h2: "Vorhandene Software berücksichtigen.",
     bottleneck:
-      "Dokumentation und Kalkulation fressen die Zeit, die in die Fertigung gehört.",
-    config: "Website Start plus Fundament und Angebote",
+      "Vorhandene Positionen, Projektangaben und Freigaben sollen in einem passenden Ablauf zusammenkommen.",
+    config: "Verbindung vorhandener Schritte",
     argument:
-      "Standardisierte Kalkulation und digitale Abnahme per Tablet.",
+      "Spezialsoftware für Kalkulation oder Fertigung wird dabei berücksichtigt. Gemeinsam wird geprüft, wo eine Verbindung die tägliche Arbeit unterstützt.",
   },
   nutzfahrzeuge: {
     title: "Nutzfahrzeuge und Landmaschinen",
-    h1: "Kunden wollen Status. Sie wollen reparieren. Wir bauen die Brücke.",
-    h2: "Freie Werkstatt, ohne ständige Anrufe vom Disponenten.",
+    h1: "Status und Freigaben zum Werkstattauftrag bündeln.",
+    h2: "Passend zum Werkstattsystem vereinbaren.",
     bottleneck:
-      "Fuhrparkleiter rufen durch. Stellplätze bleiben blockiert, weil Freigaben fehlen.",
-    config: "KI-Setter plus Fundament",
+      "Informationen zum Bearbeitungsstand und zu benötigten Freigaben sollen verfügbar sein.",
+    config: "Angebundener Ablauf",
     argument:
-      "Fertigstellung und Nachtragsfreigabe laufen über WhatsApp, nicht über den Meister am Telefon.",
+      "Dafür wird festgelegt, welche Daten zuverlässig verfügbar sind und wer verbindliche Auskünfte erteilt. Solche Funktionen werden passend zum Werkstattsystem vereinbart.",
   },
 };
 
@@ -424,29 +447,39 @@ export const industryList = Object.entries(industries).map(([slug, data]) => ({
 export const chatBeats = [
   {
     from: "in" as const,
-    time: "16:41",
-    text: "Hallo, unser Dach tropft im Anbau. Kommen Sie diese Woche?",
+    time: "09:12",
+    text: "Guten Tag, wir planen die Sanierung unseres Garagendachs in Hagen. Können wir einen Besichtigungstermin vereinbaren?",
   },
   {
     from: "out" as const,
-    time: "16:41",
-    text: "Zwei Termine frei: morgen 09:00 oder Freitag 14:30.",
+    time: "09:12",
+    text: "Guten Tag, ich bin der digitale Assistent des Betriebs. In welchem Stadtteil liegt die Garage, und wie groß ist die Dachfläche ungefähr?",
   },
   {
     from: "in" as const,
-    time: "16:42",
-    text: "Ja, ja, das passt. Morgen um neun.",
+    time: "09:13",
+    text: "In Haspe, ungefähr 30 Quadratmeter.",
   },
   {
     from: "out" as const,
-    time: "16:42",
-    text: "Bestätigung! ✔ Morgen 09:00, Meister Schmidt.",
+    time: "09:13",
+    text: "Danke. Für dieses Beispiel sind Dienstag um 14:30 Uhr oder Donnerstag um 9:00 Uhr frei. Welcher Termin passt?",
+  },
+  {
+    from: "in" as const,
+    time: "09:14",
+    text: "Donnerstag um 9:00 Uhr.",
+  },
+  {
+    from: "out" as const,
+    time: "09:14",
+    text: "Im Beispiel wird Donnerstag um 9:00 Uhr im Kalender eingetragen. Die Angaben zum Vorhaben stehen dem Team für die Besichtigung zur Verfügung.",
   },
 ];
 
 export const chatSteps = [
-  { n: "01", title: "Anfrage", hint: "Kunde schreibt auf WhatsApp." },
-  { n: "02", title: "Zwei Slots", hint: "Setter antwortet in Sekunden." },
-  { n: "03", title: "Zusage", hint: "Kein Telefon, keine Mailbox." },
-  { n: "04", title: "Kalender", hint: "Termin sitzt beim Meister." },
+  { n: "01", title: "Nachricht", hint: "Eine Person schreibt dem Betrieb auf WhatsApp." },
+  { n: "02", title: "Angaben", hint: "Der Assistent erfasst die vereinbarten Angaben." },
+  { n: "03", title: "Termine", hint: "Er bietet Zeitfenster nach den Kalenderregeln an." },
+  { n: "04", title: "Kalender", hint: "Die Auswahl wird im angebundenen Kalender eingetragen." },
 ];

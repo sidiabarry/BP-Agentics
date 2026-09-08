@@ -5,9 +5,9 @@ import { WhatsAppInline } from "@/components/whatsapp-button";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "90-Minuten-Gespräch buchen",
+  title: "Kostenloses Erstgespräch anfragen",
   description:
-    "90 Minuten vor Ort, kostenlos. Hagen und NRW. Danach liegt der Systemplan auf dem Tisch.",
+    "Erzählen Sie kurz von Ihrem Vorhaben und nennen Sie einen Wunschtermin. 90 Minuten vor Ort in Ihrem Betrieb in NRW.",
   path: "/termin",
 });
 
@@ -20,19 +20,33 @@ export default function TerminPage() {
             Vor Ort in Ihrem Betrieb
           </p>
           <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-6xl">
-            90 Minuten. Kostenlos. Danach liegt der Plan auf dem Tisch.
+            Kostenloses Erstgespräch anfragen
           </h1>
           <p className="mt-5 text-[1.15rem] leading-relaxed text-[#3A3D45]">
-            Wir kommen zu Ihnen. Sie beschreiben, wie Anfragen, Material und Personal
-            heute durch den Betrieb laufen. Wir sagen, welche Ebene zuerst Sinn ergibt.
+            Erzählen Sie kurz von Ihrem Vorhaben und nennen Sie einen Wunschtermin.
+            Ich melde mich unter der angegebenen Nummer und stimme den Termin mit
+            Ihnen ab.
           </p>
+          <ul className="mt-8 space-y-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
+            <li>
+              <strong>Das Gespräch:</strong> 90 Minuten vor Ort in Ihrem Betrieb.
+            </li>
+            <li>
+              <strong>Das klären wir:</strong> Welcher Baustein passt, welche
+              Informationen benötigt werden und wie es danach weitergeht.
+            </li>
+            <li>
+              <strong>Vorbereitung:</strong> Sie müssen keine technischen Unterlagen
+              vorbereiten. Ein Beispiel aus dem Arbeitsalltag kann hilfreich sein.
+            </li>
+          </ul>
           <div className="mt-12 rounded-[2rem] bg-white p-6 md:p-8">
             <BookingForm />
           </div>
           <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
             Lieber zuerst Anschrift und Telefon?{" "}
             <Link href="/kontakt" className="text-[#198BE8] underline-offset-4 hover:underline">
-              Kontaktseite mit NAP in Hagen
+              Zur Kontaktseite
             </Link>
             . Oder kurz schreiben:
           </p>

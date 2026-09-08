@@ -145,7 +145,7 @@ export function LivingChat() {
       ref={wrapRef}
       className="relative bg-white"
       style={{ height: reduced ? "auto" : `${PIN_VH}vh` }}
-      aria-label="KI-Setter auf WhatsApp"
+      aria-label="WhatsApp-Assistent, Beispieldialog"
     >
       <div
         className={
@@ -157,15 +157,15 @@ export function LivingChat() {
         <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-              Damit keine Anfrage liegen bleibt.
+              Beispieldialog · KI-Assistent · keine echte Buchung
             </RevealIn>
             <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-              Vier Nachrichten. Ein Termin im Kalender.
+              WhatsApp-Anfragen vorbereiten. Termine leichter abstimmen.
             </RevealHeading>
             <RevealIn as="p" variant="lead" className="mt-5 hidden max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45] lg:block">
-              Kunde schreibt, während der Meister auf dem Dach steht. Der Setter
-              legt zwei Slots, holt die Zusage und schreibt den Termin in den
-              Kalender. Kein Rückruf. Keine Mailbox.
+              Der Assistent erfasst vereinbarte Angaben und bietet Termine aus dem
+              angebundenen Kalender an. Die Zeiten in diesem Dialog sind Teil der
+              Demo, kein echter Kalenderbestand.
             </RevealIn>
             <ol className="mt-8 hidden space-y-3 lg:block">
               {chatSteps.map((step, index) => {
@@ -197,7 +197,7 @@ export function LivingChat() {
             <ol className="sr-only">
               {chatBeats.map((beat) => (
                 <li key={beat.text}>
-                  {beat.from === "in" ? "Kunde" : "Setter"}: {beat.text}
+                  {beat.from === "in" ? "Kunde" : "Assistent"}: {beat.text}
                 </li>
               ))}
             </ol>

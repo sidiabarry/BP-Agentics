@@ -17,7 +17,7 @@ export function TradeSelector() {
           Welches Gewerk
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          Dieselbe Lücke. Anderer Tagesablauf.
+          Unterschiedliche Betriebe, unterschiedliche Abläufe.
         </RevealHeading>
         <div className="mt-10 flex flex-wrap gap-2">
           {trades.map((item) => (
@@ -39,7 +39,7 @@ export function TradeSelector() {
         <div className="mt-10 grid gap-8 rounded-[2rem] bg-white/5 p-7 md:grid-cols-5 md:p-10">
           <blockquote className="md:col-span-3">
             <p key={current.id} className="trade-fade text-2xl leading-snug md:text-3xl">
-              „{current.quote}“
+              {current.quote}
             </p>
             <p key={`${current.id}-firm`} className="trade-fade mt-4 text-white/65">
               {current.firm}
@@ -47,7 +47,7 @@ export function TradeSelector() {
           </blockquote>
           <div key={`${current.id}-config`} className="trade-fade md:col-span-2">
             <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
-              Konfiguration
+              Mögliche Unterstützung
             </p>
             <p className="mt-2 text-xl">{current.config}</p>
             <p className="mt-4 text-[1.05rem] leading-relaxed text-white/75">

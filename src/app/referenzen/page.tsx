@@ -1,111 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DataTable, DocPage } from "@/components/doc-page";
+import { DocPage } from "@/components/doc-page";
 import { pageMetadata } from "@/lib/seo";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Referenzen aus Hagen und NRW",
+  title: "Arbeiten und Produktdemos",
   description:
-    "Zwei gebaute Systeme: Feinkost Kreta im Inneren, Dachdecker Signature nach außen. Demos, keine erfundenen Bewertungen.",
+    "Zwei Beispiele: eine Bestell-App und eine Website-Präsentation. Beschreibungen erklären, was zu sehen ist — ohne behauptete Umsatzzahlen.",
   path: "/referenzen",
 });
 
 export default function ReferenzenPage() {
   return (
     <DocPage
-      kicker="Referenzen"
-      title="Zwei Systeme, die man sehen kann"
-      lead="Feinkost Kreta ist eine Bestell-App: 1-Klick und Benachrichtigung. Der Dachdecker zeigt das Äußere: eine Signature-Website, die verkauft."
-      crumbs={[{ name: "Referenzen", path: "/referenzen" }]}
+      kicker="Arbeiten und Demos"
+      title="Arbeiten und Produktdemos"
+      lead="Hier sehen Sie zwei unterschiedliche Aufgaben: einen digitalen Bestellweg und eine Website-Präsentation. Die Beschreibungen erklären, was die Beispiele zeigen und wofür ein ähnlicher Ansatz genutzt werden kann."
+      crumbs={[{ name: "Arbeiten und Demos", path: "/referenzen" }]}
       related={[
-        { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta: Kundensystem und Phone-Demo" },
-        { href: "/referenzen/dachdecker-signature", label: "Dachdecker Signature: Scroll-Choreografie" },
-        { href: "/leistungen", label: "Die drei Ebenen hinter beiden Referenzen" },
-        { href: "/kontakt", label: "Eigenes Vorhaben in Hagen ansprechen" },
+        { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
+        { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
+        { href: "/leistungen", label: "Leistungen" },
+        { href: "/kontakt", label: "Kontakt" },
       ]}
     >
-      <h2>Welche Referenzen zeigt BP Agentics?</h2>
-      <p className="answer">
-        BP Agentics zeigt zwei gebaute Systeme: das Kundensystem von Feinkost Kreta und die Signature-Website eines Dachdeckerbetriebs — jeweils mit Produktdemo, ohne erfundene Sterne.
+      <h2>Feinkost Kreta — Bestell-App</h2>
+      <p>
+        Die Demo zeigt eine Bestellung und die Benachrichtigung an den Betrieb. Ein
+        Beispiel dafür, wie Informationen in einem zusammenhängenden Ablauf
+        weitergegeben werden.
       </p>
       <p>
-        Agenturseiten stapeln Logos und fünf-Sterne-Zitate. Das tun wir nicht. Es gibt keine Bewertungen in den strukturierten Daten und keine erfundenen Fallstudien. Es gibt zwei Wege, die man abspielen kann. Der eine ist eine Bestell-App: ein Klick, die Bestellung sitzt, die Benachrichtigung geht raus. Der andere sitzt außen vor einem Handwerksbetrieb: Scroll, Bild, Angebot. Beide sind in Hagen entstanden. Feinkost ist kein Auftritt — das ist der Dachdecker.
+        Kennzeichnung: <strong>Projektbeispiel · Produktdemo</strong>
+      </p>
+      <p>
+        <Link href="/referenzen/feinkost-kreta">Bestell-App ansehen</Link>
       </p>
 
-      <DataTable
-        caption="Die zwei Referenzwege"
-        headers={["Referenz", "Ebene", "Was Sie sehen", "Seite"]}
-        rows={[
-          [
-            "Feinkost Kreta",
-            "Bestell-App",
-            "1-Klick und Benachrichtigung",
-            "Kundensystem",
-          ],
-          [
-            "Dachdecker Signature",
-            "Auftritt",
-            "Loop der Scroll-Choreografie, fünfzehn Sekunden",
-            "Signature-Website",
-          ],
-        ]}
-      />
-
-      <h2>Warum nur zwei Fälle und keine Gallery?</h2>
-      <p className="answer">
-        Weil zwei ehrliche Systeme mehr sagten als zwölf austauschbare Screenshots ohne Kontext.
+      <h2>Dachdecker — Website Signature</h2>
+      <p>
+        Die Demo verbindet Bilder, Leistungsbeschreibung und einen Anfrageweg. Sie
+        zeigt eine mögliche Gestaltung für einen Dachdeckerbetrieb.
       </p>
       <p>
-        Feinkost Kreta ist eine Bestell-App, kein Schaufenster. Man sieht 1-Klick-Bestellung und Benachrichtigung, nicht eine Hochglanz-Startseite. Genau das brauchen Inhaber, die abends noch Excel offen haben. Die ausführliche Beschreibung und die Phone-Demo stehen unter{" "}
-        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta Kundensystem</Link>.
+        Kennzeichnung: <strong>Produktdemo · kein Echtbetrieb</strong>
       </p>
       <p>
-        Der Dachdecker ist die öffentliche Arbeitsprobe. Preiskämpfer sollen nicht anrufen. Sanierung und Steildach sollen sichtbar sein, während der Meister auf dem Dach steht. Loop und längere Demo stehen unter{" "}
-        <Link href="/referenzen/dachdecker-signature">Dachdecker Signature-Website</Link>.
+        <Link href="/referenzen/dachdecker-signature">Website-Demo ansehen</Link>
       </p>
       <p>
-        Weitere Gewerke beschreiben wir auf einer Seite — Dachdecker, SHK, Elektro, Kälte, Spedition, Galabau, Metallbau, Nutzfahrzeuge — jeweils mit Engpass und Ebene, nicht mit einer erfundenen Erfolgsstory. Einstieg:{" "}
-        <Link href="/gewerke">Gewerke in NRW</Link>. Die Startseite bleibt die Verkaufsstrecke. Diese Hub-Seite ist der Index für Menschen und für Suchmaschinen, die „Referenz Hagen Handwerk System“ suchen.
+        <Link href={cta.href}>{cta.primary}</Link>
       </p>
-
-      <h2>Was ist eine Produktdemo — und was nicht?</h2>
-      <p className="answer">
-        Eine Produktdemo ist ein Schnitt des gebauten Systems; sie ist kein Mitschnitt eines echten Kundentelefonats und kein Versprechen, dass jeder Betrieb identisch aussieht.
-      </p>
-      <p>
-        Auf den Unterseiten steht das sichtbar. Die Demos laden erst, wenn sie nahe am Viewport sind. Wer weniger Bewegung will, sieht das Poster. Poster und Schleifen haben beschreibende Texte, keine leeren Dateinamen. Es gibt keine Fake-Reviews, keine Search-Box im Schema, keine erfundenen sameAs-Profile.
-      </p>
-      <p>
-        Wenn Ihr Betrieb in dieselbe Richtung will — Auftritt, Annahme oder Abläufe — stehen die Leistungsseiten bereit. Preise ohne Scroll liegen unter{" "}
-        <Link href="/preise">Preise für Website und Systeme</Link>. Förderung interner Prozesse unter{" "}
-        <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link>. Gespräch und Anschrift unter{" "}
-        <Link href="/kontakt">Kontakt in Hagen</Link>.
-      </p>
-      <h2>Für wen sind diese zwei Fälle gedacht?</h2>
-      <p className="answer">
-        Die zwei Fälle sind für Inhaber gedacht, die entweder innen im Bestand oder außen im Auftritt denselben Schnitt brauchen — nicht für eine Agentur-Pitchdeck-Galerie.
-      </p>
-      <p>
-        Wer Feinkost Kreta öffnet und denkt „das ist Handel, ich bin Dachdecker“, hat den Punkt verpasst. Das Muster ist dasselbe: Daten, die im Kopf oder auf Zetteln leben, gehören auf das Gerät, das sowieso in der Hand ist. Wer den Dachdecker öffnet und denkt „ich brauche keinen Film“, hat den anderen Punkt verpasst. Der Film ist die Fläche, auf der der Betrieb beweist, dass er nicht die Nummer aus der Anzeige ist.
-      </p>
-      <p>
-        Weitere Betriebe beschreiben wir unter{" "}
-        <Link href="/gewerke">Gewerke</Link>, ohne so zu tun, als läge dort bereits eine gebaute Demo. Das ist Absicht. Eine ehrliche Website trennt gebaut und beschrieben. Suchmaschinen sollen das ebenfalls trennen: VideoObject nur dort, wo ein Video liegt. FAQPage nur dort, wo die Fragen sichtbar sind. Offer nur dort, wo Preise stehen.
-      </p>
-      <p>
-        NAP bleibt Kleiststraße 9, 58095 Hagen, +49 162 2843869. Dieselbe Zeile wie im Footer. Wer uns zitiert, soll uns wiederfinden.
-      </p>
-      <ul>
-        <li>
-          <Link href="/referenzen/feinkost-kreta">Zum Kundensystem Feinkost Kreta</Link>
-        </li>
-        <li>
-          <Link href="/referenzen/dachdecker-signature">Zur Signature-Choreografie des Dachdeckers</Link>
-        </li>
-        <li>
-          <Link href="/leistungen">Zu den drei Leistungsebenen</Link>
-        </li>
-      </ul>
     </DocPage>
   );
 }

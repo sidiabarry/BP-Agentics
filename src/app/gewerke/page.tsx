@@ -8,10 +8,11 @@ import { breadcrumbList, webPageNode } from "@/lib/json-ld";
 import { gewerkHref } from "@/lib/nav";
 import { pageMetadata } from "@/lib/seo";
 import { tradePages } from "@/lib/trade-pages";
+import { cta } from "@/lib/offers";
 
-const title = "Gewerke in NRW — Engpass und Ebene";
+const title = "Beispiele aus Handwerk, Service und Logistik";
 const description =
-  "Acht Gewerke, eine Seite: was in Hagen und NRW typischerweise liegen bleibt und welche Ebene das löst. Keine acht dünnen Visitenkarten.";
+  "Anwendungsbeispiele für Websites und Automatisierung. Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen Programmen ab.";
 
 export const metadata: Metadata = pageMetadata({
   title,
@@ -48,16 +49,16 @@ export default function GewerkePage() {
           <span className="text-[#14161C]">Gewerke</span>
         </nav>
         <p className="mt-6 text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-          Gewerke · BP Agentics / Hagen
+          Anwendungsbeispiele
         </p>
         <h1 className="mt-4 max-w-[22ch] text-4xl leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
-          Was in acht Gewerken liegen bleibt — und welche Ebene das löst.
+          Beispiele aus Handwerk, Service und Logistik
         </h1>
         <p className="mt-5 max-w-[40rem] text-[1.2rem] leading-relaxed text-[#3A3D45]">
-          Eine vollständige Seite statt acht halber. Jeder Abschnitt sagt, was in
-          diesem Gewerk typischerweise liegen bleibt und welche Ebene das löst.
-          Sobald ein Gewerk nachweislich Anfragen bringt, bekommt genau das später
-          eine eigene Adresse mit voller Tiefe.
+          Unterschiedliche Betriebe brauchen unterschiedliche Abläufe. Die folgenden
+          Beispiele zeigen mögliche Einsatzbereiche für Websites und Automatisierung.
+          Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen
+          Programmen ab.
         </p>
         <nav
           aria-label="Gewerke auf dieser Seite"
@@ -84,21 +85,9 @@ export default function GewerkePage() {
                 className="doc-prose scroll-mt-[5.5rem] border-t border-black/8 pt-12"
               >
                 <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-                  {item.title} · Hagen
+                  Anwendungsbeispiel · {item.title}
                 </p>
-                <h2 className="mt-3 !text-3xl md:!text-4xl">{item.title}</h2>
-                <p className="answer mt-5">
-                  <span className="block text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-                    Was liegen bleibt
-                  </span>
-                  <span className="mt-2 block">{seo.hub.stuck}</span>
-                </p>
-                <p className="answer">
-                  <span className="block text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-                    Welche Ebene das löst
-                  </span>
-                  <span className="mt-2 block">{seo.hub.level}</span>
-                </p>
+                <h2 className="mt-3 !text-3xl md:!text-4xl">{seo.hub.heading}</h2>
                 {seo.hub.paragraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 48)}>{paragraph}</p>
                 ))}
@@ -110,12 +99,12 @@ export default function GewerkePage() {
                     <>
                       {" · "}
                       <Link href="/referenzen/dachdecker-signature">
-                        Gebaute Signature-Demo
+                        Website-Demo ansehen
                       </Link>
                     </>
                   ) : null}
                   {" · "}
-                  <Link href="/termin">Erstgespräch vereinbaren</Link>
+                  <Link href={cta.href}>Vorhaben für meinen Betrieb besprechen</Link>
                 </p>
               </article>
             );
@@ -127,13 +116,13 @@ export default function GewerkePage() {
             Nächster Schritt
           </p>
           <p className="mt-3 max-w-[32rem] text-2xl leading-snug font-semibold">
-            Neunzig Minuten im Betrieb. Wir sagen, welche Ebene zuerst kommt.
+            Welches Beispiel zu Ihrem Vorhaben passt, klären wir im Gespräch.
           </p>
           <Button
             asChild
             className="mt-6 h-12 rounded-full bg-[#198BE8] px-7 text-base text-white hover:bg-[#1576C4]"
           >
-            <Link href="/termin">Erstgespräch vereinbaren</Link>
+            <Link href={cta.href}>{cta.primary}</Link>
           </Button>
         </div>
       </main>

@@ -1,38 +1,38 @@
 export const leistungItems = [
   {
     href: "/leistungen/auftritt",
-    title: "Auftritt — Websites",
-    sub: "Damit die richtigen Anfragen kommen.",
+    title: "Websites",
+    sub: "Leistungen, Referenzen und Einsatzgebiet verständlich zeigen.",
   },
   {
     href: "/leistungen/annahme",
-    title: "Annahme — KI-Setter",
-    sub: "Damit keine Anfrage liegen bleibt.",
+    title: "WhatsApp-Assistent",
+    sub: "Anfragen per Text beantworten und Termine abstimmen.",
   },
   {
     href: "/leistungen/ablaeufe",
-    title: "Abläufe — interne Systeme",
-    sub: "Damit die Arbeit nicht am Schreibtisch hängt.",
+    title: "Büroabläufe automatisieren",
+    sub: "Informationen einmal erfassen und weitergeben.",
   },
 ] as const;
 
 export const mainLinks = [
-  { href: "/referenzen", label: "Referenzen", spy: "referenzen" },
+  { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "/preise", label: "Preise", spy: "preise" },
-  { href: "/foerderung/mid-digitale-prozesse", label: "Förderung", spy: null },
   { href: "/ueber-mich", label: "Über mich", spy: null },
+  { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
 /** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
 export const homeExpandLinks = [
-  { href: "#referenzen", label: "Referenzen", spy: "referenzen" },
+  { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "#preise", label: "Preise", spy: "preise" },
-  { href: "/foerderung/mid-digitale-prozesse", label: "Förderung", spy: null },
+  { href: "/ueber-mich", label: "Über mich", spy: null },
 ] as const;
 
 export const mobileOverview = {
   href: "/leistungen",
-  label: "Im Überblick",
+  label: "Leistungen im Überblick",
 } as const;
 
 export const mobileReferenzen = [
@@ -43,7 +43,7 @@ export const mobileReferenzen = [
 export const mobileInfo = [
   { href: "/preise", label: "Preise" },
   { href: "/foerderung/mid-digitale-prozesse", label: "Förderung" },
-  { href: "/passt-das", label: "Passt das zu mir?" },
+  { href: "/passt-das", label: "Welcher Einstieg passt?" },
   { href: "/ueber-mich", label: "Über mich" },
   { href: "/kontakt", label: "Kontakt" },
 ] as const;

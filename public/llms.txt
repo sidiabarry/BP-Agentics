@@ -1,33 +1,34 @@
 # BP Agentics
 
-> Systeme und Automatisierung für Betriebe in Nordrhein-Westfalen. Sitz: Kleiststraße 9, 58095 Hagen. Inhaber: Sidia Jerome Barry. Telefon: +49 162 2843869. E-Mail: sidiabarry@bpagentics.com.
+> BP Agentics erstellt Websites und automatisiert Abläufe für Betriebe mit 5–20 Mitarbeitenden in Nordrhein-Westfalen. Sitz: Kleiststraße 9, 58095 Hagen. Inhaber: Sidia Jerome Barry. Telefon: +49 162 2843869. E-Mail: sidiabarry@bpagentics.com.
 
-BP Agentics baut drei Schichten für Betriebe, die digital nachziehen müssen: den öffentlichen Auftritt, die Annahme am Telefon und die internen Abläufe. Die Arbeit sitzt in Hagen und richtet sich an Handwerk, Handel und lokale Dienstleister im Ennepe-Ruhr-Kreis, im Märkischen Kreis und im weiteren NRW.
+BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe. Jeder Baustein ist einzeln beauftragbar. Das Erstgespräch dauert 90 Minuten vor Ort; ein Formularversand ist ein Terminwunsch, keine feste Buchung.
 
 ## Kernangebote
 
-- Auftritt / Website für Betriebe: Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro im Monat. Seite: https://bp-agentics.de/leistungen/auftritt
-- Annahme / KI-Setter: Annahme am Telefon, Qualifizierung, Kalender. 1.900 Euro Einrichtung plus 99 Euro im Monat. Seite: https://bp-agentics.de/leistungen/annahme
-- Abläufe: Fundament 2.900 Euro, Module 900 bis 1.800 Euro. Seite: https://bp-agentics.de/leistungen/ablaeufe
+- Websites: Start 950 € + 149 € monatlich (2.738 € inkl. 12 Monate), Betrieb 3.900 € + 149 € monatlich (5.688 €), Signature ab 7.900 € + 290 € monatlich (ab 11.380 €). Seite: https://bp-agentics.de/leistungen/auftritt
+- WhatsApp-Assistent (KI-Assistent für WhatsApp-Anfragen): 1.900 € Einrichtung + 99 € monatlich (3.088 € inkl. 12 Monate). Betrifft Nachrichten per WhatsApp, nicht Telefonannahme. Seite: https://bp-agentics.de/leistungen/annahme
+- Büroabläufe automatisieren: gemeinsame Datenbasis 2.900 € plus ein Prozessmodul 900–1.800 €, zusammen ab 3.800 € Einrichtung, Betreuung ab 190 € monatlich (ab 6.080 € inkl. 12 Monate). Seite: https://bp-agentics.de/leistungen/ablaeufe
+
+Alle Preise sind Endpreise. Es wird keine Umsatzsteuer gemäß § 19 UStG ausgewiesen.
 
 ## Orientierung
 
-- Passt das zu mir? Schnell-Check und vier Schritte: https://bp-agentics.de/passt-das
+- Welcher Einstieg passt?: https://bp-agentics.de/passt-das
 - Über mich — Sidia Jerome Barry: https://bp-agentics.de/ueber-mich
 
 ## Förderung
 
-MID Digitale Prozesse der Landesregierung NRW kann bis zu 50 Prozent der förderfähigen Kosten übernehmen, höchstens 15.000 Euro. Antragsfenster bis 1. Dezember 2026, Windhundverfahren. Die Arbeit darf vor dem Förderbescheid nicht beginnen. Erklärung: https://bp-agentics.de/foerderung/mid-digitale-prozesse
+MID-Digitale Prozesse fördert bestimmte externe Beratungsleistungen zur Digitalisierung interner Prozesse, nicht pauschal Website- oder Softwarepakete von BP Agentics. Richtlinie: höchstens 500 € je Tagewerk, 10–30 Tagewerke, Höchstförderung 15.000 €. Aufruf 7. September bis 1. Dezember 2026. Seite: https://bp-agentics.de/foerderung/mid-digitale-prozesse
 
 ## Gewerke
 
-Acht Gewerke auf einer Seite, jeweils Engpass und Ebene: https://bp-agentics.de/gewerke
-Alte Adressen wie /dachdecker leiten auf den jeweiligen Abschnitt um.
+Anwendungsbeispiele, keine Referenzen: https://bp-agentics.de/gewerke
 
-## Referenzen
+## Arbeiten und Demos
 
-- Feinkost Kreta: Bestell-App mit 1-Klick-Bestellung und Benachrichtigung. https://bp-agentics.de/referenzen/feinkost-kreta
-- Dachdecker Signature: öffentliche Website mit Choreografie. https://bp-agentics.de/referenzen/dachdecker-signature
+- Feinkost Kreta: Bestell-App, Projektbeispiel / Produktdemo. https://bp-agentics.de/referenzen/feinkost-kreta
+- Dachdecker Signature: Website-Demo, kein Echtbetrieb. https://bp-agentics.de/referenzen/dachdecker-signature
 
 ## Kontakt
 
@@ -35,9 +36,9 @@ Kleiststraße 9, 58095 Hagen
 Telefon: +49 162 2843869
 WhatsApp: https://wa.me/491622843869
 E-Mail: sidiabarry@bpagentics.com
-90-Minuten-Gespräch: https://bp-agentics.de/termin
+Erstgespräch anfragen: https://bp-agentics.de/termin
 Kontaktseite: https://bp-agentics.de/kontakt
 
 ## Preise
 
-Endpreise ohne Kleinunternehmer-Hinweis auf den Leistungsseiten. Übersicht: https://bp-agentics.de/preise
+Übersicht mit 12-Monats-Rechnung: https://bp-agentics.de/preise

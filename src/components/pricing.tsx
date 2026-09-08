@@ -4,63 +4,27 @@ import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { DemoLoop, PhoneDemo } from "@/components/demo-player";
+import {
+  PRICE_NOTE,
+  automationOffer,
+  cta,
+  offerTable,
+  websiteCare,
+  websiteOwnership,
+  websitePackages,
+  yearTableHint,
+} from "@/lib/offers";
 
-const systems = [
-  {
-    name: "Fundament",
-    price: "2.900 €",
-    body: "Anbindung von Postfach, Kalender und Kundendaten. Ein Ort statt fünf.",
-  },
-  {
-    name: "Modul",
-    price: "900 € bis 1.800 €",
-    body: "Ein Ablauf pro Modul: Angebotsversand, Nachfassen, Terminerinnerung, Auftragsdokumentation.",
-  },
-  {
-    name: "KI-Setter",
-    price: "1.900 €",
-    run: "99 € im Monat",
-    body: "Beantwortet Anfragen per Text und bucht Termine in Ihren Kalender.",
-  },
-] as const;
-
-const websites = [
-  {
-    name: "Website Start",
-    price: "950 €",
-    run: "Wartungsvertrag 149 € / Monat, 12 Monate",
-    body: "Einseiter, der Anfragen holt. Für Betriebe, deren Auftritt seit Jahren schweigt.",
-    featured: false,
-  },
-  {
-    name: "Website Betrieb",
-    price: "3.900 €",
-    run: "plus 149 € / Monat, 12 Monate",
-    body: "Mehrseitig, mit Leistungsseiten und Referenzen. Für Betriebe, die gefunden werden wollen, ohne Sonderanfertigung.",
-    featured: false,
-  },
-  {
-    name: "Website Signature",
-    price: "ab 7.900 €",
-    run: "Wartungsvertrag 290 € / Monat",
-    body: "Für Betriebe, die über die Website verkaufen. Der Auftritt ist die Arbeitsprobe.",
-    featured: true,
-  },
-] as const;
-
-const teaserRows = [
-  { name: "Fundament", price: "2.900 €", run: "ab 190 € / Monat" },
-  { name: "Modul", price: "900 € bis 1.800 €", run: "in der Systemwartung" },
-  { name: "KI-Setter", price: "1.900 €", run: "99 € / Monat" },
-  { name: "Website Start", price: "950 €", run: "149 € / Monat" },
-  { name: "Website Betrieb", price: "3.900 €", run: "149 € / Monat" },
-  { name: "Website Signature", price: "ab 7.900 €", run: "290 € / Monat" },
-] as const;
+const teaserRows = offerTable.map((item) => ({
+  name: item.name,
+  price: item.once,
+  run: `${item.month} monatlich`,
+}));
 
 function WebsiteCards() {
   return (
     <div className="grid items-stretch gap-4 md:grid-cols-3">
-      {websites.map((plan, index) => (
+      {websitePackages.map((plan, index) => (
         <RevealIn
           key={plan.name}
           as="article"
@@ -72,6 +36,11 @@ function WebsiteCards() {
               : "flex h-full flex-col rounded-3xl bg-white p-7"
           }
         >
+          {"badge" in plan && plan.badge ? (
+            <p className={plan.featured ? "text-sm text-white/80" : "text-sm text-[#198BE8]"}>
+              {plan.badge}
+            </p>
+          ) : null}
           <h3 className="text-xl font-semibold">{plan.name}</h3>
           <RevealIn
             as="p"
@@ -79,10 +48,10 @@ function WebsiteCards() {
             delay={120 + index * 60}
             className="mt-2 text-3xl font-semibold whitespace-nowrap"
           >
-            {plan.price}
+            {plan.once}
           </RevealIn>
           <p className={plan.featured ? "mt-1 text-white/80" : "mt-1 text-[#5C5F66]"}>
-            {plan.run}
+            {plan.month} monatlich · {plan.year} inkl. 12 Monate
           </p>
           <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
             {plan.body}
@@ -96,7 +65,7 @@ function WebsiteCards() {
                   : "text-[#198BE8] underline-offset-4 hover:underline"
               }
             >
-              Website {plan.name.replace("Website ", "")}: Leistung und Wartung
+              Website-Pakete ansehen
             </Link>
           </p>
         </RevealIn>
@@ -114,10 +83,11 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Preise
           </RevealIn>
           <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-            950 € Einbau. 149 € im Monat.
+            Was Einrichtung und laufende Betreuung kosten.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-            Festpreis für Website, Setter und Abläufe — inklusive Wartung und Eigentum.
+            Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen. Der
+            verbindliche Umfang und Preis stehen vor der Beauftragung im Angebot.
           </RevealIn>
           <ul className="mt-8 divide-y divide-black/10 overflow-hidden rounded-3xl bg-white">
             {teaserRows.map((item, index) => (
@@ -136,7 +106,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           </ul>
           <p className="mt-6 text-[1.08rem]">
             <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Alle Endpreise in der Tabelle
+              Preise mit 12-Monats-Rechnung ansehen
             </Link>
           </p>
         </div>
@@ -145,20 +115,9 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
   }
 
   return (
-    <section id="preise" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
+    <section id="preise-detail" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-          Preise
-        </RevealIn>
-        <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-          950 € Einbau. 149 € im Monat.
-        </RevealHeading>
-        <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-          Mittelständische Kaufleute rechnen in Wartung, nicht in
-          Agenturabenteuern. Der Einbau ist ein Festpreis. Danach läuft ein
-          Wartungsvertrag, wie Sie ihn Ihren eigenen Kunden schreiben — für ein
-          Arbeitsmittel, das wir hosten, pflegen und am Laufen halten.
-        </RevealIn>
+        <WebsiteCards />
 
         <RevealIn
           as="article"
@@ -166,57 +125,27 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           className="mt-12 rounded-[2rem] bg-[#14161C] p-7 text-[#F3EFE6] md:p-10"
         >
           <p className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
-            Prozesslinie
+            Automatisierung
           </p>
           <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
-            Interne Systeme
+            Gemeinsame Datenbasis und ein Modul
           </h3>
           <p className="mt-4 max-w-[40rem] text-[1.12rem] leading-relaxed text-white/80">
-            Wir lösen Papier und Excel ab. Angebote, Termine, Kundendaten,
-            Nachfassen — in einem System, das Ihre Leute ohne Schulung bedienen.
+            Die gemeinsame Datenbasis kostet {automationOffer.basis}. Ein Modul kostet
+            je nach vereinbartem Ablauf {automationOffer.module}. Daraus ergeben sich
+            mindestens {automationOffer.combined} für Datenbasis und ein Modul. Die
+            Betreuung beginnt bei {automationOffer.month.replace("ab ", "")} im Monat.
           </p>
           <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
             <div>
-              <div className="divide-y divide-white/10 border-t border-white/10">
-                {systems.map((item) => (
-                  <div
-                    key={item.name}
-                    className="grid gap-2 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8"
-                  >
-                    <div>
-                      <p className="text-xl font-semibold">{item.name}</p>
-                      <p className="mt-2 text-[1.05rem] leading-relaxed text-white/75">
-                        {item.body}
-                      </p>
-                    </div>
-                    <div className="md:text-right">
-                      <RevealIn
-                        as="p"
-                        variant="price"
-                        className="text-2xl font-semibold whitespace-nowrap md:text-3xl"
-                      >
-                        {item.price}
-                      </RevealIn>
-                      {"run" in item ? (
-                        <p className="mt-1 text-white/70">{item.run}</p>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-2 text-[1.08rem] leading-relaxed text-white/85">
-                Der Zuschnitt entsteht im 90-Minuten-Gespräch vor Ort. Der Preis
-                steht danach fest und ändert sich nicht.{" "}
+              <p className="text-[1.08rem] leading-relaxed text-white/85">
+                {yearTableHint}{" "}
                 <Link href="/leistungen/ablaeufe" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  Fundament und Module im Detail
+                  Automatisierung ansehen
                 </Link>
                 {" · "}
                 <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  KI-Setter für Annahme und Kalender
-                </Link>
-                {" · "}
-                <Link href="/preise" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  Alle Endpreise in einer Tabelle
+                  WhatsApp-Assistent ansehen
                 </Link>
                 .
               </p>
@@ -225,50 +154,45 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
               src="/demos/feinkost-loop.mp4"
               poster="/demos/feinkost-poster.jpg"
               fullSrc="/demos/feinkost-full.mp4"
-              posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta mit 1-Klick-Bestellung"
-              caption="Bestell-App Feinkost Kreta: 1-Klick und Benachrichtigung."
+              posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta"
+              caption="Bestell-App Feinkost Kreta: Bestellung und Benachrichtigung."
+              note="Projektbeispiel · Produktdemo"
               width={300}
             />
-            <p className="mt-4 text-center text-sm text-white/70">
-              <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
-                Referenz Feinkost Kreta: Bestell-App und Demo
-              </Link>
-            </p>
           </div>
+          <p className="mt-4 text-center text-sm text-white/70">
+            <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
+              Bestell-App ansehen
+            </Link>
+          </p>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              Fördermittel
+              Förderung
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-              Das Land NRW bezuschusst die Digitalisierung interner
-              Geschäftsprozesse über MID Digitale Prozesse mit 50 Prozent, bis
-              zu 15.000 €. Wir begleiten den Antrag, bevor wir bauen — die
-              Reihenfolge ist Vorschrift, nicht Kür. Das aktuelle Einreichfenster
-              läuft bis zum 1. Dezember 2026 und wird nach Eingang vergeben.{" "}
+              Für bestimmte Beratungsleistungen zur Digitalisierung interner Prozesse
+              gibt es Förderprogramme. Unsere Softwarepakete werden durch
+              MID-Digitale Prozesse nicht pauschal zur Hälfte bezuschusst.{" "}
               <Link href="/foerderung/mid-digitale-prozesse" className="text-[#198BE8] underline-offset-4 hover:underline">
-                MID Digitale Prozesse: Zuschuss, Fenster und Reihenfolge vor dem Bescheid
+                MID-Digitale Prozesse sachlich erklärt
               </Link>
               .
             </p>
           </div>
         </RevealIn>
 
-        <div className="mt-6">
-          <WebsiteCards />
-        </div>
-
         <DemoLoop
           src="/demos/dach-loop.mp4"
           poster="/demos/dach-poster.jpg"
           fullSrc="/demos/dach-full.mp4"
-          posterAlt="Standbild einer Signature-Website für einen Dachdeckerbetrieb mit Dachaufnahme und Scroll-Choreografie"
-          caption="Scroll-Choreografie einer Signature-Website für einen Dachdeckerbetrieb."
+          posterAlt="Standbild einer Signature-Website für einen Dachdeckerbetrieb"
+          caption="Website-Demo für einen Dachdeckerbetrieb."
           note="Produktdemo · kein Echtbetrieb"
           className="mt-10"
         />
         <p className="mt-3 text-[1.02rem] text-[#5C5F66]">
           <Link href="/referenzen/dachdecker-signature" className="text-[#198BE8] underline-offset-4 hover:underline">
-            Referenz Dachdecker Signature: Loop und Erklärung
+            Website-Demo ansehen
           </Link>
         </p>
 
@@ -279,34 +203,37 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
         >
           <div>
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              In der Wartung enthalten
+              Was nach der Einrichtung dazugehört
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-              Hosting in Deutschland, SSL, Sicherheitsupdates, tägliche Backups,
-              bis zu drei Textänderungen im Monat, Störungsbehebung innerhalb von
-              24 Stunden an Werktagen.
+              Die monatliche Betreuung deckt den laufenden Betrieb und die vereinbarten
+              Pflegeleistungen ab. Bei Websites nennt das Angebot Hosting,
+              Sicherheitsupdates, Backups und enthaltene Inhaltsänderungen.
             </p>
+            <ul className="mt-4 list-disc space-y-1 pl-5 text-[1.05rem] text-[#3A3D45]">
+              {websiteCare.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
           <div className="border-t border-black/10 pt-4">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              Eigentum und Kündigung
+              Ihre Website und die laufende Betreuung
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-              Die Seite gehört Ihnen ab Zahlung des Einbaus. Nach zwölf Monaten
-              monatlich kündbar. Bei Kündigung übergeben wir Ihnen die
-              vollständigen Dateien, kostenfrei. Sie zahlen für die Wartung,
-              nicht für Ihr Eigentum.
+              {websiteOwnership} Für interne Systeme und den Assistenten gilt die
+              Laufzeit, die im jeweiligen Angebot steht.
             </p>
           </div>
         </RevealIn>
 
-        <p className="mt-8 text-[1.02rem] text-[#5C5F66]">Alle Preise sind Endpreise.</p>
+        <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{PRICE_NOTE}</p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Button
             asChild
             className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
           >
-            <Link href="/termin">Diesen Plan vor Ort durchsprechen</Link>
+            <Link href={cta.href}>{cta.primary}</Link>
           </Button>
           <WhatsAppInline className="h-13 px-7 text-[1.05rem]" />
         </div>

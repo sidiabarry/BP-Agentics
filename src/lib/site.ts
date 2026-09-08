@@ -34,16 +34,16 @@ export const site = {
   ],
   knowsAbout: [
     "Website für Handwerksbetriebe",
-    "KI-Telefonannahme",
+    "WhatsApp-Assistent",
     "Prozessautomatisierung",
     "MID Digitale Prozesse",
     "Next.js",
     "n8n",
   ],
   defaultTitle:
-    "BP Agentics — Systeme und Automatisierung für Betriebe NRW",
+    "BP Agentics — Websites und Automatisierung für Betriebe in NRW",
   defaultDescription:
-    "BP Agentics in Hagen baut Websites, KI-Annahme und interne Abläufe für Betriebe in NRW. Sidia Jerome Barry. Kleiststraße 9, 58095 Hagen.",
+    "BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe. Für Betriebe mit 5–20 Mitarbeitenden in NRW. Sidia Jerome Barry, Hagen.",
 } as const;
 
 export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;

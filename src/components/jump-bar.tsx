@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const jumps = [
-  { href: "/leistungen", label: "Was ich baue" },
-  { href: "/#referenzen", label: "Was schon läuft" },
-  { href: "/preise", label: "Was es kostet" },
+  { href: "/leistungen", label: "Leistungen" },
+  { href: "/#referenzen", label: "Arbeiten und Demos" },
+  { href: "/preise", label: "Preise" },
 ] as const;
 
 export function JumpBar() {

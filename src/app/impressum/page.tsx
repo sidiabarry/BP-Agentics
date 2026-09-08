@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { DocPage } from "@/components/doc-page";
 import { napLine, site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
+import { PRICE_NOTE } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Impressum",
@@ -19,14 +19,11 @@ export default function ImpressumPage() {
       crumbs={[{ name: "Impressum", path: "/impressum" }]}
       related={[
         { href: "/datenschutz", label: "Datenschutzhinweise" },
-        { href: "/kontakt", label: "Kontaktseite mit derselben Anschrift" },
+        { href: "/kontakt", label: "Kontakt" },
       ]}
+      showCta={false}
     >
-      <h2>Wer ist der Anbieter dieser Website?</h2>
-      <p className="answer">
-        Anbieter ist {site.name}, Inhaber {site.founder.name}, {site.streetAddress},{" "}
-        {site.postalCode} {site.addressLocality}, Telefon {site.phoneDisplay}.
-      </p>
+      <h2>Anbieter</h2>
       <p>
         {site.name}
         <br />
@@ -46,16 +43,13 @@ export default function ImpressumPage() {
         <a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
       <p>
-        Kleinunternehmer gemäß § 19 UStG. Es wird keine Umsatzsteuer ausgewiesen.
-        Alle Preise auf der Website sind Endpreise.
+        Kleinunternehmer gemäß § 19 UStG. {PRICE_NOTE}
       </p>
       <p>
-        Dieselbe Anschrift und dasselbe Telefon stehen im Footer, auf der{" "}
-        <Link href="/kontakt">Kontaktseite</Link> und in den strukturierten Daten.
-        Streitbeilegung: Die Europäische Kommission stellt eine Plattform zur
-        Online-Streitbeilegung bereit. Wir sind nicht verpflichtet und nicht bereit,
-        an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-        teilzunehmen.
+        Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren
+        vor einer Verbraucherschlichtungsstelle teilzunehmen. Die frühere
+        OS-Plattform der Europäischen Kommission wurde zum 20. Juli 2025
+        aufgehoben.
       </p>
     </DocPage>
   );

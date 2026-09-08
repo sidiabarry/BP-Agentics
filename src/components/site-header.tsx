@@ -132,7 +132,7 @@ export function SiteHeader() {
               asChild
               className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
             >
-              <Link href="/termin">Erstgespräch</Link>
+              <Link href="/termin">Erstgespräch anfragen</Link>
             </Button>
           </nav>
         </div>

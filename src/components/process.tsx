@@ -18,10 +18,10 @@ export function Process({
     >
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
-          {limit ? "Die ersten drei Schritte" : "Vier Schritte"}
+          Zusammenarbeit
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          Keine Überraschung. Kein offener Stundenzettel.
+          Vom ersten Gespräch zum passenden Baustein.
         </RevealHeading>
         <ol
           className={

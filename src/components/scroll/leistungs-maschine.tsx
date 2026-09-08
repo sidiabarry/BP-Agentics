@@ -43,40 +43,40 @@ const SHELL = [
 const stations = [
   {
     id: "auftritt",
-    name: "Auftritt",
-    promise: "Die Website, die die Anfrage überhaupt erst auslöst.",
+    name: "Websites",
+    promise: "Die Website, die Ihre Arbeit zeigt.",
     text:
-      "Kein Baukasten mit Stockfotos. Eine Seite, die Ihre Arbeit zeigt und Besucher zu einer Anfrage führt, die Sie auch beantworten wollen.",
+      "Leistungen, Referenzen und Einsatzgebiet verständlich machen. Vom kompakten Einseiter bis zum individuell gestalteten Auftritt.",
     facts: [
-      "Einseiter oder Signature-Seite mit Scroll-Choreografie",
-      "Auf Ihr Gewerk und Ihr Einzugsgebiet zugeschnitten",
-      "Anfragestrecke, die schon vorqualifiziert",
+      "Einseiter, mehrseitiger Auftritt oder individuelle Gestaltung",
+      "Auf Ihr Gewerk und Ihr Einsatzgebiet zugeschnitten",
+      "Eine klare Anfragemöglichkeit gehört dazu",
     ],
     href: "/leistungen/auftritt",
   },
   {
     id: "annahme",
-    name: "Annahme",
-    promise: "Der Setter, der antwortet, während Sie auf dem Dach stehen.",
+    name: "WhatsApp-Assistent",
+    promise: "Der KI-Assistent für WhatsApp-Anfragen.",
     text:
-      "Eine Anfrage um 21:40 ist am nächsten Morgen kalt. Der Setter schreibt zurück, fragt das Nötige nach und legt den Termin in Ihren Kalender.",
+      "Er beantwortet Nachrichten per WhatsApp, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an.",
     facts: [
-      "Antwortet per WhatsApp, Formular oder Chat",
-      "Fragt nach, statt einen Zettel weiterzureichen",
-      "Übergibt erst, wenn der Kontext vollständig ist",
+      "Antwortet per WhatsApp",
+      "Erfasst die vereinbarten Angaben zum Vorhaben",
+      "Bietet Termine nach den festgelegten Kalenderregeln an",
     ],
     href: "/leistungen/annahme",
   },
   {
     id: "ablaeufe",
-    name: "Abläufe",
-    promise: "Das System hinter dem Tresen.",
+    name: "Büroabläufe",
+    promise: "Informationen einmal erfassen und weitergeben.",
     text:
-      "Lieferschein, Stundenzettel, Materialliste. Was heute auf Papier durch den Betrieb wandert, läuft als Vorgang durch — vom Handy des Monteurs bis zur Rechnung.",
+      "Zum Beispiel Lieferscheine digital erfassen oder Auftragsinformationen weitergeben. Der erste Ablauf wird auf die vorhandenen Programme abgestimmt.",
     facts: [
-      "Papierprozesse ohne App-Zwang aufs Handy",
+      "Angaben mobil erfassen und dem Büro bereitstellen",
       "Zuständigkeit und Status an einem Ort",
-      "Rechnung am Einsatztag statt am Monatsende",
+      "Weitere Anschlüsse im Angebot ausgewiesen",
     ],
     href: "/leistungen/ablaeufe",
   },
@@ -85,11 +85,11 @@ const stations = [
     name: "Zusammenspiel",
     promise: "Einzeln nützlich. Zusammen ein System.",
     text:
-      "Die Website holt die Anfrage, die Annahme klärt sie, die Abläufe erledigen sie. Sie müssen nicht alles auf einmal bauen — aber alles passt aufeinander.",
+      "Jeder Baustein ist einzeln beauftragbar. Im Gespräch klären wir, ob eine Website, ein Assistent oder ein einzelner automatisierter Ablauf den passenden Anfang macht.",
     facts: [
-      "Schrittweise aufbaubar, ein Baustein nach dem anderen",
-      "Festpreis für den Einbau, fester Monatsbetrag für den Betrieb",
-      "Ein Ansprechpartner, keine Agenturkette",
+      "Schrittweise aufbaubar",
+      "Festpreis für den vereinbarten Umfang",
+      "Ein Ansprechpartner",
     ],
     href: "/leistungen",
   },
@@ -141,8 +141,8 @@ export function LeistungsMaschine() {
     <section ref={ref} id="maschine" className="machine" aria-label="Leistungen">
       <div className="machine__pin">
         <header className="machine__intro">
-          <h2>Was ich in einen Betrieb einbaue</h2>
-          <p>Drei Bausteine, in dieser Reihenfolge sinnvoll.</p>
+          <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
+          <p>Drei Bausteine, einzeln beauftragbar.</p>
         </header>
 
         <ol className="machine__rail" aria-hidden="true">

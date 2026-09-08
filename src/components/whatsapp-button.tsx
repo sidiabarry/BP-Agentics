@@ -25,7 +25,7 @@ const PHONE = "491622843869";
 
 /** Vorbelegter Text. Landet im Eingabefeld, der Nutzer kann ihn ändern. */
 const DEFAULT_MESSAGE =
-  "Guten Tag, ich habe eine Frage zu einem System für meinen Betrieb.";
+  "Guten Tag, ich möchte eine Website oder einen digitalen Ablauf für meinen Betrieb besprechen.";
 
 function waHref(message: string = DEFAULT_MESSAGE) {
   return `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
@@ -50,7 +50,7 @@ type FabProps = {
 
 export function WhatsAppFab({
   message = DEFAULT_MESSAGE,
-  label = "Anfrage per WhatsApp",
+  label = "Per WhatsApp schreiben",
   revealAfter = 0,
 }: FabProps) {
   const [visible, setVisible] = useState(revealAfter === 0);

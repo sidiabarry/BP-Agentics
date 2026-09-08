@@ -54,11 +54,11 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
             className="h-12 w-full rounded-full bg-[#198BE8] text-base text-white hover:bg-[#1576C4]"
           >
             <Link href="/termin" onClick={close}>
-              Erstgespräch vereinbaren
+              Erstgespräch anfragen
             </Link>
           </Button>
           <WhatsAppInline className="mt-2 h-12 w-full justify-center rounded-full px-5 text-base">
-            WhatsApp
+            Per WhatsApp schreiben
           </WhatsAppInline>
 
           <p className="mt-8 text-sm tracking-[0.16em] text-muted-foreground uppercase">
@@ -80,7 +80,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
           ))}
 
           <p className="mt-6 text-sm tracking-[0.16em] text-muted-foreground uppercase">
-            Referenzen
+            Arbeiten und Demos
           </p>
           {mobileReferenzen.map((item) => (
             <Link

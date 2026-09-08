@@ -3,125 +3,119 @@ import Link from "next/link";
 import { DataTable, DocPage } from "@/components/doc-page";
 import { Pricing } from "@/components/pricing";
 import { pageMetadata } from "@/lib/seo";
+import {
+  PRICE_NOTE,
+  automationOffer,
+  cta,
+  offerTable,
+  websiteCare,
+  websiteOwnership,
+  yearTableHint,
+} from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Preise für Website und Systeme",
+  title: "Was Einrichtung und laufende Betreuung kosten",
   description:
-    "Endpreise: Website 950 bis ab 7.900 Euro, Setter 1.900 plus 99, Fundament 2.900, Module 900 bis 1.800. Wartung und Eigentum.",
+    "Website Start 950 €, Betrieb 3.900 €, Signature ab 7.900 €, WhatsApp-Assistent 1.900 €, Datenbasis + 1 Modul ab 3.800 €. Endpreise ohne Umsatzsteuer.",
   path: "/preise",
 });
 
 export default function PreisePage() {
   return (
     <>
-    <DocPage
-      kicker="Preise"
-      title="Endpreise, die nach dem Gespräch feststehen"
-      lead="Website, Setter und Abläufe in einer Tabelle. Der Einbau ist Festpreis. Die Wartung ist Pflege, nicht Miete Ihres Eigentums."
-      crumbs={[{ name: "Preise", path: "/preise" }]}
-      extraJsonLd={[
-        {
-          "@type": "OfferCatalog",
-          name: "Endpreise BP Agentics",
-          itemListElement: [
-            { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "KI-Setter Einrichtung", price: "1900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "KI-Setter Wartung", price: "99", priceCurrency: "EUR", unitText: "MON" },
-            { "@type": "Offer", name: "Fundament", price: "2900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Modul", price: "900", priceCurrency: "EUR" },
-          ],
-        },
-      ]}
-      related={[
-        { href: "/leistungen/auftritt", label: "Was in Website Start, Betrieb und Signature steckt" },
-        { href: "/leistungen/annahme", label: "Was der KI-Setter für 1.900 Euro tut" },
-        { href: "/leistungen/ablaeufe", label: "Fundament und Module im Detail" },
-        { href: "/foerderung/mid-digitale-prozesse", label: "Wie MID den Eigenanteil senken kann" },
-      ]}
-    >
-      <h2>Was kosten die Leistungen von BP Agentics?</h2>
-      <p className="answer">
-        Website Start kostet neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature beginnt bei siebentausendneunhundert Euro; der KI-Setter kostet eintausendneunhundert Euro plus neunundneunzig Euro im Monat; das Fundament kostet zweitausendneunhundert Euro, ein Modul neunhundert bis eintausendachthundert Euro.
-      </p>
-      <p>
-        Diese Seite ist die Preisliste zum Nachschlagen. Die Startseite verkauft im Scroll. Hier stehen dieselben Endpreise in Ruhe, mit Wartung, Eigentum und dem, was nicht enthalten ist. Sidia Jerome Barry nennt den verbindlichen Betrag nach dem neunzigminütigen Gespräch im Betrieb — nicht als verhandelbare Agenturspanne, sondern als Festpreis mit Ausschlussliste.
-      </p>
-
-      <DataTable
-        caption="Endpreise Einbau und Wartung"
-        headers={["Leistung", "Einbau", "Wartung", "Seite"]}
-        rows={[
-          ["Website Start", "950 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Betrieb", "3.900 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Signature", "ab 7.900 Euro", "290 Euro / Monat", "Website"],
-          ["KI-Setter", "1.900 Euro", "99 Euro / Monat", "KI-Setter"],
-          ["Fundament", "2.900 Euro", "ab 190 Euro / Monat", "Abläufe"],
-          ["Modul", "900 bis 1.800 Euro", "in der Systemwartung", "Abläufe"],
+      <DocPage
+        kicker="Preise"
+        title="Was Einrichtung und laufende Betreuung kosten."
+        lead="Hier sehen Sie die Größenordnung für Websites und Automatisierung. Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen. Der verbindliche Umfang und Preis stehen vor der Beauftragung im Angebot."
+        crumbs={[{ name: "Preise", path: "/preise" }]}
+        extraJsonLd={[
+          {
+            "@type": "OfferCatalog",
+            name: "Leistungen BP Agentics",
+            itemListElement: [
+              { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "WhatsApp-Assistent Einrichtung", price: "1900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "WhatsApp-Assistent Betreuung", price: "99", priceCurrency: "EUR", unitText: "MON" },
+              { "@type": "Offer", name: "Gemeinsame Datenbasis", price: "2900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Prozessmodul", price: "900", priceCurrency: "EUR" },
+            ],
+          },
         ]}
-      />
+        related={[
+          { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
+          { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+          { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+          { href: "/foerderung/mid-digitale-prozesse", label: "MID-Digitale Prozesse" },
+        ]}
+      >
+        <DataTable
+          caption="Einrichtung, monatliche Betreuung und 12-Monats-Rechnung"
+          headers={["Leistung", "Einmalig", "Monatlich", "Einmalig + 12 Monate"]}
+          rows={offerTable.map((row) => [row.name, row.once, row.month, row.year])}
+        />
+        <p>{yearTableHint}</p>
+        <p>
+          Aus dieser Vergleichsrechnung folgt keine Mindestvertragslaufzeit von 12
+          Monaten. Die tatsächliche Laufzeit steht im jeweiligen Angebot. Für
+          Websites gilt die unten beschriebene Betreuung.
+        </p>
 
-      <h2>Was ist in der Wartung enthalten — und wem gehört die Seite?</h2>
-      <p className="answer">
-        In der Wartung enthalten sind Hosting in Deutschland, SSL, Sicherheitsupdates, tägliche Backups, bis zu drei Textänderungen im Monat und Störungsbehebung innerhalb von vierundzwanzig Stunden an Werktagen; die Seite gehört Ihnen ab Zahlung des Einbaus.
-      </p>
-      <p>
-        Nach zwölf Monaten ist monatlich kündbar. Bei Kündigung übergeben wir die vollständigen Dateien, kostenfrei. Sie zahlen für die Wartung, nicht für Ihr Eigentum. Signature liegt bei zweihundertneunzig Euro, weil Fläche und Medien größer sind. Interne Systeme beginnen bei einhundertneunzig Euro. Der Setter bleibt bei neunundneunzig. Alle Beträge auf dieser Seite sind Endpreise. Der Hinweis auf § 19 UStG steht im Impressum, nicht in der Preistabelle.
-      </p>
+        <h2>Aufschlüsselung Automatisierung</h2>
+        <p>
+          Die gemeinsame Datenbasis kostet {automationOffer.basis}. Ein Modul kostet
+          je nach vereinbartem Ablauf {automationOffer.module}. Daraus ergeben sich
+          mindestens {automationOffer.combined} für Datenbasis und ein Modul. Die
+          Betreuung beginnt bei {automationOffer.month.replace("ab ", "")} im Monat.
+        </p>
 
-      <h2>Warum steht der Preis nicht schon vor dem Gespräch fest bis auf den Cent?</h2>
-      <p className="answer">
-        Weil Module und Signature einen Korridor haben: der Centbetrag sitzt nach dem Systemplan, die Größenordnung sitzt schon hier.
-      </p>
-      <p>
-        Ein Modul für Lieferscheine ist nicht dasselbe wie ein Modul für Lager und Kolonne. Signature für einen Einseiter-Ersatz ist nicht Signature für einen Betrieb, der über die Seite verkauft. Der Korridor bleibt eng. Offene Stundensätze gibt es nicht. Zusätzliches läuft nur über ein neues Angebot.
-      </p>
-      <p>
-        MID Digitale Prozesse kann bei internen Vorhaben bis zu fünfzig Prozent übernehmen, höchstens fünfzehntausend Euro, nur wenn die Arbeit erst nach dem Bescheid beginnt. Lesen Sie{" "}
-        <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse in Nordrhein-Westfalen</Link>, bevor Sie intern beauftragen. Die Website bleibt meist außerhalb dieses Topfes.
-      </p>
+        <h2>Was nach der Einrichtung dazugehört</h2>
+        <p>
+          Die monatliche Betreuung deckt den laufenden Betrieb und die vereinbarten
+          Pflegeleistungen ab. Bei Websites nennt das Angebot Hosting,
+          Sicherheitsupdates, Backups und enthaltene Inhaltsänderungen. Für
+          Assistenten und interne Abläufe wird die Betreuung passend zum System
+          beschrieben.
+        </p>
+        <ul>
+          {websiteCare.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
 
-      <h2>Wie liest man die Tabelle neben den Leistungsseiten?</h2>
-      <p className="answer">
-        Die Tabelle nennt den Betrag; die Leistungsseiten nennen den Gegenstand — beide zusammen sind das Angebot, nicht die Tabelle allein.
-      </p>
-      <ul>
-        <li>
-          <Link href="/leistungen/auftritt">Website für Betriebe</Link> — Start, Betrieb, Signature.
-        </li>
-        <li>
-          <Link href="/leistungen/annahme">KI-Setter</Link> — Annahme, Qualifizierung, Kalender.
-        </li>
-        <li>
-          <Link href="/leistungen/ablaeufe">Interne Abläufe</Link> — Fundament und Module.
-        </li>
-        <li>
-          <Link href="/referenzen">Referenzen</Link> — Feinkost Bestell-App, Dachdecker Auftritt.
-        </li>
-      </ul>
-      <p>
-        Hagen, Kleiststraße 9, Telefon +49 162 2843869. Wer den Plan vor Ort durchsprechen will, nutzt{" "}
-        <Link href="/kontakt">die Kontaktseite</Link> oder direkt das{" "}
-        <Link href="/termin">90-Minuten-Gespräch</Link>. Zurück zur{" "}
-        <Link href="/">Startseite von BP Agentics</Link>, wenn Sie die Verkaufsstrecke im Zusammenhang sehen wollen.
-      </p>
+        <h2>Ihre Website und die laufende Betreuung</h2>
+        <p>{websiteOwnership}</p>
+        <p>
+          Für interne Systeme und den Assistenten gilt die Laufzeit, die im
+          jeweiligen Angebot steht.
+        </p>
+        <p>{PRICE_NOTE}</p>
 
-      <h2>Was steht nicht in der Preistabelle?</h2>
-      <p className="answer">
-        In der Preistabelle stehen keine Stundensätze, keine Reisekostenfantasien und kein „ab 79 Euro im Monat für immer“ — Reise ins Gesprächsgebiet Nordrhein-Westfalen steckt im Festpreis des Einbaus, soweit der Systemplan nichts anderes ausweist.
-      </p>
-      <p>
-        Wer außerhalb liegt, hören wir uns an und sagen vorher, ob die Anfahrt extra steht. Wer Hardware will, kauft Hardware selbst. Wer eine bestehende Branchensoftware behalten will, zahlt die Anbindung als eigenes Modul, nicht als Überraschung auf der Schlussrechnung. Wer Texte in einer zweiten Sprache will, bekommt ein separates Angebot. Deutsch ist die Sprache dieser Website und der Systeme, die wir hier beschreiben.
-      </p>
-      <p>
-        Vergleichen Sie nicht gegen eine 199-Euro-Baukasten-Seite ohne Annahme und ohne Abläufe. Vergleichen Sie gegen Feierabend, verpasste Anrufe und Rechnungen, die drei Tage in der Kabine liegen. Das ist der Preis, den der Betrieb heute schon zahlt — nur ohne Rechnung.
-      </p>
-      <p>
-        Offer-Markup auf dieser Seite wiederholt die Beträge, die sichtbar in der Tabelle stehen. Keine Sterne, keine „aggrierten“ Bewertungen, keine SearchAction.         Wer uns findet, soll denselben Centbetrag in der Tabelle und im Schema lesen.
-      </p>
-    </DocPage>
-    <Pricing />
+        <h2>Wie der genaue Preis festgelegt wird</h2>
+        <p>
+          Vor der Beauftragung erhalten Sie ein Angebot mit Leistungsumfang,
+          einmaligem Preis und laufenden Kosten. Zusätzliche Wünsche werden vor
+          ihrer Umsetzung gesondert angeboten.
+        </p>
+        <ul>
+          <li>
+            <Link href="/leistungen/auftritt">Websites</Link>
+          </li>
+          <li>
+            <Link href="/leistungen/annahme">WhatsApp-Assistent</Link>
+          </li>
+          <li>
+            <Link href="/leistungen/ablaeufe">Büroabläufe automatisieren</Link>
+          </li>
+        </ul>
+        <p>
+          <Link href={cta.href}>{cta.primary}</Link>
+          {" — "}
+          90 Minuten vor Ort.
+        </p>
+      </DocPage>
+      <Pricing />
     </>
   );
 }

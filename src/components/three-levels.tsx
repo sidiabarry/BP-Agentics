@@ -3,21 +3,6 @@ import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { levels } from "@/lib/content";
 
-const levelHrefs: Record<string, { href: string; label: string }> = {
-  auftritt: {
-    href: "/leistungen/auftritt",
-    label: "Auftritt im Detail",
-  },
-  annahme: {
-    href: "/leistungen/annahme",
-    label: "Annahme im Detail",
-  },
-  ablaeufe: {
-    href: "/leistungen/ablaeufe",
-    label: "Abläufe im Detail",
-  },
-};
-
 export function ThreeLevels({ compact = false }: { compact?: boolean }) {
   return (
     <section
@@ -29,11 +14,12 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
           Leistungen
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[20ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          Sie starten dort, wo der Schmerz am größten ist.
+          Drei Einstiege, einzeln beauftragbar.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-          Kein monolithisches Großprojekt. Die Bausteine greifen ineinander,
-          bleiben aber einzeln beauftragbar. Nachrüsten, wenn der Betrieb soweit ist.
+          Jeder Baustein ist einzeln beauftragbar. Im Gespräch klären wir, ob eine
+          Website, ein Assistent oder ein einzelner automatisierter Ablauf den
+          passenden Anfang macht.
         </RevealIn>
         {compact ? (
           <ul className="mt-8 divide-y divide-black/10 border-y border-black/10">
@@ -49,17 +35,18 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
                 <p className="font-semibold tracking-[-0.02em] text-[#14161C]">
                   {level.roman} · {level.name}
                 </p>
-                <p className="text-[1.05rem] leading-snug text-[#3A3D45]">{level.sub}</p>
-                {levelHrefs[level.id] ? (
-                  <p>
-                    <Link
-                      href={levelHrefs[level.id].href}
-                      className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
-                    >
-                      {levelHrefs[level.id].label}
-                    </Link>
-                  </p>
-                ) : null}
+                <div>
+                  <p className="text-[1.05rem] leading-snug text-[#3A3D45]">{level.sub}</p>
+                  <p className="mt-1 text-[0.98rem] text-[#14161C]">{level.price}</p>
+                </div>
+                <p>
+                  <Link
+                    href={level.href}
+                    className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+                  >
+                    {level.linkLabel}
+                  </Link>
+                </p>
               </RevealIn>
             ))}
           </ul>
@@ -89,16 +76,15 @@ export function ThreeLevels({ compact = false }: { compact?: boolean }) {
                     </li>
                   ))}
                 </ul>
-                {levelHrefs[level.id] ? (
-                  <p className="mt-5">
-                    <Link
-                      href={levelHrefs[level.id].href}
-                      className="text-[#9FD0F8] underline-offset-4 hover:underline"
-                    >
-                      {levelHrefs[level.id].label}
-                    </Link>
-                  </p>
-                ) : null}
+                <p className="mt-5 text-[1.05rem] font-semibold">{level.price}</p>
+                <p className="mt-4">
+                  <Link
+                    href={level.href}
+                    className="text-[#9FD0F8] underline-offset-4 hover:underline"
+                  >
+                    {level.linkLabel}
+                  </Link>
+                </p>
               </RevealIn>
             ))}
           </div>

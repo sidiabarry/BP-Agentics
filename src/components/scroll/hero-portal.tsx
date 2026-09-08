@@ -178,20 +178,34 @@ export function HeroPortal() {
         <div className="hero-portal__portal" aria-hidden="true" />
 
         <div className="hero-portal__copy">
-          <p className="hero-portal__kicker">BP Agentics — Websites und Systeme</p>
+          <p className="hero-portal__kicker">
+            Websites und Automatisierung für Betriebe mit 5–20 Mitarbeitenden in NRW
+          </p>
           <h1>
-            Ihr Betrieb läuft.
+            Websites, die Ihre Arbeit zeigen.
             <br />
-            Nur digital nicht.
+            Abläufe, die Ihr Team entlasten.
           </h1>
           <p className="hero-portal__lead">
-            Anfragen landen im Posteingang, in WhatsApp, auf dem Anrufbeantworter. Ich
-            baue den Weg, auf dem sie zusammenfinden — und die Website, die sie
-            überhaupt erst auslöst.
+            BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem
+            WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe. Gemeinsam
+            klären wir, welcher Baustein zu Ihrem Betrieb passt. Sie erhalten ein
+            Angebot mit klarem Umfang und Festpreis.
           </p>
-          <Link href="#maschine" className="hero-portal__link">
-            Sehen, was ich baue
-          </Link>
+          <div className="hero-portal__actions">
+            <Link href="/termin" className="hero-portal__cta">
+              Kostenloses Erstgespräch anfragen
+            </Link>
+            <p className="hero-portal__note">
+              90 Minuten in Ihrem Betrieb. Den Termin stimmen wir persönlich ab.
+            </p>
+            <Link href="#referenzen" className="hero-portal__link">
+              Arbeiten und Demos ansehen
+            </Link>
+          </div>
+          <p className="hero-portal__trust">
+            Persönlicher Ansprechpartner · Klarer Leistungsumfang · Einzeln beauftragbar
+          </p>
         </div>
 
         <p className="hero-portal__cue" aria-hidden="true">
@@ -200,8 +214,8 @@ export function HeroPortal() {
 
         {/* Ankunft: der Moment, in dem wir im Display sind. */}
         <div className="hero-portal__arrival">
-          <p>Sie sind drin.</p>
-          <h2>Drei Bausteine. Ein System.</h2>
+          <p>Websites, WhatsApp, Büroabläufe.</p>
+          <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
         </div>
       </div>
     </section>

@@ -15,15 +15,14 @@ export function Proof() {
     <section id="arbeiten" className="bg-[#F3EFE6] px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-          Ohne System
+          Alltag ohne System
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          Der Schreibtisch füllt sich. Der Auftrag nicht.
+          Wenn Unterlagen später ankommen, entstehen Rückfragen.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-          Anfrage im Festnetz. Lieferschein auf dem Tisch. Lager hinter Glas. Das
-          ist kein unfähiger Betrieb. Das ist ein Betrieb, in dem Anfragen und Daten
-          niemand einsammelt.
+          Anfragen, Lieferscheine und Statusangaben laufen oft über mehrere Wege.
+          Digitale Unterstützung kann diese Übergaben vereinfachen.
         </RevealIn>
         <div className="mt-12">
           <ConsequenceReel activeIndex={activeIndex} onIndexChange={setActiveIndex} />

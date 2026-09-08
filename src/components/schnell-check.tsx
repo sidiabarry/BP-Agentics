@@ -20,9 +20,9 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
             Schnell-Check
           </RevealIn>
-          <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-            An welcher Stelle verliert Ihr Betrieb gerade am meisten?
-          </RevealHeading>
+        <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+          Welcher Einstieg passt zu Ihrem Betrieb?
+        </RevealHeading>
           <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
             {checkPaths.map((item) => (
               <p
@@ -35,7 +35,7 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
           </div>
           <p className="mt-6">
             <Link href="/passt-das" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Reibungspunkt und Teamstärke im vollen Schnell-Check wählen
+              Reibungspunkt und Teamstärke im vollen Check wählen
             </Link>
           </p>
         </div>
@@ -47,10 +47,10 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
     <section id="check" className="bg-white px-5 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-          Schnell-Check
+          Orientierung
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          An welcher Stelle verliert Ihr Betrieb gerade am meisten?
+          Welcher Einstieg passt zu Ihrem Betrieb?
         </RevealHeading>
         <div className="mt-10 grid gap-3">
           {checkPaths.map((item) => (
@@ -70,7 +70,7 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
           ))}
         </div>
         <p className="mt-10 text-sm tracking-[0.16em] text-[#6B7280] uppercase">
-          Teamstärke
+          Wie groß ist Ihr Team?
         </p>
         <div className="mt-3 grid gap-3 md:grid-cols-3">
           {teamSizes.map((item) => (
@@ -93,7 +93,7 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
         {chosen && size ? (
           <div className="mt-10 rounded-[2rem] bg-[#14161C] p-8 text-[#F3EFE6]">
             <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">
-              Empfehlung
+              Erste Richtung
             </p>
             <h3 className="mt-3 text-3xl font-semibold">{chosen.resultTitle}</h3>
             <p className="mt-4 max-w-[40rem] text-[1.12rem] leading-relaxed text-white/80">
@@ -104,14 +104,14 @@ export function SchnellCheck({ teaser = false }: { teaser?: boolean }) {
               className="mt-8 h-13 rounded-full bg-[#198BE8] px-6 text-[1.05rem] text-white hover:bg-[#1576C4]"
             >
               <Link href="/termin">
-                Diesen Ablaufplan im 90-Minuten-Gespräch durchsprechen
+                Empfehlung im Erstgespräch besprechen
               </Link>
             </Button>
           </div>
         ) : (
           <p className="mt-8 text-[#5C5F66]">
-            Wählen Sie Reibungspunkt und Teamstärke. Danach liegt die Empfehlung
-            auf dem Tisch.
+            Wählen Sie, was leichter werden soll, und die Teamgröße. Sie erhalten
+            eine erste Richtung. Der genaue Umfang wird im Gespräch geklärt.
           </p>
         )}
       </div>
