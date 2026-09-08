@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 import { site } from "@/lib/site";
 
 const WINDOW_MS = 60 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
+
+const PRODUCTION_FROM = "BP Agentics <termin@bpagentics.com>";
+const DEV_FROM = "BP Agentics <onboarding@resend.dev>";
 
 function clientIp(request: NextRequest) {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -42,6 +46,20 @@ function asText(value: unknown) {
   return String(value ?? "").trim();
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function fromAddress() {
+  const override = process.env.RESEND_FROM?.trim();
+  if (override) return override;
+  return process.env.NODE_ENV === "production" ? PRODUCTION_FROM : DEV_FROM;
+}
+
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>;
   try {
@@ -68,13 +86,14 @@ export async function POST(request: NextRequest) {
   const date = asText(body.date);
   const time = asText(body.time);
   const note = asText(body.note);
+  const visitorEmail = asText(body.email);
 
   if (!name || !phone || !company || !date || !time) {
     return NextResponse.json({ error: "Pflichtfelder fehlen" }, { status: 400 });
   }
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY?.trim();
-  if (!accessKey) {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
     return NextResponse.json(
       { error: "E-Mail-Versand ist nicht konfiguriert." },
       { status: 503 },
@@ -82,58 +101,41 @@ export async function POST(request: NextRequest) {
   }
 
   const receivedAt = berlinStamp();
-  const message = [
+  const noteLine = note || "—";
+  const text = [
     "Neuer Terminwunsch von der Website.",
     "",
     `Name: ${name}`,
     `Telefon: ${phone}`,
     `Betrieb: ${company}`,
     `Wunschtermin: ${date} um ${time} Uhr`,
-    note ? `Notiz: ${note}` : "Notiz: —",
+    `Notiz: ${noteLine}`,
     `Eingegangen: ${receivedAt} (Europe/Berlin)`,
   ].join("\n");
 
-  const payload = {
-    access_key: accessKey,
-    from_name: "BP Agentics Website",
-    subject: `Neuer Terminwunsch: ${company}`,
-    email: site.email,
+  const html = `
+    <p>Neuer Terminwunsch von der Website.</p>
+    <table>
+      <tr><td>Name</td><td>${escapeHtml(name)}</td></tr>
+      <tr><td>Telefon</td><td>${escapeHtml(phone)}</td></tr>
+      <tr><td>Betrieb</td><td>${escapeHtml(company)}</td></tr>
+      <tr><td>Wunschtermin</td><td>${escapeHtml(date)} um ${escapeHtml(time)} Uhr</td></tr>
+      <tr><td>Notiz</td><td>${escapeHtml(noteLine)}</td></tr>
+      <tr><td>Eingegangen</td><td>${escapeHtml(receivedAt)} (Europe/Berlin)</td></tr>
+    </table>
+  `;
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: fromAddress(),
     to: site.email,
-    name,
-    phone,
-    company,
-    date,
-    time,
-    note,
-    message,
-    botcheck: "",
-  };
+    subject: `Neuer Terminwunsch: ${company}`,
+    text,
+    html,
+    ...(visitorEmail ? { replyTo: visitorEmail } : {}),
+  });
 
-  let upstream: Response;
-  try {
-    upstream = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-  } catch {
-    return NextResponse.json(
-      { error: "E-Mail-Dienst nicht erreichbar." },
-      { status: 502 },
-    );
-  }
-
-  let result: { success?: boolean; message?: string } = {};
-  try {
-    result = (await upstream.json()) as { success?: boolean; message?: string };
-  } catch {
-    result = {};
-  }
-
-  if (!upstream.ok || result.success === false) {
+  if (error) {
     return NextResponse.json(
       { error: "Die Anfrage konnte nicht zugestellt werden." },
       { status: 502 },
