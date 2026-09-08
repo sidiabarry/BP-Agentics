@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Preise für Website und Systeme",
   description:
-    "Endpreise: Website 950 bis ab 7.900 Euro, Setter 1.900 plus 99, Fundament 2.900, Module 900 bis 1.800. Wartung und Eigentum.",
+    "Endpreise: Website 690 bis ab 3.490 Euro, Setter 1.290 plus 99, Fundament ab 2.490. Wartung und Eigentum.",
   path: "/preise",
 });
 
@@ -24,26 +24,25 @@ export default function PreisePage() {
           "@type": "OfferCatalog",
           name: "Endpreise BP Agentics",
           itemListElement: [
-            { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "KI-Setter Einrichtung", price: "1900", priceCurrency: "EUR" },
+            { "@type": "Offer", name: "Website Start", price: "690", priceCurrency: "EUR" },
+            { "@type": "Offer", name: "Website Betrieb", price: "1790", priceCurrency: "EUR" },
+            { "@type": "Offer", name: "Website Signature", price: "3490", priceCurrency: "EUR" },
+            { "@type": "Offer", name: "KI-Setter Einrichtung", price: "1290", priceCurrency: "EUR" },
             { "@type": "Offer", name: "KI-Setter Wartung", price: "99", priceCurrency: "EUR", unitText: "MON" },
-            { "@type": "Offer", name: "Fundament", price: "2900", priceCurrency: "EUR" },
-            { "@type": "Offer", name: "Modul", price: "900", priceCurrency: "EUR" },
+            { "@type": "Offer", name: "Fundament", price: "2490", priceCurrency: "EUR" },
           ],
         },
       ]}
       related={[
         { href: "/leistungen/auftritt", label: "Was in Website Start, Betrieb und Signature steckt" },
-        { href: "/leistungen/annahme", label: "Was der KI-Setter für 1.900 Euro tut" },
+        { href: "/leistungen/annahme", label: "Was der KI-Setter für 1.290 Euro tut" },
         { href: "/leistungen/ablaeufe", label: "Fundament und Module im Detail" },
         { href: "/foerderung/mid-digitale-prozesse", label: "Wie MID den Eigenanteil senken kann" },
       ]}
     >
       <h2>Was kosten die Leistungen von BP Agentics?</h2>
       <p className="answer">
-        Website Start kostet neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature beginnt bei siebentausendneunhundert Euro; der KI-Setter kostet eintausendneunhundert Euro plus neunundneunzig Euro im Monat; das Fundament kostet zweitausendneunhundert Euro, ein Modul neunhundert bis eintausendachthundert Euro.
+        Website Start kostet sechshundertneunzig Euro, Betrieb eintausendsiebenhundertneunzig Euro, Signature beginnt bei dreitausendvierhundertneunzig Euro; der KI-Setter kostet eintausendzweihundertneunzig Euro plus neunundneunzig Euro im Monat; das Fundament beginnt bei zweitausendvierhundertneunzig Euro ohne monatliche Betreuung.
       </p>
       <p>
         Diese Seite ist die Preisliste zum Nachschlagen. Die Startseite verkauft im Scroll. Hier stehen dieselben Endpreise in Ruhe, mit Wartung, Eigentum und dem, was nicht enthalten ist. Sidia Jerome Barry nennt den verbindlichen Betrag nach dem neunzigminütigen Gespräch im Betrieb — nicht als verhandelbare Agenturspanne, sondern als Festpreis mit Ausschlussliste.
@@ -53,12 +52,11 @@ export default function PreisePage() {
         caption="Endpreise Einbau und Wartung"
         headers={["Leistung", "Einbau", "Wartung", "Seite"]}
         rows={[
-          ["Website Start", "950 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Betrieb", "3.900 Euro", "149 Euro / Monat, 12 Monate", "Website"],
-          ["Website Signature", "ab 7.900 Euro", "290 Euro / Monat", "Website"],
-          ["KI-Setter", "1.900 Euro", "99 Euro / Monat", "KI-Setter"],
-          ["Fundament", "2.900 Euro", "ab 190 Euro / Monat", "Abläufe"],
-          ["Modul", "900 bis 1.800 Euro", "in der Systemwartung", "Abläufe"],
+          ["Website Start", "690 Euro", "149 Euro / Monat, optional", "Website"],
+          ["Website Betrieb", "1.790 Euro", "149 Euro / Monat, optional", "Website"],
+          ["Website Signature", "ab 3.490 Euro", "290 Euro / Monat, optional", "Website"],
+          ["KI-Setter", "1.290 Euro", "99 Euro / Monat", "KI-Setter"],
+          ["Fundament", "ab 2.490 Euro", "ohne monatliche Betreuung", "Abläufe"],
         ]}
       />
 
@@ -67,7 +65,7 @@ export default function PreisePage() {
         In der Wartung enthalten sind Hosting in Deutschland, SSL, Sicherheitsupdates, tägliche Backups, bis zu drei Textänderungen im Monat und Störungsbehebung innerhalb von vierundzwanzig Stunden an Werktagen; die Seite gehört Ihnen ab Zahlung des Einbaus.
       </p>
       <p>
-        Nach zwölf Monaten ist monatlich kündbar. Bei Kündigung übergeben wir die vollständigen Dateien, kostenfrei. Sie zahlen für die Wartung, nicht für Ihr Eigentum. Signature liegt bei zweihundertneunzig Euro, weil Fläche und Medien größer sind. Interne Systeme beginnen bei einhundertneunzig Euro. Der Setter bleibt bei neunundneunzig. Alle Beträge auf dieser Seite sind Endpreise. Der Hinweis auf § 19 UStG steht im Impressum, nicht in der Preistabelle.
+        Nach zwölf Monaten ist monatlich kündbar. Bei Kündigung übergeben wir die vollständigen Dateien, kostenfrei. Sie zahlen für die Wartung, nicht für Ihr Eigentum. Die Wartung ist bei allen Website-Stufen optional. Signature liegt bei zweihundertneunzig Euro monatlich, Start und Betrieb bei einhundertneunundvierzig Euro. Der Setter bleibt bei neunundneunzig. Das Fundament kommt ohne monatliche Betreuung. Alle Beträge auf dieser Seite sind Endpreise. Der Hinweis auf § 19 UStG steht im Impressum, nicht in der Preistabelle.
       </p>
 
       <h2>Warum steht der Preis nicht schon vor dem Gespräch fest bis auf den Cent?</h2>
@@ -75,7 +73,7 @@ export default function PreisePage() {
         Weil Module und Signature einen Korridor haben: der Centbetrag sitzt nach dem Systemplan, die Größenordnung sitzt schon hier.
       </p>
       <p>
-        Ein Modul für Lieferscheine ist nicht dasselbe wie ein Modul für Lager und Kolonne. Signature für einen Einseiter-Ersatz ist nicht Signature für einen Betrieb, der über die Seite verkauft. Der Korridor bleibt eng. Offene Stundensätze gibt es nicht. Zusätzliches läuft nur über ein neues Angebot.
+        Signature für einen Einseiter-Ersatz ist nicht Signature für einen Betrieb, der über die Seite verkauft. Der Korridor bleibt eng. Offene Stundensätze gibt es nicht. Zusätzliches läuft nur über ein neues Angebot.
       </p>
       <p>
         MID Digitale Prozesse kann bei internen Vorhaben bis zu fünfzig Prozent übernehmen, höchstens fünfzehntausend Euro, nur wenn die Arbeit erst nach dem Bescheid beginnt. Lesen Sie{" "}

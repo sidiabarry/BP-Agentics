@@ -107,7 +107,7 @@ export default function MidPage() {
         Es gibt bis zu fünfzig Prozent der förderfähigen Kosten, höchstens fünfzehntausend Euro.
       </p>
       <p>
-        Ein Fundament für zweitausendneunhundert Euro plus zwei Module kann unter dieser Decke liegen. Ein Setter für eintausendneunhundert Euro ebenfalls. Die genaue förderfähige Summe hängt von Richtlinie, De-minimis und Ihrem Vorhaben ab — nicht von der Preistabelle allein. Alle unsere Listenpreise sind Endpreise. Den aktuellen Stand der Richtlinie lesen wir vor jedem Antrag neu.
+        Ein Fundament ab zweitausendvierhundertneunzig Euro kann unter dieser Decke liegen. Ein Setter für eintausendzweihundertneunzig Euro ebenfalls. Die genaue förderfähige Summe hängt von Richtlinie, De-minimis und Ihrem Vorhaben ab — nicht von der Preistabelle allein. Alle unsere Listenpreise sind Endpreise. Den aktuellen Stand der Richtlinie lesen wir vor jedem Antrag neu.
       </p>
 
       <DataTable
@@ -183,7 +183,7 @@ export default function MidPage() {
         Man rechnet den Zuschuss gegen die förderfähigen Positionen im Systemplan, nicht gegen die gesamte Website-Preisliste.
       </p>
       <p>
-        Ein Setter für eintausendneunhundert Euro und ein Fundament für zweitausendneunhundert Euro können zusammen unter die Decke von fünfzehntausend Euro Zuschuss fallen, wenn die Richtlinie sie anerkennt. Eine Signature-Website für siebentausendneunhundert Euro gehört in der Regel nicht in denselben Topf. Module zwischen neunhundert und eintausendachthundert Euro zählen, wenn sie einen internen Prozess ändern. Wartung nach dem Einbau ist Betrieb und damit üblicherweise draußen.
+        Ein Setter für eintausendzweihundertneunzig Euro und ein Fundament ab zweitausendvierhundertneunzig Euro können zusammen unter die Decke von fünfzehntausend Euro Zuschuss fallen, wenn die Richtlinie sie anerkennt. Eine Signature-Website ab dreitausendvierhundertneunzig Euro gehört in der Regel nicht in denselben Topf. Wartung nach dem Einbau ist Betrieb und damit üblicherweise draußen.
       </p>
       <p>
         Fünfzig Prozent von viertausendachthundert Euro sind zweitausendvierhundert Euro — als Rechenbeispiel, nicht als Zusage. Die Bewilligungsstelle entscheidet. Wir schreiben den Systemplan so, dass der Antrag dazu passt, oder wir raten vom Antrag ab. Beides ist eine Leistung. Schweigen, bis der Bescheid da ist, und trotzdem schon bauen, ist keine.

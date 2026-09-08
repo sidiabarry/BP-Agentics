@@ -37,7 +37,7 @@ export default function DachdeckerSignaturePage() {
         { href: "/leistungen/auftritt", label: "Website Start, Betrieb und Signature" },
         { href: "/gewerke#dachdecker", label: "Dachdecker in Hagen: Engpass und Ebene" },
         { href: "/referenzen/feinkost-kreta", label: "Die innere Ebene: Feinkost Kreta" },
-        { href: "/preise", label: "Signature ab 7.900 Euro, Wartung 290 Euro" },
+        { href: "/preise", label: "Signature ab 3.490 Euro, Wartung 290 Euro" },
       ]}
     >
       <DemoLoop
@@ -84,7 +84,7 @@ export default function DachdeckerSignaturePage() {
       <p>
         Der Abschnitt{" "}
         <Link href="/gewerke#dachdecker">Dachdecker bei BP Agentics</Link> beschreibt den Engpass ohne Demo. Die Leistungsseite{" "}
-        <Link href="/leistungen/auftritt">Website für Betriebe</Link> nennt die drei Stufen: Start neunhundertfünfzig Euro, Betrieb dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro, Wartung einhundertneunundvierzig bis zweihundertneunzig Euro. Der{" "}
+        <Link href="/leistungen/auftritt">Website für Betriebe</Link> nennt die drei Stufen: Start sechshundertneunzig Euro, Betrieb eintausendsiebenhundertneunzig Euro, Signature ab dreitausendvierhundertneunzig Euro, Wartung einhundertneunundvierzig bis zweihundertneunzig Euro, optional. Der{" "}
         <Link href="/leistungen/annahme">KI-Setter</Link> gehört dazu, wenn die Mailbox das Geschäft macht. MID Digitale Prozesse fördert in der Regel die inneren Prozesse, nicht diese öffentliche Fläche — erklärt unter{" "}
         <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link>.
       </p>
@@ -100,7 +100,7 @@ export default function DachdeckerSignaturePage() {
         Signature ist die falsche Stufe, wenn der Betrieb unsichtbar ist und zuerst überhaupt eine Seite braucht, die Anfragen holt — dann ist Start oder Betrieb richtig.
       </p>
       <p>
-        Ein Einseiter für neunhundertfünfzig Euro behebt jahrelanges Schweigen. Mehrseitig für dreitausendneunhundert Euro trägt Leistungsseiten, ohne Choreografie. Signature beginnt bei siebentausendneunhundert Euro, Wartung zweihundertneunzig Euro, weil die Fläche die Arbeitsprobe ist. Wer Signature kauft, um „modern zu wirken“, kauft den falschen Gegenstand. Wer Signature kauft, weil Preiskämpfer das Telefon zuhängen, kauft den richtigen.
+        Ein Einseiter für sechshundertneunzig Euro behebt jahrelanges Schweigen. Mehrseitig für eintausendsiebenhundertneunzig Euro trägt Leistungsseiten, ohne Choreografie. Signature beginnt bei dreitausendvierhundertneunzig Euro, Wartung zweihundertneunzig Euro optional, weil die Fläche die Arbeitsprobe ist. Wer Signature kauft, um „modern zu wirken“, kauft den falschen Gegenstand. Wer Signature kauft, weil Preiskämpfer das Telefon zuhängen, kauft den richtigen.
       </p>
       <p>
         Der Gewerke-Abschnitt bleibt der Engpass, lokal und ohne Demo. Diese Referenzseite trägt das Video und die Einordnung. Beide verlinken einander, ohne denselben Text zu kopieren. Das ist Absicht gegen thin content: eine Demo-Adresse, eine Engpass-Adresse, eine Leistungsadresse.

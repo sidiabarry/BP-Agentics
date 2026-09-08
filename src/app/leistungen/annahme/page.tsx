@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Annahme — KI-Setter für Betriebe",
   description:
-    "KI-Setter nimmt Anfragen an, qualifiziert und bucht den Kalender. 1.900 Euro plus 99 Euro im Monat. Aus Hagen für NRW.",
+    "KI-Setter nimmt Anfragen an, qualifiziert und bucht den Kalender. 1.290 Euro plus 99 Euro im Monat. Aus Hagen für NRW.",
   path: "/leistungen/annahme",
 });
 
@@ -20,7 +20,7 @@ export default function AnnahmePage() {
       <DocPage
         kicker="Annahme · KI-Setter"
         title="Der Setter nimmt an, während Sie auf der Baustelle sind"
-        lead="Eintausendneunhundert Euro Einrichtung und neunundneunzig Euro im Monat: Anfragen per Text, Qualifizierung, zwei Terminslots, Eintrag im Meisterkalender."
+        lead="Eintausendzweihundertneunzig Euro Einrichtung und neunundneunzig Euro im Monat: Anfragen per Text, Qualifizierung, zwei Terminslots, Eintrag im Meisterkalender."
         crumbs={[
           { name: "Leistungen", path: "/leistungen" },
           { name: "Annahme", path: "/leistungen/annahme" },
@@ -32,7 +32,7 @@ export default function AnnahmePage() {
               "Annahme, Vorqualifizierung und Kalenderbuchung für Betriebe in Nordrhein-Westfalen.",
             path: "/leistungen/annahme",
             offers: [
-              { name: "KI-Setter Einrichtung", price: "1900" },
+              { name: "KI-Setter Einrichtung", price: "1290" },
               { name: "KI-Setter Wartung", price: "99", unit: "MON" },
             ],
           }),
@@ -58,7 +58,7 @@ export default function AnnahmePage() {
 
         <h2>Was kostet der KI-Setter?</h2>
         <p className="answer">
-          Der KI-Setter kostet eintausendneunhundert Euro Einrichtung und neunundneunzig Euro Wartung im Monat.
+          Der KI-Setter kostet eintausendzweihundertneunzig Euro Einrichtung und neunundneunzig Euro Wartung im Monat.
         </p>
 
         <DataTable
@@ -68,7 +68,7 @@ export default function AnnahmePage() {
             [
               "Einrichtung",
               "WhatsApp-Annahme, Fragenkatalog, Kalender, Qualifizierung",
-              "1.900 Euro",
+              "1.290 Euro",
             ],
             [
               "Wartung",

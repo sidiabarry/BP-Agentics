@@ -9,7 +9,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Auftritt — Website für Betriebe in NRW",
   description:
-    "Website Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 bis 290 Euro. Gebaut in Hagen.",
+    "Website Start 690 Euro, Betrieb 1.790 Euro, Signature ab 3.490 Euro. Wartung 149 bis 290 Euro, optional. Gebaut in Hagen.",
   path: "/leistungen/auftritt",
 });
 
@@ -30,9 +30,9 @@ export default function AuftrittPage() {
             "Website Start, Betrieb und Signature für Handwerk und lokale Betriebe in Nordrhein-Westfalen.",
           path: "/leistungen/auftritt",
           offers: [
-            { name: "Website Start", price: "950" },
-            { name: "Website Betrieb", price: "3900" },
-            { name: "Website Signature", price: "7900" },
+            { name: "Website Start", price: "690" },
+            { name: "Website Betrieb", price: "1790" },
+            { name: "Website Signature", price: "3490" },
             { name: "Wartung Start und Betrieb", price: "149", unit: "MON" },
             { name: "Wartung Signature", price: "290", unit: "MON" },
           ],
@@ -60,7 +60,7 @@ export default function AuftrittPage() {
 
       <h2>Was kosten Website Start, Betrieb und Signature?</h2>
       <p className="answer">
-        Website Start kostet neunhundertfünfzig Euro, Website Betrieb dreitausendneunhundert Euro und Website Signature beginnt bei siebentausendneunhundert Euro; die Wartung liegt bei einhundertneunundvierzig bis zweihundertneunzig Euro im Monat.
+        Website Start kostet sechshundertneunzig Euro, Website Betrieb eintausendsiebenhundertneunzig Euro und Website Signature beginnt bei dreitausendvierhundertneunzig Euro; die Wartung liegt bei einhundertneunundvierzig bis zweihundertneunzig Euro im Monat und ist optional.
       </p>
 
       <DataTable
@@ -69,20 +69,20 @@ export default function AuftrittPage() {
         rows={[
           [
             "Start",
-            "950 Euro",
-            "149 Euro im Monat, zwölf Monate",
+            "690 Euro",
+            "149 Euro im Monat, optional",
             "Einseiter, der Anfragen holt",
           ],
           [
             "Betrieb",
-            "3.900 Euro",
-            "149 Euro im Monat, zwölf Monate",
+            "1.790 Euro",
+            "149 Euro im Monat, optional",
             "Mehrseitig, Leistungen und Referenzen",
           ],
           [
             "Signature",
-            "ab 7.900 Euro",
-            "290 Euro im Monat",
+            "ab 3.490 Euro",
+            "290 Euro im Monat, optional",
             "Scroll-Choreografie, Verkaufsauftritt",
           ],
         ]}
@@ -100,7 +100,7 @@ export default function AuftrittPage() {
         Sie zahlen für die Wartung, nicht für Ihr Eigentum. Die Seite gehört Ihnen ab Zahlung des Einbaus. Nach zwölf Monaten ist der Vertrag monatlich kündbar. Bei Kündigung übergeben wir die vollständigen Dateien, kostenfrei. Das ist derselbe Gedanke, den ein Betrieb seinen eigenen Wartungskunden schreibt: das Arbeitsmittel bleibt beim Kunden, die Pflege ist die Leistung.
       </p>
       <p>
-        Signature kostet in der Wartung zweihundertneunzig Euro, weil die Choreografie, die Medien und die technische Fläche größer sind als ein Einseiter. Start und Betrieb bleiben bei einhundertneunundvierzig Euro. Alle Preise sind Endpreise.
+        Die Wartung ist bei allen Stufen optional. Signature kostet in der Wartung zweihundertneunzig Euro, weil die Choreografie, die Medien und die technische Fläche größer sind als ein Einseiter. Start und Betrieb bleiben bei einhundertneunundvierzig Euro. Alle Preise sind Endpreise.
       </p>
 
       <h2>Für wen eignet sich welche Stufe?</h2>
@@ -108,7 +108,7 @@ export default function AuftrittPage() {
         Start eignet sich, wenn seit Jahren niemand die Seite relevant findet; Betrieb, wenn der Betrieb gefunden werden will, ohne Sonderanfertigung; Signature, wenn die Website selbst verkaufen soll.
       </p>
       <p>
-        Ein Malerbetrieb mit fünf Leuten und einer Seite von 2014 nimmt Start. Ein SHK-Betrieb, der Badsanierung und Notdienst trennen muss, nimmt Betrieb, weil er Leistungsseiten braucht. Ein Dachdecker, der Steildach und Premium-Sanierung verkauft und Preiskämpfer fernhalten will, nimmt Signature. Die Demo dieser Choreografie steht unter{" "}
+        Ein Malerbetrieb mit fünf Leuten und einer Seite von 2014 nimmt Start ab sechshundertneunzig Euro. Ein SHK-Betrieb, der Badsanierung und Notdienst trennen muss, nimmt Betrieb für eintausendsiebenhundertneunzig Euro, weil er Leistungsseiten braucht. Ein Dachdecker, der Steildach und Premium-Sanierung verkauft und Preiskämpfer fernhalten will, nimmt Signature. Die Demo dieser Choreografie steht unter{" "}
         <Link href="/referenzen/dachdecker-signature">Dachdecker Signature-Website</Link>.
       </p>
       <p>

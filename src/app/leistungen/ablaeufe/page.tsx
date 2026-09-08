@@ -11,7 +11,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Interne Abläufe digitalisieren",
   description:
-    "Fundament 2.900 Euro, Module 900 bis 1.800 Euro, Wartung ab 190 Euro. Papier, Lager und Rechnung in einem System.",
+    "Fundament ab 2.490 Euro, ohne monatliche Betreuung. Papier, Lager und Rechnung in einem System.",
   path: "/leistungen/ablaeufe",
 });
 
@@ -21,7 +21,7 @@ export default function AblaeufePage() {
     <DocPage
       kicker="Abläufe · interne Systeme"
       title="Wenn die Arbeit nicht am Schreibtisch hängen bleibt"
-      lead="Fundament für zweitausendneunhundert Euro, Module zwischen neunhundert und eintausendachthundert Euro. Kunden, Aufträge, Stundenzettel, Lieferscheine, Lager und Rechnung in einem Datenfundament."
+      lead="Fundament ab zweitausendvierhundertneunzig Euro, ohne monatliche Betreuung. Kunden, Aufträge, Stundenzettel, Lieferscheine, Lager und Rechnung in einem Datenfundament."
       crumbs={[
         { name: "Leistungen", path: "/leistungen" },
         { name: "Abläufe", path: "/leistungen/ablaeufe" },
@@ -33,9 +33,7 @@ export default function AblaeufePage() {
             "Datenfundament und Prozessmodule für Betriebe, die Papier und Excel ablösen.",
           path: "/leistungen/ablaeufe",
           offers: [
-            { name: "Fundament", price: "2900" },
-            { name: "Modul", price: "900" },
-            { name: "Wartung interne Systeme", price: "190", unit: "MON" },
+            { name: "Fundament", price: "2490" },
           ],
         }),
         faqPage(ablaeufeFaqs),
@@ -61,7 +59,7 @@ export default function AblaeufePage() {
 
       <h2>Was kosten Fundament und Module?</h2>
       <p className="answer">
-        Das Fundament kostet zweitausendneunhundert Euro, ein Modul kostet neunhundert bis eintausendachthundert Euro, die Wartung interner Systeme beginnt bei einhundertneunzig Euro im Monat.
+        Das Fundament beginnt bei zweitausendvierhundertneunzig Euro, ohne monatliche Betreuung.
       </p>
 
       <DataTable
@@ -71,17 +69,7 @@ export default function AblaeufePage() {
           [
             "Fundament",
             "Postfach, Kalender, Kundendaten, ein Ort statt fünf",
-            "2.900 Euro",
-          ],
-          [
-            "Modul",
-            "Ein Ablauf: Angebot, Nachfassen, Papier, Lager, Rechnung",
-            "900 bis 1.800 Euro",
-          ],
-          [
-            "Wartung",
-            "Hosting, Pflege, Sicherheit, Störungen an Werktagen",
-            "ab 190 Euro im Monat",
+            "ab 2.490 Euro",
           ],
         ]}
       />

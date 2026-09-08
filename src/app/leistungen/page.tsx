@@ -52,22 +52,22 @@ export default function LeistungenPage() {
           [
             "Auftritt",
             "Die richtigen Anfragen",
-            "950 bis ab 7.900 Euro",
-            "149 bis 290 Euro im Monat",
+            "690 bis ab 3.490 Euro",
+            "149 bis 290 Euro im Monat, optional",
             "Website",
           ],
           [
             "Annahme",
             "Keine liegengebliebenen Anrufe",
-            "1.900 Euro",
+            "1.290 Euro",
             "99 Euro im Monat",
             "KI-Setter",
           ],
           [
             "Abläufe",
             "Kein Büro nach Feierabend",
-            "2.900 Euro plus Module",
-            "ab 190 Euro im Monat",
+            "ab 2.490 Euro",
+            "ohne monatliche Betreuung",
             "Interne Abläufe",
           ],
         ]}
@@ -98,15 +98,15 @@ export default function LeistungenPage() {
       <ul>
         <li>
           <Link href="/leistungen/auftritt">Website für Betriebe in Nordrhein-Westfalen</Link>
-          — Start für neunhundertfünfzig Euro, Betrieb für dreitausendneunhundert Euro, Signature ab siebentausendneunhundert Euro.
+          — Start für sechshundertneunzig Euro, Betrieb für eintausendsiebenhundertneunzig Euro, Signature ab dreitausendvierhundertneunzig Euro.
         </li>
         <li>
           <Link href="/leistungen/annahme">KI-Setter für die telefonische Annahme</Link>
-          — eintausendneunhundert Euro Einrichtung und neunundneunzig Euro im Monat.
+          — eintausendzweihundertneunzig Euro Einrichtung und neunundneunzig Euro im Monat.
         </li>
         <li>
           <Link href="/leistungen/ablaeufe">Interne Abläufe statt Papier und Excel</Link>
-          — Fundament zweitausendneunhundert Euro, Module neunhundert bis eintausendachthundert Euro.
+          — Fundament ab zweitausendvierhundertneunzig Euro, ohne monatliche Betreuung.
         </li>
       </ul>
 

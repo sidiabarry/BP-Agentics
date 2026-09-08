@@ -74,8 +74,8 @@ export const levels = [
       "Website Signature mit Scroll-Choreografie",
       "Shop und App, iOS und Android",
     ],
-    price: "Einbau 950 € bis ab 7.900 €",
-    run: "Wartung 149 € bis 290 € / Monat",
+    price: "Einbau 690 € bis ab 3.490 €",
+    run: "Wartung 149 € bis 290 € / Monat, optional",
   },
   {
     id: "annahme",
@@ -88,7 +88,7 @@ export const levels = [
       "Vorqualifizierung statt Mailbox",
       "Kalenderbuchung und Lead-Reaktivierung",
     ],
-    price: "Einbau 1.900 €",
+    price: "Einbau 1.290 €",
     run: "Wartung 99 € / Monat",
   },
   {
@@ -102,8 +102,8 @@ export const levels = [
       "Papier aufs Handy, Unterschrift im Browser",
       "E-Rechnung, GoBD, Module nach Bedarf",
     ],
-    price: "Fundament 2.900 €, Module 900 € bis 1.800 €",
-    run: "Wartung ab 190 € / Monat",
+    price: "Fundament ab 2.490 €",
+    run: "ohne monatliche Betreuung",
   },
 ];
 
@@ -195,7 +195,7 @@ export const auftrittFaqs = [
   },
   {
     q: "Was kostet die Website — und was die Wartung?",
-    a: "Start 950 Euro, Betrieb 3.900 Euro, Signature ab 7.900 Euro. Wartung 149 Euro im Monat bei Start und Betrieb, 290 Euro bei Signature. Alle Beträge sind Endpreise.",
+    a: "Start 690 Euro, Betrieb 1.790 Euro, Signature ab 3.490 Euro. Wartung 149 Euro im Monat bei Start und Betrieb, 290 Euro bei Signature — jeweils optional. Alle Beträge sind Endpreise.",
   },
   {
     q: "Wem gehört die Seite nach dem Einbau?",
@@ -214,7 +214,7 @@ export const annahmeFaqs = [
   },
   {
     q: "Was kostet der Setter?",
-    a: "1.900 Euro Einrichtung und 99 Euro im Monat. Endpreise. WhatsApp bleibt Ihre Nummer, der Kalender bleibt Ihrer.",
+    a: "1.290 Euro Einrichtung und 99 Euro im Monat. Endpreise. WhatsApp bleibt Ihre Nummer, der Kalender bleibt Ihrer.",
   },
   {
     q: "Ist das ein Chatbot auf der Website?",
@@ -229,7 +229,7 @@ export const annahmeFaqs = [
 export const ablaeufeFaqs = [
   {
     q: "Was ist das Fundament — und was ein Modul?",
-    a: "Das Fundament bindet Postfach, Kalender und Kundendaten an einem Ort für 2.900 Euro. Ein Modul schließt danach genau einen Ablauf für 900 bis 1.800 Euro.",
+    a: "Das Fundament bindet Postfach, Kalender und Kundendaten an einem Ort ab 2.490 Euro, ohne monatliche Betreuung.",
   },
   {
     q: "Warum keine fertige Branchensoftware?",

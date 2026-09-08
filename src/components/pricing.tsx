@@ -8,18 +8,13 @@ import { DemoLoop, PhoneDemo } from "@/components/demo-player";
 const systems = [
   {
     name: "Fundament",
-    price: "2.900 €",
+    price: "ab 2.490 €",
     body: "Anbindung von Postfach, Kalender und Kundendaten. Ein Ort statt fünf.",
   },
   {
-    name: "Modul",
-    price: "900 € bis 1.800 €",
-    body: "Ein Ablauf pro Modul: Angebotsversand, Nachfassen, Terminerinnerung, Auftragsdokumentation.",
-  },
-  {
     name: "KI-Setter",
-    price: "1.900 €",
-    run: "99 € im Monat",
+    price: "1.290 €",
+    run: "99 € monatlich",
     body: "Beantwortet Anfragen per Text und bucht Termine in Ihren Kalender.",
   },
 ] as const;
@@ -27,34 +22,33 @@ const systems = [
 const websites = [
   {
     name: "Website Start",
-    price: "950 €",
-    run: "Wartungsvertrag 149 € / Monat, 12 Monate",
+    price: "690 €",
+    run: "149 € monatlich, optional",
     body: "Einseiter, der Anfragen holt. Für Betriebe, deren Auftritt seit Jahren schweigt.",
     featured: false,
   },
   {
     name: "Website Betrieb",
-    price: "3.900 €",
-    run: "plus 149 € / Monat, 12 Monate",
+    price: "1.790 €",
+    run: "149 € monatlich, optional",
     body: "Mehrseitig, mit Leistungsseiten und Referenzen. Für Betriebe, die gefunden werden wollen, ohne Sonderanfertigung.",
     featured: false,
   },
   {
     name: "Website Signature",
-    price: "ab 7.900 €",
-    run: "Wartungsvertrag 290 € / Monat",
+    price: "ab 3.490 €",
+    run: "290 € monatlich, optional",
     body: "Für Betriebe, die über die Website verkaufen. Der Auftritt ist die Arbeitsprobe.",
     featured: true,
   },
 ] as const;
 
 const teaserRows = [
-  { name: "Fundament", price: "2.900 €", run: "ab 190 € / Monat" },
-  { name: "Modul", price: "900 € bis 1.800 €", run: "in der Systemwartung" },
-  { name: "KI-Setter", price: "1.900 €", run: "99 € / Monat" },
-  { name: "Website Start", price: "950 €", run: "149 € / Monat" },
-  { name: "Website Betrieb", price: "3.900 €", run: "149 € / Monat" },
-  { name: "Website Signature", price: "ab 7.900 €", run: "290 € / Monat" },
+  { name: "Website Start", price: "690 €", run: "149 € monatlich, optional" },
+  { name: "Website Betrieb", price: "1.790 €", run: "149 € monatlich, optional" },
+  { name: "Website Signature", price: "ab 3.490 €", run: "290 € monatlich, optional" },
+  { name: "KI-Setter", price: "1.290 €", run: "99 € monatlich" },
+  { name: "Fundament", price: "ab 2.490 €", run: "ohne monatliche Betreuung" },
 ] as const;
 
 function WebsiteCards() {
@@ -114,10 +108,10 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Preise
           </RevealIn>
           <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-            950 € Einbau. 149 € im Monat.
+            690 € Einbau. 149 € im Monat.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-            Festpreis für Website, Setter und Abläufe — inklusive Wartung und Eigentum.
+            Festpreis für Website, Setter und Abläufe — inklusive Eigentum.
           </RevealIn>
           <ul className="mt-8 divide-y divide-black/10 overflow-hidden rounded-3xl bg-white">
             {teaserRows.map((item, index) => (
@@ -151,7 +145,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           Preise
         </RevealIn>
         <RevealHeading className="mt-3 text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-6xl">
-          950 € Einbau. 149 € im Monat.
+          690 € Einbau. 149 € im Monat.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
           Mittelständische Kaufleute rechnen in Wartung, nicht in
@@ -208,7 +202,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
                 Der Zuschnitt entsteht im 90-Minuten-Gespräch vor Ort. Der Preis
                 steht danach fest und ändert sich nicht.{" "}
                 <Link href="/leistungen/ablaeufe" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  Fundament und Module im Detail
+                  Fundament im Detail
                 </Link>
                 {" · "}
                 <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
