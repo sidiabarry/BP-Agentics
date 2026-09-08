@@ -6,7 +6,7 @@ BP Agentics entwickelt Websites und Software. Der Nachrichten-Assistent beantwor
 
 ## Kernangebote
 
-- Websites: Start 690 € + 149 € monatlich (2.478 € inkl. 12 Monate), Betrieb 1.790 € + 149 € monatlich (3.578 €), Signature ab 3.490 € + 290 € monatlich (ab 6.970 €). Seite: https://bp-agentics.de/leistungen/auftritt
+- Websites: Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Hosting und Pflege optional: 149 € monatlich (Start/Betrieb) bzw. 290 € (Signature); mit 12 Monaten Betreuung 2.478 € / 3.578 € / ab 6.970 €. Seite: https://bp-agentics.de/leistungen/auftritt
 - Nachrichten-Assistent (KI-Assistent für WhatsApp- und E-Mail-Anfragen): 1.290 € Einrichtung + 99 € monatlich (2.478 € inkl. 12 Monate). Betrifft Textnachrichten per WhatsApp und E-Mail, nicht Telefonannahme. Seite: https://bp-agentics.de/leistungen/annahme
 - Büroabläufe automatisieren: Datenbasis + 1 Prozessmodul ab 2.490 €, ohne monatliche Betreuung. Seite: https://bp-agentics.de/leistungen/ablaeufe
 

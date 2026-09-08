@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = pageMetadata({
   title: "Was Einrichtung und laufende Betreuung kosten",
   description:
-    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €, Nachrichten-Assistent 1.290 €, Datenbasis + 1 Modul ab 2.490 € ohne monatliche Betreuung. Endpreise ohne Umsatzsteuer.",
+    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Website-Betreuung optional. Nachrichten-Assistent 1.290 € + 99 € monatlich. Datenbasis + 1 Modul ab 2.490 € ohne monatliche Betreuung. Endpreise ohne Umsatzsteuer.",
   path: "/preise",
 });
 
@@ -26,7 +26,7 @@ export default function PreisePage() {
       <DocPage
         kicker="Preise"
         title="Was Einrichtung und laufende Betreuung kosten."
-        lead="Hier sehen Sie die Größenordnung für Websites und Automatisierung. Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen. Der verbindliche Umfang und Preis stehen vor der Beauftragung im Angebot."
+        lead="Hier sehen Sie die Größenordnung für Websites und Automatisierung. Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen. Die Website-Betreuung ist optional. Der verbindliche Umfang und Preis stehen vor der Beauftragung im Angebot."
         crumbs={[{ name: "Preise", path: "/preise" }]}
         extraJsonLd={[
           {
@@ -52,13 +52,13 @@ export default function PreisePage() {
         <DataTable
           caption="Einrichtung, monatliche Betreuung und 12-Monats-Rechnung"
           headers={["Leistung", "Einmalig", "Monatlich", "Einmalig + 12 Monate"]}
-          rows={offerTable.map((row) => [row.name, row.once, row.month, row.year])}
+          rows={offerTable.map((row) => [row.name, row.once, row.run, row.year])}
         />
         <p>{yearTableHint}</p>
         <p>
-          Aus dieser Vergleichsrechnung folgt keine Mindestvertragslaufzeit von 12
-          Monaten. Die tatsächliche Laufzeit steht im jeweiligen Angebot. Für
-          Websites gilt die unten beschriebene Betreuung.
+          Bei Websites gilt die 12-Monats-Mindestlaufzeit nur, wenn die optionale
+          Betreuung gewählt wird. Für den Nachrichten-Assistenten und interne
+          Systeme steht die Laufzeit im jeweiligen Angebot.
         </p>
 
         <h2>Datenbasis und ein Prozessmodul</h2>
@@ -68,13 +68,13 @@ export default function PreisePage() {
           Weitere Anschlüsse und zusätzliche Abläufe werden im Angebot ausgewiesen.
         </p>
 
-        <h2>Was nach der Einrichtung dazugehört</h2>
+        <h2>Was die optionale Website-Betreuung umfasst</h2>
         <p>
-          Die monatliche Betreuung deckt den laufenden Betrieb und die vereinbarten
-          Pflegeleistungen ab. Bei Websites nennt das Angebot Hosting,
-          Sicherheitsupdates, Backups und enthaltene Inhaltsänderungen. Für
-          Assistenten und interne Abläufe wird die Betreuung passend zum System
-          beschrieben.
+          Wird die Betreuung gewählt, übernimmt BP Agentics Hosting,
+          Sicherheitsupdates, Backups und die vereinbarten Inhaltsänderungen.
+          Ohne Betreuung liegen Hosting und der laufende Betrieb beim Betrieb.
+          Für den Nachrichten-Assistenten gilt die monatliche Betreuung nach dem
+          Angebot.
         </p>
         <ul>
           {websiteCare.map((item) => (
@@ -82,7 +82,7 @@ export default function PreisePage() {
           ))}
         </ul>
 
-        <h2>Ihre Website und die laufende Betreuung</h2>
+        <h2>Ihre Website: übergeben oder weiter betreuen</h2>
         <p>{websiteOwnership}</p>
         <p>
           Für interne Systeme und den Assistenten gilt die Laufzeit, die im

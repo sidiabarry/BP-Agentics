@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = pageMetadata({
   title: "Eine Website, die Ihre Leistungen verständlich macht",
   description:
-    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Monatliche Betreuung 149 € bzw. 290 €. Für Betriebe in NRW.",
+    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Monatliche Betreuung 149 € bzw. 290 €, optional. Für Betriebe in NRW.",
   path: "/leistungen/auftritt",
 });
 
@@ -59,9 +59,9 @@ export default function AuftrittPage() {
         und Kontakt.
       </p>
       <p>
-        <strong>{websitePackages[0].once} Erstellung + {websitePackages[0].month} Betreuung im Monat</strong>
+        <strong>{websitePackages[0].once} Erstellung. Betreuung optional: {websitePackages[0].month} im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: {websitePackages[0].year}
+        Erstellung mit 12 Monaten Betreuung: {websitePackages[0].year}
       </p>
 
       <h2>Website Betrieb</h2>
@@ -70,9 +70,9 @@ export default function AuftrittPage() {
         Passend, wenn unterschiedliche Angebote verständlich erklärt werden sollen.
       </p>
       <p>
-        <strong>{websitePackages[1].once} Erstellung + {websitePackages[1].month} Betreuung im Monat</strong>
+        <strong>{websitePackages[1].once} Erstellung. Betreuung optional: {websitePackages[1].month} im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: {websitePackages[1].year}
+        Erstellung mit 12 Monaten Betreuung: {websitePackages[1].year}
       </p>
 
       <h2>Website Signature</h2>
@@ -82,18 +82,18 @@ export default function AuftrittPage() {
         Gestaltung präsentiert werden sollen.
       </p>
       <p>
-        <strong>{websitePackages[2].once} Erstellung + {websitePackages[2].month} Betreuung im Monat</strong>
+        <strong>{websitePackages[2].once} Erstellung. Betreuung optional: {websitePackages[2].month} im Monat</strong>
         <br />
-        Erstellung und 12 Monate Betreuung: {websitePackages[2].year}
+        Erstellung mit 12 Monaten Betreuung: {websitePackages[2].year}
       </p>
 
       <DataTable
         caption="Website-Stufen"
-        headers={["Stufe", "Erstellung", "Betreuung", "Erstellung + 12 Monate"]}
+        headers={["Stufe", "Erstellung", "Betreuung", "Erstellung + 12 Monate Betreuung"]}
         rows={websitePackages.map((plan) => [
           plan.name.replace("Website ", ""),
           plan.once,
-          `${plan.month} / Monat`,
+          plan.run,
           plan.year,
         ])}
       />
@@ -115,8 +115,8 @@ export default function AuftrittPage() {
 
       <h2>Was nach der Einrichtung dazugehört</h2>
       <p>
-        Die monatliche Betreuung deckt den laufenden Betrieb und die vereinbarten
-        Pflegeleistungen ab.
+        Die monatliche Betreuung ist optional. Wird sie gewählt, deckt sie Hosting,
+        Updates und die vereinbarten Pflegeleistungen ab.
       </p>
       <ul>
         {websiteCare.map((item) => (

@@ -70,8 +70,8 @@ export const levels = [
       "Website Betrieb, mehrere Leistungen und Referenzen",
       "Website Signature, individuelle Gestaltung",
     ],
-    price: "ab 690 € einmalig + ab 149 € monatliche Betreuung",
-    run: "ab 149 € monatlich",
+    price: "ab 690 € einmalig, Betreuung ab 149 € monatlich optional",
+    run: "ab 149 € monatlich, optional",
     href: "/leistungen/auftritt",
     linkLabel: "Website-Pakete ansehen",
   },
@@ -193,7 +193,7 @@ export const whyPoints = [
 export const auftrittFaqs = [
   {
     q: "Was kostet eine Website insgesamt?",
-    a: "Website Start kostet 690 € einmalig plus 149 € monatlich. Website Betrieb kostet 1.790 € plus 149 € monatlich. Signature beginnt bei 3.490 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
+    a: "Website Start kostet 690 € einmalig. Website Betrieb kostet 1.790 €. Signature beginnt bei 3.490 €. Hosting und Pflege können Sie selbst übernehmen oder optional bei BP Agentics belassen: 149 € monatlich bei Start und Betrieb, 290 € bei Signature. Die 12-Monats-Rechnung auf der Preisseite gilt nur mit gewählter Betreuung."
   },
   {
     q: "Welche Stufe passt?",
@@ -205,7 +205,7 @@ export const auftrittFaqs = [
   },
   {
     q: "Wer kümmert sich um die Website nach dem Start?",
-    a: "BP Agentics übernimmt die vereinbarte Betreuung. Welche Pflegeleistungen enthalten sind und welche Laufzeit gilt, steht im Angebot und auf der Preisseite.",
+    a: "Nach der Erstellung können Sie die Website übernehmen und Hosting sowie Updates selbst tragen. Alternativ übernimmt BP Agentics Hosting und die vereinbarte Pflege gegen die optionale monatliche Betreuung. Welche Leistungen und welche Laufzeit dann gelten, steht im Angebot und auf der Preisseite."
   },
 ];
 
@@ -258,7 +258,7 @@ export const faqs = [
   },
   {
     q: "Was kostet eine Website insgesamt?",
-    a: "Website Start kostet 690 € einmalig plus 149 € monatlich. Website Betrieb kostet 1.790 € plus 149 € monatlich. Signature beginnt bei 3.490 € plus 290 € monatlich. Auf der Preisseite sehen Sie auch die Rechnung für Erstellung und 12 Monate Betreuung.",
+    a: "Website Start kostet 690 € einmalig. Website Betrieb kostet 1.790 €. Signature beginnt bei 3.490 €. Hosting und Pflege können Sie selbst übernehmen oder optional bei BP Agentics belassen: 149 € monatlich bei Start und Betrieb, 290 € bei Signature. Die 12-Monats-Rechnung auf der Preisseite gilt nur mit gewählter Betreuung."
   },
   {
     q: "Wie wird der genaue Preis festgelegt?",
@@ -290,7 +290,7 @@ export const moreFaqs = [
   },
   {
     q: "Wer kümmert sich um die Website nach dem Start?",
-    a: "BP Agentics übernimmt die vereinbarte Betreuung. Welche Pflegeleistungen enthalten sind und welche Laufzeit gilt, steht im Angebot und auf der Preisseite.",
+    a: "Nach der Erstellung können Sie die Website übernehmen und Hosting sowie Updates selbst tragen. Alternativ übernimmt BP Agentics Hosting und die vereinbarte Pflege gegen die optionale monatliche Betreuung. Welche Leistungen und welche Laufzeit dann gelten, steht im Angebot und auf der Preisseite."
   },
 ];
 

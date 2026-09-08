@@ -21,10 +21,10 @@ export const websiteCare = [
 ] as const;
 
 export const websiteOwnership =
-  "Nach Zahlung der Erstellung gehört Ihnen die Website. Der Betreuungsvertrag hat eine Mindestlaufzeit von 12 Monaten und ist danach monatlich kündbar. Bei Kündigung erhalten Sie die vereinbarten Website-Dateien kostenfrei. Nutzungsrechte an fremden Medien oder Diensten werden im Angebot gesondert benannt.";
+  "Nach Zahlung der Erstellung gehört Ihnen die Website. Sie können die vereinbarten Dateien übernehmen und Hosting, Sicherheitsupdates und den laufenden Betrieb selbst tragen. Alternativ übernimmt BP Agentics Hosting und die vereinbarte Pflege gegen die monatliche Betreuung. Diese Betreuung ist optional. Wird sie gewählt, gilt eine Mindestlaufzeit von 12 Monaten und ist danach monatlich kündbar. Nutzungsrechte an fremden Medien oder Diensten werden im Angebot gesondert benannt.";
 
 export const yearTableHint =
-  "Die 12-Monats-Rechnung umfasst die einmalige Leistung und 12 monatliche Zahlungen zu den genannten Preisen. Bei „ab“-Preisen ist dies der Mindestbetrag. Wo keine monatliche Betreuung ausgewiesen ist, entspricht die Vergleichsspalte dem einmaligen Endpreis. Zusätzliche Leistungen und vereinbarte Fremdkosten werden im Angebot ausgewiesen.";
+  "Die 12-Monats-Spalte bei Websites zeigt die einmalige Erstellung plus optionale Betreuung über 12 Monate. Bei „ab“-Preisen ist dies der Mindestbetrag. Beim Nachrichten-Assistenten gehören Einrichtung und monatliche Betreuung zusammen. Wo keine monatliche Betreuung ausgewiesen ist, entspricht die Vergleichsspalte dem einmaligen Endpreis. Zusätzliche Leistungen und vereinbarte Fremdkosten werden im Angebot ausgewiesen.";
 
 export const offerTable = [
   {
@@ -33,7 +33,7 @@ export const offerTable = [
     once: "690 €",
     month: "149 €",
     year: "2.478 €",
-    run: "149 € monatlich",
+    run: "149 € monatlich, optional",
     href: "/leistungen/auftritt",
   },
   {
@@ -42,7 +42,7 @@ export const offerTable = [
     once: "1.790 €",
     month: "149 €",
     year: "3.578 €",
-    run: "149 € monatlich",
+    run: "149 € monatlich, optional",
     href: "/leistungen/auftritt",
     badge: "Für mehrere Leistungen und Referenzen",
   },
@@ -52,7 +52,7 @@ export const offerTable = [
     once: "ab 3.490 €",
     month: "290 €",
     year: "ab 6.970 €",
-    run: "290 € monatlich",
+    run: "290 € monatlich, optional",
     href: "/leistungen/auftritt",
   },
   {
@@ -81,6 +81,7 @@ export const websitePackages = [
     once: "690 €",
     month: "149 €",
     year: "2.478 €",
+    run: "149 € monatlich, optional",
     body: "Ein kompakter Einseiter für einen klaren Überblick über Leistungen, Betrieb und Kontakt.",
     featured: false,
   },
@@ -89,6 +90,7 @@ export const websitePackages = [
     once: "1.790 €",
     month: "149 €",
     year: "3.578 €",
+    run: "149 € monatlich, optional",
     body: "Eine mehrseitige Website mit Raum für einzelne Leistungen und Referenzen.",
     featured: true,
     badge: "Für mehrere Leistungen und Referenzen",
@@ -98,6 +100,7 @@ export const websitePackages = [
     once: "ab 3.490 €",
     month: "290 €",
     year: "ab 6.970 €",
+    run: "290 € monatlich, optional",
     body: "Ein individuell gestalteter Auftritt mit besonderer Bild- und Bewegungsführung.",
     featured: false,
   },

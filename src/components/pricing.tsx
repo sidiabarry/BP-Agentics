@@ -51,7 +51,7 @@ function WebsiteCards() {
             {plan.once}
           </RevealIn>
           <p className={plan.featured ? "mt-1 text-white/80" : "mt-1 text-[#5C5F66]"}>
-            {plan.month} monatlich · {plan.year} inkl. 12 Monate
+            {plan.run} · {plan.year} mit 12 Monaten Betreuung
           </p>
           <p className={plan.featured ? "mt-4 flex-1 text-white/90" : "mt-4 flex-1 text-[#3A3D45]"}>
             {plan.body}
@@ -86,8 +86,9 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
             Was Einrichtung und laufende Betreuung kosten.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[42rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-            Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen. Der
-            verbindliche Umfang und Preis stehen vor der Beauftragung im Angebot.
+            Einmalige Leistungen und monatliche Kosten sind getrennt ausgewiesen.
+            Die Website-Betreuung ist optional. Der verbindliche Umfang und Preis
+            stehen vor der Beauftragung im Angebot.
           </RevealIn>
           <ul className="mt-8 divide-y divide-black/10 overflow-hidden rounded-3xl bg-white">
             {teaserRows.map((item, index) => (
@@ -204,9 +205,9 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
               Was nach der Einrichtung dazugehört
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-              Die monatliche Betreuung deckt den laufenden Betrieb und die vereinbarten
-              Pflegeleistungen ab. Bei Websites nennt das Angebot Hosting,
-              Sicherheitsupdates, Backups und enthaltene Inhaltsänderungen.
+              Bei Websites ist die monatliche Betreuung optional. Wird sie gewählt,
+              deckt sie Hosting, Sicherheitsupdates, Backups und die vereinbarten
+              Inhaltsänderungen ab.
             </p>
             <ul className="mt-4 list-disc space-y-1 pl-5 text-[1.05rem] text-[#3A3D45]">
               {websiteCare.map((item) => (
@@ -216,7 +217,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
           </div>
           <div className="border-t border-black/10 pt-4">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              Ihre Website und die laufende Betreuung
+              Ihre Website: übergeben oder weiter betreuen
             </p>
             <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
               {websiteOwnership} Für interne Systeme und den Assistenten gilt die
