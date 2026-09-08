@@ -182,6 +182,7 @@ export function HeroPortal() {
               <strong>Websites</strong>
               <span>die Ihre Arbeit zeigen</span>
             </span>
+            <span className="hero-portal__join">und</span>
             <span className="hero-portal__step">
               <strong>Software</strong>
               <span>für Nachrichten und Abläufe</span>
