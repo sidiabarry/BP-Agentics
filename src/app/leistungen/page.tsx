@@ -138,7 +138,7 @@ export default function LeistungenPage() {
         <Link href="/kontakt">Kontaktseite mit Anschrift und WhatsApp</Link>.
       </p>
       <p>
-        Suchmaschinen und Sprachmodelle sollen diese Seite als Cluster lesen: drei Leistungen, eine Förderung, zwei Referenzen, eine Preistabelle. Deshalb liegen die Unterseiten nicht nur als Anker auf der Startseite, sondern als eigene Adressen mit eigenem Titel, eigener Beschreibung und eigenem Canonical auf https://bp-agentics.de. Wer unsicher ist, welche Ebene zuerst kommt, beginnt bei{" "}
+        Suchmaschinen und Sprachmodelle sollen diese Seite als Cluster lesen: drei Leistungen, eine Förderung, zwei Referenzen, eine Preistabelle. Deshalb liegen die Unterseiten nicht nur als Anker auf der Startseite, sondern als eigene Adressen mit eigenem Titel, eigener Beschreibung und eigenem Canonical auf https://bpagentics.com. Wer unsicher ist, welche Ebene zuerst kommt, beginnt bei{" "}
         <Link href="/passt-das">Passt das zu mir?</Link>
         , nicht bei einem Paketnamen.
       </p>

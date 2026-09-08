@@ -108,7 +108,7 @@ export default function FeinkostPage() {
         Deshalb steht neben dieser Demo kein erfundener Satz wie „Umsatz plus vierzig Prozent“. Es steht, was gebaut wurde und wie man es ansieht. Wer Zahlen für den eigenen Betrieb will, bekommt sie im Systemplan nach dem Gespräch — aus seinen Engpässen, nicht aus einer Referenzfolie.
       </p>
       <p>
-        Sidia Jerome Barry, Hagen. Dieselbe Anschrift wie im Impressum. Dieselbe Nummer wie auf WhatsApp. Kein zweiter Markenname, kein englischer Landing-Clone unter einer anderen Domain in den Canonicals.         Canonical ist https://bp-agentics.de/referenzen/feinkost-kreta.
+        Sidia Jerome Barry, Hagen. Dieselbe Anschrift wie im Impressum. Dieselbe Nummer wie auf WhatsApp. Kein zweiter Markenname, kein englischer Landing-Clone unter einer anderen Domain in den Canonicals.         Canonical ist https://bpagentics.com/referenzen/feinkost-kreta.
         Wer denselben inneren Schnitt für den eigenen Betrieb will, beschreibt im
         Gespräch den Engpass, nicht die Theke. Wir sagen, welches Modul zuerst
         schließt und ob MID den Eigenanteil tragen kann, bevor irgendjemand einrichtet.
