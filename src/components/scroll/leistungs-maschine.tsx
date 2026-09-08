@@ -37,7 +37,7 @@ const SHELL = [
   { w: 44, h: 27.5, r: 14 }, // Browserfenster
   { w: 18.5, h: 37, r: 38 }, // Handy
   { w: 43, h: 29, r: 16 }, // Dashboard
-  { w: 40, h: 32, r: 16 }, // Zusammenspiel: Handy rechts, Bits links
+  { w: 40, h: 32, r: 16 }, // Zusammenspiel: drei Bausteine, ein Weg
 ];
 
 const stations = [

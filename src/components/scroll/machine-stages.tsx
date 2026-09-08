@@ -116,13 +116,13 @@ export function StageAnnahme() {
 
 const nodes = ["Eingang", "Klärung", "Zuordnung", "Vorgang"];
 const rows = [
+  ["Besichtigung Do 9:00", "Hagen-Haspe", "im Kalender"],
   ["Lieferschein 4412", "Baustelle Hagen", "unterschrieben"],
   ["Stunden KW 37", "Kolonne 2", "freigegeben"],
   ["Rechnung R-2291", "Müller GmbH", "raus"],
-  ["Materialliste 88", "Dach Witten", "im Vorgang"],
 ];
 const bits = [
-  ["Heute", "3 Belege durch"],
+  ["Heute", "Besichtigung Do 9:00"],
   ["Offen", "1 Klärung"],
   ["Weitergabe", "an das Büro"],
 ];
@@ -180,7 +180,7 @@ export function StageSystem() {
     <div className="stage stage--system">
       <div className="combo">
         <div className="combo__steps">
-          <article className="combo__step combo__step--site" style={i(0)}>
+          <article className="combo__step" style={i(0)}>
             <span className="combo__num">1</span>
             <div className="combo__copy">
               <p className="combo__kicker">Websites</p>
@@ -189,35 +189,22 @@ export function StageSystem() {
             </div>
           </article>
 
-          <article className="combo__step combo__step--msg" style={i(1)}>
+          <article className="combo__step" style={i(1)}>
             <span className="combo__num">2</span>
             <div className="combo__copy">
               <p className="combo__kicker">Nachrichten-Assistent</p>
-              <p className="combo__lede">Antwortet per WhatsApp und E-Mail.</p>
+              <h4>Angaben und Terminwunsch werden erfasst.</h4>
+              <p className="combo__lede">Per WhatsApp und E-Mail.</p>
             </div>
           </article>
 
-          <div className="combo__thread" style={i(1)}>
-            <p className="combo__bubble combo__bubble--in">
-              Sanierung Garagendach in Hagen — Besichtigung möglich?
-            </p>
-            <p className="combo__bubble combo__bubble--out">Im Beispiel: Donnerstag 9:00 Uhr.</p>
-            <div className="combo__slot">
-              <span>Do</span>
-              <span>
-                9:00 Besichtigung
-                <small>Beispiel · keine echte Buchung</small>
-              </span>
-            </div>
-          </div>
-
-          <article className="combo__step combo__step--office" style={i(2)}>
+          <article className="combo__step" style={i(2)}>
             <span className="combo__num">3</span>
             <div className="combo__copy">
               <p className="combo__kicker">Büroabläufe</p>
               <h4>Die Angaben stehen zusammen.</h4>
               <ul>
-                <li>Besichtigung</li>
+                <li>Do 9:00 Besichtigung</li>
                 <li>Angaben zum Vorhaben</li>
                 <li>Übergabe an das Team</li>
               </ul>
@@ -226,7 +213,7 @@ export function StageSystem() {
         </div>
 
         <p className="combo__caption" style={i(3)}>
-          Eine Anfrage, ein Weg, ein Vorgang — vom ersten Kontakt zur Übergabe.
+          Drei Bausteine, ein Weg — einzeln beauftragbar, zusammen ein System.
         </p>
       </div>
     </div>

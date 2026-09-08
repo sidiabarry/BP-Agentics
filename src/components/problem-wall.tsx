@@ -10,7 +10,7 @@ export function ProblemWall() {
           Alltag im Betrieb
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[22ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] text-[#14161C] md:text-5xl">
-          Ein guter Ablauf verbindet Baustelle, Kundschaft und Büro.
+          Anfragen, Unterlagen und Büro liegen oft auseinander.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#14161C]/80">
           Wenn Anfragen über Telefon, WhatsApp und E-Mail eintreffen, braucht das
