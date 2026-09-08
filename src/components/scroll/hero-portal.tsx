@@ -186,7 +186,7 @@ export function HeroPortal() {
           </h1>
           <div className="hero-portal__actions">
             <Link href="/termin" className="hero-portal__cta">
-              Kostenloses Erstgespräch anfragen
+              Erstgespräch anfragen
             </Link>
             <p className="hero-portal__note">
               90 Minuten vor Ort. Den Termin stimmen wir persönlich ab.

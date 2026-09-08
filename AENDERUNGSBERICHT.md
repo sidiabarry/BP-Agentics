@@ -30,6 +30,11 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 - Hero-Einstieg: kurzer Kicker, Überschrift, CTA und eine Zeile darunter. Langer Lead und Extra-Zeilen entfallen.
 - Überschrift und Ankunftstext im Hero kleiner gesetzt.
 
+## Nachzug: Hero-Text oben links
+
+- Einstiegstext sitzt oben links in einem kompakten Feld, schmal genug, dass er die Frau im Bild nicht berührt.
+- Button im Hero kurz: **Erstgespräch anfragen**.
+
 ## Geprüft
 
 - `npx tsc --noEmit`: ohne Fehler.
