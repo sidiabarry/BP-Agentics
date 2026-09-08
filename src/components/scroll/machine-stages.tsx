@@ -66,7 +66,7 @@ export function StageAuftritt() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Station 2 — der WhatsApp-Assistent schreibt zurück                  */
+/* Station 2 — der Nachrichten-Assistent schreibt zurück               */
 /* ------------------------------------------------------------------ */
 
 const chat = [
@@ -189,7 +189,7 @@ export function StageSystem() {
           <span className="combo__phone-avatar" />
           <span>
             Müller Bedachungen
-            <small>2 · WhatsApp-Assistent</small>
+            <small>2 · Nachrichten-Assistent</small>
           </span>
         </div>
         <div className="combo__phone-body">

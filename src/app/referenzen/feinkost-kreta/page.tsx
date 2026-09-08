@@ -37,7 +37,7 @@ export default function FeinkostPage() {
       related={[
         { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
         { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
-        { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
       ]}
     >
       <div className="mt-10 rounded-[2rem] bg-[#14161C] px-6 py-10 md:px-10">

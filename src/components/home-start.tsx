@@ -15,9 +15,9 @@ export function HomeStart() {
             Was soll für Ihren Betrieb leichter werden?
           </h2>
           <p className="mt-3 max-w-[40rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
-            Ein klarerer Webauftritt, strukturierte WhatsApp-Anfragen oder weniger
-            doppelte Büroarbeit: Im Erstgespräch prüfen wir, welcher Einstieg zu
-            Ihrem Vorhaben passt.
+            Ein klarerer Webauftritt, strukturierte Anfragen per WhatsApp und E-Mail
+            oder weniger doppelte Büroarbeit: Im Erstgespräch prüfen wir, welcher
+            Einstieg zu Ihrem Vorhaben passt.
           </p>
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Button

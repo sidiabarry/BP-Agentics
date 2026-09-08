@@ -22,24 +22,24 @@ export const tradePages: Record<
   dachdecker: {
     metaTitle: "Dachdecker: Website und Besichtigungen",
     metaDescription:
-      "Anwendungsbeispiel: Sanierungsprojekte zeigen und Besichtigungen vorbereiten. Website und WhatsApp-Assistent für Dachdeckerbetriebe in NRW.",
+      "Anwendungsbeispiel: Sanierungsprojekte zeigen und Besichtigungen vorbereiten. Website und Nachrichten-Assistent für Dachdeckerbetriebe in NRW.",
     question: "Was kann für einen Dachdeckerbetrieb leichter werden?",
     answer:
-      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der WhatsApp-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten.",
+      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der Nachrichten-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten.",
     local:
       "Vor-Ort-Gespräche in Nordrhein-Westfalen. Welche Unterstützung sinnvoll ist, hängt vom bisherigen Anfrageweg und der Auslastung ab.",
     body: [
-      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der WhatsApp-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten.",
+      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der Nachrichten-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten.",
       "Welche Unterstützung sinnvoll ist, hängt vom bisherigen Anfrageweg und der Auslastung ab. Das ist ein Anwendungsbeispiel, keine pauschale Paketzuordnung.",
     ],
     leistung: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-    second: { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+    second: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
     hub: {
       heading: "Sanierungsprojekte zeigen. Besichtigungen vorbereiten.",
       stuck: "Anwendungsbeispiel, kein Referenzprojekt.",
-      level: "Website und WhatsApp-Assistent — je nach Anfrageweg.",
+      level: "Website und Nachrichten-Assistent — je nach Anfrageweg.",
       paragraphs: [
-        "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der WhatsApp-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten. Welche Unterstützung sinnvoll ist, hängt vom bisherigen Anfrageweg und der Auslastung ab.",
+        "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der Nachrichten-Assistent Angaben zum Vorhaben erfassen und Besichtigungstermine anbieten. Welche Unterstützung sinnvoll ist, hängt vom bisherigen Anfrageweg und der Auslastung ab.",
       ],
     },
   },
@@ -56,7 +56,7 @@ export const tradePages: Record<
       "Angaben zu Badsanierung, Wartung oder Service sollen beim passenden Ansprechpartner ankommen. Ein abgestimmter digitaler Ablauf kann diese Informationen strukturiert erfassen.",
       "Fachliche Dringlichkeit und Einsatzentscheidungen bleiben bei den zuständigen Personen im Betrieb.",
     ],
-    leistung: { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+    leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
     second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
     hub: {
       heading: "Geplante Projekte und Servicemeldungen geordnet erfassen.",
@@ -103,7 +103,7 @@ export const tradePages: Record<
       "Eine strukturierte Meldung kann Anlagennummer, beobachteten Fehler und vorhandene Fotos erfassen. So erhält der zuständige Techniker die verfügbaren Angaben zusammen.",
       "Diagnose, Dringlichkeit und notwendige Dokumentation werden vom Fachbetrieb beurteilt.",
     ],
-    leistung: { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+    leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
     second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
     hub: {
       heading: "Anlageninformationen vor dem Einsatz zusammenführen.",
@@ -196,7 +196,7 @@ export const tradePages: Record<
       "Ein angebundener Ablauf kann Informationen zum Bearbeitungsstand und zu benötigten Freigaben bereitstellen.",
       "Dafür wird festgelegt, welche Daten zuverlässig verfügbar sind und wer verbindliche Auskünfte erteilt. Solche Funktionen werden passend zum Werkstattsystem vereinbart.",
     ],
-    leistung: { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+    leistung: { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
     second: { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
     hub: {
       heading: "Status und Freigaben zum Werkstattauftrag bündeln.",

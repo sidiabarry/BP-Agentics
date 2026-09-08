@@ -7,13 +7,21 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 - Sichtbare Copy, Metadaten, JSON-LD-Beschreibungen und `public/llms.txt` an die Vorlagen vom 8. September 2026 angepasst.
 - Preise unverändert; 12-Monats-Rechnungen zentral in `src/lib/offers.ts`.
 - CTA überall: **Kostenloses Erstgespräch anfragen** / kurz **Erstgespräch anfragen** / Formular **Terminwunsch senden**.
-- WhatsApp-Kanalgrenze: keine Telefonannahme, keine Havarie-Triage, Demo D01 (planbare Garagendach-Sanierung, 6 Nachrichten).
+- Kanalgrenze Nachrichten-Assistent: WhatsApp und E-Mail, keine Telefonannahme, keine Havarie-Triage, Demo D01 (planbare Garagendach-Sanierung, 6 Nachrichten).
 - MID: pauschale 50-%-Rechnung auf Softwarepakete entfernt. Sachliche Fassung in `src/lib/foerderung.ts`.
 - Leistungs-Maschine bleibt; nur Texte und Demo umformuliert.
 - HeroPortal-Choreografie bleibt; H01-Texte plus CTA ohne neue Pflichtanimation.
 - Navigation: **Arbeiten und Demos** statt „Was schon läuft“ / „Referenzen“ als Kundenwort.
 - Impressum: OS-Plattform als aufgehoben (20. Juli 2025) gekennzeichnet; Verbraucherschlichtung bleibt verneint.
 - Formular: K02-Texte, Feldfehler mit Fokus, Eingaben bleiben bei Fehler erhalten, interne Versandmeldung nicht als Besuchersatz.
+
+## Nachzug: Nachrichten-Assistent (WhatsApp und E-Mail)
+
+- Produktname von „WhatsApp-Assistent“ auf **Nachrichten-Assistent** geändert.
+- Angebot gilt für **Textnachrichten per WhatsApp und E-Mail**. Telefonannahme bleibt ausgeschlossen.
+- Preise unverändert: 1.900 € Einrichtung + 99 € monatlich (3.088 € inkl. 12 Monate).
+- Kontakt-Button „Per WhatsApp schreiben“ bleibt der Kontaktweg zu BP Agentics, nicht die Produktbeschreibung.
+- Beispieldialog (LivingChat / Maschine) bleibt visuell ein WhatsApp-Dialog und ist als Beispiel gekennzeichnet.
 
 ## Geprüft
 

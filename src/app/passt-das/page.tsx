@@ -31,7 +31,7 @@ export default function PasstDasPage() {
         <h2>Frage 1: Was soll leichter werden?</h2>
         <ul>
           <li>Leistungen und Referenzen online zeigen</li>
-          <li>WhatsApp-Anfragen und Termine vorbereiten</li>
+          <li>WhatsApp- und E-Mail-Anfragen und Termine vorbereiten</li>
           <li>Wiederkehrende Büroabläufe verbinden</li>
         </ul>
 

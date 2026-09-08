@@ -47,7 +47,7 @@ export default function AuftrittPage() {
         faqPage(auftrittFaqs),
       ]}
       related={[
-        { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
         { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
         { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
         { href: "/preise", label: "Preise" },
@@ -109,7 +109,7 @@ export default function AuftrittPage() {
       <h2>Was zur Website gehört</h2>
       <p>
         Im Angebot steht, welche Seiten, Texte, Bilder und Funktionen umgesetzt
-        werden. WhatsApp-Automatisierung und interne Abläufe werden bei Bedarf
+        werden. Der Nachrichten-Assistent und interne Abläufe werden bei Bedarf
         separat vereinbart.
       </p>
 

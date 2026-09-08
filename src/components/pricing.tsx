@@ -145,7 +145,7 @@ export function Pricing({ teaser = false }: { teaser?: boolean }) {
                 </Link>
                 {" · "}
                 <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  WhatsApp-Assistent ansehen
+                  Nachrichten-Assistent ansehen
                 </Link>
                 .
               </p>

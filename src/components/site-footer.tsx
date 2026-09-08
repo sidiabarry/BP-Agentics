@@ -20,7 +20,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/leistungen/annahme" className="hover:text-white">
-                WhatsApp-Assistent
+                Nachrichten-Assistent
               </Link>
             </li>
             <li>

@@ -56,12 +56,12 @@ const stations = [
   },
   {
     id: "annahme",
-    name: "WhatsApp-Assistent",
-    promise: "Der KI-Assistent für WhatsApp-Anfragen.",
+    name: "Nachrichten-Assistent",
+    promise: "Der KI-Assistent für WhatsApp- und E-Mail-Anfragen.",
     text:
-      "Er beantwortet Nachrichten per WhatsApp, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an.",
+      "Er beantwortet Nachrichten per WhatsApp und E-Mail, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an.",
     facts: [
-      "Antwortet per WhatsApp",
+      "Antwortet per WhatsApp und E-Mail",
       "Erfasst die vereinbarten Angaben zum Vorhaben",
       "Bietet Termine nach den festgelegten Kalenderregeln an",
     ],

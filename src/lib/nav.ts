@@ -6,8 +6,8 @@ export const leistungItems = [
   },
   {
     href: "/leistungen/annahme",
-    title: "WhatsApp-Assistent",
-    sub: "Anfragen per Text beantworten und Termine abstimmen.",
+    title: "Nachrichten-Assistent",
+    sub: "Anfragen per WhatsApp und E-Mail beantworten und Termine abstimmen.",
   },
   {
     href: "/leistungen/ablaeufe",

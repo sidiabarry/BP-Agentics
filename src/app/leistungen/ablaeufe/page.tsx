@@ -43,7 +43,7 @@ export default function AblaeufePage() {
         ]}
         related={[
           { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-          { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+          { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
           { href: "/referenzen/feinkost-kreta", label: "Bestell-App ansehen" },
           { href: "/preise", label: "Preise" },
         ]}

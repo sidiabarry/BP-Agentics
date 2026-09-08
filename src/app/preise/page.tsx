@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = pageMetadata({
   title: "Was Einrichtung und laufende Betreuung kosten",
   description:
-    "Website Start 950 €, Betrieb 3.900 €, Signature ab 7.900 €, WhatsApp-Assistent 1.900 €, Datenbasis + 1 Modul ab 3.800 €. Endpreise ohne Umsatzsteuer.",
+    "Website Start 950 €, Betrieb 3.900 €, Signature ab 7.900 €, Nachrichten-Assistent 1.900 €, Datenbasis + 1 Modul ab 3.800 €. Endpreise ohne Umsatzsteuer.",
   path: "/preise",
 });
 
@@ -36,8 +36,8 @@ export default function PreisePage() {
               { "@type": "Offer", name: "Website Start", price: "950", priceCurrency: "EUR" },
               { "@type": "Offer", name: "Website Betrieb", price: "3900", priceCurrency: "EUR" },
               { "@type": "Offer", name: "Website Signature", price: "7900", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "WhatsApp-Assistent Einrichtung", price: "1900", priceCurrency: "EUR" },
-              { "@type": "Offer", name: "WhatsApp-Assistent Betreuung", price: "99", priceCurrency: "EUR", unitText: "MON" },
+              { "@type": "Offer", name: "Nachrichten-Assistent Einrichtung", price: "1900", priceCurrency: "EUR" },
+              { "@type": "Offer", name: "Nachrichten-Assistent Betreuung", price: "99", priceCurrency: "EUR", unitText: "MON" },
               { "@type": "Offer", name: "Gemeinsame Datenbasis", price: "2900", priceCurrency: "EUR" },
               { "@type": "Offer", name: "Prozessmodul", price: "900", priceCurrency: "EUR" },
             ],
@@ -45,7 +45,7 @@ export default function PreisePage() {
         ]}
         related={[
           { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-          { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+          { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
           { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
           { href: "/foerderung/mid-digitale-prozesse", label: "MID-Digitale Prozesse" },
         ]}
@@ -103,7 +103,7 @@ export default function PreisePage() {
             <Link href="/leistungen/auftritt">Websites</Link>
           </li>
           <li>
-            <Link href="/leistungen/annahme">WhatsApp-Assistent</Link>
+            <Link href="/leistungen/annahme">Nachrichten-Assistent</Link>
           </li>
           <li>
             <Link href="/leistungen/ablaeufe">Büroabläufe automatisieren</Link>

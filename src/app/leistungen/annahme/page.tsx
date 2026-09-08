@@ -9,9 +9,9 @@ import { pageMetadata } from "@/lib/seo";
 import { PRICE_NOTE, cta, whatsappOffer } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "WhatsApp-Anfragen vorbereiten. Termine leichter abstimmen.",
+  title: "WhatsApp- und E-Mail-Anfragen vorbereiten. Termine leichter abstimmen.",
   description:
-    "KI-Assistent für WhatsApp-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten. 1.900 € Einrichtung + 99 € monatlich.",
+    "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten. 1.900 € Einrichtung + 99 € monatlich.",
   path: "/leistungen/annahme",
 });
 
@@ -19,22 +19,22 @@ export default function AnnahmePage() {
   return (
     <>
       <DocPage
-        kicker="WhatsApp-Assistent"
-        title="WhatsApp-Anfragen vorbereiten. Termine leichter abstimmen."
-        lead="Der KI-Assistent beantwortet Nachrichten per WhatsApp, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an. Ihr Team kann das persönliche Gespräch mit den Informationen zur Anfrage beginnen."
+        kicker="Nachrichten-Assistent"
+        title="WhatsApp- und E-Mail-Anfragen vorbereiten. Termine leichter abstimmen."
+        lead="Der KI-Assistent beantwortet Nachrichten per WhatsApp und E-Mail, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an. Ihr Team kann das persönliche Gespräch mit den Informationen zur Anfrage beginnen."
         crumbs={[
           { name: "Leistungen", path: "/leistungen" },
-          { name: "WhatsApp-Assistent", path: "/leistungen/annahme" },
+          { name: "Nachrichten-Assistent", path: "/leistungen/annahme" },
         ]}
         extraJsonLd={[
           serviceOffer({
-            name: "WhatsApp-Assistent",
+            name: "Nachrichten-Assistent",
             description:
-              "KI-Assistent für WhatsApp-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten.",
+              "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten.",
             path: "/leistungen/annahme",
             offers: [
-              { name: "WhatsApp-Assistent Einrichtung", price: "1900" },
-              { name: "WhatsApp-Assistent Betreuung", price: "99", unit: "MON" },
+              { name: "Nachrichten-Assistent Einrichtung", price: "1900" },
+              { name: "Nachrichten-Assistent Betreuung", price: "99", unit: "MON" },
             ],
           }),
           faqPage(annahmeFaqs),
@@ -56,7 +56,7 @@ export default function AnnahmePage() {
 
         <h2>So läuft eine Anfrage ab</h2>
         <ol>
-          <li>Eine Person schreibt dem Betrieb auf WhatsApp.</li>
+          <li>Eine Person schreibt dem Betrieb auf WhatsApp oder per E-Mail.</li>
           <li>Der Assistent erfasst die vereinbarten Angaben zum Vorhaben.</li>
           <li>Er bietet verfügbare Termine nach den festgelegten Kalenderregeln an.</li>
           <li>Nach der Auswahl wird der Termin im angebundenen Kalender eingetragen.</li>
@@ -66,31 +66,31 @@ export default function AnnahmePage() {
         <p>
           Welche Anfragen der Assistent bearbeitet, welche Angaben erforderlich sind,
           welche Termine angeboten werden und wann ein Mensch übernimmt.
-          Voraussetzungen Ihrer WhatsApp-Nummer und Ihres Kalenders werden vorab
-          geprüft.
+          Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres
+          Kalenders werden vorab geprüft.
         </p>
 
         <h2>Leistungsgrenze</h2>
         <p>
-          Dieses Angebot betrifft Nachrichten per WhatsApp. Telefonanrufe und
-          fachliche Notfallentscheidungen sind nicht Teil des hier beschriebenen
-          Assistenten.
+          Dieses Angebot betrifft Textnachrichten per WhatsApp und E-Mail.
+          Telefonanrufe und fachliche Notfallentscheidungen sind nicht Teil des hier
+          beschriebenen Assistenten.
         </p>
 
         <h2>Passt das zum Betrieb?</h2>
         <p>
-          Sinnvoll ist der Assistent, wenn Kunden WhatsApp nutzen und wiederkehrende
-          Fragen oder Terminabstimmungen anfallen. Im Gespräch prüfen wir das anhand
-          Ihres Anfragewegs.
+          Sinnvoll ist der Assistent, wenn Kunden per WhatsApp oder E-Mail anfragen
+          und wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch
+          prüfen wir das anhand Ihres Anfragewegs.
         </p>
 
         <DataTable
-          caption="WhatsApp-Assistent"
+          caption="Nachrichten-Assistent"
           headers={["Position", "Inhalt", "Preis"]}
           rows={[
             [
               "Einrichtung",
-              "Fragenkatalog, WhatsApp-Anbindung, Kalenderregeln",
+              "Fragenkatalog, WhatsApp- und E-Mail-Anbindung, Kalenderregeln",
               whatsappOffer.once,
             ],
             [
@@ -104,7 +104,7 @@ export default function AnnahmePage() {
         <PageFaqs items={annahmeFaqs} />
         <p className="mt-8">
           <Link href={cta.href} className="text-[#198BE8] underline-offset-4 hover:underline">
-            WhatsApp-Assistent besprechen
+            Nachrichten-Assistent besprechen
           </Link>
           {" — "}
           90 Minuten vor Ort.

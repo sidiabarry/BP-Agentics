@@ -54,7 +54,7 @@ export const offerTable = [
   },
   {
     id: "whatsapp",
-    name: "WhatsApp-Assistent",
+    name: "Nachrichten-Assistent",
     once: "1.900 €",
     month: "99 €",
     year: "3.088 €",
@@ -99,7 +99,7 @@ export const websitePackages = [
 ] as const;
 
 export const whatsappOffer = {
-  name: "WhatsApp-Assistent",
+  name: "Nachrichten-Assistent",
   once: "1.900 €",
   month: "99 €",
   year: "3.088 €",

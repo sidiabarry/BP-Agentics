@@ -10,9 +10,9 @@ export const trades = [
     quote:
       "Anfragen sollen den Betrieb erreichen, während das Team auf der Baustelle arbeitet.",
     firm: "Anwendungsbeispiel · Dachdeckerbetrieb",
-    config: "Website und WhatsApp-Assistent",
+    config: "Website und Nachrichten-Assistent",
     outcome:
-      "Leistungen und Referenzen werden online erklärt. Projektangaben und Besichtigungswünsche können per WhatsApp erfasst werden.",
+      "Leistungen und Referenzen werden online erklärt. Projektangaben und Besichtigungswünsche können per WhatsApp oder E-Mail erfasst werden.",
   },
   {
     id: "logistik" as const,
@@ -28,7 +28,7 @@ export const trades = [
     label: "Technischer Außendienst",
     quote: "Servicemeldungen und geplante Projekte sollen geordnet erfasst werden.",
     firm: "Anwendungsbeispiel · Kälte- und Klimabetrieb",
-    config: "WhatsApp-Assistent und abgestimmter Ablauf",
+    config: "Nachrichten-Assistent und abgestimmter Ablauf",
     outcome:
       "Eine strukturierte Meldung kann Anlagennummer, beobachteten Fehler und vorhandene Fotos erfassen. Diagnose und Dringlichkeit bleiben beim Fachbetrieb.",
   },
@@ -49,7 +49,7 @@ export const problems = [
     line: "Interessenten sollen erkennen, welche Arbeiten der Betrieb übernimmt und wie sie anfragen können.",
   },
   {
-    title: "WhatsApp-Anfragen vorbereiten",
+    title: "WhatsApp- und E-Mail-Anfragen vorbereiten",
     line: "Projektangaben und Terminwünsche sollen vorliegen, bevor das persönliche Gespräch beginnt.",
   },
   {
@@ -78,18 +78,18 @@ export const levels = [
   {
     id: "annahme",
     roman: "02",
-    name: "WhatsApp-Assistent",
-    sub: "Anfragen per Text beantworten, Angaben erfassen und Termine anbieten.",
-    lead: "Der KI-Assistent für WhatsApp-Anfragen erfasst vereinbarte Angaben und bietet Termine aus dem angebundenen Kalender an.",
+    name: "Nachrichten-Assistent",
+    sub: "Anfragen per WhatsApp und E-Mail beantworten, Angaben erfassen und Termine anbieten.",
+    lead: "Der KI-Assistent für WhatsApp- und E-Mail-Anfragen erfasst vereinbarte Angaben und bietet Termine aus dem angebundenen Kalender an.",
     items: [
-      "Antworten per WhatsApp",
+      "Antworten per WhatsApp und E-Mail",
       "Vereinbarte Angaben zum Vorhaben erfassen",
       "Termine nach festgelegten Kalenderregeln anbieten",
     ],
     price: `${whatsappOffer.once} Einrichtung + ${whatsappOffer.month} monatlich`,
     run: `${whatsappOffer.month} monatlich`,
     href: "/leistungen/annahme",
-    linkLabel: "WhatsApp-Assistent ansehen",
+    linkLabel: "Nachrichten-Assistent ansehen",
   },
   {
     id: "ablaeufe",
@@ -186,7 +186,7 @@ export const whyPoints = [
   },
   {
     title: "Einzeln beauftragbar",
-    body: "Websites, WhatsApp-Assistent und interne Abläufe sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein den passenden Anfang macht.",
+    body: "Websites, Nachrichten-Assistent und interne Abläufe sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein den passenden Anfang macht.",
   },
 ];
 
@@ -201,7 +201,7 @@ export const auftrittFaqs = [
   },
   {
     q: "Was zur Website gehört",
-    a: "Im Angebot steht, welche Seiten, Texte, Bilder und Funktionen umgesetzt werden. WhatsApp-Automatisierung und interne Abläufe werden bei Bedarf separat vereinbart.",
+    a: "Im Angebot steht, welche Seiten, Texte, Bilder und Funktionen umgesetzt werden. Der Nachrichten-Assistent und interne Abläufe werden bei Bedarf separat vereinbart.",
   },
   {
     q: "Wer kümmert sich um die Website nach dem Start?",
@@ -211,20 +211,20 @@ export const auftrittFaqs = [
 
 export const annahmeFaqs = [
   {
-    q: "Nimmt der WhatsApp-Assistent auch Telefonanrufe an?",
-    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
+    q: "Nimmt der Nachrichten-Assistent auch Telefonanrufe an?",
+    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp und E-Mail. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
   },
   {
     q: "Wie läuft eine Anfrage ab?",
-    a: "Eine Person schreibt dem Betrieb auf WhatsApp. Der Assistent erfasst die vereinbarten Angaben zum Vorhaben, bietet verfügbare Termine nach den festgelegten Kalenderregeln an und trägt die Auswahl im angebundenen Kalender ein.",
+    a: "Eine Person schreibt dem Betrieb auf WhatsApp oder per E-Mail. Der Assistent erfasst die vereinbarten Angaben zum Vorhaben, bietet verfügbare Termine nach den festgelegten Kalenderregeln an und trägt die Auswahl im angebundenen Kalender ein.",
   },
   {
-    q: "Was kostet der WhatsApp-Assistent?",
-    a: "1.900 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 3.088 €. Voraussetzungen Ihrer WhatsApp-Nummer und Ihres Kalenders werden vorab geprüft.",
+    q: "Was kostet der Nachrichten-Assistent?",
+    a: "1.900 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 3.088 €. Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres Kalenders werden vorab geprüft.",
   },
   {
     q: "Passt das zum Betrieb?",
-    a: "Sinnvoll ist der Assistent, wenn Kunden WhatsApp nutzen und wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
+    a: "Sinnvoll ist der Assistent, wenn Kunden per WhatsApp oder E-Mail anfragen und wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
   },
 ];
 
@@ -250,11 +250,11 @@ export const ablaeufeFaqs = [
 export const faqs = [
   {
     q: "Was passt zu meinem Betrieb?",
-    a: "Eine Website hilft dabei, Leistungen und Referenzen verständlich zu präsentieren. Ein WhatsApp-Assistent unterstützt Anfragen per Nachricht. Automatisierung verbindet wiederkehrende Arbeitsschritte. Im Gespräch klären wir, welches Vorhaben zuerst sinnvoll ist.",
+    a: "Eine Website hilft dabei, Leistungen und Referenzen verständlich zu präsentieren. Ein Nachrichten-Assistent unterstützt Anfragen per WhatsApp und E-Mail. Automatisierung verbindet wiederkehrende Arbeitsschritte. Im Gespräch klären wir, welches Vorhaben zuerst sinnvoll ist.",
   },
   {
     q: "Muss ich alle Leistungen zusammen beauftragen?",
-    a: "Nein. Websites, WhatsApp-Assistent und interne Abläufe sind einzeln beauftragbar. Erweiterungen werden bei Bedarf separat vereinbart.",
+    a: "Nein. Websites, Nachrichten-Assistent und interne Abläufe sind einzeln beauftragbar. Erweiterungen werden bei Bedarf separat vereinbart.",
   },
   {
     q: "Was kostet eine Website insgesamt?",
@@ -281,8 +281,8 @@ export const moreFaqs = [
     a: "Wir klären, wer den Ablauf täglich nutzt, welche Informationen benötigt werden und wie die Einführung erfolgen soll. Fachliche Entscheidungen und Freigaben bleiben bei den zuständigen Personen im Betrieb.",
   },
   {
-    q: "Nimmt der WhatsApp-Assistent auch Telefonanrufe an?",
-    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
+    q: "Nimmt der Nachrichten-Assistent auch Telefonanrufe an?",
+    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp und E-Mail. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
   },
   {
     q: "Was passiert im Erstgespräch?",
@@ -304,10 +304,10 @@ export const checkPaths = [
   },
   {
     id: "b",
-    label: "WhatsApp-Anfragen und Termine vorbereiten",
-    resultTitle: "Ein WhatsApp-Assistent könnte wiederkehrende Fragen und Terminabstimmungen unterstützen.",
+    label: "WhatsApp- und E-Mail-Anfragen und Termine vorbereiten",
+    resultTitle: "Ein Nachrichten-Assistent könnte wiederkehrende Fragen und Terminabstimmungen unterstützen.",
     result:
-      "Voraussetzung ist, dass dieser Kanal zu Ihren Kundenanfragen passt. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
+      "Voraussetzung ist, dass WhatsApp oder E-Mail zu Ihren Kundenanfragen passt. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
   },
   {
     id: "c",
@@ -360,12 +360,12 @@ export const industries: Record<
   dachdecker: {
     title: "Dachdecker",
     h1: "Sanierungsprojekte zeigen. Besichtigungen vorbereiten.",
-    h2: "Website und WhatsApp-Assistent als Anwendungsbeispiel.",
+    h2: "Website und Nachrichten-Assistent als Anwendungsbeispiel.",
     bottleneck:
       "Planbare Anfragen sollen Angaben zum Vorhaben und einen Besichtigungstermin enthalten.",
-    config: "Website und WhatsApp-Assistent",
+    config: "Website und Nachrichten-Assistent",
     argument:
-      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der WhatsApp-Assistent Angaben erfassen und Besichtigungstermine anbieten.",
+      "Eine Website kann Dacharbeiten und Referenzen verständlich präsentieren. Bei planbaren Anfragen kann der Nachrichten-Assistent Angaben erfassen und Besichtigungstermine anbieten.",
   },
   "shk-haustechnik": {
     title: "SHK und Haustechnik",
@@ -478,7 +478,7 @@ export const chatBeats = [
 ];
 
 export const chatSteps = [
-  { n: "01", title: "Nachricht", hint: "Eine Person schreibt dem Betrieb auf WhatsApp." },
+  { n: "01", title: "Nachricht", hint: "Eine Person schreibt dem Betrieb auf WhatsApp oder per E-Mail." },
   { n: "02", title: "Angaben", hint: "Der Assistent erfasst die vereinbarten Angaben." },
   { n: "03", title: "Termine", hint: "Er bietet Zeitfenster nach den Kalenderregeln an." },
   { n: "04", title: "Kalender", hint: "Die Auswahl wird im angebundenen Kalender eingetragen." },

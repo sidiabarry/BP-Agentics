@@ -187,10 +187,10 @@ export function HeroPortal() {
             Abläufe, die Ihr Team entlasten.
           </h1>
           <p className="hero-portal__lead">
-            BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem
-            WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe. Gemeinsam
-            klären wir, welcher Baustein zu Ihrem Betrieb passt. Sie erhalten ein
-            Angebot mit klarem Umfang und Festpreis.
+            BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp
+            und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende
+            Büroabläufe. Gemeinsam klären wir, welcher Baustein zu Ihrem Betrieb
+            passt. Sie erhalten ein Angebot mit klarem Umfang und Festpreis.
           </p>
           <div className="hero-portal__actions">
             <Link href="/termin" className="hero-portal__cta">
@@ -214,7 +214,7 @@ export function HeroPortal() {
 
         {/* Ankunft: der Moment, in dem wir im Display sind. */}
         <div className="hero-portal__arrival">
-          <p>Websites, WhatsApp, Büroabläufe.</p>
+          <p>Websites, Nachrichten, Büroabläufe.</p>
           <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
         </div>
       </div>

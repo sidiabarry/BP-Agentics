@@ -145,7 +145,7 @@ export function LivingChat() {
       ref={wrapRef}
       className="relative bg-white"
       style={{ height: reduced ? "auto" : `${PIN_VH}vh` }}
-      aria-label="WhatsApp-Assistent, Beispieldialog"
+      aria-label="Nachrichten-Assistent, Beispieldialog per WhatsApp"
     >
       <div
         className={
@@ -160,12 +160,12 @@ export function LivingChat() {
               Beispieldialog · KI-Assistent · keine echte Buchung
             </RevealIn>
             <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-              WhatsApp-Anfragen vorbereiten. Termine leichter abstimmen.
+              WhatsApp- und E-Mail-Anfragen vorbereiten. Termine leichter abstimmen.
             </RevealHeading>
             <RevealIn as="p" variant="lead" className="mt-5 hidden max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45] lg:block">
-              Der Assistent erfasst vereinbarte Angaben und bietet Termine aus dem
-              angebundenen Kalender an. Die Zeiten in diesem Dialog sind Teil der
-              Demo, kein echter Kalenderbestand.
+              Der Assistent erfasst vereinbarte Angaben per WhatsApp oder E-Mail und
+              bietet Termine aus dem angebundenen Kalender an. Die Zeiten in diesem
+              Dialog sind Teil der Demo, kein echter Kalenderbestand.
             </RevealIn>
             <ol className="mt-8 hidden space-y-3 lg:block">
               {chatSteps.map((step, index) => {

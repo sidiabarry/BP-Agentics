@@ -8,7 +8,7 @@ import { PRICE_NOTE, cta, offerTable } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Websites und Automatisierung für Ihren Betrieb",
   description:
-    "Eine Website macht Leistungen verständlich. Ein WhatsApp-Assistent bereitet Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
+    "Eine Website macht Leistungen verständlich. Ein Nachrichten-Assistent bereitet WhatsApp- und E-Mail-Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
   path: "/leistungen",
 });
 
@@ -17,11 +17,11 @@ export default function LeistungenPage() {
     <DocPage
       kicker="Leistungen"
       title="Websites und Automatisierung für Ihren Betrieb"
-      lead="Eine Website macht Leistungen und Referenzen verständlich. Ein WhatsApp-Assistent bereitet Kundenanfragen vor. Automatisierte Abläufe verbinden Informationen zwischen Büro und Außendienst. Wählen Sie den Bereich, der zu Ihrem aktuellen Vorhaben passt."
+      lead="Eine Website macht Leistungen und Referenzen verständlich. Ein Nachrichten-Assistent bereitet Kundenanfragen per WhatsApp und E-Mail vor. Automatisierte Abläufe verbinden Informationen zwischen Büro und Außendienst. Wählen Sie den Bereich, der zu Ihrem aktuellen Vorhaben passt."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/annahme", label: "WhatsApp-Assistent ansehen" },
+        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
         { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
         { href: "/preise", label: "Preise" },
         { href: "/referenzen", label: "Arbeiten und Demos" },

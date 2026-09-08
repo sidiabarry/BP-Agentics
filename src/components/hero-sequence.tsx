@@ -298,8 +298,9 @@ export function HeroSequence() {
               <span className="hero-line-2 block">Abläufe, die Ihr Team entlasten.</span>
             </h1>
             <p className="hero-lead mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-pretty text-[#3A3D45] md:text-[1.25rem]">
-              BP Agentics entwickelt Websites, beantwortet Kundenanfragen mit einem
-              WhatsApp-Assistenten und verbindet wiederkehrende Büroabläufe.
+              BP Agentics entwickelt Websites, beantwortet Kundenanfragen per WhatsApp
+              und E-Mail mit einem KI-Assistenten und verbindet wiederkehrende
+              Büroabläufe.
             </p>
             <div className="hero-tags mt-7 flex flex-wrap gap-2">
               {HERO_TAGS.map((tag, index) => (
