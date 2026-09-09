@@ -14,15 +14,14 @@ export function DemoPair({
     <div className="grid items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
       <article className={cn("flex h-full flex-col rounded-3xl p-6 md:p-7", card)}>
         <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-          Projekt · Feinkost Kreta
+          Kundenprojekt · Feinkost Kreta
         </p>
         <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">
-          Feinkost Kreta — Bestell-App
+          Feinkost Kreta — Bestellweg digitalisiert
         </h3>
         <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-          Ein Kundenprojekt von BP Agentics: Vorher hieß neu bestellen: Formular
-          jedes Mal neu. Heute: angemeldet bestellen, der Laden sieht die
-          Bestellung.
+          Ein Kundenprojekt von BP Agentics: Stammkunden bestellen angemeldet in
+          wenigen Schritten. Der Betrieb sieht die Bestellung und reagiert direkt.
         </p>
         <div className="mt-6 flex flex-1 items-center justify-center rounded-3xl bg-[#14161C] px-6 py-8">
           <PhoneDemo
@@ -39,7 +38,7 @@ export function DemoPair({
             href="/referenzen/feinkost-kreta"
             className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
           >
-            Projekt Feinkost Kreta
+            Kundenprojekt Feinkost Kreta
           </Link>
         </p>
       </article>
@@ -86,11 +85,11 @@ export function HomeReferenzen() {
           Arbeiten und Demos
         </RevealIn>
         <RevealHeading className="mt-3 max-w-[18ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          So können die Lösungen aussehen.
+          Was bisher entstanden ist.
         </RevealHeading>
         <RevealIn as="p" variant="lead" className="mt-5 max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45]">
-          Ein Projekt zeigt einen Bestellweg. Eine Produktdemo zeigt, wie sich die
-          Leistungen eines Dachdeckerbetriebs präsentieren lassen.
+          Ein Kundenprojekt mit echtem Bestellweg. Eine Produktdemo für einen
+          Handwerksbetrieb. Beschreibungen erklären, was zu sehen ist.
         </RevealIn>
 
         <div className="mt-12">

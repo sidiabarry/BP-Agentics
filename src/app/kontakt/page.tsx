@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BookingForm } from "@/components/booking-form";
 import { StagePage } from "@/components/stage-page";
@@ -20,6 +21,17 @@ export default function KontaktPage() {
       kicker="Kontakt"
       title="Anrufen, schreiben oder einen Terminwunsch senden."
       lead="Sie möchten eine Website oder einen digitalen Ablauf besprechen? Sidia Jerome Barry, Hagen. Vor-Ort-Gespräche in Nordrhein-Westfalen."
+      visual={
+        <div className="overflow-hidden rounded-[1.6rem]">
+          <Image
+            src="/media/buero-morgen.jpg"
+            alt="Arbeitsplatz bei BP Agentics in Hagen"
+            width={640}
+            height={427}
+            className="h-auto w-full"
+          />
+        </div>
+      }
       crumbs={[{ name: "Kontakt", path: "/kontakt" }]}
       related={[
         { href: "/termin", label: "Kostenloses Erstgespräch anfragen" },

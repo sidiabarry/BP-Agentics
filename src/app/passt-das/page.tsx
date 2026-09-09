@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Process } from "@/components/process";
 import { SchnellCheck } from "@/components/schnell-check";
 import { StagePage } from "@/components/stage-page";
@@ -6,7 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Welcher Einstieg passt zu Ihrem Vorhaben?",
+  title: "Was soll leichter werden? Orientierung für den Einstieg",
   description:
     "Eine Angabe hilft bei der Orientierung: Was soll leichter werden? Der genaue Umfang wird im Gespräch geklärt.",
   path: "/passt-das",
@@ -18,6 +19,17 @@ export default function PasstDasPage() {
       kicker="Orientierung"
       title="Was soll leichter werden?"
       lead="Sie erhalten eine erste Richtung. Der genaue Umfang wird im Gespräch geklärt — keine Wirtschaftlichkeitsprüfung, kein festgelegtes Paket."
+      visual={
+        <div className="flex justify-center">
+          <Image
+            src="/media/phone-hand.png"
+            alt="Hand hält ein Smartphone mit geöffnetem BP Agentics System"
+            width={320}
+            height={480}
+            className="h-auto w-full max-w-[16rem]"
+          />
+        </div>
+      }
       crumbs={[{ name: "Welcher Einstieg passt?", path: "/passt-das" }]}
       related={[
         { href: "/leistungen", label: "Leistungen" },

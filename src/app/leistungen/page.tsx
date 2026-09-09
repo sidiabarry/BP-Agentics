@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { DemoPair } from "@/components/home-referenzen";
 import { Process } from "@/components/process";
@@ -21,6 +22,17 @@ export default function LeistungenPage() {
       title="Drei Bausteine. Ein Weg durch den Betrieb."
       lead="Website, Nachrichten-Assistent und Büroablauf sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein zuerst den Alltag erleichtert."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
+      visual={
+        <div className="overflow-hidden rounded-[1.6rem] shadow-xl ring-1 ring-black/10">
+          <Image
+            src="/demos/dach-poster.jpg"
+            alt="Standbild einer Signature-Website für einen Dachdeckerbetrieb — Produktdemo"
+            width={640}
+            height={360}
+            className="h-auto w-full"
+          />
+        </div>
+      }
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },

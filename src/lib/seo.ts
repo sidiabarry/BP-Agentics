@@ -13,12 +13,13 @@ export function pageMetadata({
   ogImage?: string;
 }): Metadata {
   const url = path === "/" ? site.url : `${site.url}${path}`;
+  const ogTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
   return {
     title,
     description,
     alternates: { canonical: url },
     openGraph: {
-      title: `${title} | ${site.name}`,
+      title: ogTitle,
       description,
       url,
       locale: site.locale,
@@ -28,7 +29,7 @@ export function pageMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${site.name}`,
+      title: ogTitle,
       description,
     },
     robots: {

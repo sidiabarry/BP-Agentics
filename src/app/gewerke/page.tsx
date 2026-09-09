@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { GewerkScroll } from "@/components/gewerk-scroll";
 import { JsonLd } from "@/components/json-ld";
@@ -58,6 +59,18 @@ export default function GewerkePage() {
           Anwendungsbeispiele, keine Referenzen. Welcher Weg passt, hängt von Ihrem
           Vorhaben und den vorhandenen Programmen ab.
         </p>
+        <div className="mt-8 overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/10">
+          <Image
+            src="/demos/dach-poster.jpg"
+            alt="Standbild einer Signature-Website für einen Dachdeckerbetrieb — Produktdemo"
+            width={960}
+            height={540}
+            className="h-auto w-full"
+          />
+          <p className="bg-[#14161C] px-4 py-2 text-sm text-white/60">
+            Produktdemo · kein Echtbetrieb
+          </p>
+        </div>
         <nav
           aria-label="Gewerke auf dieser Seite"
           className="mt-8 flex flex-wrap gap-2"
