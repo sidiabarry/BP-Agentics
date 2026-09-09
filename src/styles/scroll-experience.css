@@ -1285,23 +1285,11 @@
   .hero-portal__pin {
     height: calc(100svh - var(--header-offset));
     min-height: 28rem;
-    background: #e8e6e2;
   }
 
   .hero-portal[data-scroll-ready] .hero-portal__pin {
     top: var(--header-offset);
     height: calc(100svh - var(--header-offset));
-  }
-
-  .hero-portal__film {
-    clip-path: inset(10rem 0 0 0);
-  }
-
-  .hero-portal[data-scroll-ready] .hero-portal__film {
-    clip-path: inset(
-      calc(10rem * (1 - clamp(0, calc((var(--p) - 0.04) / 0.15), 1)))
-      0 0 0
-    );
   }
 
   .hero-portal__film img,
@@ -1310,12 +1298,18 @@
   }
 
   .hero-portal__copy {
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 0.4rem;
+    left: 1rem;
+    width: min(18.5rem, calc(100% - 2rem));
     max-width: none;
-    padding: 0.55rem 1rem 1rem;
-    background: #e8e6e2;
+    padding: 0;
+    background: none;
+  }
+
+  .hero-portal__copy h1,
+  .hero-portal__kicker,
+  .hero-portal__lead {
+    text-shadow: 0 1px 1px #e8e6e2, 0 0 16px #e8e6e2d0;
   }
 
   .hero-portal__copy h1 {
