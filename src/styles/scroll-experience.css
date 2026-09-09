@@ -1298,12 +1298,13 @@
   }
 
   .hero-portal__copy {
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 0.4rem;
+    left: 1rem;
+    width: min(18.5rem, calc(100% - 2rem));
     max-width: none;
-    padding: 0.55rem 1rem 0.75rem;
-    background: #e8e6e2;
+    padding: 0;
+    background: none;
+    text-shadow: 0 1px 1px #e8e6e2, 0 0 16px #e8e6e2d0;
   }
 
   .hero-portal__copy h1 {
