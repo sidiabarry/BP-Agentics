@@ -44,7 +44,6 @@ export function organizationGraph() {
           "@type": "AdministrativeArea",
           name,
         })),
-        sameAs: ["https://share.google/p6ZGte7IpVhv0IMQQ"],
         knowsAbout: [...site.knowsAbout],
         sameAs: [...site.sameAs],
         contactPoint: [
