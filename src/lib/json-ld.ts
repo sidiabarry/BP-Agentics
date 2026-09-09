@@ -86,6 +86,21 @@ export function organizationGraph() {
             },
           ],
         },
+        makesOffer: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "MobileApplication",
+              name: "Feinkost Kreta",
+              operatingSystem: "Android",
+              applicationCategory: "BusinessApplication",
+              description:
+                "Bestell-App für Feinkost Kreta — ein Kundenprojekt, entwickelt von BP Agentics.",
+              url: `${site.url}/referenzen/feinkost-kreta`,
+              creator: { "@id": orgId },
+            },
+          },
+        ],
       },
       {
         "@type": "Person",

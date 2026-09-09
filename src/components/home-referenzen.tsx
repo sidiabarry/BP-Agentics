@@ -20,8 +20,9 @@ export function DemoPair({
           Feinkost Kreta — Bestell-App
         </h3>
         <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
-          Vorher hieß neu bestellen: Formular jedes Mal neu. Heute: angemeldet
-          bestellen, der Laden sieht die Bestellung.
+          Ein Kundenprojekt von BP Agentics: Vorher hieß neu bestellen: Formular
+          jedes Mal neu. Heute: angemeldet bestellen, der Laden sieht die
+          Bestellung.
         </p>
         <div className="mt-6 flex flex-1 items-center justify-center rounded-3xl bg-[#14161C] px-6 py-8">
           <PhoneDemo
