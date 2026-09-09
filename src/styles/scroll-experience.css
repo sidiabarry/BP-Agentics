@@ -1279,11 +1279,13 @@
 @media (max-width: 700px) {
   .hero-portal {
     --header-offset: 4.15rem;
+    z-index: 0;
   }
 
   .hero-portal__pin {
     height: calc(100svh - var(--header-offset));
     min-height: 28rem;
+    background: #e8e6e2;
   }
 
   .hero-portal[data-scroll-ready] .hero-portal__pin {
@@ -1291,10 +1293,20 @@
     height: calc(100svh - var(--header-offset));
   }
 
+  .hero-portal__film {
+    clip-path: inset(10rem 0 0 0);
+  }
+
+  .hero-portal[data-scroll-ready] .hero-portal__film {
+    clip-path: inset(
+      calc(10rem * (1 - clamp(0, calc((var(--p) - 0.04) / 0.15), 1)))
+      0 0 0
+    );
+  }
+
   .hero-portal__film img,
   .hero-portal__film canvas {
-    transform: translate3d(0, 12%, 0) scale(1.12);
-    transform-origin: 50% 100%;
+    transform: none;
   }
 
   .hero-portal__copy {
@@ -1302,7 +1314,7 @@
     left: 0;
     width: 100%;
     max-width: none;
-    padding: 0.55rem 1rem 0.75rem;
+    padding: 0.55rem 1rem 1rem;
     background: #e8e6e2;
   }
 
