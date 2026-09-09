@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Pricing } from "@/components/pricing";
+import { CareAndOwnership, LeistungenPreise } from "@/components/leistungen-preise";
 import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
-import { offerTable, yearTableHint } from "@/lib/offers";
+import { PRICE_NOTE, offerTable, yearTableHint } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Was Einrichtung und laufende Betreuung kosten",
@@ -45,8 +45,22 @@ export default function PreisePage() {
         secondary: { href: "/foerderung/mid-digitale-prozesse", label: "Förderung prüfen" },
       }}
     >
+      <LeistungenPreise embedded />
+
+      <h2
+        id="jahresrechnung"
+        className="mt-16 scroll-mt-24 text-[1.65rem] leading-snug font-semibold tracking-[-0.03em] md:text-4xl"
+      >
+        Einmalig und über 12 Monate
+      </h2>
+      <p className="mt-4 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
+        Die 12-Monats-Spalte rechnet Erstellung und Betreuung nur zusammen, wenn
+        eine monatliche Betreuung zum Angebot gehört oder gewählt wird. Im
+        interaktiven Überblick oben bleiben beide Beträge getrennt.
+      </p>
+
       {/* Mobile: stacked cards */}
-      <div className="grid gap-4 md:hidden">
+      <div className="mt-8 grid gap-4 md:hidden">
         {offerTable.map((row) => (
           <article key={row.id} className="rounded-[1.4rem] bg-white p-5">
             <p className="text-lg font-semibold tracking-[-0.02em]">{row.name}</p>
@@ -62,7 +76,7 @@ export default function PreisePage() {
       </div>
 
       {/* Desktop: full table */}
-      <div className="hidden overflow-x-auto rounded-[1.6rem] bg-white md:block">
+      <div className="mt-8 hidden overflow-x-auto rounded-[1.6rem] bg-white md:block">
         <table className="w-full border-collapse text-left text-[1.02rem]">
           <caption className="sr-only">
             Einrichtung, monatliche Betreuung und 12-Monats-Rechnung
@@ -95,9 +109,8 @@ export default function PreisePage() {
         die optionale Betreuung gewählt wird.
       </p>
 
-      <div className="mt-12">
-        <Pricing embedded />
-      </div>
+      <CareAndOwnership />
+      <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{PRICE_NOTE}</p>
     </StagePage>
   );
 }

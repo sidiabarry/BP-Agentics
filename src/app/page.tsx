@@ -2,8 +2,7 @@ import { HeroPortal } from "@/components/scroll/hero-portal";
 import { LeistungsMaschine } from "@/components/scroll/leistungs-maschine";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
-import { ThreeLevels } from "@/components/three-levels";
-import { Pricing } from "@/components/pricing";
+import { LeistungenPreise } from "@/components/leistungen-preise";
 import { HomeStart } from "@/components/home-start";
 import { Faq } from "@/components/faq";
 import { JsonLd } from "@/components/json-ld";
@@ -35,8 +34,7 @@ export default function HomePage() {
       <LeistungsMaschine />
       <ProblemWall />
       <HomeReferenzen />
-      <ThreeLevels compact />
-      <Pricing teaser />
+      <LeistungenPreise />
       <HomeStart />
       <Faq />
     </main>

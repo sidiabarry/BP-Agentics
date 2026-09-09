@@ -1,12 +1,13 @@
 "use client";
 
 import { cloneElement, FormEvent, isValidElement, useRef, useState, type ReactElement } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { mailToTermin, site } from "@/lib/site";
-import { cta } from "@/lib/offers";
+import { cta, offerInquiryNote } from "@/lib/offers";
 
 type Status = "idle" | "sending" | "error" | "done";
 
@@ -20,6 +21,9 @@ const RATE_LIMIT =
   "Es gab gerade mehrere Sendeversuche. Bitte versuchen Sie es später erneut oder nutzen Sie die angegebene E-Mail-Adresse.";
 
 export function BookingForm() {
+  const searchParams = useSearchParams();
+  const notePrefill =
+    offerInquiryNote(searchParams.get("paket") ?? "", searchParams.get("betreuung") === "1") ?? "";
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [mailto, setMailto] = useState("");
@@ -157,6 +161,7 @@ export function BookingForm() {
           name="note"
           rows={4}
           className="text-[1.05rem]"
+          defaultValue={notePrefill}
           placeholder="Zum Beispiel eine Website oder ein Ablauf, der leichter werden soll."
         />
       </Field>

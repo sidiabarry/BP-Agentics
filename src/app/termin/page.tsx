@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { BookingForm } from "@/components/booking-form";
 import { StagePage } from "@/components/stage-page";
@@ -63,7 +64,9 @@ export default function TerminPage() {
           </li>
         </ul>
         <div className="rounded-[2rem] bg-white p-6 md:p-8">
-          <BookingForm />
+          <Suspense fallback={<p className="text-[#5C5F66]">Formular wird geladen …</p>}>
+            <BookingForm />
+          </Suspense>
         </div>
       </div>
     </StagePage>
