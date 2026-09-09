@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
 import { gewerkHref } from "@/lib/nav";
-import { napLine, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { PRICE_NOTE } from "@/lib/offers";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 
@@ -93,9 +93,15 @@ export function SiteFooter() {
             {site.streetAddress}
             <br />
             {site.postalCode} {site.addressLocality}
-            <br />
+          </p>
+          <p className="mt-3 text-[1.02rem] text-white/85">
             <a className="hover:text-white" href={`tel:${site.phoneTel}`}>
               {site.phoneDisplay}
+            </a>
+          </p>
+          <p className="mt-1 text-[1.02rem] text-white/85">
+            <a className="hover:text-white" href={`mailto:${site.email}`}>
+              {site.email}
             </a>
           </p>
           <p className="mt-3">
@@ -103,7 +109,6 @@ export function SiteFooter() {
               Per WhatsApp schreiben
             </WhatsAppInline>
           </p>
-          <p className="mt-3 text-sm text-white/50">{napLine}</p>
         </div>
       </div>
       <div className="border-t border-white/10 px-5 py-5 text-sm text-white/45 md:px-8">

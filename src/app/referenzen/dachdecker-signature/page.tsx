@@ -59,17 +59,19 @@ export default function DachdeckerSignaturePage() {
       }
     >
       <StageGrid cols={2}>
-        <StageCard kicker="Gestaltung" title="Bewegung trägt, Inhalt entscheidet.">
+        <StageCard kicker="Gestaltung" title="Bilder, Bewegung und ein klarer Aufbau.">
           <p>
-            Bewegung und Bilder unterstützen die Darstellung der Arbeiten.
-            Entscheidend bleibt, dass Interessenten Leistungen, Einsatzgebiet und
-            Kontaktmöglichkeit verstehen.
+            Ein Dachdecker-Website-Entwurf mit Bildergalerie, Leistungsbeschreibung
+            und Anfrageformular. Bewegung führt durch die Seite, aber
+            der Aufbau funktioniert auch ohne. Interessenten sehen Arbeitsweise,
+            Einsatzgebiet und einen direkten Kontaktweg.
           </p>
         </StageCard>
-        <StageCard kicker="Einordnung" title="Eine Möglichkeit, kein Nachweis.">
+        <StageCard kicker="Einordnung" title="Produktdemo — kein Echtbetrieb.">
           <p>
-            Das Beispiel zeigt eine Gestaltungsmöglichkeit von Website Signature.
-            Es ist kein Nachweis für zusätzliche Aufträge oder höhere Umsätze.
+            Dieses Beispiel zeigt eine Gestaltungsmöglichkeit von Website Signature.
+            Es basiert nicht auf einem realen Auftrag. Ob ein solcher Umfang
+            sinnvoll ist, wird am konkreten Vorhaben entschieden.
           </p>
           <p className="mt-3">
             <Link href={cta.href} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
