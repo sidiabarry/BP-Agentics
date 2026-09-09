@@ -1,147 +1,68 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DataTable, DocPage } from "@/components/doc-page";
+import { DemoPair } from "@/components/home-referenzen";
+import { Process } from "@/components/process";
+import { StagePage } from "@/components/stage-page";
+import { LevelCards } from "@/components/three-levels";
 import { pageMetadata } from "@/lib/seo";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Leistungen für Betriebe in NRW",
+  title: "Drei Bausteine. Ein Weg durch den Betrieb.",
   description:
-    "Drei Ebenen für Betriebe in Hagen und NRW: Website, KI-Setter und interne Abläufe. Festpreise, einzeln beauftragbar.",
+    "Eine Website macht Leistungen verständlich. Ein Nachrichten-Assistent bereitet WhatsApp- und E-Mail-Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
   path: "/leistungen",
 });
 
 export default function LeistungenPage() {
   return (
-    <DocPage
+    <StagePage
       kicker="Leistungen"
-      title="Drei Ebenen, ein Betrieb"
-      lead="BP Agentics baut den öffentlichen Auftritt, die Annahme am Telefon und die internen Abläufe — einzeln oder nacheinander, ohne Großprojekt."
+      title="Drei Bausteine. Ein Weg durch den Betrieb."
+      lead="Website, Nachrichten-Assistent und Büroablauf sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein zuerst den Alltag erleichtert."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       related={[
-        { href: "/leistungen/auftritt", label: "Auftritt: Website Start, Betrieb, Signature" },
-        { href: "/leistungen/annahme", label: "Annahme: KI-Setter für Kalender und WhatsApp" },
-        { href: "/leistungen/ablaeufe", label: "Interne Abläufe: Fundament und Module" },
-        { href: "/foerderung/mid-digitale-prozesse", label: "MID Digitale Prozesse: Zuschuss in Nordrhein-Westfalen" },
-        { href: "/preise", label: "Alle Endpreise in einer Tabelle" },
+        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
+        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
+        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+        { href: "/preise", label: "Preise" },
+        { href: "/referenzen", label: "Arbeiten und Demos" },
       ]}
+      next={{
+        title: "Welcher Baustein zuerst?",
+        body: "90 Minuten vor Ort in Nordrhein-Westfalen. Sie senden einen Terminwunsch. Den Termin bestätigen wir persönlich.",
+        chips: ["90 Minuten im Betrieb", "Kostenloses Erstgespräch", "Persönlich bestätigt"],
+        primary: { href: cta.href, label: cta.primary },
+        secondary: { href: "/passt-das", label: "Erst Orientierung holen" },
+      }}
+      appendix={
+        <>
+          <Process />
+          <section className="bg-[#F3EFE6] px-5 py-16 md:px-8">
+            <div className="mx-auto max-w-6xl">
+              <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
+                Arbeiten und Demos
+              </p>
+              <h2 className="mt-3 max-w-[18ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-4xl">
+                So kann es aussehen.
+              </h2>
+              <div className="mt-10">
+                <DemoPair surface="white" />
+              </div>
+            </div>
+          </section>
+        </>
+      }
     >
-      <h2>Was leistet BP Agentics für einen Betrieb?</h2>
-      <p className="answer">
-        BP Agentics liefert drei zusammenhängende Schichten: eine Website, die Anfragen holt, einen KI-Setter, der Anfragen annimmt, und ein internes System, das Papier und Excel ersetzt.
+      <h2 className="sr-only">Drei Leistungszugänge</h2>
+      <LevelCards />
+      <p className="mt-8 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
+        Einrichtung und Betreuung stehen auf der{" "}
+        <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+          Preisseite
+        </Link>
+        .
       </p>
-      <p>
-        Ein Betriebssystem ist die Summe aus öffentlichem Auftritt, Annahme und Abläufen. Viele Inhaber kaufen zuerst eine Seite und wundern sich, warum abends immer noch der Schreibtisch voll ist. Die Seite holt Anfragen. Sie beantwortet sie nicht und sie schreibt keine Rechnung. Deshalb trennen wir die Ebenen und verkaufen sie einzeln.
-      </p>
-      <p>
-        Sidia Jerome Barry arbeitet aus Hagen. Das Einzugsgebiet ist Nordrhein-Westfalen, vor allem Hagen, Iserlohn, Lüdenscheid, Witten, Schwelm, der Ennepe-Ruhr-Kreis und der Märkische Kreis. Das Erstgespräch dauert neunzig Minuten, ist kostenlos und findet im Betrieb statt — nicht in einem Agenturfoyer.
-      </p>
-
-      <h2>Welche Ebene kommt zuerst?</h2>
-      <p className="answer">
-        Zuerst kommt die Ebene, an der der Betrieb heute Geld oder Zeit verliert: zu wenige Anfragen, verpasste Anrufe oder Feierabendarbeit im Büro.
-      </p>
-      <p>
-        Ein Dachdecker mit voller Auslastung braucht selten zuerst eine Signature-Website. Er braucht Annahme, weil die Besichtigung verloren geht, während er auf dem Dach steht. Ein Betrieb, dessen Seite seit zwei Jahren schweigt, braucht zuerst Auftritt. Ein Containerdienst mit Lieferscheinen in der Kabine braucht Abläufe. Der Schnell-Check unter{" "}
-        <Link href="/passt-das">Passt das zu mir?</Link> sortiert das in zwei Fragen. Der Systemplan nach dem Gespräch legt es fest.
-      </p>
-
-      <DataTable
-        caption="Die drei Leistungsebenen im Vergleich"
-        headers={["Ebene", "Was sie löst", "Einbau", "Wartung", "Seite"]}
-        rows={[
-          [
-            "Auftritt",
-            "Die richtigen Anfragen",
-            "690 bis ab 3.490 Euro",
-            "149 bis 290 Euro im Monat, optional",
-            "Website",
-          ],
-          [
-            "Annahme",
-            "Keine liegengebliebenen Anrufe",
-            "1.290 Euro",
-            "99 Euro im Monat",
-            "KI-Setter",
-          ],
-          [
-            "Abläufe",
-            "Kein Büro nach Feierabend",
-            "ab 2.490 Euro",
-            "ohne monatliche Betreuung",
-            "Interne Abläufe",
-          ],
-        ]}
-      />
-
-      <h2>Warum nicht alles auf einmal?</h2>
-      <p className="answer">
-        Weil ein monolithisches Großprojekt den Betrieb monatelang bindet und am Ende oft die falsche Baustelle zuerst schließt.
-      </p>
-      <p>
-        Die Bausteine greifen ineinander, bleiben aber einzeln beauftragbar. Wer mit der Website startet, kann den Setter nachrüsten, ohne die Seite neu zu kaufen. Wer mit Abläufen startet, kann später eine Signature-Seite davorsetzen. Nachrüsten, wenn der Betrieb soweit ist — das ist die Regel, nicht die Ausnahme.
-      </p>
-      <p>
-        Festpreise stehen nach dem Gespräch. Keine offenen Stundensätze. Zusätzliche Wünsche laufen nur über ein separates Angebot, das Sie vorher freigeben. Alle Beträge auf diesen Seiten sind Endpreise.
-      </p>
-
-      <h2>Für wen sind die Leistungen gedacht?</h2>
-      <p className="answer">
-        Die Leistungen sind für Handwerk, Außendienst, Logistik und lokale Dienstleister gedacht, die noch mit Telefon, Zetteln und Excel arbeiten.
-      </p>
-      <p>
-        Typische Größen: ein bis fünf Mitarbeiter, wenn der Inhaber selbst auf der Baustelle oder im Fahrzeug steht. Sechs bis zwanzig, wenn Vorarbeiter Kolonnen leiten und das Büro zum Flaschenhals wird. Über zwanzig, wenn Teams, Standorte oder Fuhrpark Daten verlieren. Keine IT-Abteilung nötig. Gesellen und Fahrer bedienen das auf dem Handy.
-      </p>
-      <p>
-        Die acht Gewerke sitzen auf einer Seite — Dachdecker, SHK und Haustechnik, Elektrotechnik, Kälte- und Klimatechnik, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jeder Abschnitt beschreibt den Engpass dieses Gewerks, nicht eine generische Agenturleistung. Einstieg:{" "}
-        <Link href="/gewerke">Gewerke in NRW</Link>.
-      </p>
-      <ul>
-        <li>
-          <Link href="/leistungen/auftritt">Website für Betriebe in Nordrhein-Westfalen</Link>
-          — Start für sechshundertneunzig Euro, Betrieb für eintausendsiebenhundertneunzig Euro, Signature ab dreitausendvierhundertneunzig Euro.
-        </li>
-        <li>
-          <Link href="/leistungen/annahme">KI-Setter für die telefonische Annahme</Link>
-          — eintausendzweihundertneunzig Euro Einrichtung und neunundneunzig Euro im Monat.
-        </li>
-        <li>
-          <Link href="/leistungen/ablaeufe">Interne Abläufe statt Papier und Excel</Link>
-          — Fundament ab zweitausendvierhundertneunzig Euro, ohne monatliche Betreuung.
-        </li>
-      </ul>
-
-      <h2>Was übernimmt die MID-Förderung?</h2>
-      <p className="answer">
-        Die Richtlinie MID Digitale Prozesse in Nordrhein-Westfalen kann bis zu fünfzig Prozent der förderfähigen Kosten für interne Digitalisierung übernehmen, höchstens fünfzehntausend Euro.
-      </p>
-      <p>
-        Typisch förderfähig sind Setter und Abläufe, nicht die reine Marketing-Website. Die Arbeit darf vor dem Förderbescheid nicht beginnen. Das aktuelle Einreichfenster läuft bis zum 1. Dezember 2026 und wird nach Eingang vergeben. Die ausführliche Erklärung steht auf der Seite{" "}
-        <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse in Nordrhein-Westfalen</Link>.
-      </p>
-      <p>
-        Referenzen zum Anfassen: das Kundensystem von{" "}
-        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link> und die{" "}
-        <Link href="/referenzen/dachdecker-signature">Signature-Website für einen Dachdeckerbetrieb</Link>.
-        Preise ohne Scroll-Choreografie stehen unter{" "}
-        <Link href="/preise">Preise für Website und Systeme</Link>.
-      </p>
-
-      <h2>Wie läuft die Zusammenarbeit nach dem Klick?</h2>
-      <p className="answer">
-        Nach dem Klick folgt dasselbe Viererschritt: Gespräch, Systemplan, Einbau, Wartungsvertrag — unabhängig davon, welche Ebene zuerst kommt.
-      </p>
-      <p>
-        Neunzig Minuten vor Ort, kostenlos. In drei Werktagen ein verbindliches Konzept mit Bausteinen, Zeitrahmen, Festpreis und Ausschlussliste. Schlüsselfertig in höchstens sechs Wochen. Ein dreißigminütiger Termin pro Woche, der Betrieb läuft weiter. Hosting, Pflege, Sicherheitsupdates. Nach zwölf Monaten monatlich kündbar. Die Dateien gehören Ihnen ab Zahlung des Einbaus.
-      </p>
-      <p>
-        Es gibt keinen zweiten Sitz, keine Partneragentur dazwischen und keine Projektbörse. Sidia Jerome Barry ist der Ansprechpartner. Kleiststraße 9, 58095 Hagen, Telefon +49 162 2843869. Wer schreiben will, ohne sofort zu buchen, nutzt die{" "}
-        <Link href="/kontakt">Kontaktseite mit Anschrift und WhatsApp</Link>.
-      </p>
-      <p>
-        Suchmaschinen und Sprachmodelle sollen diese Seite als Cluster lesen: drei Leistungen, eine Förderung, zwei Referenzen, eine Preistabelle. Deshalb liegen die Unterseiten nicht nur als Anker auf der Startseite, sondern als eigene Adressen mit eigenem Titel, eigener Beschreibung und eigenem Canonical auf https://bpagentics.com. Wer unsicher ist, welche Ebene zuerst kommt, beginnt bei{" "}
-        <Link href="/passt-das">Passt das zu mir?</Link>
-        , nicht bei einem Paketnamen.
-      </p>
-    </DocPage>
+    </StagePage>
   );
 }

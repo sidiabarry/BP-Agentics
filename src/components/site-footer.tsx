@@ -3,6 +3,7 @@ import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
 import { gewerkHref } from "@/lib/nav";
 import { napLine, site } from "@/lib/site";
+import { PRICE_NOTE } from "@/lib/offers";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 
 export function SiteFooter() {
@@ -14,23 +15,23 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-2 text-white/85">
             <li>
               <Link href="/leistungen/auftritt" className="hover:text-white">
-                Auftritt
+                Websites
               </Link>
             </li>
             <li>
               <Link href="/leistungen/annahme" className="hover:text-white">
-                Annahme
+                Nachrichten-Assistent
               </Link>
             </li>
             <li>
               <Link href="/leistungen/ablaeufe" className="hover:text-white">
-                Abläufe
+                Büroabläufe
               </Link>
             </li>
           </ul>
         </div>
         <div>
-          <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Referenzen</p>
+          <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Arbeiten und Demos</p>
           <ul className="mt-3 space-y-2 text-white/85">
             <li>
               <Link href="/referenzen/feinkost-kreta" className="hover:text-white">
@@ -59,7 +60,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/passt-das" className="hover:text-white">
-                Passt das zu mir?
+                Welcher Einstieg passt?
               </Link>
             </li>
             <li>
@@ -99,7 +100,7 @@ export function SiteFooter() {
           </p>
           <p className="mt-3">
             <WhatsAppInline variant="quiet" className="text-[#25D366] hover:text-white">
-              WhatsApp
+              Per WhatsApp schreiben
             </WhatsAppInline>
           </p>
           <p className="mt-3 text-sm text-white/50">{napLine}</p>
@@ -107,7 +108,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-white/10 px-5 py-5 text-sm text-white/45 md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:justify-between">
-          <span>Alle Preise sind Endpreise.</span>
+          <span>{PRICE_NOTE}</span>
           <span className="flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/gewerke" className="hover:text-white">
               Alle Gewerke

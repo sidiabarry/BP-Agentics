@@ -1,32 +1,52 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
 import { PhoneDemo } from "@/components/demo-player";
-import { DataTable, DocPage } from "@/components/doc-page";
+import { StageCard, StageGrid } from "@/components/stage-blocks";
+import { StagePage } from "@/components/stage-page";
 import { videoObject } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Feinkost Kreta Kundensystem",
+  title: "Feinkost Kreta: bestellen, ohne jedes Mal von vorn anzufangen",
   description:
-    "Kundensystem für Feinkost Kreta: Annahme, Bestand und Bestellweg auf dem Telefon. Produktdemo aus Hagen.",
+    "Wer angemeldet ist, bestellt in wenigen Schritten. Der Laden sieht die Bestellung. Für Olivenöl gibt es eine Erinnerung nach etwa sechs Monaten.",
   path: "/referenzen/feinkost-kreta",
 });
 
+const stills = [
+  {
+    src: "/demos/feinkost-still-anmeldung.jpg",
+    alt: "Bestellweg mit bereits bestätigter Lieferadresse in der App von Feinkost Kreta",
+    caption: "Anmeldung — Adresse und Angaben bleiben.",
+  },
+  {
+    src: "/demos/feinkost-still-bestellung.jpg",
+    alt: "Warenkorb mit Olivenpaste in der App von Feinkost Kreta",
+    caption: "Bestellung — wenige Schritte bis zur Kasse.",
+  },
+  {
+    src: "/demos/feinkost-still-betrieb.jpg",
+    alt: "Zahlungsabschluss in der App von Feinkost Kreta",
+    caption: "Hinweis an den Betrieb — die Bestellung ist erfasst.",
+  },
+] as const;
+
 export default function FeinkostPage() {
   return (
-    <DocPage
-      kicker="Referenz · Bestell-App"
-      title="Feinkost Kreta: 1-Klick-Bestellung, Benachrichtigung, fertig"
-      lead="Eine vollständige Bestell-App — nicht der öffentliche Auftritt. Ein Klick, die Bestellung sitzt, die Benachrichtigung geht raus. Gebaut in Hagen, sichtbar als Phone-Demo."
+    <StagePage
+      kicker="Projekt · Feinkost Kreta"
+      title="Bestellen, ohne jedes Mal von vorn anzufangen."
+      lead="Wer angemeldet ist, bestellt in wenigen Schritten — und der Laden sieht die Bestellung."
       crumbs={[
-        { name: "Referenzen", path: "/referenzen" },
+        { name: "Arbeiten und Demos", path: "/referenzen" },
         { name: "Feinkost Kreta", path: "/referenzen/feinkost-kreta" },
       ]}
       extraJsonLd={[
         videoObject({
-          name: "Bestellweg im Kundensystem Feinkost Kreta",
+          name: "Bestellweg Feinkost Kreta",
           description:
-            "Produktdemo: Annahme und Warenweg auf dem Smartphone im System von Feinkost Kreta.",
+            "Angemeldet bestellen: Angaben bleiben, wenige Schritte, der Laden sieht die Bestellung.",
           thumbnailUrl: "/demos/feinkost-poster.jpg",
           contentUrl: "/demos/feinkost-loop.mp4",
           duration: "PT12S",
@@ -34,85 +54,72 @@ export default function FeinkostPage() {
         }),
       ]}
       related={[
-        { href: "/leistungen/ablaeufe", label: "Interne Abläufe in derselben Denke" },
-        { href: "/leistungen/annahme", label: "KI-Setter für die erste Minute der Annahme" },
-        { href: "/referenzen/dachdecker-signature", label: "Die äußere Ebene: Dachdecker Signature" },
-        { href: "/foerderung/mid-digitale-prozesse", label: "MID, wenn interne Prozesse gefördert werden" },
+        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+        { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
+        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
       ]}
+      next={{
+        title: "Ähnlichen Bestellweg besprechen",
+        body: "Im Gespräch klären wir, ob ein vergleichbarer Weg zu Ihrem Betrieb passt — welche Angaben bleiben sollen und wer die Bestellung sieht.",
+        primary: { href: cta.href, label: "Ähnlichen Bestellweg besprechen" },
+        secondary: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+      }}
+      visual={
+        <div className="flex justify-center rounded-[2rem] bg-[#14161C] px-6 py-8">
+          <PhoneDemo
+            src="/demos/feinkost-loop.mp4"
+            poster="/demos/feinkost-poster.jpg"
+            fullSrc="/demos/feinkost-full.mp4"
+            posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta"
+            caption="Angemeldet bestellen in der App von Feinkost Kreta."
+            width={300}
+          />
+        </div>
+      }
     >
-      <div className="mt-10 rounded-[2rem] bg-[#14161C] px-6 py-10 md:px-10">
-        <PhoneDemo
-          src="/demos/feinkost-loop.mp4"
-          poster="/demos/feinkost-poster.jpg"
-          fullSrc="/demos/feinkost-full.mp4"
-          posterAlt="Smartphone-Ansicht des Bestellsystems von Feinkost Kreta mit Warenannahme und Kundendaten"
-          caption="Bestellweg im Kundensystem Feinkost Kreta: Annahme und Bestand auf dem iPhone."
-          note="Produktdemo · kein Mitschnitt eines Kundengesprächs"
-          width={300}
-        />
-      </div>
+      <StageGrid>
+        <StageCard kicker="Vorher" title="Seite auf, alles wieder eintragen.">
+          <p>
+            Der Inhaber wollte jüngere, technikaffine Kundschaft über das Handy
+            erreichen. Auf der Website hieß neu bestellen: Seite aufmachen, alles
+            wieder eintragen. Zusätzlich sollte jemand erinnert werden, wenn
+            Olivenöl zur Neige gehen könnte.
+          </p>
+        </StageCard>
+        <StageCard kicker="Eingerichtet" title="Anmelden, merken, bestellen.">
+          <p>
+            Eine Bestell-App: anmelden, Angaben merken, in wenigen Schritten
+            bestellen, der Betrieb wird benachrichtigt. Für Olivenöl gibt es eine
+            Erinnerung nach etwa sechs Monaten — als Beispiel, nicht als Regel
+            für das ganze Sortiment.
+          </p>
+        </StageCard>
+        <StageCard kicker="Heute" title="Wenige Klicks, Bestellung kommt an.">
+          <p>
+            Wer angemeldet ist, bestellt in wenigen Klicks. Der Betrieb bekommt
+            die Bestellung. Die Erinnerung läuft derzeit für Olivenöl.
+          </p>
+        </StageCard>
+      </StageGrid>
 
-      <h2>Was ist das Kundensystem von Feinkost Kreta?</h2>
-      <p className="answer">
-        Das Kundensystem von Feinkost Kreta ist eine Bestell-App: 1-Klick-Bestellung, Benachrichtigung an den Betrieb, Bestand im selben Weg — bedient auf dem Telefon, nicht in einem Ordner hinter der Theke.
-      </p>
-      <p>
-        Ein Feinkostbetrieb verliert Geld, wenn niemand weiß, was da ist, was bestellt wurde und wer gerade anruft. Excel auf dem Ladenschreibtisch und Zettel am Kühlhaus sind dasselbe Muster, das ein Handwerksbetrieb mit Lieferscheinen kennt. Deshalb steht diese Referenz hier: Sie zeigt Abläufe, nicht eine schöne Startseite. Die Demo läuft als Hochformat im Telefonrahmen. Die längere Fassung öffnet sich auf Klick. Wer Bewegung reduziert, sieht das Poster mit beschreibendem Alternativtext.
-      </p>
-
-      <h2>Welche Ebene steckt in diesem System?</h2>
-      <p className="answer">
-        In diesem System stecken Bestellung und Abläufe: 1-Klick, Benachrichtigung, Bestand — nicht der öffentliche Markenauftritt. Das ist eine andere Arbeit als die Dachdecker-Signature.
-      </p>
-
-      <DataTable
-        caption="Feinkost Kreta, eingeordnet in die drei Ebenen"
-        headers={["Ebene", "In dieser Referenz"]}
-        rows={[
-          ["Auftritt", "Nicht diese Referenz — das ist der Dachdecker"],
-          ["Bestell-App", "1-Klick-Bestellung und Benachrichtigung"],
-          ["Abläufe", "Bestand und Innenweg statt Zettel"],
-        ]}
-      />
-
-      <p>
-        Wer dasselbe Muster in einem Handwerks- oder Logistikbetrieb braucht, beginnt bei den{" "}
-        <Link href="/leistungen/ablaeufe">internen Abläufen</Link>. Wer zuerst den Anruf verliert, beginnt beim{" "}
-        <Link href="/leistungen/annahme">KI-Setter</Link>. Eine öffentliche Signature-Seite ist die andere Referenz:{" "}
-        <Link href="/referenzen/dachdecker-signature">Dachdecker Signature-Website</Link>.
-      </p>
-
-      <h2>Warum liegt die Demo auf einer eigenen Seite?</h2>
-      <p className="answer">
-        Die Demo liegt auf einer eigenen Seite, damit Suchmaschinen und Menschen einen klaren Gegenstand finden: ein System, einen Betrieb, eine Video-Datei, eine Erklärung.
-      </p>
-      <p>
-        Auf der Startseite sitzt dieselbe Phone-Demo in der Preiskarte der internen Systeme. Dort verkauft sie im Scroll. Hier erklärt sie. VideoObject-Markup beschreibt Name, Poster, Datei und Sprache. Es gibt keine Bewertungssterne und keine erfundenen Umsatzzahlen. Kleiststraße 9 taucht in der längeren Fassung auf, weil dort gearbeitet wurde — das ist der Sitz, nicht ein Studiotrick.
-      </p>
-      <p>
-        Interne Digitalisierung dieses Zuschnitts kann unter{" "}
-        <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link> fallen. Die Website-Stufen bleiben getrennt:{" "}
-        <Link href="/leistungen/auftritt">Website für Betriebe</Link>. Gespräch und NAP stehen auf der{" "}
-        <Link href="/kontakt">Kontaktseite</Link>. Zurück zur Übersicht:{" "}
-        <Link href="/referenzen">alle Referenzen</Link>.
-      </p>
-
-      <h2>Was kann ein Handwerksbetrieb daraus ableiten?</h2>
-      <p className="answer">
-        Ein Handwerksbetrieb kann ableiten, dass der innere Weg auf dem Telefon sitzen muss — nicht, dass er eine Feinkosttheke braucht.
-      </p>
-      <p>
-        Lieferschein, Bestand, Bestellung, Annahme: dieselben vier Wörter, anderes Gewerk. Der Containerdienst unterschreibt im Fahrerhaus. Der Elektrobetrieb holt die Unterschrift auf der Fläche. Der Galabau-Trupp prüft, ob der Splitt da ist. Das System ändert die Gewohnheit nicht mit einem Schulungsordner. Es legt sie dorthin, wo die Hand schon ist.
-      </p>
-      <p>
-        Deshalb steht neben dieser Demo kein erfundener Satz wie „Umsatz plus vierzig Prozent“. Es steht, was gebaut wurde und wie man es ansieht. Wer Zahlen für den eigenen Betrieb will, bekommt sie im Systemplan nach dem Gespräch — aus seinen Engpässen, nicht aus einer Referenzfolie.
-      </p>
-      <p>
-        Sidia Jerome Barry, Hagen. Dieselbe Anschrift wie im Impressum. Dieselbe Nummer wie auf WhatsApp. Kein zweiter Markenname, kein englischer Landing-Clone unter einer anderen Domain in den Canonicals.         Canonical ist https://bpagentics.com/referenzen/feinkost-kreta.
-        Wer denselben inneren Schnitt für den eigenen Betrieb will, beschreibt im
-        Gespräch den Engpass, nicht die Theke. Wir sagen, welches Modul zuerst
-        schließt und ob MID den Eigenanteil tragen kann, bevor irgendjemand einrichtet.
-      </p>
-    </DocPage>
+      <ul className="mt-10 grid list-none gap-4 p-0 sm:grid-cols-3">
+        {stills.map((still) => (
+          <li key={still.src} className="min-w-0">
+            <figure className="overflow-hidden rounded-[1.4rem] bg-white">
+              <Image
+                src={still.src}
+                alt={still.alt}
+                width={354}
+                height={536}
+                className="h-auto w-full"
+              />
+              <figcaption className="px-4 py-3 text-[0.98rem] leading-snug text-[#3A3D45]">
+                {still.caption}
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </StagePage>
   );
 }

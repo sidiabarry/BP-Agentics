@@ -5,7 +5,7 @@ import {
   breadcrumbList,
   webPageNode,
 } from "@/lib/json-ld";
-import { site } from "@/lib/site";
+import { cta } from "@/lib/offers";
 
 export type Crumb = { name: string; path: string };
 
@@ -18,6 +18,7 @@ export function DocPage({
   related,
   extraJsonLd = [],
   reviewed,
+  showCta = true,
 }: {
   crumbs: Crumb[];
   kicker?: string;
@@ -27,6 +28,7 @@ export function DocPage({
   related?: { href: string; label: string }[];
   extraJsonLd?: Record<string, unknown>[];
   reviewed?: string;
+  showCta?: boolean;
 }) {
   const trail = [{ name: "Startseite", path: "/" }, ...crumbs];
   const path = crumbs[crumbs.length - 1]?.path ?? "/";
@@ -74,7 +76,7 @@ export function DocPage({
           {kicker ? (
             <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">{kicker}</p>
           ) : null}
-          <h1 className="mt-3 text-4xl leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
+          <h1 className="mt-3 text-[1.85rem] leading-[1.1] font-semibold tracking-[-0.03em] md:text-5xl">
             {title}
           </h1>
           <p className="lead mt-5 text-[1.18rem] leading-relaxed text-[#3A3D45]">{lead}</p>
@@ -94,7 +96,7 @@ export function DocPage({
           {related && related.length > 0 ? (
             <section className="mt-16 border-t border-black/10 pt-10" aria-labelledby="verwandt">
               <h2 id="verwandt" className="text-2xl font-semibold tracking-[-0.03em]">
-                Weiterlesen auf dieser Website
+                Weiterlesen
               </h2>
               <ul className="mt-4 space-y-2">
                 {related.map((item) => (
@@ -108,52 +110,58 @@ export function DocPage({
             </section>
           ) : null}
         </div>
+        {showCta ? (
         <section
-          className="mt-14 grid gap-5 rounded-3xl border border-black/10 bg-white p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:items-stretch md:gap-6 md:p-7"
+          className="mt-14 rounded-3xl border border-black/10 bg-white p-6 md:p-8"
           aria-labelledby="doc-naechster-schritt"
         >
-          <div className="flex min-w-0 flex-col">
-            <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
-              Nächster Schritt
-            </p>
-            <h2
-              id="doc-naechster-schritt"
-              className="mt-2 text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]"
-            >
-              Wollen Sie das für Ihren Betrieb prüfen?
-            </h2>
-            <p className="mt-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
-              Sidia Jerome Barry kommt nach {site.addressLocality} und in die
-              Nachbarstädte in Nordrhein-Westfalen.
-            </p>
-            <div className="mt-5 flex flex-col gap-3 sm:mt-auto sm:flex-row sm:pt-6">
-              <Button
-                asChild
-                className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
-              >
-                <Link href="/termin">Erstgespräch vereinbaren</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-12 rounded-full border-black/15 bg-transparent px-6 text-[#14161C] hover:bg-[#F3EFE6]"
-              >
-                <Link href="/">Zur Startseite</Link>
-              </Button>
-            </div>
-          </div>
-          <ul className="grid h-full gap-3 sm:grid-cols-3 md:grid-cols-1 md:grid-rows-3">
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
+          <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
+            Nächster Schritt
+          </p>
+          <h2
+            id="doc-naechster-schritt"
+            className="mt-2 max-w-[22ch] text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] md:text-[1.5rem]"
+          >
+            Was soll für Ihren Betrieb leichter werden?
+          </h2>
+          <p className="mt-3 max-w-[40rem] text-[1.05rem] leading-relaxed text-[#3A3D45]">
+            90 Minuten vor Ort in Nordrhein-Westfalen. Den Wunschtermin
+            bestätigen wir persönlich.
+          </p>
+          <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
               90 Minuten im Betrieb
             </li>
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
-              Kostenlos, ohne Folie
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
+              Kostenloses Erstgespräch
             </li>
-            <li className="flex items-center rounded-2xl bg-[#F3EFE6] px-4 py-3 text-[1.02rem] leading-snug text-[#14161C]">
-              Danach liegt der Plan da
+            <li className="flex min-h-[3.25rem] items-center justify-center rounded-2xl bg-[#F3EFE6] px-3 py-3 text-center text-[0.95rem] leading-snug text-[#14161C]">
+              Persönlich bestätigt
             </li>
           </ul>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button
+              asChild
+              className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
+            >
+              <Link href={cta.href}>{cta.primary}</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-12 rounded-full border-black/15 bg-transparent px-6 text-[#14161C] hover:bg-[#F3EFE6]"
+            >
+              <Link href="/kontakt">Kontakt aufnehmen</Link>
+            </Button>
+          </div>
         </section>
+        ) : (
+          <p className="mt-10 text-[1.02rem] text-[#5C5F66]">
+            <Link href="/kontakt" className="text-[#198BE8] underline-offset-4 hover:underline">
+              Kontakt
+            </Link>
+          </p>
+        )}
       </article>
     </div>
   );

@@ -25,7 +25,7 @@ const PHONE = "491622843869";
 
 /** Vorbelegter Text. Landet im Eingabefeld, der Nutzer kann ihn ändern. */
 const DEFAULT_MESSAGE =
-  "Guten Tag, ich habe eine Frage zu einem System für meinen Betrieb.";
+  "Guten Tag, ich möchte eine Website oder einen digitalen Ablauf für meinen Betrieb besprechen.";
 
 function waHref(message: string = DEFAULT_MESSAGE) {
   return `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
@@ -50,7 +50,7 @@ type FabProps = {
 
 export function WhatsAppFab({
   message = DEFAULT_MESSAGE,
-  label = "Anfrage per WhatsApp",
+  label = "Per WhatsApp schreiben",
   revealAfter = 0,
 }: FabProps) {
   const [visible, setVisible] = useState(revealAfter === 0);
@@ -73,8 +73,9 @@ export function WhatsAppFab({
       className={cn(
         "group fixed z-50 flex items-center overflow-hidden",
         "h-14 w-14 rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20",
-        "left-[max(1rem,env(safe-area-inset-left))]",
+        "right-[max(1rem,env(safe-area-inset-right))] left-auto",
         "bottom-[calc(4.5rem+max(1rem,env(safe-area-inset-bottom)))]",
+        "md:left-[max(1rem,env(safe-area-inset-left))] md:right-auto",
         "md:bottom-[calc(max(1rem,env(safe-area-inset-bottom))+0.25rem)]",
         "md:hover:w-[15.5rem] md:hover:gap-3 md:hover:pr-5",
         "transition-[width,gap,padding,opacity,transform] duration-300 ease-out",
@@ -115,11 +116,12 @@ export function WhatsAppInline({
       target="_blank"
       rel="noopener noreferrer"
       data-analytics="whatsapp-inline"
+      data-slot="button"
       className={cn(
         "inline-flex items-center gap-2.5 rounded-full font-medium transition-colors",
         "outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/40",
         variant === "solid"
-          ? "bg-[#25D366] px-5 py-3 text-white hover:bg-[#1FBE59]"
+          ? "bg-[#25D366] px-5 py-3 text-white hover:bg-[#1FBE59] hover:text-white"
           : "text-[#128C4A] underline-offset-4 hover:underline",
         className,
       )}

@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     return NextResponse.json(
-      { error: "E-Mail-Versand ist nicht konfiguriert." },
+      { error: "Versand derzeit nicht möglich." },
       { status: 503 },
     );
   }

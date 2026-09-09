@@ -12,10 +12,10 @@ export function Faq() {
     <section id="faq" className="bg-[#F3EFE6] px-5 py-16 md:px-8">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-          Einwände
+          Fragen
         </RevealIn>
-        <RevealIn as="h2" variant="rise" className="mt-3 max-w-[22ch] text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
-          Was Inhaber uns zuerst sagen.
+        <RevealIn as="h2" variant="rise" className="mt-3 max-w-[22ch] text-[1.85rem] font-semibold tracking-[-0.03em] md:text-5xl">
+          Kurze Antworten vor dem Gespräch.
         </RevealIn>
         <Accordion type="single" collapsible className="mt-10">
           {faqs.map((item) => (

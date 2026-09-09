@@ -38,7 +38,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!onHome) return;
-    const ids = ["problem", "referenzen", "leistungen", "preise", "start"];
+    const ids = ["problem", "referenzen", "maschine", "preise", "start"];
     const nodes = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -132,7 +132,7 @@ export function SiteHeader() {
               asChild
               className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
             >
-              <Link href="/termin">Erstgespräch</Link>
+              <Link href="/termin">Erstgespräch anfragen</Link>
             </Button>
           </nav>
         </div>

@@ -1,109 +1,84 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DataTable, DocPage } from "@/components/doc-page";
+import { Process } from "@/components/process";
+import { StageCard, StageGrid } from "@/components/stage-blocks";
+import { StagePage } from "@/components/stage-page";
 import { napLine, site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Über mich — Sidia Jerome Barry",
+  title: "Sidia Jerome Barry – Ihr Ansprechpartner bei BP Agentics",
   description:
-    "Sidia Jerome Barry, Inhaber von BP Agentics in Hagen. Ein Ansprechpartner, 90 Minuten vor Ort, Festpreis nach dem Gespräch.",
+    "Ich entwickle Websites und digitale Abläufe für Betriebe in Nordrhein-Westfalen. Sitz: Hagen.",
   path: "/ueber-mich",
 });
 
 export default function UeberMichPage() {
   return (
-    <DocPage
+    <StagePage
+      tone="ink"
       kicker="Über mich"
-      title="Sidia Jerome Barry baut das, was der Betrieb nach Feierabend nicht mehr tragen soll"
-      lead="Inhaber von BP Agentics in Hagen. Ein Ansprechpartner, kein Account-Karussell. Das Gespräch findet in Ihrem Betrieb statt."
+      title="Sidia Jerome Barry. Ein Ansprechpartner."
+      lead="Ich entwickle Websites und digitale Abläufe für Betriebe in Nordrhein-Westfalen. Ausgangspunkt ist Ihr Arbeitsalltag — nicht eine Agenturkulisse."
       crumbs={[{ name: "Über mich", path: "/ueber-mich" }]}
       related={[
-        { href: "/passt-das", label: "Schnell-Check: welche Ebene zuerst" },
-        { href: "/leistungen", label: "Die drei Ebenen" },
-        { href: "/kontakt", label: "Anschrift und Telefon in Hagen" },
-        { href: "/termin", label: "90-Minuten-Gespräch legen" },
+        { href: "/passt-das", label: "Welcher Einstieg passt?" },
+        { href: "/leistungen", label: "Leistungen" },
+        { href: "/referenzen", label: "Arbeiten und Demos" },
+        { href: "/kontakt", label: "Kontakt" },
       ]}
+      next={{
+        title: "Direkt mit mir sprechen",
+        body: "Im Erstgespräch lernen wir das Vorhaben kennen. Danach erhalten Sie ein Angebot mit nachvollziehbarem Umfang und Preis.",
+        chips: ["90 Minuten vor Ort", "Ein Ansprechpartner", "Sitz Hagen"],
+        primary: { href: cta.href, label: cta.primary },
+        secondary: { href: "/kontakt", label: "Kontakt aufnehmen" },
+      }}
+      visual={
+        <div className="rounded-[1.6rem] border border-white/10 bg-white/6 p-6">
+          <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Sitz</p>
+          <p className="mt-3 text-2xl font-semibold">{site.addressLocality}</p>
+          <p className="mt-2 text-[1.05rem] leading-relaxed text-white/70">{napLine}</p>
+          <p className="mt-5">
+            <a href={`tel:${site.phoneTel}`} className="text-[#9FD0F8] underline-offset-4 hover:underline">
+              {site.phoneDisplay}
+            </a>
+          </p>
+          <p className="mt-2">
+            <a href={`mailto:${site.email}`} className="text-[#9FD0F8] underline-offset-4 hover:underline">
+              {site.email}
+            </a>
+          </p>
+        </div>
+      }
+      appendix={<Process />}
     >
-      <h2>Wer steckt hinter BP Agentics?</h2>
-      <p className="answer">
-        Hinter BP Agentics steht Sidia Jerome Barry, Inhaber, mit Sitz in der Kleiststraße 9 in 58095 Hagen.
-      </p>
-      <p>
-        Es gibt keinen zweiten Sitz, keine Partneragentur dazwischen und keine Projektbörse. Wer anruft, erreicht dieselbe Nummer, die im Footer, im Impressum und auf WhatsApp steht: {site.phoneDisplay}. Wer schreibt, schreibt an {site.email}. Die ladungsfähige Zeile ist überall dieselbe: {napLine}.
-      </p>
-      <p>
-        Kleinunternehmer gemäß § 19 UStG. Es wird keine Umsatzsteuer ausgewiesen. Alle Preise auf dieser Website sind Endpreise. Der Hinweis steht im{" "}
-        <Link href="/impressum">Impressum</Link>, nicht als Kleingedrucktes unter einer Preiskarte.
-      </p>
-
-      <DataTable
-        caption="Person und Erreichbarkeit"
-        headers={["Feld", "Wert"]}
-        rows={[
-          ["Name", site.founder.name],
-          ["Rolle", site.founder.jobTitle],
-          ["Firma", site.name],
-          ["Anschrift", `${site.streetAddress}, ${site.postalCode} ${site.addressLocality}`],
-          ["Telefon", site.phoneDisplay],
-          ["E-Mail", site.email],
-        ]}
-      />
-
-      <h2>Wie läuft die Zusammenarbeit?</h2>
-      <p className="answer">
-        Die Zusammenarbeit läuft in vier Schritten: neunzig Minuten vor Ort, Systemplan in drei Werktagen, Einbau in höchstens sechs Wochen, danach Wartungsvertrag.
-      </p>
-      <p>
-        Das Erstgespräch ist kostenlos und findet in Ihrem Betrieb statt — nicht in einem Agenturfoyer. Drei Fragen: Wie kommen Anfragen rein, warum sitzen Sie abends im Büro, was ist zuletzt schiefgelaufen. Sie müssen keine Schnittstellen verstehen. Sie beschreiben, wie Aufträge, Material und Personal heute durch den Betrieb laufen. Darum herum wird gebaut.
-      </p>
-      <p>
-        In drei Werktagen liegt ein verbindliches Konzept auf dem Tisch: Bausteine, Zeitrahmen, Festpreis, Ausschlussliste. Nichts Offenes. Zusätzliche Wünsche laufen nur über ein separates Angebot, das Sie vorher freigeben. Keine Stundenabrechnung nach Feierabend.
-      </p>
-      <p>
-        Der Einbau ist schlüsselfertig in höchstens sechs Wochen. Ein dreißigminütiger Termin pro Woche. Der Betrieb läuft weiter. Gesellen und Fahrer bedienen das auf dem Handy, ohne Schulungsmarathon. Hosting liegt in Deutschland beziehungsweise in der Europäischen Union. Zu jedem Projekt gehört ein Auftragsverarbeitungsvertrag nach Artikel 28 der Datenschutz-Grundverordnung. Die Hoheit über die Daten bleibt beim Betrieb.
-      </p>
-      <p>
-        Nach zwölf Monaten ist monatlich kündbar. Bei Kündigung übergeben wir die vollständigen Dateien, kostenfrei. Sie zahlen für die Wartung, nicht für Ihr Eigentum. Das ist derselbe Gedanke, den ein Betrieb seinen eigenen Wartungskunden schreibt.
-      </p>
-
-      <h2>Was wird gebaut — und was nicht?</h2>
-      <p className="answer">
-        Gebaut werden drei Ebenen: der öffentliche Auftritt, die Annahme am Telefon und die internen Abläufe. Nicht gebaut wird ein monolithisches Großprojekt, das drei Probleme unter einem Preis verbirgt.
-      </p>
-      <p>
-        Auftritt ist die Website: Start, Betrieb oder Signature. Annahme ist der KI-Setter: Text, Qualifizierung, Kalender. Abläufe sind Fundament und Module: Papier aufs Handy, Lager, Rechnung. Die Ebenen greifen ineinander und bleiben einzeln beauftragbar. Nachrüsten, wenn der Betrieb soweit ist — das ist die Regel, nicht die Ausnahme.
-      </p>
-      <p>
-        Nicht zur Arbeit gehören DATEV, Lohn und Dinge, die der Steuerberater bereits sauber führt. Nicht zur Arbeit gehören Callcenter in einem Drittland und Stimmen, die sich als Ihr Geselle ausgeben. Nicht zur Arbeit gehören erfundenen Bewertungssterne und Fallstudien, die niemand nachprüfen kann. Zwei Systeme kann man sehen: die Bestell-App von{" "}
-        <Link href="/referenzen/feinkost-kreta">Feinkost Kreta</Link> und die{" "}
-        <Link href="/referenzen/dachdecker-signature">Signature-Website eines Dachdeckerbetriebs</Link>.
-      </p>
-      <p>
-        Interne Digitalisierung kann in Nordrhein-Westfalen unter{" "}
-        <Link href="/foerderung/mid-digitale-prozesse">MID Digitale Prozesse</Link> fallen. Fünfzig Prozent, höchstens fünfzehntausend Euro, Antrag vor Arbeitsbeginn, Fenster bis zum 1. Dezember 2026. Ob ein Vorhaben förderfähig ist, klären wir gegen die Richtlinie, nicht gegen Wunschdenken. Eine reine Marketingseite ist selten der Kern dieses Topfes.
-      </p>
-
-      <h2>Für wen ist die Anfahrt im Festpreis?</h2>
-      <p className="answer">
-        Die Anfahrt steckt im Festpreis, soweit der Betrieb in Nordrhein-Westfalen liegt — schwerpunktmäßig Hagen, Iserlohn, Lüdenscheid, Witten, Schwelm, Ennepe-Ruhr-Kreis und Märkischer Kreis.
-      </p>
-      <p>
-        Außerhalb hören wir zu und sagen vorher, ob die Anfahrt extra steht. Es gibt kein zweites Büro in Düsseldorf und keine virtuelle Adresse. Wer uns auf einer Karte sucht, soll vor der Kleiststraße 9 stehen. Wer anruft, soll dieselbe Nummer erreichen, die auf dem Transporter stehen könnte: {site.phoneDisplay}.
-      </p>
-      <p>
-        Typische Größen: ein bis fünf Mitarbeiter, wenn der Inhaber selbst auf der Baustelle oder im Fahrzeug steht. Sechs bis zwanzig, wenn Vorarbeiter Kolonnen leiten und das Büro zum Flaschenhals wird. Über zwanzig, wenn Teams, Standorte oder Fuhrpark Daten verlieren. Keine IT-Abteilung nötig.
-      </p>
-      <p>
-        Acht Gewerke sitzen auf einer Seite: Dachdecker, SHK, Elektrotechnik, Kälte, Spedition und Container, Garten und Landschaft, Metallbau sowie Nutzfahrzeuge. Jeder Abschnitt beschreibt den Engpass, nicht eine generische Agenturleistung. Einstieg unter{" "}
-        <Link href="/gewerke">Gewerke in NRW</Link>. Der Schnell-Check unter{" "}
-        <Link href="/passt-das">Passt das zu mir?</Link> sortiert in zwei Fragen, wo der Schmerz sitzt.
-      </p>
-      <p>
-        Wer schreiben will, ohne sofort zu buchen, nutzt die{" "}
-        <Link href="/kontakt">Kontaktseite</Link>. Wer einen Slot will, nutzt das{" "}
-        <Link href="/termin">90-Minuten-Gespräch</Link>. Dieselbe Person antwortet. Dieselbe Anschrift. Derselbe Ton: klar, ohne Folie, ohne offenen Stundenzettel.
-      </p>
-    </DocPage>
+      <StageGrid cols={2}>
+        <StageCard kicker="Zusammenarbeit" title="Sie sprechen mit mir.">
+          <p>
+            Während der Umsetzung sprechen Sie direkt mit mir über die vereinbarten
+            Schritte. Welche Leistungen online verständlich werden sollen, welche
+            Informationen das Team braucht und welcher wiederkehrende Schritt
+            leichter werden kann — das klären wir am konkreten Alltag.
+          </p>
+        </StageCard>
+        <StageCard kicker="Arbeiten und Demos" title="Zwei Wege, die man sehen kann.">
+          <p>
+            <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Projekt Feinkost Kreta
+            </Link>
+            {" · "}
+            <Link href="/referenzen/dachdecker-signature" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Website-Demo Dachdecker
+            </Link>
+          </p>
+          <p className="mt-3">
+            Beschreibungen erklären, was zu sehen ist. Keine behaupteten
+            Umsatzzahlen.
+          </p>
+        </StageCard>
+      </StageGrid>
+    </StagePage>
   );
 }

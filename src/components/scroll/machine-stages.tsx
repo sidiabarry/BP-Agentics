@@ -44,7 +44,7 @@ export function StageAuftritt() {
               Dach. Dicht. In Hagen.
             </p>
             <p className="site__h2" style={i(3)}>
-              Notdienst und Sanierung, kein Stockfoto.
+              Sanierung und Dacharbeiten in Hagen.
             </p>
             <span className="site__cta" style={i(4)}>
               Dach prüfen lassen
@@ -66,15 +66,16 @@ export function StageAuftritt() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Station 2 — der Setter schreibt zurück                              */
+/* Station 2 — der Nachrichten-Assistent schreibt zurück               */
 /* ------------------------------------------------------------------ */
 
 const chat = [
-  { from: "in", text: "Guten Abend, bei uns tropft es seit heute durchs Dach." },
-  { from: "out", text: "Danke für die Nachricht. Steht aktuell Wasser im Raum?" },
-  { from: "in", text: "Nur ein Eimer, aber es läuft weiter." },
-  { from: "out", text: "Verstanden. Passt Dienstag 14:30 für eine Besichtigung?" },
-  { from: "in", text: "Ja, das geht." },
+  { from: "in", text: "Hallo, Garagendach in Hagen — geht eine Besichtigung?" },
+  { from: "out", text: "Gern. Stadtteil und Dachfläche?" },
+  { from: "in", text: "Haspe, ca. 30 m²." },
+  { from: "out", text: "Im Beispiel frei: Di 14:30 oder Do 9:00. Was passt?" },
+  { from: "in", text: "Donnerstag 9:00." },
+  { from: "out", text: "Do 9:00 steht im Beispielkalender." },
 ];
 
 export function StageAnnahme() {
@@ -84,7 +85,7 @@ export function StageAnnahme() {
         <span className="chat__avatar" />
         <span>
           Müller Bedachungen
-          <small>antwortet sofort</small>
+          <small>KI-Assistent · Beispiel</small>
         </span>
       </div>
 
@@ -97,14 +98,14 @@ export function StageAnnahme() {
       </ol>
 
       <div className="chat__slot">
-        <span className="chat__slot-day">Di</span>
+        <span className="chat__slot-day">Do</span>
         <span>
-          14:30 Besichtigung
-          <small>im Kalender des Meisters</small>
+          9:00 Besichtigung
+          <small>Beispiel · keine echte Buchung</small>
         </span>
       </div>
 
-      <p className="chat__stamp">21:47 Uhr — niemand im Büro</p>
+      <p className="chat__stamp">Beispieldialog · keine echte Buchung</p>
     </div>
   );
 }
@@ -115,15 +116,15 @@ export function StageAnnahme() {
 
 const nodes = ["Eingang", "Klärung", "Zuordnung", "Vorgang"];
 const rows = [
+  ["Besichtigung Do 9:00", "Hagen-Haspe", "im Kalender"],
   ["Lieferschein 4412", "Baustelle Hagen", "unterschrieben"],
   ["Stunden KW 37", "Kolonne 2", "freigegeben"],
   ["Rechnung R-2291", "Müller GmbH", "raus"],
-  ["Materialliste 88", "Dach Witten", "im Vorgang"],
 ];
 const bits = [
-  ["Heute", "3 Belege durch"],
+  ["Heute", "Besichtigung Do 9:00"],
   ["Offen", "1 Klärung"],
-  ["Rechnung", "am Einsatztag"],
+  ["Weitergabe", "an das Büro"],
 ];
 
 export function StageAblaeufe() {
@@ -177,46 +178,44 @@ export function StageAblaeufe() {
 export function StageSystem() {
   return (
     <div className="stage stage--system">
-      <article className="combo__bit combo__bit--auftritt" style={i(0)}>
-        <p className="combo__index">1 · Auftritt</p>
-        <h4>Die Seite holt die Anfrage.</h4>
-        <p>Besucher wird zum Terminwunsch, nicht zur Mailbox.</p>
-      </article>
+      <div className="combo">
+        <div className="combo__steps">
+          <article className="combo__step" style={i(0)}>
+            <span className="combo__num">1</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Websites</p>
+              <h4>Die Seite erklärt die Arbeit.</h4>
+              <p className="combo__lede">Besucher findet Leistungen, Referenzen und einen Anfrageweg.</p>
+            </div>
+          </article>
 
-      <div className="combo__phone" style={i(1)}>
-        <div className="combo__phone-bar">
-          <span className="combo__phone-avatar" />
-          <span>
-            Müller Bedachungen
-            <small>2 · Annahme — antwortet</small>
-          </span>
+          <article className="combo__step" style={i(1)}>
+            <span className="combo__num">2</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Nachrichten-Assistent</p>
+              <h4>Angaben und Terminwunsch werden erfasst.</h4>
+              <p className="combo__lede">Per WhatsApp und E-Mail.</p>
+            </div>
+          </article>
+
+          <article className="combo__step" style={i(2)}>
+            <span className="combo__num">3</span>
+            <div className="combo__copy">
+              <p className="combo__kicker">Büroabläufe</p>
+              <h4>Die Angaben stehen zusammen.</h4>
+              <ul>
+                <li>Do 9:00 Besichtigung</li>
+                <li>Angaben zum Vorhaben</li>
+                <li>Übergabe an das Team</li>
+              </ul>
+            </div>
+          </article>
         </div>
-        <div className="combo__phone-body">
-          <p className="combo__bubble combo__bubble--in">Dach tropft seit heute.</p>
-          <p className="combo__bubble combo__bubble--out">Di 14:30 — Kalender ist frei.</p>
-          <div className="combo__phone-slot">
-            <span>Di</span>
-            <span>
-              14:30 Besichtigung
-              <small>im Kalender des Meisters</small>
-            </span>
-          </div>
-        </div>
+
+        <p className="combo__caption" style={i(3)}>
+          Drei Bausteine, ein Weg — einzeln beauftragbar, zusammen ein System.
+        </p>
       </div>
-
-      <article className="combo__bit combo__bit--ablaeufe" style={i(2)}>
-        <p className="combo__index">3 · Abläufe</p>
-        <h4>Der Vorgang läuft durch.</h4>
-        <ul>
-          <li>Besichtigung gelegt</li>
-          <li>Beleg unterschrieben</li>
-          <li>Rechnung am Einsatztag</li>
-        </ul>
-      </article>
-
-      <p className="combo__caption">
-        Eine Anfrage, ein Weg, ein Vorgang — vom ersten Klick bis zur Rechnung.
-      </p>
     </div>
   );
 }

@@ -5,35 +5,45 @@ import { whyPoints } from "@/lib/content";
 
 export function WhyTeaser() {
   return (
-    <section id="warum" className="bg-[#14161C] px-5 py-24 text-[#F3EFE6] md:px-8">
-      <div className="mx-auto max-w-6xl">
-        <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#9FD0F8] uppercase">
-          Über mich
-        </RevealIn>
-        <RevealHeading className="mt-3 max-w-[18ch] text-4xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-          Ein Mensch. Ein Betrieb. Kein Account-Karussell.
-        </RevealHeading>
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
+    <section id="warum" className="bg-[#F3EFE6] px-5 py-16 md:px-8 md:py-20">
+      <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
+        <div>
+          <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
+            Ansprechpartner
+          </RevealIn>
+          <RevealHeading className="mt-3 max-w-[16ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+            Ihr Ansprechpartner: Sidia Jerome Barry.
+          </RevealHeading>
+          <RevealIn as="p" variant="lead" className="mt-5 max-w-[36rem] text-[1.12rem] leading-relaxed text-[#3A3D45]">
+            Ich bin Inhaber von BP Agentics und entwickle Websites und Software für
+            Betriebe in NRW. Im ersten Gespräch geht es um Ihren Arbeitsalltag.
+            Daraus entsteht ein Vorschlag, den Sie fachlich und preislich nachvollziehen
+            können.
+          </RevealIn>
+          <p className="mt-8">
+            <Link href="/ueber-mich" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Mehr über mich
+            </Link>
+          </p>
+        </div>
+        <ol className="space-y-0">
           {whyPoints.map((item, index) => (
             <RevealIn
               key={item.title}
-              as="article"
+              as="li"
               variant="card"
-              delay={index * 60}
-              className="rounded-3xl border border-white/10 p-6 md:p-7"
+              delay={index * 50}
+              className="border-t border-black/10 py-5 first:border-t-0 first:pt-0"
             >
-              <h3 className="text-xl font-semibold">{item.title}</h3>
-              <p className="mt-3 text-[1.08rem] leading-relaxed text-white/75">
+              <h3 className="text-[1.15rem] font-semibold tracking-[-0.02em] text-[#14161C]">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[1.02rem] leading-relaxed text-[#3A3D45]">
                 {item.body}
               </p>
             </RevealIn>
           ))}
-        </div>
-        <p className="mt-10">
-          <Link href="/ueber-mich" className="font-semibold text-[#9FD0F8] underline-offset-4 hover:underline">
-            Wer Sidia Jerome Barry ist und wie die Zusammenarbeit läuft
-          </Link>
-        </p>
+        </ol>
       </div>
     </section>
   );

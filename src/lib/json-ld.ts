@@ -66,7 +66,7 @@ export function organizationGraph() {
               "@type": "Offer",
               itemOffered: {
                 "@type": "Service",
-                name: "KI-Setter",
+                name: "Nachrichten-Assistent",
                 url: `${site.url}/leistungen/annahme`,
               },
             },

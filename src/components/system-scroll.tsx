@@ -424,15 +424,15 @@ export function SystemScroll() {
         <div className="system-scroll-veil" aria-hidden="true" />
 
         <div className="system-scroll-opening">
-          <p className="system-scroll-eyebrow">BP Agentics / Websites &amp; Systeme</p>
+          <p className="system-scroll-eyebrow">BP Agentics / Websites und Automatisierung</p>
           <h1>
-            Ihr Betrieb läuft.
+            Websites, die Ihre Arbeit zeigen.
             <br />
-            Nur digital nicht.
+            Abläufe, die Ihr Team entlasten.
           </h1>
           <p className="system-scroll-lead">
-            Von der ersten Anfrage bis zum nächsten Arbeitsschritt. Scrollen Sie, wie
-            Informationen zusammenfinden.
+            Gemeinsam klären wir, welcher Baustein zu Ihrem Betrieb passt. Sie
+            erhalten ein Angebot mit klarem Umfang und Festpreis.
           </p>
           <Link href="#leistungen" className="system-scroll-textlink">
             Was wir für Ihren Betrieb entwickeln

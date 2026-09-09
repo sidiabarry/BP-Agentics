@@ -178,19 +178,20 @@ export function HeroPortal() {
         <div className="hero-portal__portal" aria-hidden="true" />
 
         <div className="hero-portal__copy">
-          <p className="hero-portal__kicker">BP Agentics — Websites und Systeme</p>
+          <p className="hero-portal__kicker">BP Agentics — Hagen</p>
           <h1>
-            Ihr Betrieb läuft.
+            Website.
             <br />
-            Nur digital nicht.
+            Automatisierung.
+            <br />
+            <span className="hero-portal__accent">Ein System.</span>
           </h1>
           <p className="hero-portal__lead">
-            Anfragen landen im Posteingang, in WhatsApp, auf dem Anrufbeantworter. Ich
-            baue den Weg, auf dem sie zusammenfinden — und die Website, die sie
-            überhaupt erst auslöst.
+            Anfragen kommen per Formular, WhatsApp oder Mail — und landen automatisch
+            im CRM, mit Antwort und Status. Kein Zettel, kein Rückruf-Chaos.
           </p>
-          <Link href="#maschine" className="hero-portal__link">
-            Sehen, was ich baue
+          <Link href="/termin" className="hero-portal__link">
+            Erstgespräch vereinbaren
           </Link>
         </div>
 
@@ -200,8 +201,8 @@ export function HeroPortal() {
 
         {/* Ankunft: der Moment, in dem wir im Display sind. */}
         <div className="hero-portal__arrival">
-          <p>Sie sind drin.</p>
-          <h2>Drei Bausteine. Ein System.</h2>
+          <p>Websites, Software, Abläufe.</p>
+          <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
         </div>
       </div>
     </section>

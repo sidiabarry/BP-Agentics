@@ -66,17 +66,17 @@ function PhoneChat({
   const nextFrom = chatBeats[shown]?.from ?? "in";
 
   return (
-    <div className="rounded-[2.4rem] border-[10px] border-[#14161C] bg-[#E8F4FC] p-4 shadow-[0_30px_80px_-28px_rgba(25,139,232,0.55)]">
-      <div className="mb-4 flex items-center justify-between px-2 text-sm text-[#14161C]/60">
+    <div className="rounded-[2.1rem] border-[8px] border-[#14161C] bg-[#E8F4FC] p-3 shadow-[0_30px_80px_-28px_rgba(25,139,232,0.55)] sm:rounded-[2.4rem] sm:border-[10px] sm:p-4">
+      <div className="mb-3 flex items-center justify-between px-1 text-sm text-[#14161C]/60 sm:mb-4 sm:px-2">
         <span>WhatsApp · Betrieb</span>
         <span>jetzt</span>
       </div>
-      <div className="flex min-h-[18rem] flex-col justify-end gap-3 sm:min-h-[22rem]">
+      <div className="flex min-h-[14.5rem] flex-col justify-end gap-2.5 sm:min-h-[20rem] sm:gap-3">
         {chatBeats.slice(0, shown).map((beat) => (
           <p
             key={beat.time + beat.text}
             className={cn(
-              "chat-bubble max-w-[85%] rounded-2xl px-4 py-3 text-[1.05rem] leading-snug",
+              "chat-bubble max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[0.98rem] leading-snug sm:px-4 sm:py-3 sm:text-[1.05rem]",
               beat.from === "in"
                 ? "origin-bottom-left self-start bg-white text-[#14161C]"
                 : "origin-bottom-right self-end bg-[#198BE8] text-white",
@@ -145,7 +145,7 @@ export function LivingChat() {
       ref={wrapRef}
       className="relative bg-white"
       style={{ height: reduced ? "auto" : `${PIN_VH}vh` }}
-      aria-label="KI-Setter auf WhatsApp"
+      aria-label="Nachrichten-Assistent, Beispieldialog per WhatsApp"
     >
       <div
         className={
@@ -157,15 +157,15 @@ export function LivingChat() {
         <div className="mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
-              Damit keine Anfrage liegen bleibt.
+              Beispieldialog · KI-Assistent · keine echte Buchung
             </RevealIn>
-            <RevealHeading className="mt-3 max-w-[16ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
-              Vier Nachrichten. Ein Termin im Kalender.
+            <RevealHeading className="mt-3 max-w-[16ch] text-[1.85rem] leading-[1.12] font-semibold tracking-[-0.03em] md:text-5xl">
+              WhatsApp- und E-Mail-Anfragen vorbereiten. Termine leichter abstimmen.
             </RevealHeading>
             <RevealIn as="p" variant="lead" className="mt-5 hidden max-w-[40rem] text-[1.15rem] leading-relaxed text-[#3A3D45] lg:block">
-              Kunde schreibt, während der Meister auf dem Dach steht. Der Setter
-              legt zwei Slots, holt die Zusage und schreibt den Termin in den
-              Kalender. Kein Rückruf. Keine Mailbox.
+              Der Assistent erfasst vereinbarte Angaben per WhatsApp oder E-Mail und
+              bietet Termine aus dem angebundenen Kalender an. Die Zeiten in diesem
+              Dialog sind Teil der Demo, kein echter Kalenderbestand.
             </RevealIn>
             <ol className="mt-8 hidden space-y-3 lg:block">
               {chatSteps.map((step, index) => {
@@ -193,11 +193,11 @@ export function LivingChat() {
               })}
             </ol>
           </div>
-          <div className="mx-auto w-full max-w-[22rem]">
+          <div className="mx-auto w-full max-w-[16.25rem] sm:max-w-[20rem]">
             <ol className="sr-only">
               {chatBeats.map((beat) => (
                 <li key={beat.text}>
-                  {beat.from === "in" ? "Kunde" : "Setter"}: {beat.text}
+                  {beat.from === "in" ? "Kunde" : "Assistent"}: {beat.text}
                 </li>
               ))}
             </ol>
