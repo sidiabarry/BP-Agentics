@@ -8,9 +8,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Feinkost Kreta: bestellen, ohne jedes Mal von vorn anzufangen",
+  title: "Feinkost Kreta — Bestell-App entwickelt von BP Agentics",
   description:
-    "Wer angemeldet ist, bestellt in wenigen Schritten. Der Laden sieht die Bestellung. Für Olivenöl gibt es eine Erinnerung nach etwa sechs Monaten.",
+    "Kundenprojekt von BP Agentics: eine Bestell-App für Feinkost Kreta in Hagen. Angemeldet bestellen, der Laden sieht die Bestellung.",
   path: "/referenzen/feinkost-kreta",
 });
 
@@ -78,6 +78,15 @@ export default function FeinkostPage() {
       }
     >
       <StageGrid>
+        <StageCard kicker="Kundenprojekt" title="Entwickelt von BP Agentics.">
+          <p>
+            Die Bestell-App für Feinkost Kreta (auch im Google Play Store unter
+            de.feinkostkreta.shop) ist ein Kundenprojekt von BP Agentics.
+            BP Agentics ist eine Agentur für Website-Erstellung und
+            Online-Marketing in Hagen — die App ist eine Auftragsarbeit, nicht
+            das Kerngeschäft.
+          </p>
+        </StageCard>
         <StageCard kicker="Vorher" title="Seite auf, alles wieder eintragen.">
           <p>
             Der Inhaber wollte jüngere, technikaffine Kundschaft über das Handy
