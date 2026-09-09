@@ -8,9 +8,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Sidia Jerome Barry – Ihr Ansprechpartner bei BP Agentics",
+  title: "Sidia Jerome Barry – Inhaber von BP Agentics in Hagen",
   description:
-    "Ich entwickle Websites und digitale Abläufe für Betriebe in Nordrhein-Westfalen. Sitz: Hagen.",
+    "BP Agentics ist die Agentur von Sidia Jerome Barry in Hagen. Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Nordrhein-Westfalen.",
   path: "/ueber-mich",
 });
 
@@ -20,7 +20,7 @@ export default function UeberMichPage() {
       tone="ink"
       kicker="Über mich"
       title="Sidia Jerome Barry. Ein Ansprechpartner."
-      lead="Ich entwickle Websites und digitale Abläufe für Betriebe in Nordrhein-Westfalen. Ausgangspunkt ist Ihr Arbeitsalltag — nicht eine Agenturkulisse."
+      lead="BP Agentics ist meine Agentur in Hagen — ich entwickle Websites und digitale Abläufe für Handwerk und Betriebe in Nordrhein-Westfalen. Ausgangspunkt ist Ihr Arbeitsalltag, nicht eine Agenturkulisse."
       crumbs={[{ name: "Über mich", path: "/ueber-mich" }]}
       related={[
         { href: "/passt-das", label: "Welcher Einstieg passt?" },
@@ -55,6 +55,22 @@ export default function UeberMichPage() {
       appendix={<Process />}
     >
       <StageGrid cols={2}>
+        <StageCard kicker="BP Agentics" title="Eine Agentur, ein Standort.">
+          <p>
+            BP Agentics ist meine Agentur für Website-Erstellung und
+            Online-Marketing — mit Sitz in der {site.streetAddress},{" "}
+            {site.postalCode} {site.addressLocality}. Ich arbeite direkt mit
+            Handwerksbetrieben und kleinen Unternehmen in Nordrhein-Westfalen.
+            Die Website{" "}
+            <a
+              href={site.url}
+              className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              bpagentics.com
+            </a>{" "}
+            zeigt, was ich anbiete und wie eine Zusammenarbeit abläuft.
+          </p>
+        </StageCard>
         <StageCard kicker="Zusammenarbeit" title="Sie sprechen mit mir.">
           <p>
             Während der Umsetzung sprechen Sie direkt mit mir über die vereinbarten
