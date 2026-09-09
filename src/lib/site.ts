@@ -1,7 +1,7 @@
 export const site = {
   name: "BP Agentics",
   legalName: "BP Agentics",
-  url: "https://bp-agentics.de",
+  url: "https://bpagentics.com",
   locale: "de_DE",
   language: "de",
   email: "sidiabarry@bpagentics.com",
@@ -48,10 +48,37 @@ export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.address
 
 export const napShort = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality}`;
 
+/**
+ * Live deployment origin — used for metadataBase and media URLs that must be
+ * fetchable right now (OG images, JSON-LD logos).  Prefers the explicit
+ * NEXT_PUBLIC_SITE_URL env var, then Vercel's auto-injected host vars, then
+ * falls back to site.url (the canonical domain).
+ */
+export function getDeploymentUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/+$/, "");
+  }
+  const vercelHost =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelHost) {
+    const host = vercelHost.replace(/^https?:\/\//, "");
+    return `https://${host}`;
+  }
+  return site.url;
+}
+
 export function absoluteUrl(path = "/") {
   if (path.startsWith("http")) return path;
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return `${site.url}${normalized === "/" ? "/" : normalized}`;
+}
+
+/** Like absoluteUrl but resolves against the live deployment host. */
+export function deploymentAbsoluteUrl(path = "/") {
+  if (path.startsWith("http")) return path;
+  const base = getDeploymentUrl();
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${normalized === "/" ? "/" : normalized}`;
 }
 
 export const mailToTermin = (params: {

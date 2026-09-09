@@ -2,7 +2,7 @@
 
 Website für **BP Agentics** in Hagen: Websites, KI-Annahme und interne Abläufe für Betriebe in Nordrhein-Westfalen.
 
-Canonical-Host: `https://bp-agentics.de`  
+Canonical-Host: `https://bpagentics.com`  
 NAP: `Kleiststraße 9, 58095 Hagen · +49 162 2843869`
 
 Die Startseite ist die Übersicht: acht Abschnitte, FAQ. Nach dem Hero erweitert sich die mitlaufende Kopfzeile um die Sprunglinks. Der volle Inhalt sitzt auf benannten Unterseiten.
@@ -50,7 +50,7 @@ Abschnitt 7 des SEO-Briefs liegt außerhalb des Repos und muss von Hand geschehe
 
 - Google Business Profile anlegen und NAP identisch halten
 - Einträge SIHK, wlw, OpenStreetMap, LinkedIn — dieselbe Anschrift, dasselbe Telefon
-- Search Console und Bing Webmaster, Property `bp-agentics.de`
+- Search Console und Bing Webmaster, Property `bpagentics.com`
 - 301 von der bisherigen Squarespace-Domain auf die jeweiligen neuen Pfade
 - echte Erwähnungen (Kunden, Kammern, lokale Seiten), keine gekauften Steckbriefe
 

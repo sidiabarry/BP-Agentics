@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsAppFab } from "@/components/whatsapp-button";
 import { organizationGraph } from "@/lib/json-ld";
-import { site } from "@/lib/site";
+import { site, getDeploymentUrl } from "@/lib/site";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -21,7 +21,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(getDeploymentUrl()),
   title: {
     default: site.defaultTitle,
     template: `%s | ${site.name}`,

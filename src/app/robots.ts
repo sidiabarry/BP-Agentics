@@ -17,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Applebot-Extended", ...allowAll },
     ],
     sitemap: `${site.url}/sitemap.xml`,
-    host: "bp-agentics.de",
+    host: "bpagentics.com",
   };
 }

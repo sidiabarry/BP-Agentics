@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState, type ReactNode } from "react";
+import { cloneElement, FormEvent, isValidElement, useRef, useState, type ReactElement } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,16 +79,30 @@ export function BookingForm() {
       return;
     }
 
-    if (response.status === 429) {
-      setStatus("error");
-      setMessage(RATE_LIMIT);
-      setMailto(mailToTermin(payload));
-      return;
-    }
-
     if (!response.ok) {
+      let apiError = "";
+      try {
+        const json = (await response.json()) as { error?: string };
+        apiError = json.error ?? "";
+      } catch {
+        /* response had no JSON body */
+      }
+
       setStatus("error");
-      setMessage(SEND_ERROR);
+      if (response.status === 429) {
+        setMessage(RATE_LIMIT);
+      } else if (response.status === 503) {
+        setMessage(
+          apiError ||
+            "E-Mail-Versand ist nicht konfiguriert. Bitte schreiben Sie uns direkt per E-Mail.",
+        );
+      } else {
+        setMessage(
+          apiError
+            ? `Terminwunsch konnte nicht übermittelt werden: ${apiError}`
+            : SEND_ERROR,
+        );
+      }
       setMailto(mailToTermin(payload));
       return;
     }
@@ -186,15 +200,20 @@ function Field({
   label: string;
   required?: boolean;
   error?: boolean;
-  children: ReactNode;
+  children: ReactElement<{ required?: boolean; "aria-required"?: string }>;
 }) {
+  const input =
+    required && isValidElement(children)
+      ? cloneElement(children, { required: true, "aria-required": "true" })
+      : children;
+
   return (
     <div className="grid gap-2">
       <Label htmlFor={id} className="text-[1.02rem]">
         {label}
         {required ? <span className="text-[#198BE8]"> *</span> : null}
       </Label>
-      {children}
+      {input}
       {error ? (
         <p className="text-sm text-[#7A2E1F]">Bitte dieses Feld ergänzen.</p>
       ) : null}
