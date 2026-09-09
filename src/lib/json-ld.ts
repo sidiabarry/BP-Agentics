@@ -16,10 +16,12 @@ export function organizationGraph() {
         url: site.url,
         email: site.email,
         telephone: site.phoneDisplay,
-        image: deploymentAbsoluteUrl("/icon.svg"),
+        image: deploymentAbsoluteUrl("/icon-512.png"),
         logo: {
           "@type": "ImageObject",
-          url: deploymentAbsoluteUrl("/icon.svg"),
+          url: deploymentAbsoluteUrl("/icon-512.png"),
+          width: 512,
+          height: 512,
         },
         founder: { "@id": personId },
         address: {
