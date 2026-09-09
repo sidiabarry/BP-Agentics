@@ -45,8 +45,25 @@ export default function PreisePage() {
         secondary: { href: "/foerderung/mid-digitale-prozesse", label: "Förderung prüfen" },
       }}
     >
-      <div className="overflow-x-auto rounded-[1.6rem] bg-white">
-        <table className="w-full min-w-[36rem] border-collapse text-left text-[1.02rem]">
+      {/* Mobile: stacked cards */}
+      <div className="grid gap-4 md:hidden">
+        {offerTable.map((row) => (
+          <article key={row.id} className="rounded-[1.4rem] bg-white p-5">
+            <p className="text-lg font-semibold tracking-[-0.02em]">{row.name}</p>
+            <p className="mt-2 text-2xl font-semibold">{row.once}</p>
+            <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-[0.98rem]">
+              <dt className="text-[#5C5F66]">Monatlich</dt>
+              <dd className="text-right text-[#3A3D45]">{row.run}</dd>
+              <dt className="text-[#5C5F66]">Einmalig + 12 Mo.</dt>
+              <dd className="text-right font-medium text-[#3A3D45]">{row.year}</dd>
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      {/* Desktop: full table */}
+      <div className="hidden overflow-x-auto rounded-[1.6rem] bg-white md:block">
+        <table className="w-full border-collapse text-left text-[1.02rem]">
           <caption className="sr-only">
             Einrichtung, monatliche Betreuung und 12-Monats-Rechnung
           </caption>

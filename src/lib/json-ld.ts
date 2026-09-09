@@ -9,17 +9,22 @@ export function organizationGraph() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "ProfessionalService",
+        "@type": ["ProfessionalService", "LocalBusiness"],
         "@id": orgId,
         name: site.name,
+        alternateName: "BP Agentics Hagen",
         legalName: site.legalName,
+        description:
+          "Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Hagen und Nordrhein-Westfalen. Inhabergeführt von Sidia Jerome Barry.",
         url: site.url,
         email: site.email,
         telephone: site.phoneDisplay,
-        image: deploymentAbsoluteUrl("/icon.svg"),
+        image: `${site.url}/icon-512.png`,
         logo: {
           "@type": "ImageObject",
-          url: deploymentAbsoluteUrl("/icon.svg"),
+          url: `${site.url}/icon-512.png`,
+          width: 512,
+          height: 512,
         },
         founder: { "@id": personId },
         address: {
@@ -40,6 +45,7 @@ export function organizationGraph() {
           name,
         })),
         knowsAbout: [...site.knowsAbout],
+        sameAs: [...site.sameAs],
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -80,6 +86,21 @@ export function organizationGraph() {
             },
           ],
         },
+        makesOffer: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "MobileApplication",
+              name: "Feinkost Kreta",
+              operatingSystem: "Android",
+              applicationCategory: "BusinessApplication",
+              description:
+                "Bestell-App für Feinkost Kreta — ein Kundenprojekt, entwickelt von BP Agentics.",
+              url: `${site.url}/referenzen/feinkost-kreta`,
+              creator: { "@id": orgId },
+            },
+          },
+        ],
       },
       {
         "@type": "Person",

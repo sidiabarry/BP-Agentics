@@ -8,9 +8,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Feinkost Kreta: bestellen, ohne jedes Mal von vorn anzufangen",
+  title: "Kundenprojekt Feinkost Kreta — Bestellweg digitalisiert",
   description:
-    "Wer angemeldet ist, bestellt in wenigen Schritten. Der Laden sieht die Bestellung. Für Olivenöl gibt es eine Erinnerung nach etwa sechs Monaten.",
+    "Kundenprojekt von BP Agentics: eine Bestell-App für Feinkost Kreta. Angemeldete Kunden bestellen in wenigen Schritten. Der Laden sieht die Bestellung.",
   path: "/referenzen/feinkost-kreta",
 });
 
@@ -35,9 +35,9 @@ const stills = [
 export default function FeinkostPage() {
   return (
     <StagePage
-      kicker="Projekt · Feinkost Kreta"
+      kicker="Kundenprojekt · Feinkost Kreta"
       title="Bestellen, ohne jedes Mal von vorn anzufangen."
-      lead="Wer angemeldet ist, bestellt in wenigen Schritten — und der Laden sieht die Bestellung."
+      lead="Kundenprojekt für Feinkost Kreta: Stammkunden bestellen angemeldet in wenigen Schritten — der Laden sieht die Bestellung sofort."
       crumbs={[
         { name: "Arbeiten und Demos", path: "/referenzen" },
         { name: "Feinkost Kreta", path: "/referenzen/feinkost-kreta" },
@@ -78,26 +78,38 @@ export default function FeinkostPage() {
       }
     >
       <StageGrid>
-        <StageCard kicker="Vorher" title="Seite auf, alles wieder eintragen.">
+        <StageCard kicker="Kundenprojekt" title="Entwickelt von BP Agentics.">
           <p>
-            Der Inhaber wollte jüngere, technikaffine Kundschaft über das Handy
-            erreichen. Auf der Website hieß neu bestellen: Seite aufmachen, alles
-            wieder eintragen. Zusätzlich sollte jemand erinnert werden, wenn
+            Die Bestell-App für Feinkost Kreta ist ein Kundenprojekt von
+            BP Agentics. Die App ist eine Auftragsarbeit, nicht das Kerngeschäft.
+          </p>
+        </StageCard>
+        <StageCard kicker="Auftrag" title="Bestellweg für Stammkunden digitalisieren.">
+          <p>
+            Feinkost Kreta wollte Stammkunden einen schnelleren Bestellweg per
+            Smartphone bieten. Dazu gehörte eine automatische Erinnerung, wenn
             Olivenöl zur Neige gehen könnte.
           </p>
         </StageCard>
-        <StageCard kicker="Eingerichtet" title="Anmelden, merken, bestellen.">
+        <StageCard kicker="Ausgangslage" title="Jede Bestellung begann von vorn.">
           <p>
-            Eine Bestell-App: anmelden, Angaben merken, in wenigen Schritten
-            bestellen, der Betrieb wird benachrichtigt. Für Olivenöl gibt es eine
-            Erinnerung nach etwa sechs Monaten — als Beispiel, nicht als Regel
-            für das ganze Sortiment.
+            Auf der bisherigen Website mussten Kunden bei jeder Bestellung
+            Adresse und Angaben erneut eintragen. Es gab keine Anmeldung und
+            keine Möglichkeit, an vergangene Bestellungen anzuknüpfen.
           </p>
         </StageCard>
-        <StageCard kicker="Heute" title="Wenige Klicks, Bestellung kommt an.">
+        <StageCard kicker="Lösung" title="Anmeldung, gespeicherte Angaben, Benachrichtigung.">
           <p>
-            Wer angemeldet ist, bestellt in wenigen Klicks. Der Betrieb bekommt
-            die Bestellung. Die Erinnerung läuft derzeit für Olivenöl.
+            Eine Bestell-App mit Anmeldung: Angaben bleiben gespeichert,
+            die Bestellung erreicht den Betrieb direkt. Für Olivenöl gibt es eine
+            automatische Erinnerung nach etwa sechs Monaten.
+          </p>
+        </StageCard>
+        <StageCard kicker="Ergebnis" title="Wenige Klicks, Bestellung kommt an.">
+          <p>
+            Angemeldete Kunden bestellen in wenigen Schritten. Der Betrieb wird
+            benachrichtigt. Die Erinnerung läuft derzeit für Olivenöl — als
+            konkretes Beispiel, nicht als Regel für das ganze Sortiment.
           </p>
         </StageCard>
       </StageGrid>

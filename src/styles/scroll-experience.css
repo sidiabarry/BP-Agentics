@@ -1279,6 +1279,7 @@
 @media (max-width: 700px) {
   .hero-portal {
     --header-offset: 4.15rem;
+    z-index: 0;
   }
 
   .hero-portal__pin {
@@ -1293,8 +1294,7 @@
 
   .hero-portal__film img,
   .hero-portal__film canvas {
-    transform: translate3d(0, 12%, 0) scale(1.12);
-    transform-origin: 50% 100%;
+    transform: none;
   }
 
   .hero-portal__copy {
@@ -1304,6 +1304,11 @@
     max-width: none;
     padding: 0;
     background: none;
+  }
+
+  .hero-portal__copy h1,
+  .hero-portal__kicker,
+  .hero-portal__lead {
     text-shadow: 0 1px 1px #e8e6e2, 0 0 16px #e8e6e2d0;
   }
 

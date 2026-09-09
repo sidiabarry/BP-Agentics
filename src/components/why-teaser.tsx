@@ -15,10 +15,11 @@ export function WhyTeaser() {
             Ihr Ansprechpartner: Sidia Jerome Barry.
           </RevealHeading>
           <RevealIn as="p" variant="lead" className="mt-5 max-w-[36rem] text-[1.12rem] leading-relaxed text-[#3A3D45]">
-            Ich bin Inhaber von BP Agentics und entwickle Websites und Software für
-            Betriebe in NRW. Im ersten Gespräch geht es um Ihren Arbeitsalltag.
-            Daraus entsteht ein Vorschlag, den Sie fachlich und preislich nachvollziehen
-            können.
+            Ich bin Inhaber von BP Agentics — einer Agentur für
+            Website-Erstellung und Online-Marketing in Hagen. Ich arbeite mit
+            Handwerksbetrieben und kleinen Unternehmen in ganz NRW. Im ersten
+            Gespräch geht es um Ihren Arbeitsalltag. Daraus entsteht ein
+            Vorschlag, den Sie fachlich und preislich nachvollziehen können.
           </RevealIn>
           <p className="mt-8">
             <Link href="/ueber-mich" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
