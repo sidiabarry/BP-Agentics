@@ -31,8 +31,8 @@ export default function DachdeckerSignaturePage() {
             "Produktdemo: mögliche Gestaltung mit Bildern, Leistungsbeschreibung und Anfrageweg.",
           thumbnailUrl: "/demos/dach-poster.jpg",
           contentUrl: "/demos/dach-loop.mp4",
-          duration: "PT15S",
-          uploadDate: "2026-08-15",
+          duration: "PT7S",
+          uploadDate: "2026-09-09",
         }),
       ]}
       related={[
