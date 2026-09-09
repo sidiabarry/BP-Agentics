@@ -1,4 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#1A365D"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#F3EFE6">BP</text>
+  <rect width="32" height="32" rx="7" fill="#1A365D"/>
+  <g transform="translate(3 6.15) scale(0.394) translate(-8 -6)">
+    <path d="M8 6h22c8 0 14 5 14 13 0 5-3 9-8 11 6 2 10 7 10 13 0 8-7 13-16 13H8V6Z" fill="#F3EFE6"/>
+    <circle cx="18" cy="18" r="2.2" fill="#1A365D"/>
+    <circle cx="28" cy="18" r="2.2" fill="#1A365D"/>
+    <circle cx="23" cy="28" r="2.2" fill="#1A365D"/>
+    <path d="M18 18h10M18 18l5 10M28 18l-5 10" stroke="#1A365D" stroke-width="1.6"/>
+    <path d="M42 6h16c10 0 16 6 16 16 0 9-6 16-16 16H50v18H42V6Z" fill="#9FB3C8"/>
+    <path d="M58 14c4 2 6 5 6 9s-2 7-6 9c-4-2-6-5-6-9s2-7 6-9Z" fill="#F3EFE6"/>
+    <circle cx="56" cy="21" r="1.4" fill="#1A365D"/>
+    <circle cx="61" cy="23" r="1.4" fill="#1A365D"/>
+    <circle cx="58" cy="27" r="1.4" fill="#1A365D"/>
+    <path d="M56 21l5 2M56 21l2 6M61 23l-3 4" stroke="#1A365D" stroke-width="1.2"/>
+  </g>
 </svg>
