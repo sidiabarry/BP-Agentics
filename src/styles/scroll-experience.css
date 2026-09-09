@@ -1279,6 +1279,7 @@
 @media (max-width: 700px) {
   .hero-portal {
     --header-offset: 4.15rem;
+    z-index: 0;
   }
 
   .hero-portal__pin {
@@ -1298,7 +1299,7 @@
 
   .hero-portal[data-scroll-ready] .hero-portal__film {
     clip-path: inset(
-      calc(10rem * (1 - clamp(0, calc(var(--p) / 0.1), 1)))
+      calc(10rem * (1 - clamp(0, calc((var(--p) - 0.04) / 0.15), 1)))
       0 0 0
     );
   }
