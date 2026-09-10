@@ -30,18 +30,21 @@ export const offerFamilies = [
   {
     id: "websites",
     label: "Websites",
+    shortLabel: "Websites",
     href: "/leistungen/auftritt",
     linkLabel: "Website-Pakete ansehen",
   },
   {
     id: "assistent",
     label: "Nachrichten-Assistent",
+    shortLabel: "Assistent",
     href: "/leistungen/annahme",
     linkLabel: "Nachrichten-Assistent ansehen",
   },
   {
     id: "ablaeufe",
     label: "Büroabläufe",
+    shortLabel: "Abläufe",
     href: "/leistungen/ablaeufe",
     linkLabel: "Büroabläufe ansehen",
   },
