@@ -133,7 +133,7 @@ export default function GewerkePage() {
           </p>
           <Button
             asChild
-            className="mt-6 h-12 rounded-full bg-[#198BE8] px-7 text-base text-white hover:bg-[#1576C4]"
+            className="mt-6 h-auto max-w-full whitespace-normal rounded-full bg-[#198BE8] px-7 py-3 text-center text-base text-white hover:bg-[#1576C4]"
           >
             <Link href={cta.href}>{cta.primary}</Link>
           </Button>

@@ -22,7 +22,7 @@ export function HomeStart() {
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Button
               asChild
-              className="h-13 rounded-full bg-[#198BE8] px-7 text-[1.05rem] text-white hover:bg-[#1576C4]"
+              className="h-auto max-w-full whitespace-normal rounded-full bg-[#198BE8] px-7 py-3.5 text-center text-[1.05rem] text-white hover:bg-[#1576C4]"
             >
               <Link href={cta.href}>{cta.primary}</Link>
             </Button>

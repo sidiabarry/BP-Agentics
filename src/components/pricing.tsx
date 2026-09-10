@@ -244,7 +244,7 @@ export function Pricing({
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Button
             asChild
-            className="h-13 rounded-full bg-[#14161C] px-7 text-[1.05rem] text-white hover:bg-black"
+            className="h-auto max-w-full whitespace-normal rounded-full bg-[#14161C] px-7 py-3.5 text-center text-[1.05rem] text-white hover:bg-black"
           >
             <Link href={cta.href}>{cta.primary}</Link>
           </Button>

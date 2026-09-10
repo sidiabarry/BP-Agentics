@@ -142,7 +142,7 @@ export function DocPage({
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button
               asChild
-              className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
+              className="h-auto max-w-full whitespace-normal rounded-full bg-[#198BE8] px-6 py-3 text-center text-white hover:bg-[#1576C4]"
             >
               <Link href={cta.href}>{cta.primary}</Link>
             </Button>
