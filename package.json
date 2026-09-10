@@ -6,6 +6,7 @@
     "dev": "node scripts/preview-proxy.mjs",
     "dev:next": "next dev --hostname 127.0.0.1 --port 43124",
     "build": "next build --webpack",
+    "vercel-build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
