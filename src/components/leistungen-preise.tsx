@@ -129,33 +129,37 @@ function LeistungenPreisePicker() {
         </>
       ) : null}
 
-      <div className="mt-6 lg:hidden">
-        <button
-          type="button"
-          aria-expanded={detailsOpen}
-          aria-controls="paket-detail"
-          onClick={() => setDetailsOpen((open) => !open)}
-          className="inline-flex min-h-13 items-center text-[1.12rem] font-semibold text-[#198BE8] underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          {detailsOpen ? "Paketdetails schließen" : "Paketdetails ansehen"}
-        </button>
-      </div>
-
-      <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start lg:gap-5">
-        <div
-          id="paket-detail"
-          className={cn("scroll-mt-24", !detailsOpen && "max-lg:hidden")}
-        >
-          <DetailPanel
-            offer={offer}
-            focusedId={focusedNode}
-            onFocusNode={setFocusedNode}
-            familyHref={familyMeta.href}
-            familyLinkLabel={familyMeta.linkLabel}
-            showLead={!multi}
-          />
+      <div className="mt-5 flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start">
+        <div className="order-2 lg:order-1">
+          <button
+            type="button"
+            aria-expanded={detailsOpen}
+            aria-controls="paket-detail"
+            onClick={() => setDetailsOpen((open) => !open)}
+            className="inline-flex min-h-13 w-full items-center justify-center rounded-full border-2 border-[#14161C] bg-white px-5 text-[1.15rem] font-semibold text-[#14161C] lg:hidden focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            {detailsOpen ? "Paketdetails schließen" : "Paketdetails ansehen"}
+          </button>
+          <div
+            id="paket-detail"
+            className={cn("scroll-mt-24 max-lg:mt-4", !detailsOpen && "max-lg:hidden")}
+          >
+            <DetailPanel
+              offer={offer}
+              focusedId={focusedNode}
+              onFocusNode={setFocusedNode}
+              familyHref={familyMeta.href}
+              familyLinkLabel={familyMeta.linkLabel}
+              showLead={!multi}
+            />
+          </div>
         </div>
-        <CostCard offer={offer} careOn={careOn} onCareChange={setCareOn} />
+        <CostCard
+          offer={offer}
+          careOn={careOn}
+          onCareChange={setCareOn}
+          className="order-1 lg:order-2"
+        />
       </div>
     </div>
   );
@@ -178,7 +182,7 @@ function FamilyTabs({
       <div
         role="tablist"
         aria-labelledby={labelId}
-        className="grid w-full grid-cols-3 rounded-[1.15rem] bg-white p-1.5 lg:rounded-full"
+        className="grid w-full grid-cols-3 overflow-hidden rounded-[1.15rem] bg-white p-1.5 lg:rounded-full"
       >
         {offerFamilies.map((item) => {
           const on = item.id === family;
@@ -322,25 +326,46 @@ function MobilePackageCards({
             onClick={() => onSelect(offer.id)}
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
-              "relative w-full rounded-[1.4rem] border bg-white px-5 py-5 text-left",
-              "transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none",
+              "relative w-full rounded-[1.4rem] border-2 bg-white px-5 py-5 text-left",
+              "transition-[border-color,background-color,box-shadow] duration-200 motion-reduce:transition-none",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-[#2F7D4A] shadow-[0_10px_28px_-18px_rgba(47,125,74,0.7)]"
-                : "border-black/10",
+                ? "border-[#2F7D4A] bg-[#EAF6EE] shadow-[0_12px_28px_-16px_rgba(47,125,74,0.55)]"
+                : "border-black/12",
             )}
           >
             {on ? (
-              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1 rounded-full bg-[#2F7D4A]" />
+              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1.5 rounded-full bg-[#2F7D4A]" />
             ) : null}
-            <span className="block text-[1.28rem] leading-snug font-semibold tracking-[-0.02em]">
-              {offer.name}
+            <span className="flex items-start justify-between gap-3">
+              <span className="text-[1.2rem] leading-snug font-semibold tracking-[-0.02em]">
+                {offer.name}
+              </span>
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border-2",
+                  on ? "border-[#2F7D4A] bg-[#2F7D4A] text-white" : "border-black/20 bg-white",
+                )}
+              >
+                {on ? (
+                  <svg viewBox="0 0 12 12" className="size-3.5" fill="none" aria-hidden="true">
+                    <path
+                      d="M2.5 6.2 4.8 8.5 9.5 3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : null}
+              </span>
             </span>
             <span className="mt-2 block text-[1.85rem] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap">
               {offer.once}
             </span>
-            <span className="mt-2.5 block text-[1.05rem] leading-snug text-[#3A3D45]">
-              {offer.body}
+            <span className="mt-1.5 block text-[1.02rem] text-[#3A3D45]">
+              einmalige Erstellung
             </span>
           </button>
         );
@@ -484,10 +509,12 @@ function CostCard({
   offer,
   careOn,
   onCareChange,
+  className,
 }: {
   offer: CatalogOffer;
   careOn: boolean;
   onCareChange: (value: boolean) => void;
+  className?: string;
 }) {
   const optionalOn = offer.care === "optional" && careOn;
   const monthLine =
@@ -500,7 +527,12 @@ function CostCard({
           : "nicht gewählt";
 
   return (
-    <aside className="mt-5 w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] lg:sticky lg:top-24 lg:mt-0">
+    <aside
+      className={cn(
+        "w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] shadow-[0_20px_44px_-22px_rgba(20,22,28,0.7)] lg:sticky lg:top-24 lg:shadow-none",
+        className,
+      )}
+    >
       <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Kosten</p>
       <h3 className="mt-2 text-[1.55rem] leading-snug font-semibold lg:text-[1.45rem]">{offer.name}</h3>
       <div aria-live="polite">
