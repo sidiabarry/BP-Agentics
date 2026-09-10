@@ -114,7 +114,7 @@ function LeistungenPreisePicker() {
   }
 
   return (
-    <div className="rounded-[2rem] border border-black/10 bg-[#EDE7DA] p-3 md:p-5 lg:p-6">
+    <div className="rounded-[2rem] border border-black/10 bg-[#EDE7DA] p-4 md:p-5 lg:p-6">
       <FamilyTabs family={family} onChange={selectFamily} />
 
       {multi ? (
@@ -128,7 +128,7 @@ function LeistungenPreisePicker() {
             <button
               type="button"
               onClick={scrollToDetails}
-              className="mt-2 inline-flex min-h-11 items-center text-[0.98rem] font-semibold text-[#198BE8] underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="mt-2 inline-flex min-h-12 items-center text-[1.08rem] font-semibold text-[#198BE8] underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               Paketdetails ansehen ↓
             </button>
@@ -179,7 +179,7 @@ function FamilyTabs({
       <div
         role="tablist"
         aria-labelledby={labelId}
-        className="grid grid-cols-3 rounded-full bg-white p-1"
+        className="grid grid-cols-3 rounded-full bg-white p-1.5"
       >
         {offerFamilies.map((item) => {
           const on = item.id === family;
@@ -207,7 +207,7 @@ function FamilyTabs({
                 document.getElementById(`familie-${next.id}`)?.focus();
               }}
               className={cn(
-                "min-h-11 rounded-full px-1.5 text-center text-[0.92rem] leading-tight font-semibold md:px-3 md:text-[1.02rem]",
+                "min-h-13 rounded-full px-1.5 text-center text-[1.08rem] leading-tight font-semibold md:px-3 md:text-[1.05rem]",
                 "transition-colors duration-200 motion-reduce:transition-none",
                 "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
                 on ? "bg-[#14161C] text-[#F3EFE6]" : "text-[#3A3D45] hover:bg-[#F3EFE6]",
@@ -327,7 +327,7 @@ function PackageRows({
             onClick={() => onSelect(offer.id)}
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
-              "grid min-h-11 w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-l-4 px-4 py-3.5 text-left",
+              "grid min-h-14 w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-l-4 px-4 py-4 text-left",
               "not-first:border-t not-first:border-t-black/8",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-inset focus-visible:outline-none",
               on
@@ -335,8 +335,8 @@ function PackageRows({
                 : "border-l-transparent",
             )}
           >
-            <span className="truncate font-semibold tracking-[-0.02em]">{offer.name}</span>
-            <span className="whitespace-nowrap font-semibold">{offer.once}</span>
+            <span className="text-[1.12rem] font-semibold tracking-[-0.02em]">{offer.name}</span>
+            <span className="text-[1.15rem] font-semibold whitespace-nowrap">{offer.once}</span>
           </button>
         );
       })}
@@ -389,13 +389,13 @@ function DetailPanel({
   return (
     <div className="rounded-[1.4rem] bg-white p-5 md:p-7">
       {showLead ? (
-        <p className="mb-5 text-[1.08rem] leading-relaxed text-[#3A3D45]">{offer.body}</p>
+        <p className="mb-5 text-[1.12rem] leading-relaxed text-[#3A3D45] md:text-[1.08rem]">{offer.body}</p>
       ) : null}
       <ul>
         {offer.differences.map((item) => (
           <li
             key={item}
-            className="border-t border-black/8 py-2 text-[1.02rem] first:border-t-0 first:pt-0"
+            className="border-t border-black/8 py-2.5 text-[1.08rem] first:border-t-0 first:pt-0 md:py-2 md:text-[1.02rem]"
           >
             {item}
           </li>
@@ -403,10 +403,10 @@ function DetailPanel({
       </ul>
       <div className="mt-5 border-t border-black/8 pt-5">
         <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">Aufbau</p>
-        <h3 className="mt-2 text-[1.35rem] leading-snug font-semibold tracking-[-0.02em] md:text-[1.55rem]">
+        <h3 className="mt-2 text-[1.5rem] leading-snug font-semibold tracking-[-0.02em] md:text-[1.55rem]">
           {offer.structureTitle}
         </h3>
-        <p className="mt-2 text-[1.02rem] leading-relaxed text-[#5C5F66]">
+        <p className="mt-2 text-[1.08rem] leading-relaxed text-[#5C5F66] md:text-[1.02rem]">
           {offer.structureCaption}
         </p>
         <ol className="mt-5">
@@ -433,7 +433,7 @@ function DetailPanel({
                   aria-pressed={on}
                   onClick={() => onFocusNode(node.id)}
                   className={cn(
-                    "inline-flex min-h-11 items-center rounded-md py-1 text-left text-[1.05rem] font-semibold tracking-[-0.02em]",
+                    "inline-flex min-h-12 items-center rounded-md py-1 text-left text-[1.12rem] font-semibold tracking-[-0.02em] md:min-h-11 md:text-[1.05rem]",
                     "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
                     on ? "text-[#14161C]" : "text-[#3A3D45]",
                   )}
@@ -441,7 +441,7 @@ function DetailPanel({
                   {node.label}
                 </button>
                 {node.hint ? (
-                  <p className="pb-3 text-[0.95rem] leading-relaxed text-[#5C5F66]">
+                  <p className="pb-3 text-[1.02rem] leading-relaxed text-[#5C5F66] md:text-[0.95rem]">
                     {node.hint}
                   </p>
                 ) : (
@@ -495,15 +495,15 @@ function CostCard({
           : "nicht gewählt";
 
   return (
-    <aside className="mt-4 w-full rounded-[1.4rem] bg-[#14161C] p-5 text-[#F3EFE6] lg:sticky lg:top-24 lg:mt-0 lg:p-6">
+    <aside className="mt-4 w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] lg:sticky lg:top-24 lg:mt-0">
       <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Kosten</p>
-      <h3 className="mt-2 text-[1.25rem] leading-snug font-semibold">{offer.name}</h3>
+      <h3 className="mt-2 text-[1.45rem] leading-snug font-semibold">{offer.name}</h3>
       <div aria-live="polite">
-        <p className="mt-3 text-[2rem] font-semibold tracking-[-0.03em] md:text-4xl">
+        <p className="mt-3 text-4xl font-semibold tracking-[-0.03em]">
           {offer.once}
         </p>
-        <p className="mt-1 text-[0.98rem] text-white/70">einmalige Erstellung</p>
-        <p className="mt-3 text-[1.05rem]">
+        <p className="mt-1 text-[1.05rem] text-white/70">einmalige Erstellung</p>
+        <p className="mt-3 text-[1.12rem]">
           <span className="text-white/60">Monatlich: </span>
           <span>{monthLine}</span>
         </p>
@@ -518,13 +518,13 @@ function CostCard({
       ) : null}
 
       {offer.care === "required" ? (
-        <p className="mt-4 text-[0.95rem] leading-relaxed text-white/70">
+        <p className="mt-4 text-[1.05rem] leading-relaxed text-white/70">
           Einrichtung und monatliche Betreuung gehören bei diesem Angebot zusammen.
         </p>
       ) : null}
 
       {offer.care === "none" ? (
-        <p className="mt-4 text-[0.95rem] leading-relaxed text-white/70">
+        <p className="mt-4 text-[1.05rem] leading-relaxed text-white/70">
           Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten.
         </p>
       ) : null}
@@ -532,7 +532,7 @@ function CostCard({
       {offer.care === "optional" ? (
         <Accordion type="single" collapsible className="mt-4 border-t border-white/10 pt-1">
           <AccordionItem value="betreuung" className="border-white/10">
-            <AccordionTrigger className="min-h-11 text-[1.02rem] text-[#F3EFE6] hover:no-underline hover:text-white **:data-[slot=accordion-trigger-icon]:text-white/70">
+            <AccordionTrigger className="min-h-12 text-[1.08rem] text-[#F3EFE6] hover:no-underline hover:text-white **:data-[slot=accordion-trigger-icon]:text-white/70">
               Was die Betreuung umfasst
             </AccordionTrigger>
             <AccordionContent className="text-[0.95rem] leading-relaxed text-white/75 [&_a]:text-[#9FD0F8]">
@@ -552,15 +552,15 @@ function CostCard({
 
       <Link
         href={offerInquiryHref(offer.id, careOn)}
-        className="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.02rem] font-semibold text-white transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
+        className="mt-5 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.12rem] font-semibold text-white transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
       >
         {offer.inquiryLabel}
       </Link>
-      <p className="mt-3 text-[0.88rem] leading-relaxed text-white/55">
+      <p className="mt-3 text-[1rem] leading-relaxed text-white/55">
         Sie senden einen Terminwunsch. Der Termin wird anschließend persönlich
         bestätigt.
       </p>
-      <p className="mt-2 text-[0.78rem] leading-relaxed text-white/40">{PRICE_NOTE}</p>
+      <p className="mt-2 text-[0.88rem] leading-relaxed text-white/40">{PRICE_NOTE}</p>
     </aside>
   );
 }
@@ -577,9 +577,9 @@ function CareToggle({
   return (
     <div className="mt-4 rounded-[1.1rem] bg-white/8 px-4 py-3">
       <div className="flex items-center justify-between gap-4">
-        <p className="text-[1.02rem] leading-snug">
+        <p className="text-[1.08rem] leading-snug">
           Monatliche Betreuung
-          <span className="mt-1 block text-[0.92rem] text-white/60">
+          <span className="mt-1 block text-[1rem] text-white/60">
             {month} · optional
           </span>
         </p>
