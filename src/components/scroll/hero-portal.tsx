@@ -17,9 +17,7 @@
  *    Zweifel die ganze Inszenierung abschaltet.
  */
 
-import Link from "next/link";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
 
 const SMALL_MAX = 700;
@@ -196,12 +194,6 @@ export function HeroPortal() {
             Anfragen kommen per Formular, WhatsApp oder Mail — und landen automatisch
             im CRM, mit Antwort und Status. Kein Zettel, kein Rückruf-Chaos.
           </p>
-          <Button
-            asChild
-            className="h-13 rounded-full bg-[#198BE8] px-8 text-[1.08rem] font-semibold text-white shadow-lg shadow-[#198BE8]/30 hover:bg-[#1576C4]"
-          >
-            <Link href="/termin">Erstgespräch vereinbaren</Link>
-          </Button>
         </div>
 
         <p className="hero-portal__cue" aria-hidden="true">
