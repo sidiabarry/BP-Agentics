@@ -142,13 +142,18 @@ export function HeroPortal() {
       canvas.height = h;
     }
 
+    const isMobile = s.kind === "mobile";
     const cover = Math.max(w / best.naturalWidth, h / best.naturalHeight);
-    const scale = cover * (1 + overdrive * OVERDRIVE);
+    const cropZoom = isMobile ? 1.15 : 1;
+    const scale = cover * cropZoom * (1 + overdrive * OVERDRIVE);
     const dw = best.naturalWidth * scale;
     const dh = best.naturalHeight * scale;
 
+    const xOff = (w - dw) / 2;
+    const yOff = isMobile ? (h - dh) * 0.22 : (h - dh) / 2;
+
     ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(best, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    ctx.drawImage(best, xOff, yOff, dw, dh);
     canvas.dataset.ready = "";
   }
 
