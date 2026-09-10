@@ -331,7 +331,7 @@ function PackageRows({
             onClick={() => onSelect(offer.id)}
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
-              "grid w-full gap-1 px-5 py-4 text-left sm:grid-cols-[minmax(0,1.1fr)_auto] sm:items-baseline sm:gap-6",
+              "grid min-h-11 w-full gap-1 px-5 py-4 text-left sm:grid-cols-[minmax(0,1.1fr)_auto] sm:items-baseline sm:gap-6",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-inset focus-visible:outline-none",
               on ? "bg-[#EAF6EE]" : "bg-white",
             )}
@@ -449,7 +449,7 @@ function StructureTree({
                 aria-pressed={on}
                 onClick={() => onFocusNode(node.id)}
                 className={cn(
-                  "rounded-md py-1 text-left text-[1.08rem] font-semibold tracking-[-0.02em]",
+                  "inline-flex min-h-11 items-center rounded-md py-1 text-left text-[1.08rem] font-semibold tracking-[-0.02em]",
                   "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
                   on ? "text-[#14161C]" : "text-[#3A3D45]",
                 )}
@@ -594,18 +594,24 @@ function CareToggle({
           aria-checked={checked}
           onClick={() => onChange(!checked)}
           className={cn(
-            "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200 motion-reduce:transition-none",
+            "relative inline-flex h-11 w-14 shrink-0 items-center justify-center rounded-full",
             "focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none",
-            checked ? "bg-[#2F7D4A]" : "bg-white/25",
           )}
         >
           <span
             aria-hidden="true"
             className={cn(
-              "absolute top-0.5 left-0.5 size-6 rounded-full bg-white transition-transform duration-200 motion-reduce:transition-none",
-              checked && "translate-x-5",
+              "relative h-7 w-12 rounded-full transition-colors duration-200 motion-reduce:transition-none",
+              checked ? "bg-[#2F7D4A]" : "bg-white/25",
             )}
-          />
+          >
+            <span
+              className={cn(
+                "absolute top-0.5 left-0.5 size-6 rounded-full bg-white transition-transform duration-200 motion-reduce:transition-none",
+                checked && "translate-x-5",
+              )}
+            />
+          </span>
           <span className="sr-only">Monatliche Betreuung {checked ? "gewählt" : "nicht gewählt"}</span>
         </button>
       </div>

@@ -123,8 +123,8 @@ export const catalogOffers: readonly CatalogOffer[] = [
     care: "optional",
     inquiryLabel: "Website Betrieb anfragen",
     badge: "Für mehrere Leistungen und Referenzen",
-    structureTitle: "So ist Ihre Website aufgebaut.",
-    structureCaption: "Beispielhafte Seitenstruktur.",
+    structureTitle: "Beispielhafte Seitenstruktur",
+    structureCaption: "Seiten Ihrer Website.",
     structureKind: "pages",
     structure: [
       { id: "leistungen", label: "Leistungen" },
