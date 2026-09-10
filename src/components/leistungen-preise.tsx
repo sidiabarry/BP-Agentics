@@ -129,8 +129,14 @@ function LeistungenPreisePicker() {
         </>
       ) : null}
 
-      <div className="mt-5 flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start">
-        <div className="order-2 lg:order-1">
+      <div className="mt-5 flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start lg:gap-5">
+        <CostCard
+          offer={offer}
+          careOn={careOn}
+          onCareChange={setCareOn}
+          className="lg:col-start-2 lg:row-start-1"
+        />
+        <div className="lg:col-start-1 lg:row-start-1">
           <button
             type="button"
             aria-expanded={detailsOpen}
@@ -154,12 +160,6 @@ function LeistungenPreisePicker() {
             />
           </div>
         </div>
-        <CostCard
-          offer={offer}
-          careOn={careOn}
-          onCareChange={setCareOn}
-          className="order-1 lg:order-2"
-        />
       </div>
     </div>
   );
@@ -182,7 +182,7 @@ function FamilyTabs({
       <div
         role="tablist"
         aria-labelledby={labelId}
-        className="grid w-full grid-cols-3 overflow-hidden rounded-[1.15rem] bg-white p-1.5 lg:rounded-full"
+        className="grid w-full grid-cols-3 rounded-[1.2rem] bg-white p-1.5 shadow-[0_12px_32px_-24px_rgba(20,22,28,0.55)] lg:rounded-full"
       >
         {offerFamilies.map((item) => {
           const on = item.id === family;
@@ -255,10 +255,10 @@ function PackageCards({
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
               "relative flex h-full flex-col rounded-[1.4rem] border bg-white p-5 text-left",
-              "transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none",
+              "transition-[border-color,box-shadow,background-color] duration-200 motion-reduce:transition-none",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-[#2F7D4A] shadow-[0_10px_28px_-18px_rgba(47,125,74,0.7)]"
+                ? "border-[#2F7D4A] bg-[#F4FBF6] shadow-[0_16px_36px_-20px_rgba(47,125,74,0.55)]"
                 : "border-black/10 hover:border-black/20",
             )}
           >
@@ -364,8 +364,8 @@ function MobilePackageCards({
             <span className="mt-2 block text-[1.85rem] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap">
               {offer.once}
             </span>
-            <span className="mt-1.5 block text-[1.02rem] text-[#3A3D45]">
-              einmalige Erstellung
+            <span className="mt-2 block text-[1.05rem] leading-snug text-[#3A3D45]">
+              {offer.body}
             </span>
           </button>
         );
@@ -529,10 +529,11 @@ function CostCard({
   return (
     <aside
       className={cn(
-        "w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] shadow-[0_20px_44px_-22px_rgba(20,22,28,0.7)] lg:sticky lg:top-24 lg:shadow-none",
+        "relative w-full overflow-hidden rounded-[1.6rem] bg-[#14161C] p-6 text-[#F3EFE6] shadow-[0_22px_48px_-24px_rgba(20,22,28,0.75)] lg:sticky lg:top-24",
         className,
       )}
     >
+      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[#2F7D4A]" />
       <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Kosten</p>
       <h3 className="mt-2 text-[1.55rem] leading-snug font-semibold lg:text-[1.45rem]">{offer.name}</h3>
       <div aria-live="polite">
@@ -589,7 +590,7 @@ function CostCard({
 
       <Link
         href={offerInquiryHref(offer.id, careOn)}
-        className="mt-5 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.15rem] font-semibold text-white transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
+        className="mt-6 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.15rem] font-semibold text-white shadow-[0_12px_24px_-12px_rgba(47,125,74,0.9)] transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
       >
         {offer.inquiryLabel}
       </Link>
@@ -612,7 +613,7 @@ function CareToggle({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <div className="mt-4 rounded-[1.1rem] bg-white/8 px-4 py-3">
+    <div className="mt-5 rounded-[1.2rem] bg-white/10 px-4 py-3.5">
       <div className="flex items-center justify-between gap-4">
         <p className="text-[1.08rem] leading-snug">
           Monatliche Betreuung
