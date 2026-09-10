@@ -142,7 +142,7 @@ function LeistungenPreisePicker() {
             aria-expanded={detailsOpen}
             aria-controls="paket-detail"
             onClick={() => setDetailsOpen((open) => !open)}
-            className="inline-flex min-h-13 w-full items-center justify-center rounded-full border-2 border-[#14161C] bg-white px-5 text-[1.15rem] font-semibold text-[#14161C] lg:hidden focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-white px-5 text-[1.12rem] font-semibold text-[#198BE8] shadow-[0_10px_28px_-20px_rgba(20,22,28,0.55)] lg:hidden focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {detailsOpen ? "Paketdetails schließen" : "Paketdetails ansehen"}
           </button>
@@ -312,7 +312,7 @@ function MobilePackageCards({
   onSelect: (id: OfferId) => void;
 }) {
   return (
-    <div role="radiogroup" aria-label="Pakete" className="flex flex-col gap-3">
+    <div role="radiogroup" aria-label="Pakete" className="flex flex-col gap-4">
       {offers.map((offer) => {
         const on = offer.id === selectedId;
         return (
@@ -326,26 +326,34 @@ function MobilePackageCards({
             onClick={() => onSelect(offer.id)}
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
-              "relative w-full rounded-[1.4rem] border-2 bg-white px-5 py-5 text-left",
+              "relative w-full overflow-hidden rounded-[1.6rem] border-2 bg-white px-5 py-5 text-left",
+              "shadow-[0_16px_36px_-24px_rgba(20,22,28,0.45)]",
               "transition-[border-color,background-color,box-shadow] duration-200 motion-reduce:transition-none",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-[#2F7D4A] bg-[#EAF6EE] shadow-[0_12px_28px_-16px_rgba(47,125,74,0.55)]"
-                : "border-black/12",
+                ? "border-[#2F7D4A] bg-[#F4FBF6] shadow-[0_18px_40px_-20px_rgba(47,125,74,0.45)]"
+                : "border-transparent",
             )}
           >
             {on ? (
-              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1.5 rounded-full bg-[#2F7D4A]" />
+              <span aria-hidden="true" className="absolute inset-y-4 left-0 w-1.5 rounded-full bg-[#2F7D4A]" />
             ) : null}
             <span className="flex items-start justify-between gap-3">
-              <span className="text-[1.2rem] leading-snug font-semibold tracking-[-0.02em]">
-                {offer.name}
+              <span>
+                {on ? (
+                  <span className="mb-1.5 inline-block rounded-full bg-[#2F7D4A] px-2.5 py-0.5 text-[0.78rem] font-semibold tracking-[0.04em] text-white uppercase">
+                    Gewählt
+                  </span>
+                ) : null}
+                <span className="block text-[1.28rem] leading-snug font-semibold tracking-[-0.03em]">
+                  {offer.name}
+                </span>
               </span>
               <span
                 aria-hidden="true"
                 className={cn(
-                  "mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border-2",
-                  on ? "border-[#2F7D4A] bg-[#2F7D4A] text-white" : "border-black/20 bg-white",
+                  "mt-1 inline-flex size-7 shrink-0 items-center justify-center rounded-full border-2",
+                  on ? "border-[#2F7D4A] bg-[#2F7D4A] text-white" : "border-black/15 bg-white",
                 )}
               >
                 {on ? (
@@ -361,10 +369,11 @@ function MobilePackageCards({
                 ) : null}
               </span>
             </span>
-            <span className="mt-2 block text-[1.85rem] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap">
+            <span className="mt-3 block text-[2.1rem] leading-none font-semibold tracking-[-0.04em] whitespace-nowrap">
               {offer.once}
             </span>
-            <span className="mt-2 block text-[1.05rem] leading-snug text-[#3A3D45]">
+            <span className="mt-2 block text-[1.05rem] text-[#5C5F66]">einmalige Erstellung</span>
+            <span className="mt-3 block text-[1.08rem] leading-relaxed text-[#3A3D45]">
               {offer.body}
             </span>
           </button>
@@ -417,7 +426,7 @@ function DetailPanel({
   showLead: boolean;
 }) {
   return (
-    <div className="rounded-[1.4rem] bg-white p-5 md:p-7">
+    <div className="rounded-[1.6rem] bg-white p-5 shadow-[0_16px_36px_-24px_rgba(20,22,28,0.4)] md:p-7">
       {showLead ? (
         <p className="mb-5 text-[1.12rem] leading-relaxed text-[#3A3D45] md:text-[1.08rem]">{offer.body}</p>
       ) : null}
