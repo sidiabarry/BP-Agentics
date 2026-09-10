@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { useId, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import {
   Accordion,
@@ -81,7 +81,7 @@ function LeistungenPreisePicker() {
   const [selectedId, setSelectedId] = useState<OfferId>("start");
   const [careOn, setCareOn] = useState(false);
   const [focusedNode, setFocusedNode] = useState<string>("leistungen");
-  const detailRef = useRef<HTMLDivElement>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const offer = catalogOffers.find((item) => item.id === selectedId) ?? catalogOffers[0];
   const familyOffers = offersInFamily(family);
   const familyMeta = offerFamilies.find((item) => item.id === family) ?? offerFamilies[0];
@@ -94,6 +94,7 @@ function LeistungenPreisePicker() {
     setSelectedId(first.id);
     setCareOn(false);
     setFocusedNode(first.structure[0]?.id ?? "");
+    setDetailsOpen(false);
   }
 
   function selectOffer(id: OfferId) {
@@ -105,33 +106,18 @@ function LeistungenPreisePicker() {
     setFocusedNode(next.structure[0]?.id ?? "");
   }
 
-  function scrollToDetails() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    detailRef.current?.scrollIntoView({
-      behavior: reduce ? "auto" : "smooth",
-      block: "start",
-    });
-  }
-
   return (
-    <div className="rounded-[2rem] border border-black/10 bg-[#EDE7DA] p-4 md:p-5 lg:p-6">
+    <div className="lg:rounded-[2rem] lg:border lg:border-black/10 lg:bg-[#EDE7DA] lg:p-6">
       <FamilyTabs family={family} onChange={selectFamily} />
 
       {multi ? (
         <>
-          <div className="mt-4 lg:hidden">
-            <PackageRows
+          <div className="mt-6 lg:hidden">
+            <MobilePackageCards
               offers={familyOffers}
               selectedId={selectedId}
               onSelect={selectOffer}
             />
-            <button
-              type="button"
-              onClick={scrollToDetails}
-              className="mt-2 inline-flex min-h-12 items-center text-[1.08rem] font-semibold text-[#198BE8] underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              Paketdetails ansehen ↓
-            </button>
           </div>
           <div className="mt-5 hidden lg:block">
             <PackageCards
@@ -143,19 +129,32 @@ function LeistungenPreisePicker() {
         </>
       ) : null}
 
-      <div
-        ref={detailRef}
-        id="paket-detail"
-        className="mt-4 scroll-mt-24 lg:mt-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start lg:gap-5"
-      >
-        <DetailPanel
-          offer={offer}
-          focusedId={focusedNode}
-          onFocusNode={setFocusedNode}
-          familyHref={familyMeta.href}
-          familyLinkLabel={familyMeta.linkLabel}
-          showLead={!multi}
-        />
+      <div className="mt-6 lg:hidden">
+        <button
+          type="button"
+          aria-expanded={detailsOpen}
+          aria-controls="paket-detail"
+          onClick={() => setDetailsOpen((open) => !open)}
+          className="inline-flex min-h-13 items-center text-[1.12rem] font-semibold text-[#198BE8] underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          {detailsOpen ? "Paketdetails schließen" : "Paketdetails ansehen"}
+        </button>
+      </div>
+
+      <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(20rem,1fr)] lg:items-start lg:gap-5">
+        <div
+          id="paket-detail"
+          className={cn("scroll-mt-24", !detailsOpen && "max-lg:hidden")}
+        >
+          <DetailPanel
+            offer={offer}
+            focusedId={focusedNode}
+            onFocusNode={setFocusedNode}
+            familyHref={familyMeta.href}
+            familyLinkLabel={familyMeta.linkLabel}
+            showLead={!multi}
+          />
+        </div>
         <CostCard offer={offer} careOn={careOn} onCareChange={setCareOn} />
       </div>
     </div>
@@ -179,7 +178,7 @@ function FamilyTabs({
       <div
         role="tablist"
         aria-labelledby={labelId}
-        className="grid grid-cols-3 rounded-full bg-white p-1.5"
+        className="grid w-full grid-cols-3 rounded-[1.15rem] bg-white p-1.5 lg:rounded-full"
       >
         {offerFamilies.map((item) => {
           const on = item.id === family;
@@ -207,14 +206,14 @@ function FamilyTabs({
                 document.getElementById(`familie-${next.id}`)?.focus();
               }}
               className={cn(
-                "min-h-13 rounded-full px-1.5 text-center text-[1.08rem] leading-tight font-semibold md:px-3 md:text-[1.05rem]",
-                "transition-colors duration-200 motion-reduce:transition-none",
+                "inline-flex min-h-13 min-w-0 items-center justify-center px-1 text-center text-[1.12rem] leading-none font-semibold tracking-[-0.02em] whitespace-nowrap lg:rounded-full lg:px-3 lg:text-[1.05rem]",
+                "rounded-[0.9rem] transition-colors duration-200 motion-reduce:transition-none",
                 "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
                 on ? "bg-[#14161C] text-[#F3EFE6]" : "text-[#3A3D45] hover:bg-[#F3EFE6]",
               )}
             >
-              <span className="md:hidden">{item.shortLabel}</span>
-              <span className="hidden md:inline">{item.label}</span>
+              <span className="lg:hidden">{item.shortLabel}</span>
+              <span className="hidden lg:inline">{item.label}</span>
             </button>
           );
         })}
@@ -299,7 +298,7 @@ function PackageCards({
   );
 }
 
-function PackageRows({
+function MobilePackageCards({
   offers,
   selectedId,
   onSelect,
@@ -309,11 +308,7 @@ function PackageRows({
   onSelect: (id: OfferId) => void;
 }) {
   return (
-    <div
-      role="radiogroup"
-      aria-label="Pakete"
-      className="overflow-hidden rounded-[1.4rem] bg-white"
-    >
+    <div role="radiogroup" aria-label="Pakete" className="flex flex-col gap-3">
       {offers.map((offer) => {
         const on = offer.id === selectedId;
         return (
@@ -327,16 +322,26 @@ function PackageRows({
             onClick={() => onSelect(offer.id)}
             onKeyDown={(event) => handlePackageKeys(event, offers, selectedId, onSelect)}
             className={cn(
-              "grid min-h-14 w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-l-4 px-4 py-4 text-left",
-              "not-first:border-t not-first:border-t-black/8",
-              "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-inset focus-visible:outline-none",
+              "relative w-full rounded-[1.4rem] border bg-white px-5 py-5 text-left",
+              "transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none",
+              "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-l-[#2F7D4A] bg-[#EAF6EE]"
-                : "border-l-transparent",
+                ? "border-[#2F7D4A] shadow-[0_10px_28px_-18px_rgba(47,125,74,0.7)]"
+                : "border-black/10",
             )}
           >
-            <span className="text-[1.12rem] font-semibold tracking-[-0.02em]">{offer.name}</span>
-            <span className="text-[1.15rem] font-semibold whitespace-nowrap">{offer.once}</span>
+            {on ? (
+              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1 rounded-full bg-[#2F7D4A]" />
+            ) : null}
+            <span className="block text-[1.28rem] leading-snug font-semibold tracking-[-0.02em]">
+              {offer.name}
+            </span>
+            <span className="mt-2 block text-[1.85rem] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap">
+              {offer.once}
+            </span>
+            <span className="mt-2.5 block text-[1.05rem] leading-snug text-[#3A3D45]">
+              {offer.body}
+            </span>
           </button>
         );
       })}
@@ -433,7 +438,7 @@ function DetailPanel({
                   aria-pressed={on}
                   onClick={() => onFocusNode(node.id)}
                   className={cn(
-                    "inline-flex min-h-12 items-center rounded-md py-1 text-left text-[1.12rem] font-semibold tracking-[-0.02em] md:min-h-11 md:text-[1.05rem]",
+                    "inline-flex min-h-13 items-center rounded-md py-1 text-left text-[1.12rem] font-semibold tracking-[-0.02em] lg:min-h-11 lg:text-[1.05rem]",
                     "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
                     on ? "text-[#14161C]" : "text-[#3A3D45]",
                   )}
@@ -495,11 +500,11 @@ function CostCard({
           : "nicht gewählt";
 
   return (
-    <aside className="mt-4 w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] lg:sticky lg:top-24 lg:mt-0">
+    <aside className="mt-5 w-full rounded-[1.4rem] bg-[#14161C] p-6 text-[#F3EFE6] lg:sticky lg:top-24 lg:mt-0">
       <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Kosten</p>
-      <h3 className="mt-2 text-[1.45rem] leading-snug font-semibold">{offer.name}</h3>
+      <h3 className="mt-2 text-[1.55rem] leading-snug font-semibold lg:text-[1.45rem]">{offer.name}</h3>
       <div aria-live="polite">
-        <p className="mt-3 text-4xl font-semibold tracking-[-0.03em]">
+        <p className="mt-3 text-[2.55rem] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap lg:text-4xl">
           {offer.once}
         </p>
         <p className="mt-1 text-[1.05rem] text-white/70">einmalige Erstellung</p>
@@ -552,7 +557,7 @@ function CostCard({
 
       <Link
         href={offerInquiryHref(offer.id, careOn)}
-        className="mt-5 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.12rem] font-semibold text-white transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
+        className="mt-5 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.15rem] font-semibold text-white transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
       >
         {offer.inquiryLabel}
       </Link>
