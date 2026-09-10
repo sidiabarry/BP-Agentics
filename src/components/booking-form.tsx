@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, FormEvent, isValidElement, useRef, useState, type ReactElement } from "react";
+import { cloneElement, FormEvent, isValidElement, Suspense, useRef, useState, type ReactElement } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,14 @@ const RATE_LIMIT =
   "Es gab gerade mehrere Sendeversuche. Bitte versuchen Sie es später erneut oder nutzen Sie die angegebene E-Mail-Adresse.";
 
 export function BookingForm() {
+  return (
+    <Suspense fallback={<p className="text-[#5C5F66]">Formular wird geladen …</p>}>
+      <BookingFormFields />
+    </Suspense>
+  );
+}
+
+function BookingFormFields() {
   const searchParams = useSearchParams();
   const notePrefill =
     offerInquiryNote(searchParams.get("paket") ?? "", searchParams.get("betreuung") === "1") ?? "";

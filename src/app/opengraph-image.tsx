@@ -50,23 +50,7 @@ function LogoMark() {
   );
 }
 
-async function loadFont(url: string) {
-  const response = await fetch(url);
-  if (!response.ok) return null;
-  return response.arrayBuffer();
-}
-
-export default async function OpenGraphImage() {
-  const [sora600, sora400] = await Promise.all([
-    loadFont("https://cdn.jsdelivr.net/fontsource/fonts/sora@5.2.8/latin-600-normal.woff"),
-    loadFont("https://cdn.jsdelivr.net/fontsource/fonts/sora@5.2.8/latin-400-normal.woff"),
-  ]);
-
-  const fonts = [
-    sora600 ? { name: "Sora", data: sora600, weight: 600 as const, style: "normal" as const } : null,
-    sora400 ? { name: "Sora", data: sora400, weight: 400 as const, style: "normal" as const } : null,
-  ].filter((font): font is NonNullable<typeof font> => Boolean(font));
-
+export default function OpenGraphImage() {
   return new ImageResponse(
     (
         <div
@@ -76,7 +60,7 @@ export default async function OpenGraphImage() {
             display: "flex",
             position: "relative",
             background: "#F3EFE6",
-            fontFamily: fonts.length ? "Sora" : "sans-serif",
+            fontFamily: "sans-serif",
           }}
         >
         <div
@@ -218,6 +202,6 @@ export default async function OpenGraphImage() {
         </div>
       </div>
     ),
-    { ...size, fonts },
+    { ...size },
   );
 }
