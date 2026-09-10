@@ -373,7 +373,7 @@ function MobilePackageCards({
               {offer.once}
             </span>
             <span className="mt-2 block text-[1.05rem] text-[#5C5F66]">einmalige Erstellung</span>
-            <span className="mt-3 block text-[1.08rem] leading-relaxed text-[#3A3D45]">
+            <span className="mt-3 block overflow-hidden text-[1.08rem] leading-snug text-ellipsis whitespace-nowrap text-[#3A3D45]">
               {offer.body}
             </span>
           </button>
