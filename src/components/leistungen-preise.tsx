@@ -538,11 +538,10 @@ function CostCard({
   return (
     <aside
       className={cn(
-        "relative w-full overflow-hidden rounded-[1.6rem] bg-[#14161C] p-6 text-[#F3EFE6] shadow-[0_22px_48px_-24px_rgba(20,22,28,0.75)] lg:sticky lg:top-24",
+        "relative w-full rounded-[1.6rem] bg-[#14161C] p-6 text-[#F3EFE6] shadow-[0_22px_48px_-24px_rgba(20,22,28,0.75)] lg:sticky lg:top-24",
         className,
       )}
     >
-      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[#2F7D4A]" />
       <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Kosten</p>
       <h3 className="mt-2 text-[1.55rem] leading-snug font-semibold lg:text-[1.45rem]">{offer.name}</h3>
       <div aria-live="polite">
