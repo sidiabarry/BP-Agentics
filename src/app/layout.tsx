@@ -45,6 +45,15 @@ export const metadata: Metadata = {
     description: site.defaultDescription,
     images: ["/twitter-image"],
   },
+  icons: {
+    icon: [
+      { url: "/icons/bp-favicon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/icons/bp-favicon-96.png", type: "image/png", sizes: "96x96" },
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   robots: {
     index: true,
     follow: true,
