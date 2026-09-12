@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main id="inhalt">
+      <link rel="preload" as="image" href="/hero/poster.avif" type="image/avif" />
       <JsonLd
         data={{
           "@context": "https://schema.org",

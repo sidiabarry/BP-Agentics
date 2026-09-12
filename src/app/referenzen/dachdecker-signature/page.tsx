@@ -10,7 +10,7 @@ import { cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Website-Demo für einen Dachdeckerbetrieb",
   description:
-    "Produktdemo, kein Echtbetrieb: Bilder, Leistungsbeschreibung und Anfrageweg für einen Dachdeckerbetrieb.",
+    "Produktdemo, kein Echtbetrieb: eine mögliche Website für einen Dachdeckerbetrieb mit Bildern, Leistungsbeschreibung und klarem Anfrageweg.",
   path: "/referenzen/dachdecker-signature",
 });
 

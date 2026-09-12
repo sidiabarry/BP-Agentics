@@ -11,9 +11,9 @@ import { pageMetadata } from "@/lib/seo";
 import { PRICE_NOTE, automationOffer, cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Einmal erfassen. Im Büro und unterwegs weitergeben.",
+  title: "Büroabläufe und Automatisierung für Handwerk",
   description:
-    "Datenbasis und ein Prozessmodul zusammen ab 2.490 €. Ohne monatliche Betreuung.",
+    "Daten einmal erfassen und im Büro sowie unterwegs weitergeben. Datenbasis und ein Prozessmodul zusammen ab 2.490 €, ohne monatliche Betreuung.",
   path: "/leistungen/ablaeufe",
 });
 

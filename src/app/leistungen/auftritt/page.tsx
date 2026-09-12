@@ -15,9 +15,9 @@ import {
 } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Leistungen zeigen. Anfrage möglich machen.",
+  title: "Website für Handwerksbetriebe in NRW",
   description:
-    "Eine Website, die Arbeiten und den Weg zur Anfrage zeigt. Stufen von 690 € bis ab 3.490 €. Betreuung optional.",
+    "Website für Handwerksbetriebe in NRW: Arbeiten zeigen und den Weg zur Anfrage klar machen. Stufen von 690 € bis ab 3.490 €, Betreuung optional.",
   path: "/leistungen/auftritt",
 });
 

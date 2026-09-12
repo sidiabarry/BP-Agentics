@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Seite nicht gefunden",
+  description: "Diese Seite wurde nicht gefunden.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+  openGraph: {
+    title: "Seite nicht gefunden",
+    description: "Diese Seite wurde nicht gefunden.",
+  },
+};
 
 export default function NotFound() {
   return (

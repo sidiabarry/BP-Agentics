@@ -34,7 +34,7 @@ export function DocPage({
   const path = crumbs[crumbs.length - 1]?.path ?? "/";
 
   return (
-    <div className="bg-[#F3EFE6]">
+    <main id="inhalt" className="bg-[#F3EFE6]">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -69,7 +69,6 @@ export function DocPage({
         </ol>
       </nav>
       <article
-        id="inhalt"
         className="mx-auto max-w-3xl px-5 pt-6 pb-20 md:px-8"
       >
         <div className="doc-prose">
@@ -163,7 +162,7 @@ export function DocPage({
           </p>
         )}
       </article>
-    </div>
+    </main>
   );
 }
 

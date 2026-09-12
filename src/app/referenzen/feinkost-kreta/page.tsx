@@ -10,7 +10,7 @@ import { cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Kundenprojekt Feinkost Kreta — Bestellweg digitalisiert",
   description:
-    "Kundenprojekt von BP Agentics: eine Bestell-App für Feinkost Kreta. Angemeldete Kunden bestellen in wenigen Schritten. Der Laden sieht die Bestellung.",
+    "Kundenprojekt von BP Agentics: Bestell-App für Feinkost Kreta. Angemeldete Kunden bestellen in wenigen Schritten, der Laden sieht die Bestellung.",
   path: "/referenzen/feinkost-kreta",
 });
 

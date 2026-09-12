@@ -11,7 +11,7 @@ import { cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Anrufen, schreiben oder einen Terminwunsch senden",
   description:
-    "Kontakt zu BP Agentics: Sidia Jerome Barry in Hagen. Telefon, E-Mail, WhatsApp oder kostenloses Erstgespräch anfragen.",
+    "Kontakt zu BP Agentics in Hagen: Sidia Jerome Barry per Telefon, E-Mail oder WhatsApp erreichen oder ein kostenloses Erstgespräch anfragen.",
   path: "/kontakt",
 });
 

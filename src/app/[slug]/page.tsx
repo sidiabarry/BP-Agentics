@@ -17,5 +17,5 @@ export default async function IndustryPage({ params }: Props) {
   const page = industries[slug as IndustrySlug];
   const seo = tradePages[slug as IndustrySlug];
   if (!page || !seo) notFound();
-  permanentRedirect(`/gewerke?gewerk=${slug}`);
+  permanentRedirect(`/gewerke#${slug}`);
 }

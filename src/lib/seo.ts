@@ -25,12 +25,13 @@ export function pageMetadata({
       locale: site.locale,
       siteName: site.name,
       type: "website",
-      images: [{ url: ogImage }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: ogTitle }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description,
+      images: [ogImage],
     },
     robots: {
       index: true,

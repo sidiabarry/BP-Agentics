@@ -6,7 +6,8 @@ import { foerderung } from "@/lib/foerderung";
 
 export const metadata: Metadata = pageMetadata({
   title: foerderung.title,
-  description: foerderung.lead,
+  description:
+    "MID Digitale Prozesse fördert bestimmte Beratungen zur Digitalisierung interner Abläufe in NRW. Keine pauschale Förderung von Website- oder Softwarepaketen.",
   path: "/foerderung/mid-digitale-prozesse",
 });
 
