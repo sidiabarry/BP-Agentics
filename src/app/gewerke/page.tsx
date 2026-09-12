@@ -5,21 +5,36 @@ import { GewerkScroll } from "@/components/gewerk-scroll";
 import { JsonLd } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
 import { industryList } from "@/lib/content";
-import { breadcrumbList, webPageNode } from "@/lib/json-ld";
+import { breadcrumbList, faqPage, webPageNode } from "@/lib/json-ld";
 import { gewerkHref } from "@/lib/nav";
 import { pageMetadata } from "@/lib/seo";
 import { tradePages } from "@/lib/trade-pages";
 import { cta } from "@/lib/offers";
 
-const title = "Derselbe Weg. Anderer Arbeitsalltag.";
+const title = "Websites für Handwerk: acht Gewerke im Überblick";
 const description =
-  "Anwendungsbeispiele für Websites und Automatisierung. Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen Programmen ab.";
+  "Website und digitale Abläufe für Dachdecker, SHK, Elektro, Kältetechnik, Spedition, GaLaBau, Metallbau und Nutzfahrzeuge. Anwendungsbeispiele aus NRW.";
 
 export const metadata: Metadata = pageMetadata({
   title,
   description,
   path: "/gewerke",
 });
+
+const gewerkeFaqs = [
+  {
+    q: "Was kostet eine Website für einen Handwerksbetrieb?",
+    a: "Website Start 690 €, Website Betrieb 1.790 €, Signature ab 3.490 €. Die monatliche Betreuung ist optional. Der verbindliche Preis steht vor der Beauftragung im Angebot; alle Preise sind Endpreise ohne ausgewiesene Umsatzsteuer gemäß § 19 UStG.",
+  },
+  {
+    q: "Sind das echte Referenzen?",
+    a: "Nein. Die acht Gewerke-Seiten beschreiben Anwendungsbeispiele — was eine Website und ein digitaler Anfrageweg im jeweiligen Alltag übernehmen könnten. Echte Arbeiten und Demos stehen getrennt unter „Arbeiten und Demos“.",
+  },
+  {
+    q: "Mein Gewerk steht nicht in der Liste — passt es trotzdem?",
+    a: "Die acht Beispiele sind die häufigsten Fälle, keine abschließende Liste. Entscheidend ist nicht das Gewerk, sondern der Weg, den eine Anfrage heute durch den Betrieb nimmt. Das klären wir im kostenlosen Erstgespräch vor Ort.",
+  },
+];
 
 export default function GewerkePage() {
   return (
@@ -37,6 +52,7 @@ export default function GewerkePage() {
               { name: "Startseite", path: "/" },
               { name: "Gewerke", path: "/gewerke" },
             ]),
+            faqPage(gewerkeFaqs),
           ],
         }}
       />
@@ -53,7 +69,7 @@ export default function GewerkePage() {
           Anwendungsbeispiele
         </p>
         <h1 className="mt-4 max-w-[16ch] text-[1.85rem] leading-[1.08] font-semibold tracking-[-0.03em] md:text-6xl">
-          Derselbe Weg. Anderer Arbeitsalltag.
+          Websites für Handwerk — acht Gewerke, derselbe Weg.
         </h1>
         <p className="mt-5 max-w-[40rem] text-[1.2rem] leading-relaxed text-[#3A3D45]">
           Anwendungsbeispiele, keine Referenzen. Welcher Weg passt, hängt von Ihrem
@@ -76,13 +92,13 @@ export default function GewerkePage() {
           className="mt-8 flex flex-wrap gap-2"
         >
           {industryList.map((item) => (
-            <a
+            <Link
               key={item.slug}
               href={gewerkHref(item.slug)}
               className="rounded-full border border-black/12 bg-white px-4 py-2 text-[0.95rem] text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8]"
             >
               {item.title}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -99,7 +115,12 @@ export default function GewerkePage() {
                   Anwendungsbeispiel · {item.title}
                 </p>
                 <h2 className="mt-3 text-2xl leading-snug font-semibold tracking-[-0.03em] md:text-3xl">
-                  {seo.hub.heading}
+                  <Link
+                    href={`/gewerke/${item.slug}`}
+                    className="underline-offset-4 hover:underline"
+                  >
+                    {seo.hub.heading}
+                  </Link>
                 </h2>
                 {seo.hub.paragraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 48)} className="mt-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
@@ -107,7 +128,13 @@ export default function GewerkePage() {
                   </p>
                 ))}
                 <p className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-[1.02rem]">
-                  <Link href={seo.leistung.href} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+                  <Link
+                    href={`/gewerke/${item.slug}`}
+                    className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+                  >
+                    Website für {item.title}
+                  </Link>
+                  <Link href={seo.leistung.href} className="text-[#198BE8] underline-offset-4 hover:underline">
                     {seo.leistung.label}
                   </Link>
                   <Link href={seo.second.href} className="text-[#198BE8] underline-offset-4 hover:underline">

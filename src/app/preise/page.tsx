@@ -1,24 +1,46 @@
 import type { Metadata } from "next";
 import { CareAndOwnership, LeistungenPreise } from "@/components/leistungen-preise";
+import { PageFaqs } from "@/components/page-faqs";
 import { StagePage } from "@/components/stage-page";
+import { faqPage } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 import { PRICE_NOTE, offerTable, yearTableHint } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Was Einrichtung und laufende Betreuung kosten",
+  title: "Was eine Website für Handwerker kostet",
   description:
-    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Website-Betreuung optional. Nachrichten-Assistent 1.290 € + 99 € monatlich. Datenbasis + 1 Modul ab 2.490 € ohne monatliche Betreuung. Endpreise ohne Umsatzsteuer.",
+    "Website ab 690 €, Nachrichten-Assistent 1.290 € + 99 € monatlich, Büroablauf ab 2.490 €. Betreuung optional, Endpreise ohne Umsatzsteuer.",
   path: "/preise",
 });
+
+const preiseFaqs = [
+  {
+    q: "Was kostet eine Website für einen Handwerksbetrieb?",
+    a: "Website Start 690 € als kompakter Einseiter, Website Betrieb 1.790 € für mehrere Leistungen und Referenzen, Website Signature ab 3.490 € mit individueller Gestaltung. Die monatliche Betreuung ist optional und beginnt bei 149 €.",
+  },
+  {
+    q: "Gibt es laufende Kosten?",
+    a: "Bei Websites nur, wenn Sie die optionale Betreuung wählen — sie umfasst Hosting in Deutschland, Sicherheitsupdates, Backups und vereinbarte Textänderungen. Beim Nachrichten-Assistenten gehören Einrichtung und 99 € monatlich zusammen. Der Büroablauf läuft ohne monatliche Betreuung.",
+  },
+  {
+    q: "Warum wird keine Umsatzsteuer ausgewiesen?",
+    a: "Alle genannten Beträge sind Endpreise. Es wird keine Umsatzsteuer gemäß § 19 UStG ausgewiesen — was Sie sehen, ist der Betrag, der in Rechnung gestellt wird.",
+  },
+  {
+    q: "Kann die Digitalisierung gefördert werden?",
+    a: "Das Programm MID-Digitale Prozesse unterstützt bestimmte externe Beratungsleistungen zur Digitalisierung interner Prozesse. Es ist ausdrücklich keine pauschale Förderung von Website- oder Softwarepaketen. Die Einordnung steht auf der Förderseite.",
+  },
+];
 
 export default function PreisePage() {
   return (
     <StagePage
       kicker="Preise"
-      title="Einmalig, monatlich, im Angebot festgehalten."
+      title="Was eine Website für Handwerksbetriebe kostet."
       lead="Die Größenordnung für Websites und Automatisierung. Einmalige Leistungen und monatliche Kosten sind getrennt. Die Website-Betreuung ist optional. Der verbindliche Preis steht vor der Beauftragung im Angebot."
       crumbs={[{ name: "Preise", path: "/preise" }]}
       extraJsonLd={[
+        faqPage(preiseFaqs),
         {
           "@type": "OfferCatalog",
           name: "Leistungen BP Agentics",
@@ -110,6 +132,7 @@ export default function PreisePage() {
       </p>
 
       <CareAndOwnership />
+      <PageFaqs items={preiseFaqs} heading="Häufige Fragen zu den Preisen" />
       <p className="mt-8 text-[1.02rem] text-[#5C5F66]">{PRICE_NOTE}</p>
     </StagePage>
   );

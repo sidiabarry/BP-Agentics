@@ -44,9 +44,9 @@ export const site = {
     "https://www.google.com/maps/place/BP+Agentics/@51.4270929,7.6639832,17z/data=!4m6!3m5!1s0x6dbc85bee7fac5bf:0x92c2399e5d22d54f!8m2!3d51.4270929!4d7.6639832!16s%2Fg%2F11zxhxcgv_",
   ] as readonly string[],
   defaultTitle:
-    "BP Agentics | Websites & Online-Marketing für Handwerk – Hagen / NRW",
+    "Website für Handwerksbetriebe in Hagen und NRW | BP Agentics",
   defaultDescription:
-    "BP Agentics ist die Agentur von Sidia Jerome Barry in Hagen. Website-Erstellung, Online-Marketing und digitale Abläufe für Handwerk und Betriebe in NRW.",
+    "Websites ab 690 €, WhatsApp-Assistent und digitale Büroabläufe für Handwerksbetriebe in Hagen und NRW. Inhabergeführt, Erstgespräch kostenlos vor Ort.",
 } as const;
 
 export const napLine = `${site.streetAddress}, ${site.postalCode} ${site.addressLocality} · ${site.phoneDisplay}`;

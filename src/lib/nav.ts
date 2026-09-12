@@ -50,5 +50,5 @@ export const mobileInfo = [
 ] as const;
 
 export function gewerkHref(slug: string) {
-  return `/gewerke#${slug}`;
+  return `/gewerke/${slug}`;
 }

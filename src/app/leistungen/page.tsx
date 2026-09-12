@@ -9,9 +9,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Drei Bausteine. Ein Weg durch den Betrieb.",
+  title: "Website, WhatsApp-Assistent und Büroabläufe",
   description:
-    "Eine Website macht Leistungen verständlich. Ein Nachrichten-Assistent bereitet WhatsApp- und E-Mail-Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
+    "Drei Bausteine für Handwerksbetriebe in NRW: Website ab 690 €, Nachrichten-Assistent für WhatsApp und E-Mail, automatisierte Büroabläufe. Einzeln beauftragbar.",
   path: "/leistungen",
 });
 
@@ -19,7 +19,7 @@ export default function LeistungenPage() {
   return (
     <StagePage
       kicker="Leistungen"
-      title="Drei Bausteine. Ein Weg durch den Betrieb."
+      title="Website, Nachrichten-Assistent, Büroablauf — drei Bausteine."
       lead="Website, Nachrichten-Assistent und Büroablauf sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein zuerst den Alltag erleichtert."
       crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
       visual={

@@ -3,6 +3,7 @@ import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
 import { gewerkHref } from "@/lib/nav";
 import { site } from "@/lib/site";
+import { standorte } from "@/lib/standorte";
 import { PRICE_NOTE } from "@/lib/offers";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 
@@ -119,11 +120,19 @@ export function SiteFooter() {
               Alle Gewerke
             </Link>
             {industryList.map((item) => (
-              <Link key={item.slug} href={gewerkHref(item.slug)} scroll={false} className="hover:text-white">
+              <Link key={item.slug} href={gewerkHref(item.slug)} className="hover:text-white">
                 {item.title}
               </Link>
             ))}
           </span>
+        </div>
+        <div className="mx-auto mt-3 flex max-w-6xl flex-wrap gap-x-4 gap-y-1">
+          <span className="text-white/35">Einsatzgebiet</span>
+          {standorte.map((item) => (
+            <Link key={item.slug} href={`/${item.slug}`} className="hover:text-white">
+              Webdesign {item.stadt}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

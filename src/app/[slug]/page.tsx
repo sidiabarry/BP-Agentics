@@ -1,6 +1,5 @@
-import { notFound, permanentRedirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { industries, type IndustrySlug } from "@/lib/content";
-import { tradePages } from "@/lib/trade-pages";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -12,10 +11,11 @@ export function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+/**
+ * Historische Gewerke-URLs ohne Präfix (/dachdecker) zeigen dauerhaft auf die
+ * eigenständige Gewerke-Seite unter /gewerke/[slug].
+ */
 export default async function IndustryPage({ params }: Props) {
   const { slug } = await params;
-  const page = industries[slug as IndustrySlug];
-  const seo = tradePages[slug as IndustrySlug];
-  if (!page || !seo) notFound();
-  permanentRedirect(`/gewerke?gewerk=${slug}`);
+  permanentRedirect(`/gewerke/${slug}`);
 }
