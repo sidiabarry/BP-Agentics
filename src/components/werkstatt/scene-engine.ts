@@ -621,11 +621,15 @@ export function createWerkstattScene(
     return anchor;
   }
 
+  const robotHead =
+    robot.group.children.find((child) => child instanceof THREE.Group && child.position.y > 1) ??
+    robot.group;
+
   // Anker sitzen am Prop: CRT-Bildschirm, Tabletfläche, Roboter-Kopf.
   const labelAnchors: Record<StationId, THREE.Object3D> = {
-    web: attachLabelAnchor(websiteScreen, [0, 0.38, 0]),
-    chat: attachLabelAnchor(tabletScreen, [0, 0.12, 0.02]),
-    office: attachLabelAnchor(robot.group, [0.08, 1.38, 0.32]),
+    web: attachLabelAnchor(websiteScreen, [0, 0.18, 0]),
+    chat: attachLabelAnchor(tabletScreen, [0, 0.08, 0.02]),
+    office: attachLabelAnchor(robotHead, [0.12, 0.12, 0.28]),
   };
 
   // ---------------------------------------------------------------------
