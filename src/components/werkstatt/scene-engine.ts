@@ -629,7 +629,7 @@ export function createWerkstattScene(
   const labelAnchors: Record<StationId, THREE.Object3D> = {
     web: attachLabelAnchor(websiteScreen, [0, 0.18, 0]),
     chat: attachLabelAnchor(tabletScreen, [0, 0.08, 0.02]),
-    office: attachLabelAnchor(robotHead, [0.12, 0.12, 0.28]),
+    office: attachLabelAnchor(robotHead, [0.36, 0.02, 0.22]),
   };
 
   // ---------------------------------------------------------------------
