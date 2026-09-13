@@ -90,7 +90,7 @@ export function createWerkstattScene(
   scene.fog = new THREE.FogExp2("#0b1822", 0.035);
 
   const camera = new THREE.PerspectiveCamera(
-    container.clientWidth < 800 ? 49 : 42,
+    container.clientWidth < 800 ? 52 : 42,
     container.clientWidth / container.clientHeight,
     0.06,
     70,
@@ -637,8 +637,8 @@ export function createWerkstattScene(
     const t: Vec3Tuple = [...s.t];
     // Handy: dieselbe Frontalpose, nur weiter weg, damit alle drei Stationen reinpassen.
     if (id === "overview" && mobile) {
-      p[1] += 0.32;
-      p[2] += 4.15;
+      p[1] += 0.38;
+      p[2] += 4.7;
     }
     return { p: new THREE.Vector3(...p), t: new THREE.Vector3(...t) };
   }
@@ -718,7 +718,7 @@ export function createWerkstattScene(
   function resize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     camera.aspect = container.clientWidth / container.clientHeight;
-    camera.fov = container.clientWidth < 800 ? 49 : 42;
+    camera.fov = container.clientWidth < 800 ? 52 : 42;
     camera.updateProjectionMatrix();
     if (!transition) {
       const d = pose(current);
