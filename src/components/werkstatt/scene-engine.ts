@@ -275,6 +275,25 @@ export function createWerkstattScene(
   for (let i = 0; i < 22; i++) box(0.025, 7, 0.025, mat("#31414a", 0.9), [-6.5 + i * 0.62, 1.05, -6.05]);
   box(0.2, 9, 20, mat("#121d26", 0.95), [-7, 1.5, -1]);
 
+  // --- Wandgliederung -----------------------------------------------------
+  // Waagerechte Riegel brechen die senkrechten Latten und geben der Wand Halt.
+  const battenDark = mat("#1d323d", 0.88);
+  const battenLit = mat("#2f4a57", 0.76);
+  for (const y of [0.42, 2.92]) {
+    box(14.6, 0.13, 0.1, battenDark, [0, y, -6.0]);
+    box(14.6, 0.028, 0.13, battenLit, [0, y + 0.079, -5.985]);
+  }
+
+  // Installationsrohr mit Schellen — Werkstattdetail, das die Wand erdet.
+  const conduitMat = mat("#3b4d57", 0.5, 0.45);
+  const conduit = cylinder(0.052, 0.052, 13.6, conduitMat, [0, 5.28, -5.94]);
+  conduit.rotation.z = Math.PI / 2;
+  for (let i = 0; i < 9; i++) box(0.14, 0.17, 0.11, mat("#293a44", 0.7), [-6.2 + i * 1.55, 5.28, -5.99]);
+  // Abzweig, der hinter dem Regal nach unten verschwindet
+  const drop = cylinder(0.042, 0.042, 2.1, conduitMat, [-5.45, 4.25, -5.94]);
+  box(0.12, 0.14, 0.1, mat("#293a44", 0.7), [-5.45, 3.35, -5.99]);
+  void drop;
+
   // Regale, Fenster, Deckenlampen, rotes Signallicht
   for (let j = 0; j < 3; j++) {
     box(3.6, 0.13, 0.7, wood, [-3.85, 0.1 + j * 1.05, -5.5]);
@@ -292,6 +311,63 @@ export function createWerkstattScene(
   box(2.4, 2.8, 0.06, glow("#264d72"), [3.8, 1.8, -5.9]);
   for (let i = 0; i < 12; i++) box(2.5, 0.045, 0.12, mat("#0c1b27"), [3.8, 0.45 + i * 0.24, -5.8]);
   box(0.08, 2.8, 0.16, dark, [3.8, 1.8, -5.75]);
+
+  // --- Fensterlaibung und Bank: das Fenster bekommt Tiefe statt Aufkleber ---
+  box(3.0, 0.1, 0.46, mat("#3d5763", 0.68), [3.8, 0.27, -5.79]);
+  box(3.0, 0.06, 0.14, mat("#50707d", 0.6), [3.8, 0.33, -5.6]);
+  for (const sx of [-1.42, 1.42]) box(0.13, 3.1, 0.4, mat("#28404c", 0.8), [3.8 + sx, 1.85, -5.82]);
+  box(3.0, 0.13, 0.4, mat("#28404c", 0.8), [3.8, 3.38, -5.82]);
+
+  // --- Lichtbahnen aus dem Fenster ----------------------------------------
+  // Additive Flächen mit weichem Verlauf: kostet fast nichts und gibt dem Raum
+  // Luft. Bei reduzierter Bewegung bleiben sie stehen statt zu atmen.
+  const shaftCanvas = document.createElement("canvas");
+  shaftCanvas.width = 64;
+  shaftCanvas.height = 256;
+  const shc = shaftCanvas.getContext("2d")!;
+  const along = shc.createLinearGradient(0, 0, 0, 256);
+  along.addColorStop(0, "rgba(255,255,255,0.62)");
+  along.addColorStop(0.45, "rgba(255,255,255,0.28)");
+  along.addColorStop(1, "rgba(255,255,255,0)");
+  shc.fillStyle = along;
+  shc.fillRect(0, 0, 64, 256);
+  shc.globalCompositeOperation = "destination-out";
+  const across = shc.createLinearGradient(0, 0, 64, 0);
+  across.addColorStop(0, "rgba(0,0,0,1)");
+  across.addColorStop(0.5, "rgba(0,0,0,0)");
+  across.addColorStop(1, "rgba(0,0,0,1)");
+  shc.fillStyle = across;
+  shc.fillRect(0, 0, 64, 256);
+  const shaftTex = new THREE.CanvasTexture(shaftCanvas);
+  shaftTex.colorSpace = THREE.SRGBColorSpace;
+
+  const shafts: THREE.Mesh[] = [];
+  for (const [x, y, z, w, h, tilt, turn, op] of [
+    [2.55, 1.95, -4.15, 1.15, 6.4, 0.46, -0.22, 0.16],
+    [3.35, 2.35, -4.75, 0.72, 5.6, 0.4, -0.16, 0.12],
+    [1.75, 1.55, -3.35, 0.55, 5.2, 0.52, -0.3, 0.09],
+  ] as const) {
+    const m = new THREE.Mesh(
+      new THREE.PlaneGeometry(w, h),
+      new THREE.MeshBasicMaterial({
+        map: shaftTex,
+        color: "#bfe0f6",
+        transparent: true,
+        opacity: op,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      }),
+    );
+    m.position.set(x, y, z);
+    m.rotation.set(0, turn, tilt);
+    m.castShadow = false;
+    m.receiveShadow = false;
+    m.renderOrder = 2;
+    scene.add(m);
+    shafts.push(m);
+  }
   for (const x of [-1.6, 1.5]) {
     tube(
       [
@@ -775,7 +851,14 @@ export function createWerkstattScene(
       lastTexture = Math.floor(t * 12);
     }
     robot.animate(t, reduced);
-    if (!reduced) dust.rotation.y = Math.sin(t * 0.045) * 0.025;
+    if (!reduced) {
+      dust.rotation.y = Math.sin(t * 0.045) * 0.025;
+      // Die Lichtbahnen pulsieren minimal, als zöge draußen etwas vorbei.
+      shafts.forEach((s, i) => {
+        const base = [0.16, 0.12, 0.09][i] ?? 0.12;
+        (s.material as THREE.MeshBasicMaterial).opacity = base * (0.82 + 0.18 * Math.sin(t * 0.23 + i * 1.7));
+      });
+    }
     updateLabels();
     renderer.render(scene, camera);
 
