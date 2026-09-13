@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { createRobot } from "./robot.js";
-import { chatPhaseCaptions } from "./content";
+import { chatPhaseCaptions, chatExamples, webDemo } from "./content";
 import { loadDecorAssets } from "./decor";
 
 /**
@@ -421,11 +421,11 @@ export function createWerkstattScene(
       sc.fillStyle = ["#cba66e", "#b7cad4", "#9fcdb7"][i];
       sc.fill();
     }
-    txt(sc, "meisterbetrieb-mueller.de", 110, 32, 23, "#b7cad4", "500");
+    txt(sc, webDemo.domain, 110, 32, 23, "#b7cad4", "500");
     sc.fillStyle = "#102633";
     sc.fillRect(0, 618, 1024, 102);
-    txt(sc, "Website Signature", 32, 659, 41, "#f3efe6", "600");
-    txt(sc, "Dachdecker-Demo", 32, 697, 30, "#b7cad4");
+    txt(sc, webDemo.caption, 32, 659, 41, "#f3efe6", "600");
+    txt(sc, webDemo.note, 32, 697, 30, "#b7cad4");
     rect(sc, 702, 641, 292, 58, 29, "#213d49");
     sc.strokeStyle = "#9fcdb7";
     sc.lineWidth = 3;
@@ -498,33 +498,37 @@ export function createWerkstattScene(
   function drawChat(t: number) {
     const elapsed = (t - chatStarted + 20) % 20;
     const phase = reduced ? 3 : elapsed < 4 ? 0 : elapsed < 8 ? 1 : elapsed < 12 ? 2 : 3;
+    // Nach jedem Durchlauf die Branche wechseln — derselbe Ablauf, andere Welt.
+    const round = reduced ? 0 : Math.floor((t - chatStarted + 20) / 20);
+    const ex = chatExamples[((round % chatExamples.length) + chatExamples.length) % chatExamples.length];
+
     cc.fillStyle = "#eef2ef";
     cc.fillRect(0, 0, 660, 900);
     rect(cc, 0, 0, 660, 160, 0, "#102633");
     rect(cc, 28, 39, 70, 70, 24, "#cba66e");
-    txt(cc, "M", 49, 87, 37, "#102633", "600");
-    txt(cc, "Müller Bedachungen", 118, 72, 32, "#f3efe6", "600");
+    txt(cc, ex.initial, 49, 87, 37, "#102633", "600");
+    txt(cc, ex.business, 118, 72, 32, "#f3efe6", "600");
     txt(cc, "Nachrichten-Assistent", 118, 112, 27, "#b7cad4");
     txt(cc, chatPhaseCaptions[phase], 30, 212, 31, "#274c5c", "600");
     const mobile = container.clientWidth < 800;
     if (phase === 0) {
-      const bottom = bubble(["Unser Garagendach ist undicht.", "Können wir einen Termin machen?"], 249, false, mobile);
-      bubble(["Wo ist das Dach und", "wie groß ist die Fläche?"], bottom + 24, true, mobile);
+      const bottom = bubble(ex.incoming, 249, false, mobile);
+      bubble(ex.question, bottom + 24, true, mobile);
     } else if (phase === 1) {
-      const bottom = bubble(["Wo ist das Dach und", "wie groß ist die Fläche?"], 249, true, mobile);
-      const last = bubble(["In Hagen-Haspe.", "Ungefähr 30 m²."], bottom + 24, false, mobile);
-      txt(cc, "Ort und Anliegen erfasst", 32, last + 64, mobile ? 36 : 29, "#315d52", "600");
+      const bottom = bubble(ex.question, 249, true, mobile);
+      const last = bubble(ex.answer, bottom + 24, false, mobile);
+      txt(cc, ex.captured, 32, last + 64, mobile ? 36 : 29, "#315d52", "600");
     } else if (phase === 2) {
-      const bottom = bubble(["Donnerstag um 9:00 Uhr ist frei.", "Passt Ihnen der Termin?"], 249, true, mobile);
-      bubble(["Ja, das passt. Vielen Dank!"], bottom + 24, false, mobile);
+      const bottom = bubble(ex.offer, 249, true, mobile);
+      bubble(ex.accept, bottom + 24, false, mobile);
     } else {
-      bubble(["Ja, das passt. Vielen Dank!"], 249, false, mobile);
+      bubble(ex.accept, 249, false, mobile);
       rect(cc, 28, 383, 604, 303, 24, "#102633");
       rect(cc, 54, 412, 85, 88, 15, "#9fcdb7");
-      txt(cc, "DO", 75, 451, 30, "#102633", "700");
-      txt(cc, "09:00", 63, 484, 26, "#102633", "600");
-      txt(cc, "Termin bestätigt", 158, 451, mobile ? 42 : 36, "#f3efe6", "600");
-      txt(cc, "Besichtigung", 158, 492, 30, "#b7cad4");
+      txt(cc, ex.appointment.day, 70, 451, 30, "#102633", "700");
+      txt(cc, ex.appointment.time, 63, 484, 26, "#102633", "600");
+      txt(cc, ex.appointment.title, 158, 451, mobile ? 42 : 36, "#f3efe6", "600");
+      txt(cc, ex.appointment.subtitle, 158, 492, 30, "#b7cad4");
       cc.strokeStyle = "#9fcdb7";
       cc.lineWidth = 5;
       cc.lineCap = "round";
@@ -534,10 +538,10 @@ export function createWerkstattScene(
       cc.lineTo(93, 542);
       cc.stroke();
       txt(cc, "Im Kalender eingetragen", 115, 565, mobile ? 38 : 32, "#f3efe6", "600");
-      txt(cc, "Hagen-Haspe · Garagendach", 54, 631, mobile ? 35 : 29, "#b7cad4");
+      txt(cc, ex.appointment.note, 54, 631, mobile ? 35 : 29, "#b7cad4");
     }
     for (let i = 0; i < 4; i++) rect(cc, 28 + i * 155, 752, 139, 5, 2, i <= phase ? "#3c756d" : "#cfdbd8");
-    txt(cc, "BEISPIELABLAUF", 28, 813, 23, "#456573", "600");
+    txt(cc, `BEISPIEL · ${ex.sector.toUpperCase()}`, 28, 813, 23, "#456573", "600");
     txt(cc, "Keine echte Buchung", 28, 849, 27, "#456573");
     chatTex.needsUpdate = true;
   }

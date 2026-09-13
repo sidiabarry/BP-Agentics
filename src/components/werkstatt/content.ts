@@ -84,15 +84,85 @@ export const chatPhaseCaptions = [
   "04  Eintrag im Kalender",
 ] as const;
 
-/** Gleiches Beispiel wie auf /leistungen/ablaeufe, für Konsistenz über die Seiten hinweg. */
-export const officeExample = {
-  reference: "LS-1042 · Hagen-Haspe · Garagendach",
-  label: "Beispiel · kein Echtbetrieb",
-};
-
 /** Gleiche Kennzeichnung wie auf /leistungen/auftritt bzw. /referenzen/dachdecker-signature. */
 export const webDemo = {
   domain: "meisterbetrieb-mueller.de",
   caption: "Website Signature",
-  note: "Dachdecker-Demo · Produktdemo, kein Echtbetrieb",
+  note: "Dachdecker-Demo",
 };
+
+export type ChatExample = {
+  sector: string;
+  business: string;
+  initial: string;
+  incoming: string[];
+  question: string[];
+  answer: string[];
+  captured: string;
+  offer: string[];
+  accept: string[];
+  appointment: { day: string; time: string; title: string; subtitle: string; note: string };
+};
+
+/**
+ * Der Ablauf ist immer derselbe — nur die Branche wechselt. Die Werkstatt zeigt
+ * die Beispiele nacheinander, damit nicht der Eindruck entsteht, das Angebot
+ * richte sich nur an Handwerksbetriebe. Alle Verläufe sind als Beispiel
+ * gekennzeichnet, keiner bildet einen echten Kunden ab.
+ */
+export const chatExamples: ChatExample[] = [
+  {
+    sector: "Bau und Ausbau",
+    business: "Müller Bedachungen",
+    initial: "M",
+    incoming: ["Unser Garagendach ist undicht.", "Können wir einen Termin machen?"],
+    question: ["Wo ist das Dach und", "wie groß ist die Fläche?"],
+    answer: ["In Hagen-Haspe.", "Ungefähr 30 m²."],
+    captured: "Ort und Anliegen erfasst",
+    offer: ["Donnerstag um 9:00 Uhr ist frei.", "Passt Ihnen der Termin?"],
+    accept: ["Ja, das passt. Vielen Dank!"],
+    appointment: {
+      day: "DO",
+      time: "09:00",
+      title: "Termin bestätigt",
+      subtitle: "Besichtigung",
+      note: "Hagen-Haspe · Garagendach",
+    },
+  },
+  {
+    sector: "Logistik und Transport",
+    business: "Kortmann Spedition",
+    initial: "K",
+    incoming: ["Wir brauchen regelmäßige Abholungen", "zwischen Hagen und Dortmund."],
+    question: ["Wie oft pro Woche und", "welches Volumen ungefähr?"],
+    answer: ["Dreimal pro Woche,", "etwa vier Paletten."],
+    captured: "Strecke und Volumen erfasst",
+    offer: ["Dienstag um 14:30 Uhr ist frei.", "Passt Ihnen der Termin?"],
+    accept: ["Ja, sehr gut. Danke!"],
+    appointment: {
+      day: "DI",
+      time: "14:30",
+      title: "Termin bestätigt",
+      subtitle: "Erstgespräch",
+      note: "Hagen–Dortmund · 3× pro Woche",
+    },
+  },
+  {
+    sector: "Agentur und Büro",
+    business: "Nordlicht Marketing",
+    initial: "N",
+    incoming: ["Unsere Anfragen laufen über drei Postfächer.", "Wir verlieren den Überblick."],
+    question: ["Wie viele Anfragen sind das", "ungefähr pro Woche?"],
+    answer: ["Um die 40.", "Vieles doppelt erfasst."],
+    captured: "Aufkommen und Kanäle erfasst",
+    offer: ["Mittwoch um 11:00 Uhr ist frei.", "Passt Ihnen der Termin?"],
+    accept: ["Ja, gerne. Danke!"],
+    appointment: {
+      day: "MI",
+      time: "11:00",
+      title: "Termin bestätigt",
+      subtitle: "Erstgespräch",
+      note: "40 Anfragen · drei Postfächer",
+    },
+  },
+];
