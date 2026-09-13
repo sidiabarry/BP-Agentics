@@ -443,7 +443,7 @@
   color: var(--paper);
   white-space: nowrap;
   cursor: pointer;
-  transform: translate(-50%, -50%);
+  transform: translate(-18%, calc(-100% - 6px));
   transition:
     background 0.2s,
     opacity 0.25s;
@@ -456,7 +456,13 @@
 }
 
 .werkstatt__hotspot::after {
-  display: none;
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 18%;
+  width: 1px;
+  height: 12px;
+  background: linear-gradient(#afc9d5b0, transparent);
 }
 
 .werkstatt__hotspot-num {

@@ -71,6 +71,11 @@ const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number 
 
 const STATION_IDS: StationId[] = ["web", "chat", "office"];
 
+/** Gleiche Bild-Versetzung für alle drei: etwas nach oben und rechts vom Mesh. */
+function labelScreenShift(width: number) {
+  return width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
+}
+
 const READY_TIMEOUT_MS = 12000;
 
 export function createWerkstattScene(
@@ -625,11 +630,11 @@ export function createWerkstattScene(
     robot.group.children.find((child) => child instanceof THREE.Group && child.position.y > 1) ??
     robot.group;
 
-  // Anker sitzen am Prop: CRT-Bildschirm, Tabletfläche, Roboter-Kopf.
+  // Anker bleiben am Mesh; die Pille wird in updateLabels im Bild versetzt.
   const labelAnchors: Record<StationId, THREE.Object3D> = {
-    web: attachLabelAnchor(websiteScreen, [0, 0.18, 0]),
-    chat: attachLabelAnchor(tabletScreen, [0, 0.08, 0.02]),
-    office: attachLabelAnchor(robotHead, [0.36, 0.02, 0.22]),
+    web: attachLabelAnchor(websiteScreen, [0, 0.56, 0]),
+    chat: attachLabelAnchor(tabletScreen, [0, 0.86, 0]),
+    office: attachLabelAnchor(robotHead, [0, 0.32, 0.2]),
   };
 
   // ---------------------------------------------------------------------
@@ -719,8 +724,17 @@ export function createWerkstattScene(
         projected.y < 1.25;
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      const x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 8, width - w / 2 - 8);
-      const y = clamp((-projected.y * 0.5 + 0.5) * height, headerPad, height - footerPad);
+      const shift = labelScreenShift(width);
+      const x = clamp(
+        (projected.x * 0.5 + 0.5) * width + shift.right,
+        12,
+        width - w - 12,
+      );
+      const y = clamp(
+        (-projected.y * 0.5 + 0.5) * height - shift.up,
+        headerPad + h,
+        height - footerPad,
+      );
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
       el.style.opacity = onScreen ? "1" : "0";
