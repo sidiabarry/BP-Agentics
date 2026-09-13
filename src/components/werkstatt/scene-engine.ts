@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { createRobot } from "./robot.js";
 import { chatPhaseCaptions, chatExamples, webDemo } from "./content";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { loadDecorAssets } from "./decor";
 
 /**
@@ -46,39 +47,38 @@ export interface WerkstattSceneController {
 type Vec3Tuple = [number, number, number];
 
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
-  // Näher und tiefer als der Entwurf: die drei Stationen füllen das Bild,
-  // statt in einer dunklen Tischfläche zu schwimmen.
-  overview: { p: [0.3, 4.35, 10.6], t: [0, 1.1, -0.9] },
-  web: { p: [-0.0, 1.75, 1.85], t: [-0.52, 1.05, -2.15] },
-  chat: { p: [0.25, 2.55, 5.05], t: [-0.25, 0.8, 2.38] },
-  office: { p: [2.25, 0.94, 2.8], t: [1.52, 0.92, -0.15] },
+  overview: { p: [0.2, 3.3, 11.9], t: [0, 0.85, 0.15] },
+  web: { p: [-2.1, 1.8, 4.15], t: [-2.52, 1.05, 0.3] },
+  chat: { p: [0.6, 2.12, 4.3], t: [0.48, 1.04, 1.0] },
+  office: { p: [4.25, 1.12, 3.65], t: [3.55, 1.04, 0.35] },
 };
 
 const MOBILE_POSES: Partial<Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }>> = {
-  overview: { p: [0.15, 5.4, 11.4], t: [0, 1.05, -0.7] },
-  office: { p: [2.6, 1.65, 5.2], t: [1.03, 0.6, -0.05] },
-  web: { p: [-0.8, 2.15, 4.8], t: [-1, 0.55, -2.25] },
-  chat: { p: [-0.65, 3.6, 7.7], t: [-0.72, 0.3, 2.45] },
+  // Im Hochformat passt die frontale Dreierreihe nur, wenn die Kamera so weit
+  // zuruecksteht, dass das Studio zu einem schmalen Band schrumpft. Deshalb
+  // hier eine diagonale Sicht: die Reihe laeuft in die Tiefe und fuellt das
+  // Bild. Alle drei Stationen bleiben ueber die untere Navigation erreichbar.
+  overview: { p: [6.1, 3.9, 11.4], t: [-0.35, 0.85, 0.4] },
+  web: { p: [-2.5, 2.4, 7.2], t: [-3.05, 0.28, 0.3] },
+  chat: { p: [0, 2.2, 7.05], t: [0, 0.25, 1] },
+  office: { p: [4.4, 1.7, 6.7], t: [3, 0.25, 0.35] },
 };
 
-/** Zusätzliches Licht je Station — hebt beim Zoomen genau das hervor, worum es geht. */
+/** Zusaetzliches Licht je Station - hebt beim Zoomen genau das hervor, worum es geht. */
 const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number }> = {
-  web: { pos: [-1.0, 2.5, -0.7], color: "#cfe6ff", peak: 26 },
-  chat: { pos: [-0.7, 2.1, 3.5], color: "#e2f2f7", peak: 22 },
-  office: { pos: [1.5, 2.1, 1.2], color: "#ffe6c4", peak: 24 },
+  web: { pos: [-3.05, 1.95, 1.7], color: "#cfe6ff", peak: 22 },
+  chat: { pos: [0, 2.05, 2.1], color: "#e2f2f7", peak: 20 },
+  office: { pos: [3.0, 1.95, 1.7], color: "#ffe6c4", peak: 20 },
 };
 
 /**
- * Die Schilder schweben deutlich ÜBER ihrem Objekt, nicht darauf — sonst
- * verdecken sie genau das, was sie erklären. Die Linie unter dem Schild
- * stellt den Bezug her.
+ * Die Stationen stehen nebeneinander, die Schilder in einer Reihe davor.
+ * Dadurch verdeckt kein Schild mehr ein dahinterliegendes Geraet.
  */
 const ANCHOR_POINTS: Record<StationId, THREE.Vector3> = {
-  web: new THREE.Vector3(-1.05, 3.05, -2.25),
-  office: new THREE.Vector3(1.45, 2.6, -0.05),
-  // Das Tablet steht vorn, der Monitor hinten — über dem Tablet würde das Schild
-  // auf dem Monitor landen. Deshalb links daneben auf die freie Tischfläche.
-  chat: new THREE.Vector3(-2.35, 0.75, 2.9),
+  web: new THREE.Vector3(-3.05, 0.05, 2.35),
+  chat: new THREE.Vector3(0, 0.05, 2.35),
+  office: new THREE.Vector3(3.0, 0.05, 2.35),
 };
 
 const MOBILE_ANCHOR_FRACTION: Record<StationId, number> = { web: 0.31, office: 0.37, chat: 0.68 };
@@ -207,15 +207,11 @@ export function createWerkstattScene(
   key.shadow.bias = -0.00015;
   key.shadow.normalBias = 0.025;
   scene.add(key, key.target);
-  point("#63b4f7", [3.5, 3, -3.5], 95, 18);
-  point("#ee9951", [-3.5, 2, -1], 40, 13);
-  point("#baddf3", [0, 3, 5], 22, 12);
-
-  // Streiflicht von hinten: trennt Monitor, Tablet und Roboter von der dunklen Rückwand.
-  const rim = new THREE.DirectionalLight("#9fd2ff", 0.75);
-  rim.position.set(2.6, 3.4, -4.2);
-  rim.target.position.set(0, 0.6, 0.2);
-  scene.add(rim, rim.target);
+  point("#83bdef", [4.8, 3, -1], 65, 14);
+  point("#e8b781", [-4, 2.8, 1], 28, 10);
+  point("#dce9f1", [0, 3.2, 5], 35, 14);
+  point("#ffe0af", [0, 2, -1.35], 8, 4);
+  point("#fac081", [0, -0.4, 2.1], 5, 6);
 
   // Je Station ein Licht, das nur bei geöffneter Station hochgefahren wird.
   const emphasisLights = Object.fromEntries(
@@ -223,191 +219,49 @@ export function createWerkstattScene(
   ) as Record<StationId, THREE.PointLight>;
 
   // ---------------------------------------------------------------------
-  // Holzmaserung (prozedurale Canvas-Textur) + Werkbank
+  // Der Raum kommt aus Blender
   // ---------------------------------------------------------------------
-  const woodCanvas = document.createElement("canvas");
-  woodCanvas.width = 256;
-  woodCanvas.height = 1024;
-  const wc = woodCanvas.getContext("2d")!;
-  wc.fillStyle = "#694c34";
-  wc.fillRect(0, 0, 256, 1024);
+  // Die Anordnung ist bewusst: links Websites, Mitte Nachrichten-Assistent,
+  // rechts Bueroablaeufe - der Weg von Sichtbarkeit ueber die Anfrage zur
+  // internen Bearbeitung. Der Raum bringt Korpus, Tischmatten, eingravierte
+  // Ziffern, Pendelleuchten und das BP-Wandzeichen schon mit und liegt als
+  // eigenes, getrennt cachebares Asset neben der Seite.
   let seed = 9271;
   const rand = () => {
     seed = (seed * 16807) % 2147483647;
     return (seed - 1) / 2147483646;
   };
-  for (let i = 0; i < 1800; i++) {
-    const x = rand() * 256;
-    wc.strokeStyle = `rgba(${rand() > 0.5 ? "23,12,3" : "215,176,105"},${rand() * 0.13})`;
-    wc.lineWidth = rand() * 1.8 + 0.2;
-    wc.beginPath();
-    wc.moveTo(x, 0);
-    for (let y = 0; y < 1025; y += 24) wc.lineTo(x + Math.sin(y * 0.012 + i) * rand() * 3, y);
-    wc.stroke();
-  }
-  for (let i = 0; i < 45; i++) {
-    wc.strokeStyle = "#36261444";
-    wc.lineWidth = 0.7;
-    wc.beginPath();
-    const x = rand() * 256;
-    const y = rand() * 1000;
-    wc.ellipse(x, y, rand() * 4 + 2, rand() * 24 + 4, 0, 0, Math.PI * 2);
-    wc.stroke();
-  }
-  const woodTex = new THREE.CanvasTexture(woodCanvas);
-  woodTex.colorSpace = THREE.SRGBColorSpace;
-  woodTex.wrapS = woodTex.wrapT = THREE.RepeatWrapping;
-  woodTex.anisotropy = 8;
-  const wood = new THREE.MeshStandardMaterial({ map: woodTex, color: "#d6ab78", roughness: 0.62, bumpMap: woodTex, bumpScale: 0.045 });
 
-  const tabletop = new THREE.Group();
-  scene.add(tabletop);
-  for (let i = 0; i < 6; i++) box(0.816, 0.25, 9.4, wood, [-2.04 + i * 0.824, -0.15, 0.1], tabletop);
-  box(5.05, 0.12, 9.5, mat("#32271e"), [0, -0.32, 0.1]);
-  for (const x of [-2.05, 2.05])
-    for (const z of [-3.6, 3.5]) {
-      box(0.22, 2.4, 0.25, dark, [x, -1.5, z]);
-      box(0.06, 0.5, 0.43, brass, [x, -0.4, z]);
-    }
-  for (const x of [-2.05, 2.05]) box(0.13, 0.15, 7.2, dark, [x, -2.25, -0.05]);
-  box(24, 0.16, 25, mat("#182027", 0.97), [0, -2.76, -2]);
-  box(15, 9, 0.25, mat("#142733", 0.96), [0, 1.5, -6.2]);
-  for (let i = 0; i < 22; i++) box(0.025, 7, 0.025, mat("#31414a", 0.9), [-6.5 + i * 0.62, 1.05, -6.05]);
-  box(0.2, 9, 20, mat("#121d26", 0.95), [-7, 1.5, -1]);
-
-  // --- Wandgliederung -----------------------------------------------------
-  // Waagerechte Riegel brechen die senkrechten Latten und geben der Wand Halt.
-  const battenDark = mat("#1d323d", 0.88);
-  const battenLit = mat("#2f4a57", 0.76);
-  for (const y of [0.42, 2.92]) {
-    box(14.6, 0.13, 0.1, battenDark, [0, y, -6.0]);
-    box(14.6, 0.028, 0.13, battenLit, [0, y + 0.079, -5.985]);
-  }
-
-  // Installationsrohr mit Schellen — Werkstattdetail, das die Wand erdet.
-  const conduitMat = mat("#3b4d57", 0.5, 0.45);
-  const conduit = cylinder(0.052, 0.052, 13.6, conduitMat, [0, 5.28, -5.94]);
-  conduit.rotation.z = Math.PI / 2;
-  for (let i = 0; i < 9; i++) box(0.14, 0.17, 0.11, mat("#293a44", 0.7), [-6.2 + i * 1.55, 5.28, -5.99]);
-  // Abzweig, der hinter dem Regal nach unten verschwindet
-  const drop = cylinder(0.042, 0.042, 2.1, conduitMat, [-5.45, 4.25, -5.94]);
-  box(0.12, 0.14, 0.1, mat("#293a44", 0.7), [-5.45, 3.35, -5.99]);
-  void drop;
-
-  // Regale, Fenster, Deckenlampen, rotes Signallicht
-  for (let j = 0; j < 3; j++) {
-    box(3.6, 0.13, 0.7, wood, [-3.85, 0.1 + j * 1.05, -5.5]);
-    // Das mittlere Brett bleibt frei — dort stehen die Aktenordner aus decor.ts.
-    if (j === 1) continue;
-    for (let i = 0; i < 5; i++) {
-      box(0.4 + rand() * 0.15, 0.32 + rand() * 0.22, 0.38, mat(["#5c5d50", "#354b50", "#795b40"][i % 3]), [
-        -5.2 + i * 0.63,
-        0.37 + j * 1.05,
-        -5.43,
-      ]);
-    }
-  }
-  box(2.6, 3, 0.1, dark, [3.8, 1.8, -5.97]);
-  box(2.4, 2.8, 0.06, glow("#264d72"), [3.8, 1.8, -5.9]);
-  for (let i = 0; i < 12; i++) box(2.5, 0.045, 0.12, mat("#0c1b27"), [3.8, 0.45 + i * 0.24, -5.8]);
-  box(0.08, 2.8, 0.16, dark, [3.8, 1.8, -5.75]);
-
-  // --- Fensterlaibung und Bank: das Fenster bekommt Tiefe statt Aufkleber ---
-  box(3.0, 0.1, 0.46, mat("#3d5763", 0.68), [3.8, 0.27, -5.79]);
-  box(3.0, 0.06, 0.14, mat("#50707d", 0.6), [3.8, 0.33, -5.6]);
-  for (const sx of [-1.42, 1.42]) box(0.13, 3.1, 0.4, mat("#28404c", 0.8), [3.8 + sx, 1.85, -5.82]);
-  box(3.0, 0.13, 0.4, mat("#28404c", 0.8), [3.8, 3.38, -5.82]);
-
-  // --- Lichtbahnen aus dem Fenster ----------------------------------------
-  // Additive Flächen mit weichem Verlauf: kostet fast nichts und gibt dem Raum
-  // Luft. Bei reduzierter Bewegung bleiben sie stehen statt zu atmen.
-  const shaftCanvas = document.createElement("canvas");
-  shaftCanvas.width = 64;
-  shaftCanvas.height = 256;
-  const shc = shaftCanvas.getContext("2d")!;
-  const along = shc.createLinearGradient(0, 0, 0, 256);
-  along.addColorStop(0, "rgba(255,255,255,0.62)");
-  along.addColorStop(0.45, "rgba(255,255,255,0.28)");
-  along.addColorStop(1, "rgba(255,255,255,0)");
-  shc.fillStyle = along;
-  shc.fillRect(0, 0, 64, 256);
-  shc.globalCompositeOperation = "destination-out";
-  const across = shc.createLinearGradient(0, 0, 64, 0);
-  across.addColorStop(0, "rgba(0,0,0,1)");
-  across.addColorStop(0.5, "rgba(0,0,0,0)");
-  across.addColorStop(1, "rgba(0,0,0,1)");
-  shc.fillStyle = across;
-  shc.fillRect(0, 0, 64, 256);
-  const shaftTex = new THREE.CanvasTexture(shaftCanvas);
-  shaftTex.colorSpace = THREE.SRGBColorSpace;
-
-  const shafts: THREE.Mesh[] = [];
-  for (const [x, y, z, w, h, tilt, turn, op] of [
-    [2.55, 1.95, -4.15, 1.15, 6.4, 0.46, -0.22, 0.16],
-    [3.35, 2.35, -4.75, 0.72, 5.6, 0.4, -0.16, 0.12],
-    [1.75, 1.55, -3.35, 0.55, 5.2, 0.52, -0.3, 0.09],
-  ] as const) {
-    const m = new THREE.Mesh(
-      new THREE.PlaneGeometry(w, h),
-      new THREE.MeshBasicMaterial({
-        map: shaftTex,
-        color: "#bfe0f6",
-        transparent: true,
-        opacity: op,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        side: THREE.DoubleSide,
-        toneMapped: false,
-      }),
-    );
-    m.position.set(x, y, z);
-    m.rotation.set(0, turn, tilt);
-    m.castShadow = false;
-    m.receiveShadow = false;
-    m.renderOrder = 2;
-    scene.add(m);
-    shafts.push(m);
-  }
-  for (const x of [-1.6, 1.5]) {
-    tube(
-      [
-        [x, 5, -2],
-        [x, 3.6, -2],
-      ],
-      0.015,
-      dark,
-    );
-    cylinder(0.12, 0.42, 0.3, dark, [x, 3.47, -2]);
-    cylinder(0.36, 0.36, 0.012, glow("#ffcd87"), [x, 3.31, -2]);
-    point("#ffba69", [x, 3.19, -2], 12, 7);
-  }
-  box(0.7, 0.025, 0.03, glow("#c46b52"), [-0.7, 2.7, -5.83]);
-  point("#cf6e4a", [-0.7, 2.7, -5.6], 8, 5);
-
-  function contactShadow(x: number, z: number, sx: number, sz: number) {
-    const c = document.createElement("canvas");
-    c.width = c.height = 128;
-    const ct = c.getContext("2d")!;
-    const g = ct.createRadialGradient(64, 64, 3, 64, 64, 60);
-    g.addColorStop(0, "rgba(0,0,0,.65)");
-    g.addColorStop(1, "rgba(0,0,0,0)");
-    ct.fillStyle = g;
-    ct.fillRect(0, 0, 128, 128);
-    const m = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false });
-    const p = meshAt(new THREE.PlaneGeometry(sx, sz), m, scene, [x, 0.006, z]);
-    p.rotation.x = -Math.PI / 2;
-    p.castShadow = false;
-  }
-  contactShadow(-1.05, -2.1, 3, 2.1);
-  contactShadow(1, 0.1, 2.2, 2.2);
-  contactShadow(-0.65, 2.5, 2.1, 2.4);
+  let roomRoot: THREE.Object3D | null = null;
+  new GLTFLoader().load(
+    "/models/studio-room.glb",
+    (gltf) => {
+      if (disposed) return;
+      gltf.scene.name = "Blender Studio";
+      const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      gltf.scene.traverse((o) => {
+        const m = o as THREE.Mesh;
+        if (!m.isMesh) return;
+        m.castShadow = true;
+        m.receiveShadow = true;
+        for (const mm of Array.isArray(m.material) ? m.material : [m.material]) {
+          const std = mm as THREE.MeshStandardMaterial;
+          if (std?.map) std.map.anisotropy = maxAniso;
+        }
+      });
+      roomRoot = gltf.scene;
+      scene.add(gltf.scene);
+    },
+    undefined,
+    () => callbacks.onFallback("Das Studio konnte nicht geladen werden. Ihre Leistungen bleiben erreichbar."),
+  );
 
   // ---------------------------------------------------------------------
   // Station „Websites" — CRT-Monitor mit Dachdecker-Demo (lokale Assets)
   // ---------------------------------------------------------------------
   const monitor = new THREE.Group();
-  monitor.position.set(-1.0, 0, -2.25);
-  monitor.rotation.y = 0.1;
+  monitor.position.set(-3.05, 0.025, 0.3);
+  monitor.rotation.y = 0.16;
   scene.add(monitor);
   round(1.48, 0.12, 0.85, 0.08, dark, [0, 0.08, 0], monitor);
   round(0.45, 0.38, 0.3, 0.08, cream, [0, 0.29, -0.04], monitor);
@@ -525,8 +379,8 @@ export function createWerkstattScene(
   // Station „Nachrichten-Assistent" — Tablet mit Beispielchat/Kalender
   // ---------------------------------------------------------------------
   const tablet = new THREE.Group();
-  tablet.position.set(-0.72, 0.72, 2.45);
-  tablet.rotation.set(-1.02, -0.06, 0.015);
+  tablet.position.set(0, 1.08, 1);
+  tablet.rotation.set(-0.27, 0, 0);
   scene.add(tablet);
   round(1.42, 1.98, 0.1, 0.12, mat("#253c49", 0.27, 0.75), [0, 0, 0], tablet);
   round(1.32, 1.87, 0.025, 0.1, black, [0, 0, 0.065], tablet);
@@ -542,7 +396,6 @@ export function createWerkstattScene(
     0, 0, 0.092,
   ]).castShadow = false;
   meshAt(new THREE.SphereGeometry(0.013, 10, 6), dark, tablet, [0, 0.94, 0.072]);
-  box(0.8, 0.14, 0.62, dark, [-0.72, 0.11, 2.35]);
 
   let chatStarted = 0;
   function bubble(lines: string[], y: number, outgoing = false, mobile = false) {
@@ -628,39 +481,10 @@ export function createWerkstattScene(
   // Station „Büroabläufe" — Roboter (unveränderter Import aus robot.js)
   // ---------------------------------------------------------------------
   const robot = createRobot(THREE, scene);
-  robot.group.position.set(1.03, 0, -0.05);
+  robot.group.position.set(3, 0.025, 0.25);
   robot.group.rotation.y = -0.13;
-  point("#f3e4cb", [1.3, 2, 1.5], 4, 3);
-
-  // Schreibtischlampe, Stiftbecher, Wanduhr
-  cylinder(0.23, 0.28, 0.06, dark, [1.94, 0.045, -1.78]);
-  tube(
-    [
-      [1.94, 0.06, -1.78],
-      [1.94, 0.75, -1.78],
-      [1.53, 1.25, -1.65],
-    ],
-    0.029,
-    brass,
-  );
-  const shade = cylinder(0.1, 0.27, 0.29, mat("#42616a", 0.45, 0.45), [1.5, 1.27, -1.63]);
-  shade.rotation.z = -0.3;
-  point("#ffc778", [1.43, 1.06, -1.58], 7, 4);
-  cylinder(0.12, 0.12, 0.29, mat("#9d917a"), [-1.98, 0.17, 1]);
-  for (let i = 0; i < 5; i++) {
-    const pen = cylinder(0.012, 0.012, 0.44, mat(["#1b3d50", "#ba9568", "#3b625f"][i % 3]), [
-      -2.02 + rand() * 0.09,
-      0.44,
-      1 + rand() * 0.08,
-    ]);
-    pen.rotation.z = (rand() - 0.5) * 0.3;
-  }
-  const clock = cylinder(0.37, 0.37, 0.05, brass, [0.15, 2.65, -6]);
-  clock.rotation.x = Math.PI / 2;
-  const face = cylinder(0.335, 0.335, 0.055, mat("#d1c4a5"), [0.15, 2.65, -5.965]);
-  face.rotation.x = Math.PI / 2;
-  box(0.018, 0.22, 0.02, dark, [0.15, 2.74, -5.92]);
-  box(0.18, 0.015, 0.02, dark, [0.23, 2.65, -5.92]);
+  robot.group.scale.setScalar(1.12);
+  point("#f3e4cb", [3.4, 2, 1.7], 4, 3);
 
   // Staub
   const dustG = new THREE.BufferGeometry();
@@ -749,10 +573,8 @@ export function createWerkstattScene(
   function updateLabels() {
     const width = container.clientWidth;
     const height = container.clientHeight;
-    const placed: { x: number; y: number; w: number; h: number }[] = [];
-    // Auf schmalen Schirmen würden die Schilder die Szene zudecken und mit dem
-    // Rundgang-Button kollidieren. Dort führt die untere Navigation, die ohnehin
-    // dauerhaft sichtbar ist.
+    // Auf schmalen Schirmen wuerden die Schilder die Szene zudecken; dort fuehrt
+    // die untere Navigation, die ohnehin dauerhaft sichtbar ist.
     const narrow = width < 800;
     for (const id of Object.keys(ANCHOR_POINTS) as StationId[]) {
       const el = hotspotElements[id];
@@ -765,18 +587,16 @@ export function createWerkstattScene(
       }
       projected.copy(ANCHOR_POINTS[id]).project(camera);
       const w = el.offsetWidth;
-      const h = el.offsetHeight;
-      const x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 14, width - w / 2 - 14);
-      let y = clamp((-projected.y * 0.5 + 0.5) * height - 58, width < 800 ? 285 : 95, height - 130);
-      if (width < 800) y = height * MOBILE_ANCHOR_FRACTION[id];
-      for (const prev of placed) {
-        if (Math.abs(x - prev.x) < (w + prev.w) / 2 + 10 && Math.abs(y - prev.y) < (h + prev.h) / 2 + 12) {
-          y = prev.y + (h + prev.h) / 2 + 12;
-        }
-      }
-      placed.push({ x, y, w, h });
+      // Das Schild haengt unter seinem Ankerpunkt an der Tischkante. Weil die
+      // Stationen nebeneinander stehen, kann sich hier nichts mehr ueberdecken
+      // — eine Ausweichlogik wuerde die Reihe nur schief ziehen.
+      let x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 18, width - w / 2 - 18);
+      const y = (-projected.y * 0.5 + 0.5) * height + 45;
+      // Im mittleren Bereich reicht die Breite nicht fuer die perspektivische
+      // Streuung: dort stehen die drei Schilder in festen Spalten.
+      if (width < 1100) x = width * ({ web: 0.19, chat: 0.5, office: 0.81 }[id] ?? 0.5);
       el.style.left = x + "px";
-      el.style.top = y + "px";
+      el.style.top = Math.min(y, height - 140) + "px";
       el.style.opacity = "1";
       el.style.pointerEvents = "auto";
       el.tabIndex = 0;
@@ -851,14 +671,7 @@ export function createWerkstattScene(
       lastTexture = Math.floor(t * 12);
     }
     robot.animate(t, reduced);
-    if (!reduced) {
-      dust.rotation.y = Math.sin(t * 0.045) * 0.025;
-      // Die Lichtbahnen pulsieren minimal, als zöge draußen etwas vorbei.
-      shafts.forEach((s, i) => {
-        const base = [0.16, 0.12, 0.09][i] ?? 0.12;
-        (s.material as THREE.MeshBasicMaterial).opacity = base * (0.82 + 0.18 * Math.sin(t * 0.23 + i * 1.7));
-      });
-    }
+    if (!reduced) dust.rotation.y = Math.sin(t * 0.045) * 0.025;
     updateLabels();
     renderer.render(scene, camera);
 
@@ -912,6 +725,7 @@ export function createWerkstattScene(
       roofVideo.load();
       renderer.dispose();
       if (renderer.domElement.parentElement === container) container.removeChild(renderer.domElement);
+      if (roomRoot) scene.remove(roomRoot);
       scene.traverse((o) => {
         const m = o as THREE.Mesh;
         if (m.isMesh) {

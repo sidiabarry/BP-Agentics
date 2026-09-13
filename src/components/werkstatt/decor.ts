@@ -31,22 +31,14 @@ type DecorAsset = {
 };
 
 const decorAssets: DecorAsset[] = [
-  {
-    url: "/models/bp-logo.glb",
-    name: "BP Agentics Logo an der Rückwand",
-    // Freie Wandfläche oben rechts über dem Fenster: dort liegt weder die
-    // Textspalte noch ein Stationsschild noch eine Hängelampe davor.
-    position: [4.3, 4.35, -5.93],
-    fitWidth: 1.85,
-    emissive: 0.4,
-  },
-  {
-    url: "/models/werkstatt-deko.glb",
-    name: "Ausstattung: Kaffeetasse, Pflanzen, Aktenordner, Kabel",
-    // In Blender direkt in Werkstatt-Koordinaten gebaut.
-    position: [0, 0, 0],
-    keepOrigin: true,
-  },
+  // Der Blender-Studioraum (scene-engine.ts) bringt Korpus, Tischmatten,
+  // Pendelleuchten und das BP-Wandzeichen bereits mit. Die frueheren Objekte
+  // — Logo an der Rueckwand, Tasse, Pflanzen, Aktenordner, Kabelrolle — waren
+  // fuer den selbstgebauten Raum eingemessen und passen in dessen Koordinaten
+  // nicht mehr. Die Dateien liegen weiter unter public/models bereit:
+  //   /models/bp-logo.glb         (zentriert, ueber fitWidth skalierbar)
+  //   /models/werkstatt-deko.glb  (feste Koordinaten, ueber keepOrigin)
+  // Neue Objekte fuer den Studioraum werden hier eingetragen.
 ];
 
 export function loadDecorAssets(scene: THREE.Scene) {
