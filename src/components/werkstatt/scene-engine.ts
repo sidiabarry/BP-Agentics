@@ -75,7 +75,7 @@ const STATION_IDS: StationId[] = ["web", "chat", "office"];
 function labelScreenShift(width: number, id: StationId) {
   const shift = width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
   // Mobil: Lücke rechts vom CRT, knapp über dem Roboterkopf — nicht auf den Körper.
-  if (id === "office" && width < 800) return { right: 34, up: 48 };
+  if (id === "office" && width < 800) return { right: 42, up: 50 };
   return shift;
 }
 
