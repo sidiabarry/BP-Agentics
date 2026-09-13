@@ -112,7 +112,7 @@ export function WerkstattScene({
     if (!target) return;
     pendingFocusRef.current = null;
     if (target === "overview") {
-      const first = navRefs.current[stationOrder[0]];
+      const first = hotspotRefs.current[stationOrder[0]];
       first?.focus({ preventScroll: true });
     } else {
       detailHeadingRef.current?.focus({ preventScroll: true });
@@ -138,7 +138,11 @@ export function WerkstattScene({
       <div className="werkstatt__grain" aria-hidden="true" />
 
       <header className="werkstatt__topbar">
-        <p className="werkstatt__eyebrow werkstatt__eyebrow--bar">{werkstattCopy.eyebrow}</p>
+        {active === "overview" ? (
+          <p className="werkstatt__studio-kicker">Studio</p>
+        ) : (
+          <p className="werkstatt__eyebrow werkstatt__eyebrow--bar">{werkstattCopy.eyebrow}</p>
+        )}
         <div className="werkstatt__actions">
           <button
             type="button"
@@ -156,29 +160,8 @@ export function WerkstattScene({
         </div>
       </header>
 
-      <div className="werkstatt__world-ui">
-        <div className="werkstatt__copy" data-hidden={active !== "overview"}>
-          <p className="werkstatt__eyebrow">{werkstattCopy.eyebrow}</p>
-          <h2>
-            {werkstattCopy.titleLead}
-            <br />
-            <span>{werkstattCopy.titleAccent}</span>
-          </h2>
-          <p>{werkstattCopy.lead}</p>
-          {active === "overview" && (
-            <button type="button" className="werkstatt__tour" onClick={() => goTo(stationOrder[0])}>
-              {werkstattCopy.tour} <span aria-hidden="true">→</span>
-            </button>
-          )}
-        </div>
-
-        {active === "overview" && (
-          <p className="werkstatt__marker">
-            <span className="werkstatt__led" aria-hidden="true" /> {werkstattCopy.marker}
-          </p>
-        )}
-
-        <div className="werkstatt__hotspots" inert={active !== "overview"}>
+      <div className="werkstatt__world-ui" data-view={active}>
+        <div className="werkstatt__hotspots werkstatt__hotspots--row" inert={active !== "overview"}>
           {stationOrder.map((id) => (
             <button
               key={id}
@@ -196,36 +179,28 @@ export function WerkstattScene({
                 <strong>{stations[id].label}</strong>
                 <small>{stations[id].promise}</small>
               </span>
-              <span className="werkstatt__hotspot-plus" aria-hidden="true">
-                ↗
-              </span>
             </button>
           ))}
         </div>
 
-        {active === "overview" && <p className="werkstatt__caption">{werkstattCopy.caption}</p>}
-
-        <nav className="werkstatt__nav" aria-label="Werkstatt-Stationen">
-          {stationOrder.map((id) => (
-            <button
-              key={id}
-              type="button"
-              ref={(el) => {
-                navRefs.current[id] = el;
-              }}
-              className="werkstatt__nav-station"
-              aria-pressed={active === id}
-              onClick={() => goTo(id)}
-            >
-              <span>{stations[id].num}</span> {stations[id].label}
-            </button>
-          ))}
-        </nav>
-
-        <p className="werkstatt__note">{werkstattCopy.note}</p>
-        <p className="werkstatt__index">
-          {detail ? `${detail.name} / ${detail.num}` : werkstattCopy.overviewIndex}
-        </p>
+        {active !== "overview" && (
+          <nav className="werkstatt__nav" aria-label="Werkstatt-Stationen">
+            {stationOrder.map((id) => (
+              <button
+                key={id}
+                type="button"
+                ref={(el) => {
+                  navRefs.current[id] = el;
+                }}
+                className="werkstatt__nav-station"
+                aria-pressed={active === id}
+                onClick={() => goTo(id)}
+              >
+                <span>{stations[id].num}</span> {stations[id].label}
+              </button>
+            ))}
+          </nav>
+        )}
       </div>
 
       <aside className="werkstatt__detail" data-open={Boolean(detail)} aria-hidden={!detail}>

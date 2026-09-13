@@ -47,37 +47,27 @@ export interface WerkstattSceneController {
 type Vec3Tuple = [number, number, number];
 
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
-  // Näher und tiefer als der Entwurf: die drei Stationen füllen das Bild,
-  // statt in einer dunklen Tischfläche zu schwimmen.
-  overview: { p: [0.3, 4.35, 10.6], t: [0, 1.1, -0.9] },
-  web: { p: [-0.0, 1.75, 1.85], t: [-0.52, 1.05, -2.15] },
-  chat: { p: [0.25, 2.55, 5.05], t: [-0.25, 0.8, 2.38] },
-  office: { p: [2.25, 0.94, 2.8], t: [1.52, 0.92, -0.15] },
+  // Frontal, Augenhöhe: drei Stationen in einer Reihe, Logo hinter dem Tablet.
+  overview: { p: [0, 1.36, 7.45], t: [0, 0.92, 0.12] },
+  web: { p: [-1.15, 1.48, 3.15], t: [-1.72, 0.98, 0.18] },
+  chat: { p: [0.12, 1.52, 3.05], t: [0.02, 1.02, 0.38] },
+  office: { p: [1.55, 1.42, 3.2], t: [1.72, 0.95, 0.16] },
 };
 
 const MOBILE_POSES: Partial<Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }>> = {
-  overview: { p: [0.15, 5.4, 11.4], t: [0, 1.05, -0.7] },
-  office: { p: [2.6, 1.65, 5.2], t: [1.03, 0.6, -0.05] },
-  web: { p: [-0.8, 2.15, 4.8], t: [-1, 0.55, -2.25] },
-  chat: { p: [-0.65, 3.6, 7.7], t: [-0.72, 0.3, 2.45] },
+  office: { p: [1.72, 1.58, 4.35], t: [1.72, 0.88, 0.16] },
+  web: { p: [-1.55, 1.62, 4.4], t: [-1.78, 0.72, 0.22] },
+  chat: { p: [0.05, 1.72, 4.55], t: [0.02, 0.95, 0.38] },
 };
 
 /** Zusätzliches Licht je Station — hebt beim Zoomen genau das hervor, worum es geht. */
 const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number }> = {
-  web: { pos: [-1.0, 2.5, -0.7], color: "#cfe6ff", peak: 26 },
-  chat: { pos: [-0.7, 2.1, 3.5], color: "#e2f2f7", peak: 22 },
-  office: { pos: [1.5, 2.1, 1.2], color: "#ffe6c4", peak: 24 },
+  web: { pos: [-1.7, 2.4, 1.5], color: "#cfe6ff", peak: 26 },
+  chat: { pos: [0.05, 2.2, 1.7], color: "#e2f2f7", peak: 22 },
+  office: { pos: [1.8, 2.1, 1.5], color: "#ffe6c4", peak: 24 },
 };
 
 const STATION_IDS: StationId[] = ["web", "chat", "office"];
-
-/** Gleiche Bild-Versetzung für alle drei: etwas nach oben und rechts vom Mesh. */
-function labelScreenShift(width: number, id: StationId) {
-  const shift = width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
-  // Mobil: Lücke rechts vom CRT, knapp über dem Roboterkopf — nicht auf den Körper.
-  if (id === "office" && width < 800) return { right: 42, up: 50 };
-  return shift;
-}
 
 const READY_TIMEOUT_MS = 12000;
 
@@ -334,16 +324,20 @@ export function createWerkstattScene(
     p.rotation.x = -Math.PI / 2;
     p.castShadow = false;
   }
-  contactShadow(-1.05, -2.1, 3, 2.1);
-  contactShadow(1, 0.1, 2.2, 2.2);
-  contactShadow(-0.65, 2.5, 2.1, 2.4);
+  contactShadow(-1.7, 0.25, 2.6, 1.8);
+  contactShadow(0, 0.35, 1.6, 1.5);
+  contactShadow(1.7, 0.22, 2.2, 1.8);
+  const matte = mat("#32271e", 0.92);
+  box(1.95, 0.012, 1.65, matte, [-1.55, -0.018, 0.32]);
+  box(1.15, 0.012, 1.2, matte, [0, -0.018, 0.38]);
+  box(1.7, 0.012, 1.5, matte, [1.52, -0.018, 0.28]);
 
   // ---------------------------------------------------------------------
   // Station „Websites" — CRT-Monitor mit Dachdecker-Demo (lokale Assets)
   // ---------------------------------------------------------------------
   const monitor = new THREE.Group();
-  monitor.position.set(-1.0, 0, -2.25);
-  monitor.rotation.y = 0.1;
+  monitor.position.set(-1.78, 0, 0.22);
+  monitor.rotation.y = 0.04;
   scene.add(monitor);
   round(1.48, 0.12, 0.85, 0.08, dark, [0, 0.08, 0], monitor);
   round(0.45, 0.38, 0.3, 0.08, cream, [0, 0.29, -0.04], monitor);
@@ -465,8 +459,8 @@ export function createWerkstattScene(
   // Station „Nachrichten-Assistent" — Tablet mit Beispielchat/Kalender
   // ---------------------------------------------------------------------
   const tablet = new THREE.Group();
-  tablet.position.set(-0.72, 0.72, 2.45);
-  tablet.rotation.set(-1.02, -0.06, 0.015);
+  tablet.position.set(0.02, 1.008, 0.38);
+  tablet.rotation.set(0, 0, 0);
   scene.add(tablet);
   round(1.42, 1.98, 0.1, 0.12, mat("#253c49", 0.27, 0.75), [0, 0, 0], tablet);
   round(1.32, 1.87, 0.025, 0.1, black, [0, 0, 0.065], tablet);
@@ -486,7 +480,7 @@ export function createWerkstattScene(
   );
   tabletScreen.castShadow = false;
   meshAt(new THREE.SphereGeometry(0.013, 10, 6), dark, tablet, [0, 0.94, 0.072]);
-  box(0.8, 0.14, 0.62, dark, [-0.72, 0.11, 2.35]);
+  box(0.46, 0.08, 0.3, dark, [0, -1.03, 0.02], tablet);
 
   let chatStarted = 0;
   function bubble(lines: string[], y: number, outgoing = false, mobile = false) {
@@ -572,8 +566,8 @@ export function createWerkstattScene(
   // Station „Büroabläufe" — Roboter (unveränderter Import aus robot.js)
   // ---------------------------------------------------------------------
   const robot = createRobot(THREE, scene);
-  robot.group.position.set(1.03, 0, -0.05);
-  robot.group.rotation.y = -0.13;
+  robot.group.position.set(1.72, 0, 0.18);
+  robot.group.rotation.y = -0.06;
   point("#f3e4cb", [1.3, 2, 1.5], 4, 3);
 
   // Schreibtischlampe, Stiftbecher, Wanduhr
@@ -628,31 +622,20 @@ export function createWerkstattScene(
     });
   }
 
-  function attachLabelAnchor(parent: THREE.Object3D, local: Vec3Tuple) {
-    const anchor = new THREE.Object3D();
-    anchor.position.set(...local);
-    parent.add(anchor);
-    return anchor;
-  }
-
-  const robotHead =
-    robot.group.children.find((child) => child instanceof THREE.Group && child.position.y > 1) ??
-    robot.group;
-
-  // Anker bleiben am Mesh; die Pille wird in updateLabels im Bild versetzt.
-  const labelAnchors: Record<StationId, THREE.Object3D> = {
-    web: attachLabelAnchor(websiteScreen, [0, 0.56, 0]),
-    chat: attachLabelAnchor(tabletScreen, [0, 0.86, 0]),
-    office: attachLabelAnchor(robotHead, [0, 0.32, 0.2]),
-  };
-
   // ---------------------------------------------------------------------
   // Kamera-Posen, Übergänge, Raycasting
   // ---------------------------------------------------------------------
   function pose(id: ViewId) {
-    const table = container.clientWidth < 800 ? MOBILE_POSES : POSES;
-    const s = table[id] ?? POSES[id];
-    return { p: new THREE.Vector3(...s.p), t: new THREE.Vector3(...s.t) };
+    const mobile = container.clientWidth < 800;
+    const s = (mobile ? MOBILE_POSES[id] : undefined) ?? POSES[id];
+    const p: Vec3Tuple = [...s.p];
+    const t: Vec3Tuple = [...s.t];
+    // Handy: dieselbe Frontalpose, nur weiter weg, damit alle drei Stationen reinpassen.
+    if (id === "overview" && mobile) {
+      p[1] += 0.18;
+      p[2] += 2.4;
+    }
+    return { p: new THREE.Vector3(...p), t: new THREE.Vector3(...t) };
   }
 
   // Die Kamera hat zwei Ebenen: `base` ist die erzählte Position (Pose/Übergang),
@@ -707,49 +690,17 @@ export function createWerkstattScene(
   // Hotspot-Projektion (DOM-Elemente werden von außen registriert)
   // ---------------------------------------------------------------------
   let hotspotElements: Partial<Record<StationId, HTMLElement>> = {};
-  const projected = new THREE.Vector3();
-  const world = new THREE.Vector3();
   function updateLabels() {
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    const headerPad = width < 800 ? 72 : 92;
-    const footerPad = width < 800 ? 78 : 88;
+    const onOverview = current === "overview" && introProgress >= 0.99;
     for (const id of STATION_IDS) {
       const el = hotspotElements[id];
       if (!el) continue;
-      if (current !== "overview" || introProgress < 0.99) {
-        el.style.opacity = "0";
-        el.style.pointerEvents = "none";
-        el.tabIndex = -1;
-        continue;
-      }
-      labelAnchors[id].getWorldPosition(world);
-      projected.copy(world).project(camera);
-      const onScreen =
-        projected.z < 1 &&
-        projected.x > -1.2 &&
-        projected.x < 1.2 &&
-        projected.y > -1.25 &&
-        projected.y < 1.25;
-      const w = el.offsetWidth;
-      const h = el.offsetHeight;
-      const shift = labelScreenShift(width, id);
-      const x = clamp(
-        (projected.x * 0.5 + 0.5) * width + shift.right,
-        w * 0.18 + 8,
-        width - w * 0.82 - 8,
-      );
-      const y = clamp(
-        (-projected.y * 0.5 + 0.5) * height - shift.up,
-        headerPad + h,
-        height - footerPad,
-      );
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
+      el.style.left = "";
+      el.style.top = "";
       el.style.transform = "";
-      el.style.opacity = onScreen ? "1" : "0";
-      el.style.pointerEvents = onScreen ? "auto" : "none";
-      el.tabIndex = onScreen ? 0 : -1;
+      el.style.opacity = onOverview ? "1" : "0";
+      el.style.pointerEvents = onOverview ? "auto" : "none";
+      el.tabIndex = onOverview ? 0 : -1;
     }
   }
   function clamp(v: number, a: number, b: number) {
@@ -797,13 +748,13 @@ export function createWerkstattScene(
       baseLook.copy(h.t);
     }
 
-    // Maus-Parallaxe und ruhiges Atmen in der Übersicht — gedämpft, nie ruckartig.
-    const reach = current === "overview" ? 1 : 0.45;
+    // Übersicht bleibt frontal; nur in den Stationen leichtes Mitgehen.
+    const reach = current === "overview" ? 0.12 : 0.45;
     const wantX = reduced ? 0 : pointer.x * 0.8 * reach;
     const wantY = reduced ? 0 : -pointer.y * 0.45 * reach;
     drift.x += (wantX - drift.x) * 0.045;
     drift.y += (wantY - drift.y) * 0.045;
-    const breathe = reduced || current !== "overview" ? 0 : Math.sin(t * 0.16) * 0.13;
+    const breathe = 0;
     camera.position.set(basePos.x + drift.x + breathe, basePos.y + drift.y, basePos.z);
     look.copy(baseLook);
     camera.lookAt(look);

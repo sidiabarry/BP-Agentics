@@ -162,8 +162,12 @@
   top: 7.25rem;
 }
 
-.werkstatt-scroll--chapter .werkstatt__topbar {
+  .werkstatt-scroll--chapter .werkstatt__topbar {
   top: 5.35rem;
+}
+
+.werkstatt-scroll--chapter .werkstatt__studio-kicker {
+  margin-top: 0;
 }
 
 .werkstatt__copy {
@@ -175,6 +179,15 @@
   transition:
     opacity 0.35s,
     transform 0.4s;
+}
+
+.werkstatt__studio-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8aa3b0;
 }
 
 .werkstatt__eyebrow--bar {
@@ -426,24 +439,35 @@
   pointer-events: none;
 }
 
-.werkstatt__hotspot {
-  position: absolute;
-  top: 0;
-  left: 0;
+.werkstatt__hotspots--row {
+  inset: auto 9% 7.5%;
+  left: 9%;
+  right: 9%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.werkstatt__hotspot {
+  position: relative;
+  top: auto;
+  left: auto;
+  display: flex;
+  flex: 1 1 0;
+  align-items: flex-start;
   gap: 10px;
-  min-height: 52px;
-  padding: 12px 16px;
+  min-width: 0;
+  min-height: 64px;
+  padding: 12px 14px;
   border: 1px solid #789ca866;
   border-radius: 8px;
   background: rgba(16, 38, 51, 0.95);
   box-shadow: 0 5px 30px #0003;
   backdrop-filter: blur(12px);
   color: var(--paper);
-  white-space: nowrap;
+  white-space: normal;
   cursor: pointer;
-  transform: translate(-18%, calc(-100% - 6px));
+  transform: none;
   transition:
     background 0.2s,
     opacity 0.25s;
@@ -455,14 +479,8 @@
   border-color: var(--cyan);
 }
 
-.werkstatt__hotspot::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 18%;
-  width: 1px;
-  height: 12px;
-  background: linear-gradient(#afc9d5b0, transparent);
+.werkstatt__hotspots--row .werkstatt__hotspot::after {
+  display: none;
 }
 
 .werkstatt__hotspot-num {
@@ -488,7 +506,10 @@
 }
 
 .werkstatt__hotspot small {
-  display: none;
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #adc0cb;
 }
 
 .werkstatt__hotspot-plus {
@@ -964,15 +985,23 @@
     display: none;
   }
 
+  .werkstatt__hotspots--row {
+    left: 12px;
+    right: 5.35rem;
+    bottom: 1.15rem;
+    gap: 6px;
+  }
+
   .werkstatt__hotspot {
-    max-width: calc(100vw - 28px);
-    min-height: 48px;
-    padding: 11px 12px;
-    gap: 7px;
+    max-width: none;
+    min-height: 58px;
+    padding: 8px 7px;
+    gap: 5px;
   }
 
   .werkstatt__hotspot strong {
-    font-size: 14px;
+    font-size: 11px;
+    letter-spacing: -0.02em;
   }
 
   .werkstatt__hotspot-num {
@@ -985,9 +1014,7 @@
   }
 
   .werkstatt__station-icon {
-    flex-basis: 18px;
-    width: 18px;
-    height: 18px;
+    display: none;
   }
 
   .werkstatt__hotspot::after {
@@ -1045,7 +1072,9 @@
   }
 
   .werkstatt__hotspot small {
-    display: none;
+    display: block;
+    font-size: 9px;
+    line-height: 1.25;
   }
 
   .werkstatt__tour {
