@@ -38,9 +38,9 @@ const SURFACE_MESH: Record<SurfaceId, string> = {
  * Roboter 1.03/0/−0.05).
  */
 const DECOR_PIECES: DecorPiece[] = [
-  { name: "Pflanze_Regal", surface: "shelfHigh", x: -2.38, z: -5.5, fitWidth: 0.52 },
-  { name: "Pflanze_Tisch", surface: "shelfMid", x: -4.55, z: -5.5, fitWidth: 0.44 },
-  { name: "Kaffeetasse", surface: "table", x: -1.68, z: -1.42, fitWidth: 0.12, rotationY: -0.42 },
+  { name: "Pflanze_Regal", surface: "shelfHigh", x: -2.72, z: -5.48, fitWidth: 0.95 },
+  { name: "Pflanze_Tisch", surface: "shelfMid", x: -4.35, z: -5.48, fitWidth: 0.62 },
+  { name: "Kaffeetasse", surface: "table", x: -1.92, z: -1.16, fitWidth: 0.22, rotationY: -0.42 },
   { name: "Ordner_1", surface: "table", x: 1.58, z: -0.68, fitWidth: 0.15, rotationY: 0.1 },
   { name: "Ordner_2", surface: "table", x: 1.72, z: -0.66, fitWidth: 0.14, rotationY: 0.08 },
   { name: "Ordner_3", surface: "table", x: 1.86, z: -0.67, fitWidth: 0.16, rotationY: 0.12 },
@@ -135,6 +135,7 @@ function placePiece(scene: THREE.Scene, source: THREE.Object3D, spec: DecorPiece
 
 export function loadDecorAssets(scene: THREE.Scene) {
   const surfaces = measureStudioSurfaces(scene);
+  console.info("Werkstatt Flächen-Y", surfaces);
   const loader = new GLTFLoader();
 
   loader.load(
