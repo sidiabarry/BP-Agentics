@@ -69,20 +69,7 @@ const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number 
   office: { pos: [1.5, 2.1, 1.2], color: "#ffe6c4", peak: 24 },
 };
 
-/**
- * Die Schilder schweben deutlich ÜBER ihrem Objekt, nicht darauf — sonst
- * verdecken sie genau das, was sie erklären. Die Linie unter dem Schild
- * stellt den Bezug her.
- */
-const ANCHOR_POINTS: Record<StationId, THREE.Vector3> = {
-  web: new THREE.Vector3(-1.05, 3.05, -2.25),
-  office: new THREE.Vector3(1.45, 2.6, -0.05),
-  // Das Tablet steht vorn, der Monitor hinten — über dem Tablet würde das Schild
-  // auf dem Monitor landen. Deshalb links daneben auf die freie Tischfläche.
-  chat: new THREE.Vector3(-2.35, 0.75, 2.9),
-};
-
-const MOBILE_ANCHOR_FRACTION: Record<StationId, number> = { web: 0.31, office: 0.37, chat: 0.68 };
+const STATION_IDS: StationId[] = ["web", "chat", "office"];
 
 const READY_TIMEOUT_MS = 12000;
 
@@ -363,9 +350,13 @@ export function createWerkstattScene(
   roofVideo.preload = "auto";
   const screenTex = new THREE.CanvasTexture(screenC);
   screenTex.colorSpace = THREE.SRGBColorSpace;
-  meshAt(new THREE.PlaneGeometry(1.7, 1.15), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }), monitor, [
-    -0.04, 1.25, 0.525,
-  ]).castShadow = false;
+  const websiteScreen = meshAt(
+    new THREE.PlaneGeometry(1.7, 1.15),
+    new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }),
+    monitor,
+    [-0.04, 1.25, 0.525],
+  );
+  websiteScreen.castShadow = false;
 
   for (let i = 0; i < 5; i++) {
     const knob = cylinder(0.035, 0.035, 0.025, dark, [0.67 - i * 0.12, 0.48, 0.45], monitor);
@@ -473,9 +464,13 @@ export function createWerkstattScene(
   chatTex.colorSpace = THREE.SRGBColorSpace;
   cc.scale(1.5, 1.5);
   chatTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  meshAt(new THREE.PlaneGeometry(1.23, 1.76), new THREE.MeshBasicMaterial({ map: chatTex, toneMapped: false }), tablet, [
-    0, 0, 0.092,
-  ]).castShadow = false;
+  const tabletScreen = meshAt(
+    new THREE.PlaneGeometry(1.23, 1.76),
+    new THREE.MeshBasicMaterial({ map: chatTex, toneMapped: false }),
+    tablet,
+    [0, 0, 0.092],
+  );
+  tabletScreen.castShadow = false;
   meshAt(new THREE.SphereGeometry(0.013, 10, 6), dark, tablet, [0, 0.94, 0.072]);
   box(0.8, 0.14, 0.62, dark, [-0.72, 0.11, 2.35]);
 
@@ -619,6 +614,20 @@ export function createWerkstattScene(
     });
   }
 
+  function attachLabelAnchor(parent: THREE.Object3D, local: Vec3Tuple) {
+    const anchor = new THREE.Object3D();
+    anchor.position.set(...local);
+    parent.add(anchor);
+    return anchor;
+  }
+
+  // Anker sitzen am Prop: CRT-Bildschirm, Tabletfläche, Roboter-Kopf.
+  const labelAnchors: Record<StationId, THREE.Object3D> = {
+    web: attachLabelAnchor(websiteScreen, [0, 0.38, 0]),
+    chat: attachLabelAnchor(tabletScreen, [0, 0.12, 0.02]),
+    office: attachLabelAnchor(robot.group, [0.08, 1.38, 0.32]),
+  };
+
   // ---------------------------------------------------------------------
   // Kamera-Posen, Übergänge, Raycasting
   // ---------------------------------------------------------------------
@@ -681,40 +690,38 @@ export function createWerkstattScene(
   // ---------------------------------------------------------------------
   let hotspotElements: Partial<Record<StationId, HTMLElement>> = {};
   const projected = new THREE.Vector3();
+  const world = new THREE.Vector3();
   function updateLabels() {
     const width = container.clientWidth;
     const height = container.clientHeight;
-    const placed: { x: number; y: number; w: number; h: number }[] = [];
-    // Auf schmalen Schirmen würden die Schilder die Szene zudecken und mit dem
-    // Rundgang-Button kollidieren. Dort führt die untere Navigation, die ohnehin
-    // dauerhaft sichtbar ist.
-    const narrow = width < 800;
-    for (const id of Object.keys(ANCHOR_POINTS) as StationId[]) {
+    const headerPad = width < 800 ? 72 : 92;
+    const footerPad = width < 800 ? 78 : 88;
+    for (const id of STATION_IDS) {
       const el = hotspotElements[id];
       if (!el) continue;
-      if (narrow || current !== "overview" || introProgress < 0.99) {
+      if (current !== "overview" || introProgress < 0.99) {
         el.style.opacity = "0";
         el.style.pointerEvents = "none";
         el.tabIndex = -1;
         continue;
       }
-      projected.copy(ANCHOR_POINTS[id]).project(camera);
+      labelAnchors[id].getWorldPosition(world);
+      projected.copy(world).project(camera);
+      const onScreen =
+        projected.z < 1 &&
+        projected.x > -1.2 &&
+        projected.x < 1.2 &&
+        projected.y > -1.25 &&
+        projected.y < 1.25;
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      const x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 14, width - w / 2 - 14);
-      let y = clamp((-projected.y * 0.5 + 0.5) * height - 58, width < 800 ? 285 : 95, height - 130);
-      if (width < 800) y = height * MOBILE_ANCHOR_FRACTION[id];
-      for (const prev of placed) {
-        if (Math.abs(x - prev.x) < (w + prev.w) / 2 + 10 && Math.abs(y - prev.y) < (h + prev.h) / 2 + 12) {
-          y = prev.y + (h + prev.h) / 2 + 12;
-        }
-      }
-      placed.push({ x, y, w, h });
-      el.style.left = x + "px";
-      el.style.top = y + "px";
-      el.style.opacity = "1";
-      el.style.pointerEvents = "auto";
-      el.tabIndex = 0;
+      const x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 8, width - w / 2 - 8);
+      const y = clamp((-projected.y * 0.5 + 0.5) * height, headerPad, height - footerPad);
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.opacity = onScreen ? "1" : "0";
+      el.style.pointerEvents = onScreen ? "auto" : "none";
+      el.tabIndex = onScreen ? 0 : -1;
     }
   }
   function clamp(v: number, a: number, b: number) {

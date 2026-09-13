@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { werkstattCopy, werkstattExit } from "@/lib/journey";
+import { werkstattCopy } from "@/lib/journey";
 import { createWerkstattScene, type StationId, type ViewId, type WerkstattSceneController } from "./scene-engine";
 import { stations, stationOrder, nextStation } from "./content";
 import "./werkstatt.css";
@@ -153,9 +153,6 @@ export function WerkstattScene({
               <span aria-hidden="true">↖</span> {werkstattCopy.overview}
             </button>
           )}
-          <Link href={werkstattExit.talk.href} className="werkstatt__top-link">
-            {werkstattExit.talk.label} ↗
-          </Link>
         </div>
       </header>
 
@@ -262,18 +259,7 @@ export function WerkstattScene({
                 Weiter zu {stations[nextId].num} · {stations[nextId].label}
                 <span aria-hidden="true">→</span>
               </button>
-            ) : (
-              <div className="werkstatt__exit-row">
-                <Link href={werkstattExit.continue.href} className="werkstatt__next">
-                  {werkstattExit.continue.label}
-                  <span aria-hidden="true">→</span>
-                </Link>
-                <Link href={werkstattExit.talk.href} className="werkstatt__next">
-                  {werkstattExit.talk.label}
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-            )}
+            ) : null}
           </>
         )}
       </aside>

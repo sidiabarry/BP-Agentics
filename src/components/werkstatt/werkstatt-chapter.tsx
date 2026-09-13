@@ -14,24 +14,6 @@ const WerkstattScene = dynamic(
   { ssr: false },
 );
 
-function WerkstattDock() {
-  return (
-    <nav className="werkstatt-dock" aria-label="Leistungen der Werkstatt">
-      {stations.map((stop) => (
-        <Link key={stop.id} href={stop.href} className="werkstatt-dock__link">
-          {stop.button}
-        </Link>
-      ))}
-      <Link href={werkstattExit.continue.href} className="werkstatt-dock__exit">
-        {werkstattExit.continue.label}
-      </Link>
-      <Link href={werkstattExit.talk.href} className="werkstatt-dock__exit">
-        {werkstattExit.talk.label}
-      </Link>
-    </nav>
-  );
-}
-
 function WerkstattStatic() {
   return (
     <div className="werkstatt-static">
@@ -152,7 +134,6 @@ export function WerkstattChapter() {
       >
         <div className="werkstatt-scroll__pin" ref={pinRef}>
           {skipScene || !live ? <WerkstattStatic /> : <WerkstattScene reduced={osReduced} />}
-          <WerkstattDock />
           <div className="werkstatt-exit-veil" aria-hidden="true" />
         </div>
       </section>

@@ -205,55 +205,11 @@
   background: #0b1721;
 }
 
-.werkstatt-dock {
-  position: absolute;
-  z-index: 40;
-  right: 0;
-  bottom: 5.65rem;
-  left: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.55rem;
-  padding: 0 1.25rem;
-}
-
-.werkstatt-dock__link,
-.werkstatt-dock__exit {
-  display: inline-flex;
-  min-height: 42px;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: 99px;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.werkstatt-dock__link {
-  background: #f3efe6;
-  color: #102633;
-}
-
-.werkstatt-dock__link:hover {
-  background: #fff;
-}
-
-.werkstatt-dock__exit {
-  border: 1px solid rgba(243, 239, 230, 0.28);
-  background: rgba(5, 16, 25, 0.55);
-  color: #f3efe6;
-}
-
-.werkstatt-dock__exit:hover {
-  background: rgba(243, 239, 230, 0.14);
-}
-
 .werkstatt-static {
   position: relative;
   z-index: 5;
   min-height: 100svh;
-  padding: 6.5rem 1.5rem 7.5rem;
+  padding: 6.5rem 1.5rem 3rem;
   background: #08121a;
   color: #f3efe6;
 }
@@ -500,13 +456,7 @@
 }
 
 .werkstatt__hotspot::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 1px;
-  height: 25px;
-  background: linear-gradient(#afc9d5b0, transparent);
+  display: none;
 }
 
 .werkstatt__hotspot-num {
@@ -1098,19 +1048,6 @@
     margin-top: 16px;
     padding: 11px 18px;
     font-size: 13px;
-  }
-
-  .werkstatt-dock {
-    bottom: 5.15rem;
-    gap: 0.4rem;
-    padding: 0 0.75rem;
-  }
-
-  .werkstatt-dock__link,
-  .werkstatt-dock__exit {
-    min-height: 40px;
-    padding: 0.45rem 0.8rem;
-    font-size: 12px;
   }
 
   .werkstatt__nav {
