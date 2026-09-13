@@ -7,7 +7,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { cta } from "@/lib/offers";
 import { werkstattCopy, werkstattExit } from "@/lib/journey";
 import { createWerkstattScene, type StationId, type ViewId, type WerkstattSceneController } from "./scene-engine";
 import { stations, stationOrder, nextStation } from "./content";
@@ -154,8 +153,8 @@ export function WerkstattScene({
               <span aria-hidden="true">↖</span> {werkstattCopy.overview}
             </button>
           )}
-          <Link href={cta.href} className="werkstatt__top-link">
-            {cta.short} ↗
+          <Link href={werkstattExit.talk.href} className="werkstatt__top-link">
+            {werkstattExit.talk.label} ↗
           </Link>
         </div>
       </header>

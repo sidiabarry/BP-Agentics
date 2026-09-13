@@ -14,6 +14,24 @@ const WerkstattScene = dynamic(
   { ssr: false },
 );
 
+function WerkstattDock() {
+  return (
+    <nav className="werkstatt-dock" aria-label="Leistungen der Werkstatt">
+      {stations.map((stop) => (
+        <Link key={stop.id} href={stop.href} className="werkstatt-dock__link">
+          {stop.button}
+        </Link>
+      ))}
+      <Link href={werkstattExit.continue.href} className="werkstatt-dock__exit">
+        {werkstattExit.continue.label}
+      </Link>
+      <Link href={werkstattExit.talk.href} className="werkstatt-dock__exit">
+        {werkstattExit.talk.label}
+      </Link>
+    </nav>
+  );
+}
+
 function WerkstattStatic() {
   return (
     <div className="werkstatt-static">
@@ -79,6 +97,7 @@ export function WerkstattChapter() {
   const pinRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
   const [osReduced, setOsReduced] = useState(false);
+  const [webgl, setWebgl] = useState(false);
 
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
@@ -92,6 +111,12 @@ export function WerkstattChapter() {
   });
 
   useEffect(() => {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    setWebgl(Boolean(gl));
+  }, []);
+
+  useEffect(() => {
     const host = pinRef.current;
     if (!host) return;
     const observer = new IntersectionObserver(
@@ -102,7 +127,7 @@ export function WerkstattChapter() {
     return () => observer.disconnect();
   }, []);
 
-  const skipScene = osReduced;
+  const skipScene = osReduced || !webgl;
 
   return (
     <>
@@ -114,13 +139,8 @@ export function WerkstattChapter() {
         aria-label="Die Werkstatt — drei Leistungen als Ort"
       >
         <div className="werkstatt-scroll__pin" ref={pinRef}>
-          {skipScene ? (
-            <WerkstattStatic />
-          ) : live ? (
-            <WerkstattScene reduced={osReduced} />
-          ) : (
-            <div className="werkstatt-scroll__placeholder" aria-hidden="true" />
-          )}
+          {skipScene || !live ? <WerkstattStatic /> : <WerkstattScene reduced={osReduced} />}
+          <WerkstattDock />
           <div className="werkstatt-exit-veil" aria-hidden="true" />
         </div>
       </section>

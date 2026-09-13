@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { werkstattCopy } from "@/lib/journey";
 import { createRobot } from "./robot.js";
 import { chatPhaseCaptions, chatExamples, webDemo } from "./content";
 import { loadDecorAssets } from "./decor";
@@ -108,9 +109,19 @@ export function createWerkstattScene(
 
   let renderer: THREE.WebGLRenderer;
   try {
+    const probe = document.createElement("canvas");
+    if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) {
+      callbacks.onFallback(werkstattCopy.fallback);
+      return null;
+    }
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    if (!renderer.getContext()) {
+      renderer.dispose();
+      callbacks.onFallback(werkstattCopy.fallback);
+      return null;
+    }
   } catch {
-    callbacks.onFallback("Die Werkstatt ist auf diesem Gerät als Übersicht verfügbar.");
+    callbacks.onFallback(werkstattCopy.fallback);
     return null;
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
