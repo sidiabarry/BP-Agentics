@@ -2,110 +2,164 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
- * Zusätzliche 3D-Objekte für die Werkstatt (.glb aus Blender oder einem anderen
- * 3D-Werkzeug). Die Kernszene bleibt reiner Three.js-Code — hier kommt nur
- * Ausstattung dazu.
- *
- * Der Loader macht die Modelle absichtlich robust nutzbar:
- *  - er zentriert sie selbst (viele Exporte liegen nicht im Ursprung),
- *  - skaliert auf eine gewünschte Breite in Szeneneinheiten (`fitWidth`),
- *  - wirft Kameras und Lichter aus der Datei weg, damit ein Export die
- *    Ausleuchtung der Werkstatt nicht durcheinanderbringt.
- * Damit passt jedes weitere Modell ohne Nacharbeit in der Datei selbst.
+ * Ausstattung aus `werkstatt-deko.glb`, zerlegt nach Objektnamen.
+ * Y kommt aus den Bounding-Boxen der benannten Flächen in der Szene
+ * (`Tischplatte`, `Regal_unten` / `_mitte` / `_oben`) — nicht aus den
+ * alten Raum-Koordinaten im GLB. `bp-logo.glb` wird nicht geladen:
+ * das Wandzeichen sitzt schon im Studio. `Kabel_*` bleibt weg, weil
+ * `scene-engine.ts` den Schlauch zum CRT schon baut.
  */
-type DecorAsset = {
-  url: string;
-  /** Zielposition des Modellmittelpunkts in Szeneneinheiten. */
-  position: [number, number, number];
-  rotation?: [number, number, number];
-  /** Breite in Szeneneinheiten; das Modell wird proportional darauf skaliert. */
-  fitWidth?: number;
-  /**
-   * Modell bereits in Werkstatt-Koordinaten gebaut: nicht zentrieren, nicht
-   * skalieren, einfach an Ort und Stelle einsetzen.
-   */
-  keepOrigin?: boolean;
-  /** Leichtes Eigenleuchten, damit dunkle Wandobjekte nicht absaufen. */
-  emissive?: number;
-  name?: string;
+
+type SurfaceId = "table" | "shelfLow" | "shelfMid" | "shelfHigh";
+
+type DecorPiece = {
+  name: string;
+  surface: SurfaceId;
+  /** Mittelpunkt auf der Fläche (X/Z). */
+  x: number;
+  z: number;
+  fitWidth: number;
+  rotationY?: number;
+  /** Auf die Oberkante eines schon gesetzten Teils setzen (Stapel). */
+  stackOn?: string;
 };
 
-const decorAssets: DecorAsset[] = [
+const SURFACE_MESH: Record<SurfaceId, string> = {
+  table: "Tischplatte",
+  shelfLow: "Regal_unten",
+  shelfMid: "Regal_mitte",
+  shelfHigh: "Regal_oben",
+};
+
+/**
+ * Pflanzen hinten auf den Regalen; Tasse links am CRT neben der Tastatur;
+ * Ordner rechts vom Roboter auf der Platte, nicht vor ihm.
+ * Stationen bleiben unangetastet (Monitor −1/0/−2.25, Tablet −0.72/0.72/2.45,
+ * Roboter 1.03/0/−0.05).
+ */
+const DECOR_PIECES: DecorPiece[] = [
+  { name: "Pflanze_Regal", surface: "shelfHigh", x: -2.38, z: -5.5, fitWidth: 0.52 },
+  { name: "Pflanze_Tisch", surface: "shelfMid", x: -4.55, z: -5.5, fitWidth: 0.44 },
+  { name: "Kaffeetasse", surface: "table", x: -1.68, z: -1.42, fitWidth: 0.12, rotationY: -0.42 },
+  { name: "Ordner_1", surface: "table", x: 1.58, z: -0.68, fitWidth: 0.15, rotationY: 0.1 },
+  { name: "Ordner_2", surface: "table", x: 1.72, z: -0.66, fitWidth: 0.14, rotationY: 0.08 },
+  { name: "Ordner_3", surface: "table", x: 1.86, z: -0.67, fitWidth: 0.16, rotationY: 0.12 },
+  { name: "Ordner_4", surface: "table", x: 2.0, z: -0.65, fitWidth: 0.14, rotationY: 0.07 },
+  { name: "Ordner_5", surface: "table", x: 2.14, z: -0.66, fitWidth: 0.15, rotationY: 0.11 },
+  { name: "Ordner_6", surface: "table", x: 2.28, z: -0.64, fitWidth: 0.14, rotationY: 0.18 },
+  { name: "Ordner_liegend_1", surface: "table", x: 2.12, z: -1.12, fitWidth: 0.36, rotationY: 0.22 },
   {
-    url: "/models/bp-logo.glb",
-    name: "BP Agentics Logo an der Rückwand",
-    // Freie Wandfläche oben rechts über dem Fenster: dort liegt weder die
-    // Textspalte noch ein Stationsschild noch eine Hängelampe davor.
-    position: [4.3, 4.35, -5.93],
-    fitWidth: 1.85,
-    emissive: 0.4,
-  },
-  {
-    url: "/models/werkstatt-deko.glb",
-    name: "Ausstattung: Kaffeetasse, Pflanzen, Aktenordner, Kabel",
-    // In Blender direkt in Werkstatt-Koordinaten gebaut.
-    position: [0, 0, 0],
-    keepOrigin: true,
+    name: "Ordner_liegend_2",
+    surface: "table",
+    x: 2.08,
+    z: -1.08,
+    fitWidth: 0.36,
+    rotationY: 0.28,
+    stackOn: "Ordner_liegend_1",
   },
 ];
 
+function surfaceTopY(scene: THREE.Scene, meshName: string): number | null {
+  const obj = scene.getObjectByName(meshName);
+  if (!obj) return null;
+  obj.updateWorldMatrix(true, true);
+  const box = new THREE.Box3().setFromObject(obj);
+  if (!Number.isFinite(box.max.y)) return null;
+  return box.max.y;
+}
+
+/** Tisch- und Regal-Oberkante aus den Mesh-Bounding-Boxen, nicht geraten. */
+export function measureStudioSurfaces(scene: THREE.Scene): Partial<Record<SurfaceId, number>> {
+  const tops: Partial<Record<SurfaceId, number>> = {};
+  for (const [id, meshName] of Object.entries(SURFACE_MESH) as [SurfaceId, string][]) {
+    const y = surfaceTopY(scene, meshName);
+    if (y !== null) tops[id] = y;
+  }
+  return tops;
+}
+
+function findPiece(root: THREE.Object3D, name: string): THREE.Object3D | null {
+  return root.children.find((child) => child.name === name) ?? root.getObjectByName(name) ?? null;
+}
+
+function stripCamerasAndLights(root: THREE.Object3D) {
+  root.traverse((o) => {
+    if ((o as THREE.Light).isLight || (o as THREE.Camera).isCamera) o.removeFromParent();
+  });
+}
+
+function seatOnSurface(holder: THREE.Group, sitY: number) {
+  holder.updateWorldMatrix(true, true);
+  const box = new THREE.Box3().setFromObject(holder);
+  holder.position.y += sitY + 0.001 - box.min.y;
+}
+
+function sitHeight(scene: THREE.Scene, spec: DecorPiece, surfaceY: number): number {
+  if (!spec.stackOn) return surfaceY;
+  const under = scene.getObjectByName(spec.stackOn);
+  if (!under) return surfaceY;
+  under.updateWorldMatrix(true, true);
+  return new THREE.Box3().setFromObject(under).max.y;
+}
+
+function placePiece(scene: THREE.Scene, source: THREE.Object3D, spec: DecorPiece, sitY: number) {
+  const piece = source.clone(true);
+  piece.position.set(0, 0, 0);
+  piece.rotation.set(0, 0, 0);
+  piece.scale.set(1, 1, 1);
+  piece.updateWorldMatrix(true, true);
+
+  const box = new THREE.Box3().setFromObject(piece);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  piece.position.sub(center);
+  const scale = spec.fitWidth / Math.max(size.x, 1e-4);
+  piece.scale.multiplyScalar(scale);
+  piece.position.multiplyScalar(scale);
+
+  piece.traverse((o) => {
+    const mesh = o as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+  });
+
+  const holder = new THREE.Group();
+  holder.name = spec.name;
+  holder.position.set(spec.x, 0, spec.z);
+  if (spec.rotationY) holder.rotation.y = spec.rotationY;
+  holder.add(piece);
+  scene.add(holder);
+  seatOnSurface(holder, sitHeight(scene, spec, sitY));
+}
+
 export function loadDecorAssets(scene: THREE.Scene) {
-  if (decorAssets.length === 0) return;
+  const surfaces = measureStudioSurfaces(scene);
   const loader = new GLTFLoader();
 
-  for (const asset of decorAssets) {
-    loader.load(
-      asset.url,
-      (gltf) => {
-        const root = gltf.scene;
+  loader.load(
+    "/models/werkstatt-deko.glb",
+    (gltf) => {
+      const library = gltf.scene;
+      stripCamerasAndLights(library);
 
-        // Kameras und Lichter aus dem Export entfernen — die Werkstatt leuchtet selbst.
-        for (const stray of [...root.children]) {
-          stray.traverse((o) => {
-            if ((o as THREE.Light).isLight || (o as THREE.Camera).isCamera) o.removeFromParent();
-          });
+      for (const spec of DECOR_PIECES) {
+        const sitY = surfaces[spec.surface];
+        if (sitY === undefined) {
+          console.warn(`Werkstatt: Fläche ${SURFACE_MESH[spec.surface]} fehlt — ${spec.name} nicht gesetzt.`);
+          continue;
         }
-
-        // Auf Zielbreite skalieren und den Mittelpunkt in den Ursprung holen.
-        // Bei keepOrigin bleibt beides unangetastet: das Modell bringt seine
-        // Position selbst mit.
-        if (!asset.keepOrigin) {
-          const box = new THREE.Box3().setFromObject(root);
-          const size = box.getSize(new THREE.Vector3());
-          const center = box.getCenter(new THREE.Vector3());
-          const scale = asset.fitWidth && size.x > 0 ? asset.fitWidth / size.x : 1;
-          root.scale.setScalar(scale);
-          root.position.copy(center).multiplyScalar(-scale);
+        const source = findPiece(library, spec.name);
+        if (!source) {
+          console.warn(`Werkstatt: Mesh ${spec.name} fehlt in werkstatt-deko.glb.`);
+          continue;
         }
-
-        root.traverse((o) => {
-          const mesh = o as THREE.Mesh;
-          if (!mesh.isMesh) return;
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-          if (asset.emissive) {
-            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-            for (const m of materials) {
-              const standard = m as THREE.MeshStandardMaterial;
-              if (!standard?.isMeshStandardMaterial) continue;
-              standard.emissive = new THREE.Color(standard.color);
-              standard.emissiveIntensity = asset.emissive;
-            }
-          }
-        });
-
-        // Ein Träger-Objekt trägt Position und Drehung, damit die Zentrierung erhalten bleibt.
-        const holder = new THREE.Group();
-        holder.name = asset.name ?? asset.url;
-        holder.position.set(...asset.position);
-        if (asset.rotation) holder.rotation.set(...asset.rotation);
-        holder.add(root);
-        scene.add(holder);
-      },
-      undefined,
-      (error) => {
-        console.warn(`Werkstatt: Deko-Objekt konnte nicht geladen werden (${asset.url})`, error);
-      },
-    );
-  }
+        placePiece(scene, source, spec, sitY);
+      }
+    },
+    undefined,
+    (error) => {
+      console.warn("Werkstatt: Deko-Objekt konnte nicht geladen werden (/models/werkstatt-deko.glb)", error);
+    },
+  );
 }

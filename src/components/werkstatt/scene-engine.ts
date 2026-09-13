@@ -267,8 +267,12 @@ export function createWerkstattScene(
   const wood = new THREE.MeshStandardMaterial({ map: woodTex, color: "#d6ab78", roughness: 0.62, bumpMap: woodTex, bumpScale: 0.045 });
 
   const tabletop = new THREE.Group();
+  tabletop.name = "Tischplatte";
   scene.add(tabletop);
-  for (let i = 0; i < 6; i++) box(0.816, 0.25, 9.4, wood, [-2.04 + i * 0.824, -0.15, 0.1], tabletop);
+  for (let i = 0; i < 6; i++) {
+    const board = box(0.816, 0.25, 9.4, wood, [-2.04 + i * 0.824, -0.15, 0.1], tabletop);
+    board.name = `Tischplatte_${i}`;
+  }
   box(5.05, 0.12, 9.5, mat("#32271e"), [0, -0.32, 0.1]);
   for (const x of [-2.05, 2.05])
     for (const z of [-3.6, 3.5]) {
@@ -282,9 +286,11 @@ export function createWerkstattScene(
   box(0.2, 9, 20, mat("#121d26", 0.95), [-7, 1.5, -1]);
 
   // Regale, Fenster, Deckenlampen, rotes Signallicht
+  const shelfNames = ["Regal_unten", "Regal_mitte", "Regal_oben"] as const;
   for (let j = 0; j < 3; j++) {
-    box(3.6, 0.13, 0.7, wood, [-3.85, 0.1 + j * 1.05, -5.5]);
-    // Das mittlere Brett bleibt frei — dort stehen die Aktenordner aus decor.ts.
+    const shelf = box(3.6, 0.13, 0.7, wood, [-3.85, 0.1 + j * 1.05, -5.5]);
+    shelf.name = shelfNames[j];
+    // Mittleres Brett ohne Kisten — dort steht eine Pflanze aus decor.ts.
     if (j === 1) continue;
     for (let i = 0; i < 5; i++) {
       box(0.4 + rand() * 0.15, 0.32 + rand() * 0.22, 0.38, mat(["#5c5d50", "#354b50", "#795b40"][i % 3]), [
@@ -612,7 +618,7 @@ export function createWerkstattScene(
   const dust = new THREE.Points(dustG, new THREE.PointsMaterial({ color: "#b8ccca", size: 0.014, transparent: true, opacity: 0.28, depthWrite: false }));
   scene.add(dust);
 
-  // Optionale Blender-Deko-Objekte (siehe Plan §9) — no-op ohne Einträge in decor.ts.
+  // Blender-Deko (Tasse, Pflanzen, Ordner) — sitzt auf benannten Tisch-/Regalflächen.
   loadDecorAssets(scene);
 
   const stationObjects: Record<StationId, THREE.Object3D> = { web: monitor, chat: tablet, office: robot.group };
