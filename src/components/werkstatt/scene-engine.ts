@@ -50,12 +50,12 @@ type Vec3Tuple = [number, number, number];
 const DESK_FRONT_Z = 1.52;
 const DESK_DEPTH = 3.55;
 const DESK_CENTER_Z = DESK_FRONT_Z - DESK_DEPTH / 2;
-const DESK_CARD_Z = DESK_FRONT_Z - 0.22;
+const DESK_CARD_Z = DESK_FRONT_Z - 0.08;
 const DESK_CARD_Y = 0.028;
 
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
-  // Augenhöhe, nah: Karten liegen auf der Vorderkante, nicht im Leerraum darunter.
-  overview: { p: [0, 1.14, 4.72], t: [0, 0.78, 0.28] },
+  // Augenhöhe: Reihe, Wandschirm und Karten auf der Vorderkante.
+  overview: { p: [0, 1.32, 6.72], t: [0, 0.88, 0.18] },
   web: { p: [-1.22, 1.28, 2.85], t: [-1.68, 0.82, 0.18] },
   chat: { p: [0.08, 1.32, 2.72], t: [0.02, 1.02, 0.38] },
   office: { p: [1.48, 1.28, 2.9], t: [1.68, 0.88, 0.16] },
@@ -97,7 +97,7 @@ export function createWerkstattScene(
   scene.fog = new THREE.FogExp2("#0b1822", 0.022);
 
   const camera = new THREE.PerspectiveCamera(
-    container.clientWidth < 800 ? 40 : 34,
+    container.clientWidth < 800 ? 50 : 38,
     container.clientWidth / container.clientHeight,
     0.06,
     70,
@@ -309,8 +309,8 @@ export function createWerkstattScene(
   box(0.08, 2.8, 0.16, dark, [3.8, 1.8, -5.75]);
   // Zwei schwarze Pendelstangen — wie in der Studio-Referenz, nicht Kegellampen.
   for (const x of [-1.92, 1.92]) {
-    const barZ = -1.05;
-    const barY = 2.78;
+    const barZ = -0.55;
+    const barY = 2.62;
     tube(
       [
         [x - 0.58, 5.1, barZ],
@@ -327,7 +327,7 @@ export function createWerkstattScene(
       0.007,
       black,
     );
-    box(1.28, 0.028, 0.028, black, [x, barY, barZ]);
+    box(1.42, 0.038, 0.038, black, [x, barY, barZ]);
     point("#ffba69", [x, barY - 0.16, barZ + 0.2], 9, 6);
   }
   box(0.7, 0.025, 0.03, glow("#c46b52"), [-3.35, 2.7, -5.83]);
@@ -336,10 +336,10 @@ export function createWerkstattScene(
   // Großer gerahmter BP-Schirm mittig hinter dem Tablet — kein freischwebendes 3D-Logo.
   const brandFrame = new THREE.Group();
   brandFrame.name = "Wandschirm";
-  brandFrame.position.set(0, 1.92, -5.88);
+  brandFrame.position.set(0, 2.72, -5.88);
   scene.add(brandFrame);
-  box(3.28, 2.02, 0.07, mat("#0a1218", 0.42, 0.35), [0, 0, -0.03], brandFrame);
-  box(3.08, 1.82, 0.04, dark, [0, 0, 0.01], brandFrame);
+  box(3.18, 1.58, 0.07, mat("#0a1218", 0.42, 0.35), [0, 0, -0.03], brandFrame);
+  box(2.98, 1.38, 0.04, dark, [0, 0, 0.01], brandFrame);
   const brandC = document.createElement("canvas");
   brandC.width = 1024;
   brandC.height = 640;
@@ -410,7 +410,7 @@ export function createWerkstattScene(
   const brandTex = new THREE.CanvasTexture(brandC);
   brandTex.colorSpace = THREE.SRGBColorSpace;
   const brandScreen = meshAt(
-    new THREE.PlaneGeometry(2.98, 1.72),
+    new THREE.PlaneGeometry(2.88, 1.28),
     new THREE.MeshBasicMaterial({ map: brandTex, toneMapped: false }),
     brandFrame,
     [0, 0, 0.042],
@@ -431,7 +431,7 @@ export function createWerkstattScene(
     new THREE.PlaneGeometry(1.55, 0.18),
     new THREE.MeshBasicMaterial({ map: captionTex, transparent: true, toneMapped: false }),
     scene,
-    [0, 3.08, -5.86],
+    [0, 3.62, -5.86],
   );
   caption.castShadow = false;
 
@@ -501,7 +501,7 @@ export function createWerkstattScene(
 
   const keyboard = new THREE.Group();
   monitor.add(keyboard);
-  keyboard.position.set(0.04, 0.055, 0.92);
+  keyboard.position.set(0.04, 0.055, 0.78);
   keyboard.rotation.x = -0.06;
   round(1.42, 0.08, 0.48, 0.05, cream, [0, 0, 0], keyboard);
   const keyGeo = new THREE.BoxGeometry(0.086, 0.04, 0.078);
@@ -840,7 +840,7 @@ export function createWerkstattScene(
       if (mobile) y = Math.min(y, height - 86);
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
-      el.style.transform = mobile ? "translate(-50%, -92%)" : "translate(-50%, -78%)";
+      el.style.transform = mobile ? "translate(-50%, -28%)" : "translate(-50%, -32%)";
       el.style.opacity = "1";
       el.style.pointerEvents = "auto";
       el.tabIndex = 0;
@@ -856,7 +856,7 @@ export function createWerkstattScene(
   function resize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     camera.aspect = container.clientWidth / container.clientHeight;
-    camera.fov = container.clientWidth < 800 ? 40 : 34;
+    camera.fov = container.clientWidth < 800 ? 50 : 38;
     camera.updateProjectionMatrix();
     if (!transition) {
       const d = pose(current);
