@@ -135,7 +135,6 @@ function placePiece(scene: THREE.Scene, source: THREE.Object3D, spec: DecorPiece
 
 export function loadDecorAssets(scene: THREE.Scene) {
   const surfaces = measureStudioSurfaces(scene);
-  console.info("Werkstatt Flächen-Y", surfaces);
   const loader = new GLTFLoader();
 
   loader.load(
