@@ -112,8 +112,7 @@ export function WerkstattScene({
     if (!target) return;
     pendingFocusRef.current = null;
     if (target === "overview") {
-      const first = hotspotRefs.current[stationOrder[0]];
-      first?.focus({ preventScroll: true });
+      return;
     } else {
       detailHeadingRef.current?.focus({ preventScroll: true });
     }
