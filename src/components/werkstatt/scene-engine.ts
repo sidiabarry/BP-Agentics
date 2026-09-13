@@ -145,6 +145,7 @@ export function createWerkstattScene(
   const dark = mat("#14222b", 0.55, 0.55);
   const cream = mat("#e6dfd0", 0.58, 0.06);
   const black = mat("#071116", 0.34, 0.15);
+  const barMat = new THREE.MeshBasicMaterial({ color: "#0b0d10" });
 
   function meshAt(geo: THREE.BufferGeometry, material: THREE.Material, parent: THREE.Object3D = scene, pos: Vec3Tuple = [0, 0, 0]) {
     const o = new THREE.Mesh(geo, material);
@@ -309,25 +310,25 @@ export function createWerkstattScene(
   box(0.08, 2.8, 0.16, dark, [3.8, 1.8, -5.75]);
   // Zwei schwarze Pendelstangen — wie in der Studio-Referenz, nicht Kegellampen.
   for (const x of [-1.92, 1.92]) {
-    const barZ = -0.55;
-    const barY = 2.62;
+    const barZ = 0.22;
+    const barY = 2.42;
     tube(
       [
         [x - 0.58, 5.1, barZ],
         [x - 0.58, barY + 0.04, barZ],
       ],
-      0.007,
-      black,
+      0.008,
+      barMat,
     );
     tube(
       [
         [x + 0.58, 5.1, barZ],
         [x + 0.58, barY + 0.04, barZ],
       ],
-      0.007,
-      black,
+      0.008,
+      barMat,
     );
-    box(1.42, 0.038, 0.038, black, [x, barY, barZ]);
+    box(1.55, 0.045, 0.045, barMat, [x, barY, barZ]);
     point("#ffba69", [x, barY - 0.16, barZ + 0.2], 9, 6);
   }
   box(0.7, 0.025, 0.03, glow("#c46b52"), [-3.35, 2.7, -5.83]);
@@ -348,15 +349,15 @@ export function createWerkstattScene(
     const w = brandC.width;
     const h = brandC.height;
     const wash = brandCtx.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.48);
-    wash.addColorStop(0, "#163044");
-    wash.addColorStop(1, "#0a1620");
+    wash.addColorStop(0, "#2a4a62");
+    wash.addColorStop(1, "#102433");
     brandCtx.fillStyle = wash;
     brandCtx.fillRect(0, 0, w, h);
-    const s = Math.min(w, h) * 0.0114;
+    const s = Math.min(w, h) * 0.0148;
     brandCtx.save();
     brandCtx.translate(w * 0.5 - 36 * s, h * 0.5 - 28 * s);
     brandCtx.scale(s, s);
-    brandCtx.fillStyle = "#7f96aa";
+    brandCtx.fillStyle = "#c5d4e2";
     brandCtx.beginPath();
     brandCtx.moveTo(8, 6);
     brandCtx.lineTo(30, 6);
@@ -367,7 +368,7 @@ export function createWerkstattScene(
     brandCtx.lineTo(8, 56);
     brandCtx.closePath();
     brandCtx.fill();
-    brandCtx.fillStyle = "#9aafc0";
+    brandCtx.fillStyle = "#e8eef4";
     brandCtx.beginPath();
     brandCtx.moveTo(42, 6);
     brandCtx.lineTo(58, 6);
@@ -823,28 +824,37 @@ export function createWerkstattScene(
     const mobile = container.clientWidth < 800;
     const width = container.clientWidth;
     const height = container.clientHeight;
+    const row = hotspotElements.web?.parentElement ?? null;
     for (const id of STATION_IDS) {
       const el = hotspotElements[id];
       if (!el) continue;
-      if (!onOverview) {
-        el.style.opacity = "0";
-        el.style.pointerEvents = "none";
-        el.tabIndex = -1;
-        continue;
-      }
-      projected.copy(cardAnchors[id]);
-      if (mobile) projected.z -= 0.1;
-      projected.project(camera);
-      const x = (projected.x * 0.5 + 0.5) * width;
-      let y = (-projected.y * 0.5 + 0.5) * height;
-      if (mobile) y = Math.min(y, height - 86);
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      el.style.transform = mobile ? "translate(-50%, -28%)" : "translate(-50%, -32%)";
-      el.style.opacity = "1";
-      el.style.pointerEvents = "auto";
-      el.tabIndex = 0;
+      el.style.left = "";
+      el.style.top = "";
+      el.style.transform = "";
+      el.style.opacity = onOverview ? "1" : "0";
+      el.style.pointerEvents = onOverview ? "auto" : "none";
+      el.tabIndex = onOverview ? 0 : -1;
     }
+    if (!onOverview || !row) return;
+    const xs: number[] = [];
+    let ySum = 0;
+    for (const id of STATION_IDS) {
+      projected.copy(cardAnchors[id]);
+      projected.project(camera);
+      xs.push((projected.x * 0.5 + 0.5) * width);
+      ySum += (-projected.y * 0.5 + 0.5) * height;
+    }
+    const pad = mobile ? 8 : width * 0.07;
+    const left = Math.max(pad, Math.min(xs[0] - (mobile ? 56 : 150), width * 0.12));
+    const right = Math.min(width - pad, Math.max(xs[2] + (mobile ? 56 : 150), width * 0.88));
+    let y = ySum / STATION_IDS.length;
+    if (mobile) y = Math.min(y, height - 92);
+    row.style.left = `${left}px`;
+    row.style.width = `${Math.max(180, right - left)}px`;
+    row.style.right = "auto";
+    row.style.bottom = "auto";
+    row.style.top = `${y}px`;
+    row.style.transform = "translateY(-30%)";
   }
   function clamp(v: number, a: number, b: number) {
     return Math.max(a, Math.min(b, v));

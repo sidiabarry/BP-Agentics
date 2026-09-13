@@ -448,16 +448,22 @@
 }
 
 .werkstatt__hotspots--row {
-  inset: 0;
-  display: block;
+  inset: auto;
+  left: 8%;
+  right: 8%;
+  bottom: 8%;
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
 }
 
 .werkstatt__hotspot {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  top: auto;
+  left: auto;
   display: flex;
-  width: min(28vw, 318px);
+  flex: 1 1 0;
+  width: auto;
   align-items: flex-start;
   gap: 10px;
   min-width: 0;
@@ -1006,11 +1012,13 @@
   }
 
   .werkstatt__hotspots--row {
-    inset: 0;
+    left: 8px;
+    right: 8px;
+    width: auto;
   }
 
   .werkstatt__hotspot {
-    width: min(31vw, 124px);
+    width: auto;
     max-width: none;
     min-height: 58px;
     padding: 8px 7px;
