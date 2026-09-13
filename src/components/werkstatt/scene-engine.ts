@@ -46,23 +46,39 @@ export interface WerkstattSceneController {
 type Vec3Tuple = [number, number, number];
 
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
-  overview: { p: [0.25, 4.8, 11.9], t: [0, 0.15, -0.6] },
+  // Näher und tiefer als der Entwurf: die drei Stationen füllen das Bild,
+  // statt in einer dunklen Tischfläche zu schwimmen.
+  overview: { p: [0.3, 4.35, 10.6], t: [0, 1.1, -0.9] },
   web: { p: [-0.0, 1.75, 1.85], t: [-0.52, 1.05, -2.15] },
   chat: { p: [0.25, 2.55, 5.05], t: [-0.25, 0.8, 2.38] },
   office: { p: [2.25, 0.94, 2.8], t: [1.52, 0.92, -0.15] },
 };
 
 const MOBILE_POSES: Partial<Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }>> = {
-  overview: { p: [0.15, 6.9, 15.8], t: [0, 0.3, 0.1] },
+  overview: { p: [0.15, 5.4, 11.4], t: [0, 1.05, -0.7] },
   office: { p: [2.6, 1.65, 5.2], t: [1.03, 0.6, -0.05] },
   web: { p: [-0.8, 2.15, 4.8], t: [-1, 0.55, -2.25] },
   chat: { p: [-0.65, 3.6, 7.7], t: [-0.72, 0.3, 2.45] },
 };
 
+/** Zusätzliches Licht je Station — hebt beim Zoomen genau das hervor, worum es geht. */
+const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number }> = {
+  web: { pos: [-1.0, 2.5, -0.7], color: "#cfe6ff", peak: 26 },
+  chat: { pos: [-0.7, 2.1, 3.5], color: "#e2f2f7", peak: 22 },
+  office: { pos: [1.5, 2.1, 1.2], color: "#ffe6c4", peak: 24 },
+};
+
+/**
+ * Die Schilder schweben deutlich ÜBER ihrem Objekt, nicht darauf — sonst
+ * verdecken sie genau das, was sie erklären. Die Linie unter dem Schild
+ * stellt den Bezug her.
+ */
 const ANCHOR_POINTS: Record<StationId, THREE.Vector3> = {
-  web: new THREE.Vector3(-1.05, 2.2, -2.25),
-  office: new THREE.Vector3(1.05, 2.15, -0.05),
-  chat: new THREE.Vector3(-1.35, 1.12, 2.45),
+  web: new THREE.Vector3(-1.05, 3.05, -2.25),
+  office: new THREE.Vector3(1.45, 2.6, -0.05),
+  // Das Tablet steht vorn, der Monitor hinten — über dem Tablet würde das Schild
+  // auf dem Monitor landen. Deshalb links daneben auf die freie Tischfläche.
+  chat: new THREE.Vector3(-2.35, 0.75, 2.9),
 };
 
 const MOBILE_ANCHOR_FRACTION: Record<StationId, number> = { web: 0.31, office: 0.37, chat: 0.68 };
@@ -194,6 +210,17 @@ export function createWerkstattScene(
   point("#63b4f7", [3.5, 3, -3.5], 95, 18);
   point("#ee9951", [-3.5, 2, -1], 40, 13);
   point("#baddf3", [0, 3, 5], 22, 12);
+
+  // Streiflicht von hinten: trennt Monitor, Tablet und Roboter von der dunklen Rückwand.
+  const rim = new THREE.DirectionalLight("#9fd2ff", 0.75);
+  rim.position.set(2.6, 3.4, -4.2);
+  rim.target.position.set(0, 0.6, 0.2);
+  scene.add(rim, rim.target);
+
+  // Je Station ein Licht, das nur bei geöffneter Station hochgefahren wird.
+  const emphasisLights = Object.fromEntries(
+    (Object.keys(EMPHASIS) as StationId[]).map((id) => [id, point(EMPHASIS[id].color, EMPHASIS[id].pos, 0, 9)]),
+  ) as Record<StationId, THREE.PointLight>;
 
   // ---------------------------------------------------------------------
   // Holzmaserung (prozedurale Canvas-Textur) + Werkbank
@@ -584,9 +611,15 @@ export function createWerkstattScene(
     return { p: new THREE.Vector3(...s.p), t: new THREE.Vector3(...s.t) };
   }
 
+  // Die Kamera hat zwei Ebenen: `base` ist die erzählte Position (Pose/Übergang),
+  // darauf liegt ein kleiner Versatz aus Maus-Parallaxe und ruhigem Atmen.
   const home = pose("overview");
-  camera.position.copy(home.p);
-  look.copy(home.t);
+  const basePos = home.p.clone();
+  const baseLook = home.t.clone();
+  const drift = new THREE.Vector2();
+  const pointer = new THREE.Vector2();
+  camera.position.copy(basePos);
+  look.copy(baseLook);
   camera.lookAt(look);
 
   let transition: { start: number; from: THREE.Vector3; fromT: THREE.Vector3; to: THREE.Vector3; toT: THREE.Vector3; duration: number } | null = null;
@@ -598,14 +631,20 @@ export function createWerkstattScene(
     const dest = pose(id);
     transition = {
       start: performance.now(),
-      from: camera.position.clone(),
-      fromT: look.clone(),
+      from: basePos.clone(),
+      fromT: baseLook.clone(),
       to: dest.p,
       toT: dest.t,
       duration: reduced ? 0 : 1300,
     };
     if (!reduced) roofVideo.play().catch(() => {});
   }
+
+  renderer.domElement.addEventListener("pointermove", (e) => {
+    const r = renderer.domElement.getBoundingClientRect();
+    pointer.set((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5);
+  });
+  renderer.domElement.addEventListener("pointerleave", () => pointer.set(0, 0));
 
   const raycaster = new THREE.Raycaster();
   const v2 = new THREE.Vector2();
@@ -629,10 +668,14 @@ export function createWerkstattScene(
     const width = container.clientWidth;
     const height = container.clientHeight;
     const placed: { x: number; y: number; w: number; h: number }[] = [];
+    // Auf schmalen Schirmen würden die Schilder die Szene zudecken und mit dem
+    // Rundgang-Button kollidieren. Dort führt die untere Navigation, die ohnehin
+    // dauerhaft sichtbar ist.
+    const narrow = width < 800;
     for (const id of Object.keys(ANCHOR_POINTS) as StationId[]) {
       const el = hotspotElements[id];
       if (!el) continue;
-      if (current !== "overview" || introProgress < 0.99) {
+      if (narrow || current !== "overview" || introProgress < 0.99) {
         el.style.opacity = "0";
         el.style.pointerEvents = "none";
         el.tabIndex = -1;
@@ -642,7 +685,7 @@ export function createWerkstattScene(
       const w = el.offsetWidth;
       const h = el.offsetHeight;
       const x = clamp((projected.x * 0.5 + 0.5) * width, w / 2 + 14, width - w / 2 - 14);
-      let y = clamp((-projected.y * 0.5 + 0.5) * height - 36, width < 800 ? 285 : 95, height - 130);
+      let y = clamp((-projected.y * 0.5 + 0.5) * height - 58, width < 800 ? 285 : 95, height - 130);
       if (width < 800) y = height * MOBILE_ANCHOR_FRACTION[id];
       for (const prev of placed) {
         if (Math.abs(x - prev.x) < (w + prev.w) / 2 + 10 && Math.abs(y - prev.y) < (h + prev.h) / 2 + 12) {
@@ -670,8 +713,8 @@ export function createWerkstattScene(
     camera.updateProjectionMatrix();
     if (!transition) {
       const d = pose(current);
-      camera.position.copy(d.p);
-      look.copy(d.t);
+      basePos.copy(d.p);
+      baseLook.copy(d.t);
     }
   }
   window.addEventListener("resize", resize);
@@ -691,17 +734,34 @@ export function createWerkstattScene(
     if (transition) {
       const q = transition.duration ? clamp((ms - transition.start) / transition.duration, 0, 1) : 1;
       const k = q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2;
-      camera.position.lerpVectors(transition.from, transition.to, k);
-      look.lerpVectors(transition.fromT, transition.toT, k);
+      basePos.lerpVectors(transition.from, transition.to, k);
+      baseLook.lerpVectors(transition.fromT, transition.toT, k);
       if (q === 1) transition = null;
     } else if (introProgress < 1) {
       // Vor Abschluss des Intros: leichter Näherkommen-Effekt (kein eigener Kamera-Tween nötig).
       const h = pose("overview");
-      camera.position.copy(h.p);
-      camera.position.z += reduced ? 0 : (1 - introProgress) * 2;
-      look.copy(h.t);
+      basePos.copy(h.p);
+      basePos.z += reduced ? 0 : (1 - introProgress) * 2;
+      baseLook.copy(h.t);
     }
+
+    // Maus-Parallaxe und ruhiges Atmen in der Übersicht — gedämpft, nie ruckartig.
+    const reach = current === "overview" ? 1 : 0.45;
+    const wantX = reduced ? 0 : pointer.x * 0.8 * reach;
+    const wantY = reduced ? 0 : -pointer.y * 0.45 * reach;
+    drift.x += (wantX - drift.x) * 0.045;
+    drift.y += (wantY - drift.y) * 0.045;
+    const breathe = reduced || current !== "overview" ? 0 : Math.sin(t * 0.16) * 0.13;
+    camera.position.set(basePos.x + drift.x + breathe, basePos.y + drift.y, basePos.z);
+    look.copy(baseLook);
     camera.lookAt(look);
+
+    // Stationslicht sanft hoch-/runterfahren, damit der Blick geführt wird.
+    for (const id of Object.keys(emphasisLights) as StationId[]) {
+      const want = current === id ? EMPHASIS[id].peak : 0;
+      const light = emphasisLights[id];
+      light.intensity += (want - light.intensity) * 0.06;
+    }
 
     if (Math.floor(t * 12) !== lastTexture) {
       drawMonitor();

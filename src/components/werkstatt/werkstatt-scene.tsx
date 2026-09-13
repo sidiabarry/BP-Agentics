@@ -27,7 +27,7 @@ import {
   type FrameSet,
 } from "@/lib/image-sequence";
 import { createWerkstattScene, type StationId, type ViewId, type WerkstattSceneController } from "./scene-engine";
-import { stations, stationOrder } from "./content";
+import { stations, stationOrder, nextStation } from "./content";
 import "./werkstatt.css";
 
 const SMALL_MAX = 800;
@@ -237,6 +237,7 @@ export function WerkstattScene() {
   }, []);
 
   const detail = active === "overview" ? null : stations[active];
+  const nextId = active === "overview" ? null : nextStation(active);
 
   return (
     <section
@@ -290,7 +291,12 @@ export function WerkstattScene() {
               <br />
               <span>Starke Systeme.</span>
             </h1>
-            <p>Entdecken Sie, was Ihren Auftritt stärkt und Ihren Alltag leichter macht.</p>
+            <p>Drei Bausteine, die zusammenarbeiten. Jeder einzeln beauftragbar.</p>
+            {active === "overview" && (
+              <button type="button" className="werkstatt__tour" onClick={() => goTo(stationOrder[0])}>
+                Rundgang starten <span aria-hidden="true">→</span>
+              </button>
+            )}
           </div>
 
           {active === "overview" && (
@@ -313,7 +319,10 @@ export function WerkstattScene() {
               >
                 <StationIcon id={id} />
                 <span className="werkstatt__hotspot-num">{stations[id].num}</span>
-                <strong>{stations[id].label}</strong>
+                <span className="werkstatt__hotspot-labels">
+                  <strong>{stations[id].label}</strong>
+                  <small>{stations[id].promise}</small>
+                </span>
                 <span className="werkstatt__hotspot-plus" aria-hidden="true">
                   ↗
                 </span>
@@ -360,11 +369,35 @@ export function WerkstattScene() {
               </p>
               <h2 ref={detailHeadingRef} tabIndex={-1} dangerouslySetInnerHTML={{ __html: detail.title }} />
               <p>{detail.text}</p>
+
+              <ol className="werkstatt__steps">
+                {detail.steps.map((step, i) => (
+                  <li key={step}>
+                    <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+
+              <p className="werkstatt__limit">{detail.limit}</p>
+              <p className="werkstatt__price">{detail.price}</p>
+
               <Link href={detail.href} className="werkstatt__cta">
                 <span>{detail.button}</span>
                 <span aria-hidden="true">↗</span>
               </Link>
-              <p className="werkstatt__detail-note">EINZELN BEAUFTRAGBAR · PERSÖNLICH BETREUT</p>
+
+              {nextId ? (
+                <button type="button" className="werkstatt__next" onClick={() => goTo(nextId)}>
+                  Weiter zu {stations[nextId].num} · {stations[nextId].label}
+                  <span aria-hidden="true">→</span>
+                </button>
+              ) : (
+                <Link href={cta.href} className="werkstatt__next">
+                  {cta.short}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              )}
             </>
           )}
         </aside>
