@@ -8,6 +8,7 @@ import { Wordmark } from "@/components/brand";
 import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
 import { homeExpandLinks, leistungItems, mainLinks } from "@/lib/nav";
+import { cta } from "@/lib/offers";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -38,7 +39,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!onHome) return;
-    const ids = ["problem", "referenzen", "maschine", "preise", "start"];
+    const ids = ["werkstatt", "beweis", "problem", "referenzen", "person", "start", "preise", "entscheidung"];
     const nodes = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -132,7 +133,7 @@ export function SiteHeader() {
               asChild
               className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
             >
-              <Link href="/termin">Erstgespräch anfragen</Link>
+              <Link href={cta.href}>{cta.short}</Link>
             </Button>
           </nav>
         </div>

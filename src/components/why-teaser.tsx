@@ -2,6 +2,7 @@ import Link from "next/link";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { whyPoints } from "@/lib/content";
+import { labels, paths } from "@/lib/journey";
 
 export function WhyTeaser() {
   return (
@@ -22,8 +23,8 @@ export function WhyTeaser() {
             Vorschlag, den Sie fachlich und preislich nachvollziehen können.
           </RevealIn>
           <p className="mt-8">
-            <Link href="/ueber-mich" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Mehr über mich
+            <Link href={paths.ueberMich} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              {labels.ueberMich}
             </Link>
           </p>
         </div>

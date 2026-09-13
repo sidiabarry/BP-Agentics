@@ -168,10 +168,9 @@
   border-radius: 50%;
   background: radial-gradient(
     circle at 42% 34%,
-    #d9ecfc 0%,
-    #7cbcf1 30%,
-    #2288d8 60%,
-    #0b5ea8 100%
+    #1a3a4a 0%,
+    #0d1e2a 42%,
+    #08121a 100%
   );
 }
 

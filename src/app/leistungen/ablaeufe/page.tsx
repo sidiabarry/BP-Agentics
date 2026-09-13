@@ -8,13 +8,14 @@ import { TradeSelector } from "@/components/trade-selector";
 import { ablaeufeFaqs } from "@/lib/content";
 import { faqPage, serviceOffer } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
-import { PRICE_NOTE, automationOffer, cta } from "@/lib/offers";
+import { paths, stageThread } from "@/lib/journey";
+import { PRICE_NOTE, automationOffer } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Büroabläufe und Automatisierung für Handwerk",
   description:
     "Daten einmal erfassen und im Büro sowie unterwegs weitergeben. Datenbasis und ein Prozessmodul zusammen ab 2.490 €, ohne monatliche Betreuung.",
-  path: "/leistungen/ablaeufe",
+  path: paths.ablaeufe,
 });
 
 function AblaeufePanels() {
@@ -131,32 +132,21 @@ export default function AblaeufePage() {
       title="Einmal erfassen. Im Büro und unterwegs weitergeben."
       lead="Lieferscheine, Kundenangaben oder Auftragsstatus werden an mehreren Stellen gebraucht. Die vereinbarten Schritte werden so verbunden, dass die Information nicht noch einmal getippt werden muss."
       crumbs={[
-        { name: "Leistungen", path: "/leistungen" },
-        { name: "Büroabläufe", path: "/leistungen/ablaeufe" },
+        { name: "Leistungen", path: paths.leistungen },
+        { name: "Büroabläufe", path: paths.ablaeufe },
       ]}
       extraJsonLd={[
         serviceOffer({
           name: "Büroabläufe automatisieren",
           description:
             "Gemeinsame Datenbasis und Prozessmodule für wiederkehrende Büroabläufe.",
-          path: "/leistungen/ablaeufe",
+          path: paths.ablaeufe,
           offers: [{ name: "Datenbasis + 1 Prozessmodul", price: "2490" }],
         }),
         faqPage(ablaeufeFaqs),
       ]}
-      related={[
-        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
-        { href: "/preise", label: "Preise" },
-      ]}
-      next={{
-        title: "Ersten Ablauf besprechen",
-        body: "Im Gespräch prüfen wir, welche Programme schon zuverlässig arbeiten und welcher Schritt den passenden Anfang macht. 90 Minuten vor Ort.",
-        chips: ["Datenbasis + 1 Modul", "Ohne monatliche Betreuung", "Weitere Abläufe im Angebot"],
-        primary: { href: cta.href, label: "Ersten Ablauf besprechen" },
-        secondary: { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
-      }}
+      related={stageThread(paths.ablaeufe).related}
+      next={stageThread(paths.ablaeufe).next}
       visual={<LedgerPreview />}
       appendix={
         <>
@@ -185,7 +175,7 @@ export default function AblaeufePage() {
 
       <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
         Wie ein Bestellweg in einem Laden aussehen kann, zeigt die Kundengeschichte{" "}
-        <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+        <Link href={paths.feinkost} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
           Projekt Feinkost Kreta
         </Link>
         .

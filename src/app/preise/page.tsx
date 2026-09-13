@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { CareAndOwnership, LeistungenPreise } from "@/components/leistungen-preise";
 import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
+import { paths, stageThread } from "@/lib/journey";
 import { PRICE_NOTE, offerTable, yearTableHint } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Preise für Website, Assistent und Betreuung",
   description:
     "Orientierung zu Einrichtung und Betreuung: Website, Nachrichten-Assistent und Abläufe. Der verbindliche Preis steht vor der Beauftragung im Angebot.",
-  path: "/preise",
+  path: paths.preise,
 });
 
 export default function PreisePage() {
@@ -17,7 +18,7 @@ export default function PreisePage() {
       kicker="Preise"
       title="Einmalig, monatlich, im Angebot festgehalten."
       lead="Die Größenordnung für Websites und Automatisierung. Einmalige Leistungen und monatliche Kosten sind getrennt. Die Website-Betreuung ist optional. Der verbindliche Preis steht vor der Beauftragung im Angebot."
-      crumbs={[{ name: "Preise", path: "/preise" }]}
+      crumbs={[{ name: "Preise", path: paths.preise }]}
       extraJsonLd={[
         {
           "@type": "OfferCatalog",
@@ -32,18 +33,8 @@ export default function PreisePage() {
           ],
         },
       ]}
-      related={[
-        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
-        { href: "/foerderung/mid-digitale-prozesse", label: "MID-Digitale Prozesse" },
-      ]}
-      next={{
-        title: "Umfang und Preis im Gespräch festlegen",
-        body: "Vor der Beauftragung erhalten Sie ein Angebot mit Leistungsumfang, einmaligem Preis und laufenden Kosten. Zusätzliche Wünsche werden vor der Umsetzung gesondert angeboten.",
-        chips: ["Festpreis im Angebot", "Keine versteckte Pauschale", "90 Minuten vor Ort"],
-        secondary: { href: "/foerderung/mid-digitale-prozesse", label: "Förderung prüfen" },
-      }}
+      related={stageThread(paths.preise).related}
+      next={stageThread(paths.preise).next}
     >
       <LeistungenPreise embedded />
 

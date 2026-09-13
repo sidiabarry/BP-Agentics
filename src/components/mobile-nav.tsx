@@ -19,6 +19,7 @@ import {
   mobileOverview,
   mobileReferenzen,
 } from "@/lib/nav";
+import { cta } from "@/lib/offers";
 
 type MobileNavProps = {
   open: boolean;
@@ -53,8 +54,8 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
             asChild
             className="h-12 w-full rounded-full bg-[#198BE8] text-base text-white hover:bg-[#1576C4]"
           >
-            <Link href="/termin" onClick={close}>
-              Erstgespräch anfragen
+            <Link href={cta.href} onClick={close}>
+              {cta.short}
             </Link>
           </Button>
           <WhatsAppInline className="mt-2 h-12 w-full justify-center rounded-full px-5 text-base">

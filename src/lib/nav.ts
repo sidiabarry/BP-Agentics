@@ -1,55 +1,60 @@
+import {
+  anchors,
+  labels,
+  paths,
+  stations,
+} from "@/lib/journey";
+
+export { gewerkHref } from "@/lib/journey";
+
 export const leistungItems = [
   {
-    href: "/leistungen/auftritt",
-    title: "Websites",
+    href: stations[0].href,
+    title: stations[0].label,
     sub: "Leistungen, Referenzen und Einsatzgebiet verständlich zeigen.",
   },
   {
-    href: "/leistungen/annahme",
-    title: "Nachrichten-Assistent",
+    href: stations[1].href,
+    title: stations[1].label,
     sub: "Anfragen per WhatsApp und E-Mail beantworten und Termine abstimmen.",
   },
   {
-    href: "/leistungen/ablaeufe",
-    title: "Büroabläufe automatisieren",
+    href: stations[2].href,
+    title: stations[2].label,
     sub: "Informationen einmal erfassen und weitergeben.",
   },
 ] as const;
 
 export const mainLinks = [
-  { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
-  { href: "/preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
-  { href: "/kontakt", label: "Kontakt", spy: null },
+  { href: paths.referenzen, label: labels.referenzen, spy: anchors.referenzen },
+  { href: paths.preise, label: labels.preise, spy: anchors.preise },
+  { href: paths.ueberMich, label: labels.ueberMich, spy: null },
+  { href: paths.kontakt, label: labels.kontakt, spy: null },
 ] as const;
 
 /** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
 export const homeExpandLinks = [
-  { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
-  { href: "#preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
-  { href: "/kontakt", label: "Kontakt", spy: null },
+  { href: `#${anchors.referenzen}`, label: labels.referenzen, spy: anchors.referenzen },
+  { href: `#${anchors.preise}`, label: labels.preise, spy: anchors.preise },
+  { href: paths.ueberMich, label: labels.ueberMich, spy: null },
+  { href: paths.kontakt, label: labels.kontakt, spy: null },
 ] as const;
 
 export const mobileOverview = {
-  href: "/leistungen",
-  label: "Leistungen im Überblick",
+  href: paths.leistungen,
+  label: labels.leistungenOverview,
 } as const;
 
 export const mobileReferenzen = [
-  { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta" },
-  { href: "/referenzen/dachdecker-signature", label: "Dachdecker Signature" },
-  { href: "/werkstatt", label: "Die Werkstatt (3D)" },
+  { href: paths.feinkost, label: "Feinkost Kreta" },
+  { href: paths.dachdecker, label: "Dachdecker Signature" },
+  { href: paths.werkstattAlias, label: labels.werkstattNav },
 ] as const;
 
 export const mobileInfo = [
-  { href: "/preise", label: "Preise" },
-  { href: "/foerderung/mid-digitale-prozesse", label: "Förderung" },
-  { href: "/passt-das", label: "Welcher Einstieg passt?" },
-  { href: "/ueber-mich", label: "Über mich" },
-  { href: "/kontakt", label: "Kontakt" },
+  { href: paths.preise, label: labels.preise },
+  { href: paths.foerderung, label: labels.foerderung },
+  { href: paths.passtDas, label: labels.passtDas },
+  { href: paths.ueberMich, label: labels.ueberMich },
+  { href: paths.kontakt, label: labels.kontakt },
 ] as const;
-
-export function gewerkHref(slug: string) {
-  return `/gewerke#${slug}`;
-}

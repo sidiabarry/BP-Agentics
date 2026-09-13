@@ -91,7 +91,7 @@ export function createWerkstattScene(
 ): WerkstattSceneController | null {
   let disposed = false;
   let reduced = false;
-  let introProgress = 0;
+  let introProgress = 1;
   let current: ViewId = "overview";
   let rafId = 0;
   let webglFailed = false;

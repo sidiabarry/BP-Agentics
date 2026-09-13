@@ -5,13 +5,13 @@ import { StageCard, StageGrid } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { videoObject } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
-import { cta } from "@/lib/offers";
+import { paths, stageThread } from "@/lib/journey";
 
 export const metadata: Metadata = pageMetadata({
   title: "Kundenprojekt Feinkost Kreta — Bestellweg digitalisiert",
   description:
     "Kundenprojekt von BP Agentics: Bestell-App für Feinkost Kreta. Angemeldete Kunden bestellen in wenigen Schritten, der Laden sieht die Bestellung.",
-  path: "/referenzen/feinkost-kreta",
+  path: paths.feinkost,
 });
 
 const stills = [
@@ -39,8 +39,8 @@ export default function FeinkostPage() {
       title="Bestellen, ohne jedes Mal von vorn anzufangen."
       lead="Kundenprojekt für Feinkost Kreta: Stammkunden bestellen angemeldet in wenigen Schritten — der Laden sieht die Bestellung sofort."
       crumbs={[
-        { name: "Arbeiten und Demos", path: "/referenzen" },
-        { name: "Feinkost Kreta", path: "/referenzen/feinkost-kreta" },
+        { name: "Arbeiten und Demos", path: paths.referenzen },
+        { name: "Feinkost Kreta", path: paths.feinkost },
       ]}
       extraJsonLd={[
         videoObject({
@@ -53,17 +53,8 @@ export default function FeinkostPage() {
           uploadDate: "2026-08-15",
         }),
       ]}
-      related={[
-        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-        { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-      ]}
-      next={{
-        title: "Ähnlichen Bestellweg besprechen",
-        body: "Im Gespräch klären wir, ob ein vergleichbarer Weg zu Ihrem Betrieb passt — welche Angaben bleiben sollen und wer die Bestellung sieht.",
-        primary: { href: cta.href, label: "Ähnlichen Bestellweg besprechen" },
-        secondary: { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-      }}
+      related={stageThread(paths.feinkost).related}
+      next={stageThread(paths.feinkost).next}
       visual={
         <div className="flex justify-center rounded-[2rem] bg-[#14161C] px-6 py-8">
           <PhoneDemo
