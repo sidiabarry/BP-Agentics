@@ -5,9 +5,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
  * Ausstattung aus `werkstatt-deko.glb`, zerlegt nach Objektnamen.
  * Y kommt aus den Bounding-Boxen der benannten Flächen in der Szene
  * (`Tischplatte`, `Regal_unten` / `_mitte` / `_oben`) — nicht aus den
- * alten Raum-Koordinaten im GLB. Das Wandlogo sitzt mittig hinter
- * dem Tablet. `Kabel_*` bleibt weg, weil `scene-engine.ts` den Schlauch
- * zum CRT schon baut.
+ * alten Raum-Koordinaten im GLB. Der gerahmte BP-Schirm sitzt in
+ * `scene-engine.ts` hinter dem Tablet — `bp-logo.glb` wird nicht geladen.
+ * `Kabel_*` bleibt weg, weil die Szene den Schlauch zum CRT schon baut.
  */
 
 type SurfaceId = "table" | "shelfLow" | "shelfMid" | "shelfHigh";
@@ -38,7 +38,7 @@ const SURFACE_MESH: Record<SurfaceId, string> = {
 const DECOR_PIECES: DecorPiece[] = [
   { name: "Pflanze_Regal", surface: "shelfHigh", x: -2.72, z: -5.48, fitWidth: 0.95 },
   { name: "Pflanze_Tisch", surface: "shelfMid", x: -4.35, z: -5.48, fitWidth: 0.62 },
-  { name: "Kaffeetasse", surface: "table", x: -2.12, z: 1.18, fitWidth: 0.2, rotationY: -0.42 },
+  { name: "Kaffeetasse", surface: "table", x: -2.22, z: 0.92, fitWidth: 0.2, rotationY: -0.42 },
   { name: "Ordner_1", surface: "table", x: 2.12, z: -0.42, fitWidth: 0.15, rotationY: 0.1 },
   { name: "Ordner_2", surface: "table", x: 2.24, z: -0.4, fitWidth: 0.14, rotationY: 0.08 },
   { name: "Ordner_3", surface: "table", x: 2.36, z: -0.41, fitWidth: 0.16, rotationY: 0.12 },
@@ -128,46 +128,7 @@ function placePiece(scene: THREE.Scene, source: THREE.Object3D, spec: DecorPiece
   seatOnSurface(holder, sitHeight(scene, spec, sitY));
 }
 
-function loadWallLogo(scene: THREE.Scene) {
-  const loader = new GLTFLoader();
-  loader.load(
-    "/models/bp-logo.glb",
-    (gltf) => {
-      const root = gltf.scene;
-      stripCamerasAndLights(root);
-      const box = new THREE.Box3().setFromObject(root);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
-      const scale = 2.15 / Math.max(size.x, 1e-4);
-      root.scale.setScalar(scale);
-      root.position.copy(center).multiplyScalar(-scale);
-      root.traverse((o) => {
-        const mesh = o as THREE.Mesh;
-        if (!mesh.isMesh) return;
-        mesh.castShadow = true;
-        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-        for (const m of materials) {
-          const standard = m as THREE.MeshStandardMaterial;
-          if (!standard?.isMeshStandardMaterial) continue;
-          standard.emissive = new THREE.Color(standard.color);
-          standard.emissiveIntensity = 0.55;
-        }
-      });
-      const holder = new THREE.Group();
-      holder.name = "BP Wandlogo";
-      holder.position.set(0, 2.52, -5.92);
-      holder.add(root);
-      scene.add(holder);
-    },
-    undefined,
-    (error) => {
-      console.warn("Werkstatt: Wandlogo konnte nicht geladen werden (/models/bp-logo.glb)", error);
-    },
-  );
-}
-
 export function loadDecorAssets(scene: THREE.Scene) {
-  loadWallLogo(scene);
   const surfaces = measureStudioSurfaces(scene);
   const loader = new GLTFLoader();
 

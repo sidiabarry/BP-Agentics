@@ -63,8 +63,8 @@
   z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(3, 12, 20, 0.65), transparent 28%, transparent 67%, rgba(2, 8, 14, 0.8)),
-    radial-gradient(ellipse at center, transparent 35%, rgba(1, 6, 10, 0.25));
+    linear-gradient(180deg, rgba(3, 12, 20, 0.42), transparent 22%, transparent 86%, rgba(2, 8, 14, 0.18)),
+    radial-gradient(ellipse at center, transparent 42%, rgba(1, 6, 10, 0.16));
 }
 
 .werkstatt__grain {
@@ -448,27 +448,23 @@
 }
 
 .werkstatt__hotspots--row {
-  inset: auto 9% 7.5%;
-  left: 9%;
-  right: 9%;
-  display: flex;
-  align-items: stretch;
-  gap: 12px;
+  inset: 0;
+  display: block;
 }
 
 .werkstatt__hotspot {
-  position: relative;
-  top: auto;
-  left: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
-  flex: 1 1 0;
+  width: min(28vw, 318px);
   align-items: flex-start;
   gap: 10px;
   min-width: 0;
   min-height: 64px;
   padding: 12px 14px;
   border: 1px solid #789ca866;
-  border-radius: 8px;
+  border-radius: 14px;
   background: rgba(16, 38, 51, 0.95);
   box-shadow: 0 5px 30px #0003;
   backdrop-filter: blur(12px);
@@ -893,7 +889,16 @@
 }
 
 .werkstatt__world-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
   transition: opacity 0.3s;
+}
+
+.werkstatt__world-ui .werkstatt__hotspot,
+.werkstatt__world-ui .werkstatt__nav {
+  pointer-events: auto;
 }
 
 /* --- Fallback ------------------------------------------------------------ */
@@ -1001,14 +1006,11 @@
   }
 
   .werkstatt__hotspots--row {
-    left: 10px;
-    right: 10px;
-    bottom: auto;
-    top: 56%;
-    gap: 6px;
+    inset: 0;
   }
 
   .werkstatt__hotspot {
+    width: min(31vw, 124px);
     max-width: none;
     min-height: 58px;
     padding: 8px 7px;

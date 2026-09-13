@@ -1337,3 +1337,19 @@ body:has(.system-scroll[data-pinned]) [data-analytics="whatsapp-fab"] {
   visibility: hidden;
   pointer-events: none;
 }
+
+@media (min-width: 801px) {
+  body:has(.werkstatt__world-ui[data-view="overview"]) [data-analytics="whatsapp-fab"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 800px) {
+  body:has(.werkstatt__world-ui[data-view="overview"]) [data-analytics="whatsapp-fab"] {
+    left: auto;
+    right: max(0.85rem, env(safe-area-inset-right));
+    bottom: max(0.7rem, env(safe-area-inset-bottom));
+  }
+}

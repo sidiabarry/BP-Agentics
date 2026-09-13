@@ -46,18 +46,25 @@ export interface WerkstattSceneController {
 
 type Vec3Tuple = [number, number, number];
 
+/** Vorderkante der Platte — hier sitzen die drei Karten auf dem Holz. */
+const DESK_FRONT_Z = 1.52;
+const DESK_DEPTH = 3.55;
+const DESK_CENTER_Z = DESK_FRONT_Z - DESK_DEPTH / 2;
+const DESK_CARD_Z = DESK_FRONT_Z - 0.22;
+const DESK_CARD_Y = 0.028;
+
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
-  // Frontal, Augenhöhe: drei Stationen in einer Reihe, Logo hinter dem Tablet.
-  overview: { p: [0, 1.42, 7.85], t: [0, 0.86, 0.18] },
-  web: { p: [-1.15, 1.48, 3.15], t: [-1.72, 0.98, 0.18] },
-  chat: { p: [0.12, 1.52, 3.05], t: [0.02, 1.02, 0.38] },
-  office: { p: [1.55, 1.42, 3.2], t: [1.72, 0.95, 0.16] },
+  // Augenhöhe, nah: Karten liegen auf der Vorderkante, nicht im Leerraum darunter.
+  overview: { p: [0, 1.14, 4.72], t: [0, 0.78, 0.28] },
+  web: { p: [-1.22, 1.28, 2.85], t: [-1.68, 0.82, 0.18] },
+  chat: { p: [0.08, 1.32, 2.72], t: [0.02, 1.02, 0.38] },
+  office: { p: [1.48, 1.28, 2.9], t: [1.68, 0.88, 0.16] },
 };
 
 const MOBILE_POSES: Partial<Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }>> = {
-  office: { p: [1.72, 1.58, 4.35], t: [1.72, 0.88, 0.16] },
-  web: { p: [-1.55, 1.62, 4.4], t: [-1.78, 0.72, 0.22] },
-  chat: { p: [0.05, 1.72, 4.55], t: [0.02, 0.95, 0.38] },
+  office: { p: [1.68, 1.38, 3.55], t: [1.68, 0.82, 0.16] },
+  web: { p: [-1.48, 1.38, 3.6], t: [-1.68, 0.7, 0.18] },
+  chat: { p: [0.04, 1.42, 3.55], t: [0.02, 0.95, 0.38] },
 };
 
 /** Zusätzliches Licht je Station — hebt beim Zoomen genau das hervor, worum es geht. */
@@ -87,10 +94,10 @@ export function createWerkstattScene(
   // ---------------------------------------------------------------------
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#0b1822");
-  scene.fog = new THREE.FogExp2("#0b1822", 0.035);
+  scene.fog = new THREE.FogExp2("#0b1822", 0.022);
 
   const camera = new THREE.PerspectiveCamera(
-    container.clientWidth < 800 ? 52 : 42,
+    container.clientWidth < 800 ? 40 : 34,
     container.clientWidth / container.clientHeight,
     0.06,
     70,
@@ -136,7 +143,7 @@ export function createWerkstattScene(
   }
   const brass = mat("#b89462", 0.34, 0.72);
   const dark = mat("#14222b", 0.55, 0.55);
-  const cream = mat("#b8b2a1", 0.62, 0.12);
+  const cream = mat("#e6dfd0", 0.58, 0.06);
   const black = mat("#071116", 0.34, 0.15);
 
   function meshAt(geo: THREE.BufferGeometry, material: THREE.Material, parent: THREE.Object3D = scene, pos: Vec3Tuple = [0, 0, 0]) {
@@ -265,16 +272,17 @@ export function createWerkstattScene(
   tabletop.name = "Tischplatte";
   scene.add(tabletop);
   for (let i = 0; i < 6; i++) {
-    const board = box(0.816, 0.25, 9.4, wood, [-2.04 + i * 0.824, -0.15, 0.1], tabletop);
+    const board = box(0.816, 0.25, DESK_DEPTH, wood, [-2.04 + i * 0.824, -0.15, DESK_CENTER_Z], tabletop);
     board.name = `Tischplatte_${i}`;
   }
-  box(5.05, 0.12, 9.5, mat("#32271e"), [0, -0.32, 0.1]);
+  box(5.05, 0.12, DESK_DEPTH + 0.08, mat("#32271e"), [0, -0.32, DESK_CENTER_Z]);
+  const legZ = [DESK_CENTER_Z - DESK_DEPTH * 0.38, DESK_CENTER_Z + DESK_DEPTH * 0.38] as const;
   for (const x of [-2.05, 2.05])
-    for (const z of [-3.6, 3.5]) {
+    for (const z of legZ) {
       box(0.22, 2.4, 0.25, dark, [x, -1.5, z]);
       box(0.06, 0.5, 0.43, brass, [x, -0.4, z]);
     }
-  for (const x of [-2.05, 2.05]) box(0.13, 0.15, 7.2, dark, [x, -2.25, -0.05]);
+  for (const x of [-2.05, 2.05]) box(0.13, 0.15, DESK_DEPTH - 0.35, dark, [x, -2.25, DESK_CENTER_Z]);
   box(24, 0.16, 25, mat("#182027", 0.97), [0, -2.76, -2]);
   box(15, 9, 0.25, mat("#142733", 0.96), [0, 1.5, -6.2]);
   for (let i = 0; i < 22; i++) box(0.025, 7, 0.025, mat("#31414a", 0.9), [-6.5 + i * 0.62, 1.05, -6.05]);
@@ -299,21 +307,133 @@ export function createWerkstattScene(
   box(2.4, 2.8, 0.06, glow("#264d72"), [3.8, 1.8, -5.9]);
   for (let i = 0; i < 12; i++) box(2.5, 0.045, 0.12, mat("#0c1b27"), [3.8, 0.45 + i * 0.24, -5.8]);
   box(0.08, 2.8, 0.16, dark, [3.8, 1.8, -5.75]);
-  for (const x of [-1.6, 1.5]) {
+  // Zwei schwarze Pendelstangen — wie in der Studio-Referenz, nicht Kegellampen.
+  for (const x of [-1.92, 1.92]) {
+    const barZ = -1.05;
+    const barY = 2.78;
     tube(
       [
-        [x, 5, -2],
-        [x, 3.6, -2],
+        [x - 0.58, 5.1, barZ],
+        [x - 0.58, barY + 0.04, barZ],
       ],
-      0.015,
-      dark,
+      0.007,
+      black,
     );
-    cylinder(0.12, 0.42, 0.3, dark, [x, 3.47, -2]);
-    cylinder(0.36, 0.36, 0.012, glow("#ffcd87"), [x, 3.31, -2]);
-    point("#ffba69", [x, 3.19, -2], 12, 7);
+    tube(
+      [
+        [x + 0.58, 5.1, barZ],
+        [x + 0.58, barY + 0.04, barZ],
+      ],
+      0.007,
+      black,
+    );
+    box(1.28, 0.028, 0.028, black, [x, barY, barZ]);
+    point("#ffba69", [x, barY - 0.16, barZ + 0.2], 9, 6);
   }
-  box(0.7, 0.025, 0.03, glow("#c46b52"), [-0.7, 2.7, -5.83]);
-  point("#cf6e4a", [-0.7, 2.7, -5.6], 8, 5);
+  box(0.7, 0.025, 0.03, glow("#c46b52"), [-3.35, 2.7, -5.83]);
+  point("#cf6e4a", [-3.35, 2.7, -5.6], 6, 5);
+
+  // Großer gerahmter BP-Schirm mittig hinter dem Tablet — kein freischwebendes 3D-Logo.
+  const brandFrame = new THREE.Group();
+  brandFrame.name = "Wandschirm";
+  brandFrame.position.set(0, 1.92, -5.88);
+  scene.add(brandFrame);
+  box(3.28, 2.02, 0.07, mat("#0a1218", 0.42, 0.35), [0, 0, -0.03], brandFrame);
+  box(3.08, 1.82, 0.04, dark, [0, 0, 0.01], brandFrame);
+  const brandC = document.createElement("canvas");
+  brandC.width = 1024;
+  brandC.height = 640;
+  const brandCtx = brandC.getContext("2d")!;
+  function drawBrandPlate() {
+    const w = brandC.width;
+    const h = brandC.height;
+    const wash = brandCtx.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.48);
+    wash.addColorStop(0, "#163044");
+    wash.addColorStop(1, "#0a1620");
+    brandCtx.fillStyle = wash;
+    brandCtx.fillRect(0, 0, w, h);
+    const s = Math.min(w, h) * 0.0114;
+    brandCtx.save();
+    brandCtx.translate(w * 0.5 - 36 * s, h * 0.5 - 28 * s);
+    brandCtx.scale(s, s);
+    brandCtx.fillStyle = "#7f96aa";
+    brandCtx.beginPath();
+    brandCtx.moveTo(8, 6);
+    brandCtx.lineTo(30, 6);
+    brandCtx.quadraticCurveTo(44, 6, 44, 19);
+    brandCtx.quadraticCurveTo(44, 28, 36, 31);
+    brandCtx.quadraticCurveTo(46, 34, 46, 44);
+    brandCtx.quadraticCurveTo(46, 56, 30, 56);
+    brandCtx.lineTo(8, 56);
+    brandCtx.closePath();
+    brandCtx.fill();
+    brandCtx.fillStyle = "#9aafc0";
+    brandCtx.beginPath();
+    brandCtx.moveTo(42, 6);
+    brandCtx.lineTo(58, 6);
+    brandCtx.quadraticCurveTo(74, 6, 74, 22);
+    brandCtx.quadraticCurveTo(74, 38, 58, 38);
+    brandCtx.lineTo(50, 38);
+    brandCtx.lineTo(50, 56);
+    brandCtx.lineTo(42, 56);
+    brandCtx.closePath();
+    brandCtx.fill();
+    brandCtx.fillStyle = "#e8eef2";
+    const nodes: Array<[number, number]> = [
+      [18, 18],
+      [28, 18],
+      [23, 28],
+      [56, 21],
+      [61, 23],
+      [58, 27],
+    ];
+    brandCtx.strokeStyle = "#e8eef2";
+    brandCtx.lineWidth = 1.5;
+    brandCtx.beginPath();
+    brandCtx.moveTo(18, 18);
+    brandCtx.lineTo(28, 18);
+    brandCtx.lineTo(23, 28);
+    brandCtx.closePath();
+    brandCtx.moveTo(56, 21);
+    brandCtx.lineTo(61, 23);
+    brandCtx.lineTo(58, 27);
+    brandCtx.closePath();
+    brandCtx.stroke();
+    for (const [nx, ny] of nodes) {
+      brandCtx.beginPath();
+      brandCtx.arc(nx, ny, 2.15, 0, Math.PI * 2);
+      brandCtx.fill();
+    }
+    brandCtx.restore();
+  }
+  drawBrandPlate();
+  const brandTex = new THREE.CanvasTexture(brandC);
+  brandTex.colorSpace = THREE.SRGBColorSpace;
+  const brandScreen = meshAt(
+    new THREE.PlaneGeometry(2.98, 1.72),
+    new THREE.MeshBasicMaterial({ map: brandTex, toneMapped: false }),
+    brandFrame,
+    [0, 0, 0.042],
+  );
+  brandScreen.castShadow = false;
+  const captionC = document.createElement("canvas");
+  captionC.width = 512;
+  captionC.height = 64;
+  const captionCtx = captionC.getContext("2d")!;
+  captionCtx.clearRect(0, 0, 512, 64);
+  captionCtx.fillStyle = "#8aa3b0";
+  captionCtx.font = '600 26px "Sora", sans-serif';
+  captionCtx.textAlign = "center";
+  captionCtx.fillText("BP AGENTICS", 256, 42);
+  const captionTex = new THREE.CanvasTexture(captionC);
+  captionTex.colorSpace = THREE.SRGBColorSpace;
+  const caption = meshAt(
+    new THREE.PlaneGeometry(1.55, 0.18),
+    new THREE.MeshBasicMaterial({ map: captionTex, transparent: true, toneMapped: false }),
+    scene,
+    [0, 3.08, -5.86],
+  );
+  caption.castShadow = false;
 
   function contactShadow(x: number, z: number, sx: number, sz: number) {
     const c = document.createElement("canvas");
@@ -329,25 +449,27 @@ export function createWerkstattScene(
     p.rotation.x = -Math.PI / 2;
     p.castShadow = false;
   }
-  contactShadow(-1.7, 0.25, 2.6, 1.8);
-  contactShadow(0, 0.35, 1.6, 1.5);
-  contactShadow(1.7, 0.22, 2.2, 1.8);
+  contactShadow(-1.68, 0.18, 2.2, 1.5);
+  contactShadow(0, 0.35, 1.5, 1.4);
+  contactShadow(1.68, 0.18, 2.0, 1.5);
   const matte = mat("#32271e", 0.92);
-  box(1.95, 0.012, 1.65, matte, [-1.55, -0.018, 0.32]);
-  box(1.15, 0.012, 1.2, matte, [0, -0.018, 0.38]);
-  box(1.7, 0.012, 1.5, matte, [1.52, -0.018, 0.28]);
+  box(1.7, 0.012, 1.45, matte, [-1.55, -0.018, 0.22]);
+  box(1.1, 0.012, 1.15, matte, [0, -0.018, 0.38]);
+  box(1.55, 0.012, 1.35, matte, [1.52, -0.018, 0.22]);
 
   // ---------------------------------------------------------------------
   // Station „Websites" — CRT-Monitor mit Dachdecker-Demo (lokale Assets)
   // ---------------------------------------------------------------------
   const monitor = new THREE.Group();
-  monitor.position.set(-1.78, 0, 0.22);
-  monitor.rotation.y = 0.04;
+  monitor.position.set(-1.68, 0, 0.12);
+  monitor.rotation.y = 0.03;
   scene.add(monitor);
-  round(1.48, 0.12, 0.85, 0.08, dark, [0, 0.08, 0], monitor);
-  round(0.45, 0.38, 0.3, 0.08, cream, [0, 0.29, -0.04], monitor);
-  round(2.14, 1.65, 0.85, 0.13, cream, [0, 1.19, 0], monitor);
-  round(1.87, 1.34, 0.08, 0.14, dark, [-0.04, 1.24, 0.46], monitor);
+  // Kompakter CRT: tiefer Korpus, warmer Beige, Tastatur davor — kein flacher Monitor.
+  round(0.78, 0.07, 0.52, 0.04, cream, [0, 0.04, 0.08], monitor);
+  round(0.42, 0.28, 0.36, 0.07, cream, [0, 0.2, 0.02], monitor);
+  round(1.58, 1.36, 1.18, 0.14, cream, [0, 0.98, -0.18], monitor);
+  round(1.42, 1.12, 0.16, 0.1, cream, [0, 1.02, 0.38], monitor);
+  round(1.22, 0.94, 0.06, 0.08, dark, [0, 1.04, 0.48], monitor);
 
   const screenC = document.createElement("canvas");
   screenC.width = 1024;
@@ -364,36 +486,36 @@ export function createWerkstattScene(
   const screenTex = new THREE.CanvasTexture(screenC);
   screenTex.colorSpace = THREE.SRGBColorSpace;
   const websiteScreen = meshAt(
-    new THREE.PlaneGeometry(1.7, 1.15),
+    new THREE.PlaneGeometry(1.16, 0.88),
     new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }),
     monitor,
-    [-0.04, 1.25, 0.525],
+    [0, 1.04, 0.518],
   );
   websiteScreen.castShadow = false;
 
-  for (let i = 0; i < 5; i++) {
-    const knob = cylinder(0.035, 0.035, 0.025, dark, [0.67 - i * 0.12, 0.48, 0.45], monitor);
+  for (let i = 0; i < 4; i++) {
+    const knob = cylinder(0.028, 0.028, 0.02, dark, [0.42 - i * 0.11, 0.48, 0.46], monitor);
     knob.rotation.x = Math.PI / 2;
   }
-  meshAt(new THREE.SphereGeometry(0.023, 12, 8), glow("#9dd5b0"), monitor, [0.82, 0.48, 0.48]);
-  for (let i = 0; i < 11; i++) box(0.028, 0.52, 0.03, dark, [0.92, 1.05, 0.47], monitor);
+  meshAt(new THREE.SphereGeometry(0.018, 12, 8), glow("#9dd5b0"), monitor, [0.58, 0.48, 0.48]);
 
   const keyboard = new THREE.Group();
   monitor.add(keyboard);
-  keyboard.position.set(0.05, 0.09, 1.04);
-  keyboard.rotation.x = -0.08;
-  round(1.84, 0.12, 0.65, 0.06, cream, [0, 0, 0], keyboard);
-  const keyGeo = new THREE.BoxGeometry(0.113, 0.055, 0.104);
+  keyboard.position.set(0.04, 0.055, 0.92);
+  keyboard.rotation.x = -0.06;
+  round(1.42, 0.08, 0.48, 0.05, cream, [0, 0, 0], keyboard);
+  const keyGeo = new THREE.BoxGeometry(0.086, 0.04, 0.078);
   const keyMat = mat("#d2c6ad", 0.73);
   const keys = new THREE.InstancedMesh(keyGeo, keyMat, 60);
   const dummy = new THREE.Object3D();
   for (let i = 0; i < 60; i++) {
-    dummy.position.set(((i % 15) - 7) * 0.115, 0.075, (Math.floor(i / 15) - 1.5) * 0.12);
+    dummy.position.set(((i % 15) - 7) * 0.088, 0.052, (Math.floor(i / 15) - 1.5) * 0.09);
     dummy.updateMatrix();
     keys.setMatrixAt(i, dummy.matrix);
   }
   keys.castShadow = true;
   keyboard.add(keys);
+  round(0.18, 0.045, 0.26, 0.04, cream, [-0.92, 0.04, 0.88], monitor);
   tube(
     [
       [-0.1, 0.1, -2.5],
@@ -571,7 +693,7 @@ export function createWerkstattScene(
   // Station „Büroabläufe" — Roboter (unveränderter Import aus robot.js)
   // ---------------------------------------------------------------------
   const robot = createRobot(THREE, scene);
-  robot.group.position.set(1.72, 0, 0.18);
+  robot.group.position.set(1.64, 0, 0.16);
   robot.group.rotation.y = -0.06;
   point("#f3e4cb", [1.3, 2, 1.5], 4, 3);
 
@@ -598,12 +720,12 @@ export function createWerkstattScene(
     ]);
     pen.rotation.z = (rand() - 0.5) * 0.3;
   }
-  const clock = cylinder(0.37, 0.37, 0.05, brass, [0.15, 2.65, -6]);
+  const clock = cylinder(0.37, 0.37, 0.05, brass, [-5.15, 2.45, -5.92]);
   clock.rotation.x = Math.PI / 2;
-  const face = cylinder(0.335, 0.335, 0.055, mat("#d1c4a5"), [0.15, 2.65, -5.965]);
+  const face = cylinder(0.335, 0.335, 0.055, mat("#d1c4a5"), [-5.15, 2.45, -5.885]);
   face.rotation.x = Math.PI / 2;
-  box(0.018, 0.22, 0.02, dark, [0.15, 2.74, -5.92]);
-  box(0.18, 0.015, 0.02, dark, [0.23, 2.65, -5.92]);
+  box(0.018, 0.22, 0.02, dark, [-5.15, 2.54, -5.84]);
+  box(0.18, 0.015, 0.02, dark, [-5.07, 2.45, -5.84]);
 
   // Staub
   const dustG = new THREE.BufferGeometry();
@@ -635,11 +757,6 @@ export function createWerkstattScene(
     const s = (mobile ? MOBILE_POSES[id] : undefined) ?? POSES[id];
     const p: Vec3Tuple = [...s.p];
     const t: Vec3Tuple = [...s.t];
-    // Handy: dieselbe Frontalpose, nur weiter weg, damit alle drei Stationen reinpassen.
-    if (id === "overview" && mobile) {
-      p[1] += 0.38;
-      p[2] += 4.7;
-    }
     return { p: new THREE.Vector3(...p), t: new THREE.Vector3(...t) };
   }
 
@@ -695,17 +812,38 @@ export function createWerkstattScene(
   // Hotspot-Projektion (DOM-Elemente werden von außen registriert)
   // ---------------------------------------------------------------------
   let hotspotElements: Partial<Record<StationId, HTMLElement>> = {};
+  const cardAnchors: Record<StationId, THREE.Vector3> = {
+    web: new THREE.Vector3(-1.68, DESK_CARD_Y, DESK_CARD_Z),
+    chat: new THREE.Vector3(0.02, DESK_CARD_Y, DESK_CARD_Z),
+    office: new THREE.Vector3(1.64, DESK_CARD_Y, DESK_CARD_Z),
+  };
+  const projected = new THREE.Vector3();
   function updateLabels() {
     const onOverview = current === "overview" && introProgress >= 0.99;
+    const mobile = container.clientWidth < 800;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
     for (const id of STATION_IDS) {
       const el = hotspotElements[id];
       if (!el) continue;
-      el.style.left = "";
-      el.style.top = "";
-      el.style.transform = "";
-      el.style.opacity = onOverview ? "1" : "0";
-      el.style.pointerEvents = onOverview ? "auto" : "none";
-      el.tabIndex = onOverview ? 0 : -1;
+      if (!onOverview) {
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+        el.tabIndex = -1;
+        continue;
+      }
+      projected.copy(cardAnchors[id]);
+      if (mobile) projected.z -= 0.1;
+      projected.project(camera);
+      const x = (projected.x * 0.5 + 0.5) * width;
+      let y = (-projected.y * 0.5 + 0.5) * height;
+      if (mobile) y = Math.min(y, height - 86);
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.transform = mobile ? "translate(-50%, -92%)" : "translate(-50%, -78%)";
+      el.style.opacity = "1";
+      el.style.pointerEvents = "auto";
+      el.tabIndex = 0;
     }
   }
   function clamp(v: number, a: number, b: number) {
@@ -718,7 +856,7 @@ export function createWerkstattScene(
   function resize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     camera.aspect = container.clientWidth / container.clientHeight;
-    camera.fov = container.clientWidth < 800 ? 52 : 42;
+    camera.fov = container.clientWidth < 800 ? 40 : 34;
     camera.updateProjectionMatrix();
     if (!transition) {
       const d = pose(current);
