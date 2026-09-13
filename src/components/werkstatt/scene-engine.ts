@@ -48,7 +48,7 @@ type Vec3Tuple = [number, number, number];
 
 const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
   // Frontal, Augenhöhe: drei Stationen in einer Reihe, Logo hinter dem Tablet.
-  overview: { p: [0, 1.36, 7.45], t: [0, 0.92, 0.12] },
+  overview: { p: [0, 1.42, 7.85], t: [0, 0.86, 0.18] },
   web: { p: [-1.15, 1.48, 3.15], t: [-1.72, 0.98, 0.18] },
   chat: { p: [0.12, 1.52, 3.05], t: [0.02, 1.02, 0.38] },
   office: { p: [1.55, 1.42, 3.2], t: [1.72, 0.95, 0.16] },
@@ -89,7 +89,12 @@ export function createWerkstattScene(
   scene.background = new THREE.Color("#0b1822");
   scene.fog = new THREE.FogExp2("#0b1822", 0.035);
 
-  const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.06, 70);
+  const camera = new THREE.PerspectiveCamera(
+    container.clientWidth < 800 ? 49 : 42,
+    container.clientWidth / container.clientHeight,
+    0.06,
+    70,
+  );
   const look = new THREE.Vector3(0, 0.55, -0.5);
 
   let renderer: THREE.WebGLRenderer;
@@ -632,8 +637,8 @@ export function createWerkstattScene(
     const t: Vec3Tuple = [...s.t];
     // Handy: dieselbe Frontalpose, nur weiter weg, damit alle drei Stationen reinpassen.
     if (id === "overview" && mobile) {
-      p[1] += 0.18;
-      p[2] += 2.4;
+      p[1] += 0.32;
+      p[2] += 4.15;
     }
     return { p: new THREE.Vector3(...p), t: new THREE.Vector3(...t) };
   }
@@ -713,6 +718,7 @@ export function createWerkstattScene(
   function resize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     camera.aspect = container.clientWidth / container.clientHeight;
+    camera.fov = container.clientWidth < 800 ? 49 : 42;
     camera.updateProjectionMatrix();
     if (!transition) {
       const d = pose(current);

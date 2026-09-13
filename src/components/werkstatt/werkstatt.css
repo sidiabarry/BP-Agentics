@@ -182,12 +182,20 @@
 }
 
 .werkstatt__studio-kicker {
+  position: absolute;
+  z-index: 6;
+  top: 34%;
+  left: 1.4%;
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
   color: #8aa3b0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  pointer-events: none;
+  opacity: 0.7;
 }
 
 .werkstatt__eyebrow--bar {
@@ -983,6 +991,13 @@
 
   .werkstatt__copy p {
     display: none;
+  }
+
+  .werkstatt__studio-kicker {
+    top: 28%;
+    left: 0.35%;
+    font-size: 10px;
+    opacity: 0.4;
   }
 
   .werkstatt__hotspots--row {

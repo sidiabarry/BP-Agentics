@@ -137,13 +137,12 @@ export function WerkstattScene({
       <div className="werkstatt__vignette" aria-hidden="true" />
       <div className="werkstatt__grain" aria-hidden="true" />
 
-      <header className="werkstatt__topbar">
-        {active === "overview" ? (
-          <p className="werkstatt__studio-kicker">Studio</p>
-        ) : (
+      <header className="werkstatt__topbar" hidden={active === "overview"}>
+        {active !== "overview" && (
           <p className="werkstatt__eyebrow werkstatt__eyebrow--bar">{werkstattCopy.eyebrow}</p>
         )}
         <div className="werkstatt__actions">
+          {active !== "overview" && (
           <button
             type="button"
             className="werkstatt__quiet-btn"
@@ -152,6 +151,7 @@ export function WerkstattScene({
           >
             {manualReduced ? werkstattCopy.reduceOn : werkstattCopy.reduceOff}
           </button>
+          )}
           {active !== "overview" && (
             <button type="button" className="werkstatt__outline-btn" onClick={() => goTo("overview")}>
               <span aria-hidden="true">↖</span> {werkstattCopy.overview}
@@ -161,6 +161,7 @@ export function WerkstattScene({
       </header>
 
       <div className="werkstatt__world-ui" data-view={active}>
+        {active === "overview" && <p className="werkstatt__studio-kicker">Studio</p>}
         <div className="werkstatt__hotspots werkstatt__hotspots--row" inert={active !== "overview"}>
           {stationOrder.map((id) => (
             <button

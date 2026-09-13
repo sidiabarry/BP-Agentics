@@ -138,7 +138,7 @@ function loadWallLogo(scene: THREE.Scene) {
       const box = new THREE.Box3().setFromObject(root);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
-      const scale = 1.62 / Math.max(size.x, 1e-4);
+      const scale = 2.15 / Math.max(size.x, 1e-4);
       root.scale.setScalar(scale);
       root.position.copy(center).multiplyScalar(-scale);
       root.traverse((o) => {
@@ -150,12 +150,12 @@ function loadWallLogo(scene: THREE.Scene) {
           const standard = m as THREE.MeshStandardMaterial;
           if (!standard?.isMeshStandardMaterial) continue;
           standard.emissive = new THREE.Color(standard.color);
-          standard.emissiveIntensity = 0.38;
+          standard.emissiveIntensity = 0.55;
         }
       });
       const holder = new THREE.Group();
       holder.name = "BP Wandlogo";
-      holder.position.set(0, 2.38, -5.92);
+      holder.position.set(0, 2.52, -5.92);
       holder.add(root);
       scene.add(holder);
     },
