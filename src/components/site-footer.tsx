@@ -43,6 +43,11 @@ export function SiteFooter() {
                 Dachdecker Signature
               </Link>
             </li>
+            <li>
+              <Link href="/werkstatt" className="hover:text-white">
+                Die Werkstatt (3D)
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

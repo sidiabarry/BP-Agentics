@@ -95,6 +95,15 @@ export function HomeReferenzen() {
         <div className="mt-12">
           <DemoPair surface="cream" />
         </div>
+
+        <p className="mt-8">
+          <Link
+            href="/werkstatt"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Alle drei Leistungen in 3D erkunden — Die Werkstatt
+          </Link>
+        </p>
       </div>
     </section>
   );

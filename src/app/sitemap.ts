@@ -33,6 +33,7 @@ const staticRoutes: {
     priority: 0.8,
     lastModified: contentUpdated,
   },
+  { path: "/werkstatt", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
   { path: "/preise", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
   { path: "/kontakt", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
   { path: "/termin", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },

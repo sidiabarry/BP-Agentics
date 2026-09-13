@@ -1,0 +1,846 @@
+/**
+ * Werkstatt (/werkstatt) — gescopte Bühnen-CSS.
+ *
+ * Bewusst eigenes Stylesheet statt globals.css: diese Regeln gelten nur für
+ * eine einzige Route und sollen nicht in jedem Seitenaufruf mitgeladen werden
+ * (anders als scroll-experience.css, das die immer gemountete Startseite trägt).
+ *
+ * Die Pin-Mechanik spiegelt bewusst .hero-portal / .machine aus
+ * scroll-experience.css: hohe Sektion + sticky Kind, gegated über
+ * [data-scroll-ready], damit ohne JS oder bei prefers-reduced-motion nichts klebt.
+ */
+
+.werkstatt-scroll {
+  --paper: #f3efe6;
+  --ink: #102633;
+  --muted: #b7cad4;
+  --cyan: #8dcee2;
+  --brass: #cba66e;
+  --line: rgba(243, 239, 230, 0.2);
+  position: relative;
+  background: #08121a;
+  color: var(--paper);
+}
+
+.werkstatt-scroll[data-scroll-ready] {
+  height: 270svh;
+}
+
+.werkstatt-scroll__pin {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #0b1721;
+}
+
+.werkstatt-scroll[data-scroll-ready] .werkstatt-scroll__pin {
+  position: sticky;
+  top: 0;
+}
+
+/* --- Bühne ---------------------------------------------------------------- */
+
+.werkstatt__scene {
+  position: absolute;
+  inset: 0;
+  touch-action: pan-y;
+}
+
+.werkstatt__scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.werkstatt__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 12, 20, 0.65), transparent 28%, transparent 67%, rgba(2, 8, 14, 0.8)),
+    radial-gradient(ellipse at center, transparent 35%, rgba(1, 6, 10, 0.25));
+}
+
+.werkstatt__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  opacity: 0.055;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.5' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
+
+/* --- Topbar --------------------------------------------------------------- */
+
+.werkstatt__topbar {
+  position: absolute;
+  z-index: 30;
+  top: 25px;
+  right: 36px;
+  left: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.werkstatt__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--paper);
+}
+
+.werkstatt__brand-name {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 12px;
+  line-height: 1.65;
+  letter-spacing: 0.21em;
+}
+
+.werkstatt__brand-name small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  opacity: 0.65;
+}
+
+.werkstatt__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.werkstatt__outline-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 17px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: rgba(5, 16, 25, 0.48);
+  backdrop-filter: blur(14px);
+  font-size: 13px;
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.werkstatt__outline-btn:hover {
+  background: rgba(243, 239, 230, 0.13);
+}
+
+.werkstatt__quiet-btn {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  color: #a6bdca;
+  cursor: pointer;
+}
+
+.werkstatt__top-link {
+  font-size: 13px;
+  color: var(--paper);
+  opacity: 0.75;
+}
+
+.werkstatt__top-link:hover {
+  opacity: 1;
+}
+
+/* --- Übersichtstext ------------------------------------------------------- */
+
+.werkstatt__copy {
+  position: absolute;
+  z-index: 5;
+  top: 119px;
+  left: 5%;
+  pointer-events: none;
+  transition:
+    opacity 0.35s,
+    transform 0.4s;
+}
+
+.werkstatt__copy[data-hidden="true"] {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+.werkstatt__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.23em;
+  text-transform: uppercase;
+  color: #a6c0cd;
+}
+
+.werkstatt__eyebrow::before {
+  content: "";
+  width: 23px;
+  height: 1px;
+  background: currentColor;
+}
+
+.werkstatt__copy h1 {
+  margin: 16px 0 12px;
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(29px, 3.05vw, 48px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -1.9px;
+}
+
+.werkstatt__copy h1 span {
+  color: #a2bfd1;
+}
+
+.werkstatt__copy p {
+  max-width: 315px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #adc0cb;
+}
+
+.werkstatt__marker {
+  position: absolute;
+  z-index: 5;
+  top: 131px;
+  right: 4%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  letter-spacing: 0.19em;
+  opacity: 0.7;
+}
+
+.werkstatt__led {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ace0bf;
+  box-shadow: 0 0 10px #9eeabb;
+}
+
+/* --- Hotspots ------------------------------------------------------------- */
+
+.werkstatt__hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.werkstatt__hotspot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1px solid #789ca866;
+  border-radius: 8px;
+  background: rgba(16, 38, 51, 0.95);
+  box-shadow: 0 5px 30px #0003;
+  backdrop-filter: blur(12px);
+  color: var(--paper);
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    background 0.2s,
+    opacity 0.25s;
+  pointer-events: auto;
+}
+
+.werkstatt__hotspot:hover {
+  background: #1b3a4b;
+  border-color: var(--cyan);
+}
+
+.werkstatt__hotspot::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 25px;
+  background: linear-gradient(#afc9d5b0, transparent);
+}
+
+.werkstatt__hotspot-num {
+  padding-right: 10px;
+  border-right: 1px solid #92b6c93b;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--brass);
+}
+
+.werkstatt__hotspot strong {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.werkstatt__hotspot-plus {
+  margin-left: 4px;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--cyan);
+}
+
+.werkstatt__station-icon {
+  flex: 0 0 21px;
+  width: 21px;
+  height: 21px;
+  color: var(--cyan);
+}
+
+/* --- Detailpanel ---------------------------------------------------------- */
+
+.werkstatt__detail {
+  position: absolute;
+  z-index: 9;
+  top: 30%;
+  right: 5%;
+  width: 355px;
+  padding: 25px;
+  border: 1px solid #b6d6e42b;
+  border-radius: 10px;
+  background: rgba(6, 20, 31, 0.92);
+  box-shadow: 0 20px 60px #0003;
+  backdrop-filter: blur(20px);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition:
+    opacity 0.28s,
+    transform 0.35s;
+}
+
+.werkstatt__detail[data-open="true"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.werkstatt__detail .werkstatt__eyebrow {
+  font-size: 10px;
+  color: #d5bd9b;
+}
+
+.werkstatt__detail h2 {
+  margin: 18px 0;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -1.1px;
+  color: #f4eee3;
+}
+
+.werkstatt__detail p {
+  margin: 0 0 23px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #b7c6ce;
+}
+
+.werkstatt__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 20px;
+  border-radius: 6px;
+  background: #f0e9db;
+  box-shadow: 0 6px 35px #0003;
+  font-size: 15px;
+  font-weight: 600;
+  color: #102939;
+}
+
+.werkstatt__cta:hover {
+  background: #fff;
+}
+
+.werkstatt__detail-note {
+  margin-top: 15px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #829cab;
+}
+
+/* --- Untere Navigation ---------------------------------------------------- */
+
+.werkstatt__nav {
+  position: absolute;
+  z-index: 12;
+  bottom: 31px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #b4d2e12b;
+  border-radius: 99px;
+  background: rgba(8, 20, 29, 0.86);
+  box-shadow: 0 10px 40px #0004;
+  backdrop-filter: blur(20px);
+  transform: translateX(-50%);
+}
+
+.werkstatt__nav-station {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.werkstatt__nav-station span {
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+.werkstatt__nav-station:hover {
+  background: #ffffff12;
+  color: #fff;
+}
+
+.werkstatt__nav-station[aria-pressed="true"] {
+  background: #eee9df;
+  color: #122838;
+}
+
+.werkstatt__nav-station[aria-pressed="true"]:hover {
+  background: #fff;
+  color: #122838;
+}
+
+/* --- Fußnoten, Fortschritt, Status --------------------------------------- */
+
+.werkstatt__note {
+  position: absolute;
+  z-index: 6;
+  bottom: 41px;
+  left: 36px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #8195a4;
+}
+
+.werkstatt__index {
+  position: absolute;
+  z-index: 6;
+  right: 36px;
+  bottom: 42px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #90a5b2;
+}
+
+.werkstatt__caption {
+  position: absolute;
+  z-index: 6;
+  bottom: 135px;
+  left: 5%;
+  max-width: 250px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+  color: #a6bbc5;
+}
+
+.werkstatt__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 32;
+  height: 2px;
+  width: 0;
+  background: #80bedb;
+}
+
+/* --- Intro (Bildsequenz) ------------------------------------------------- */
+
+.werkstatt__intro {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: #eef0ef;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.werkstatt__intro canvas,
+.werkstatt__intro img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.werkstatt__intro-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(243, 239, 230, 0.97) 0%,
+    rgba(243, 239, 230, 0.8) 22%,
+    transparent 54%
+  );
+}
+
+.werkstatt__intro-copy {
+  position: absolute;
+  top: 30%;
+  left: 6%;
+  max-width: 490px;
+  color: #11283a;
+}
+
+.werkstatt__intro-copy .werkstatt__eyebrow {
+  color: #4b708b;
+}
+
+.werkstatt__intro-copy h2 {
+  margin: 22px 0;
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(32px, 4.4vw, 64px);
+  font-weight: 600;
+  line-height: 1.09;
+  letter-spacing: -2.7px;
+}
+
+.werkstatt__intro-copy h2 span {
+  color: #1973ab;
+}
+
+.werkstatt__intro-copy p {
+  max-width: 330px;
+  font-size: 18px;
+  line-height: 1.45;
+  color: #4b5c66;
+}
+
+.werkstatt__intro-cue {
+  position: absolute;
+  bottom: 45px;
+  left: 6%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: #143049;
+}
+
+.werkstatt__scroll-symbol {
+  position: relative;
+  width: 21px;
+  height: 34px;
+  border: 1px solid #6f8a9c;
+  border-radius: 15px;
+}
+
+.werkstatt__scroll-symbol::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  width: 3px;
+  height: 7px;
+  border-radius: 4px;
+  background: #1a6d9d;
+  animation: werkstatt-scrollhint 2s infinite;
+}
+
+@keyframes werkstatt-scrollhint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  60% {
+    transform: translateY(7px);
+    opacity: 1;
+  }
+}
+
+.werkstatt__intro-jump {
+  position: absolute;
+  right: 5%;
+  bottom: 40px;
+  border-color: #9daeb8;
+  background: rgba(255, 255, 255, 0.75);
+  color: #102b42;
+  pointer-events: auto;
+}
+
+/* Während des Intros ruht die Werkstatt-UI. */
+.werkstatt-scroll[data-intro="true"] .werkstatt__world-ui {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.werkstatt__world-ui {
+  transition: opacity 0.3s;
+}
+
+/* --- Fallback ------------------------------------------------------------ */
+
+.werkstatt__status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 40;
+  max-width: 90vw;
+  padding: 20px 28px;
+  border-radius: 8px;
+  background: #10212d;
+  font-size: 16px;
+  transform: translate(-50%, -50%);
+}
+
+.werkstatt__fallback-links {
+  position: absolute;
+  top: 65%;
+  right: 20%;
+  left: 20%;
+  z-index: 41;
+  display: grid;
+  gap: 10px;
+}
+
+.werkstatt__fallback-links a {
+  padding: 12px;
+  border-radius: 5px;
+  background: var(--paper);
+  color: #17344d;
+  text-align: center;
+}
+
+.werkstatt__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* --- Mobil --------------------------------------------------------------- */
+
+@media (max-width: 800px) {
+  .werkstatt__topbar {
+    top: 20px;
+    right: 20px;
+    left: 20px;
+    gap: 8px;
+  }
+
+  .werkstatt__brand-name {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+
+  .werkstatt__top-link,
+  .werkstatt__marker,
+  .werkstatt__note,
+  .werkstatt__index {
+    display: none;
+  }
+
+  .werkstatt__actions {
+    gap: 2px;
+  }
+
+  .werkstatt__outline-btn {
+    min-height: 42px;
+    padding: 9px 12px;
+    white-space: nowrap;
+  }
+
+  .werkstatt__quiet-btn {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    min-height: 32px;
+    font-size: 10px;
+  }
+
+  .werkstatt__copy {
+    top: 106px;
+    left: 25px;
+  }
+
+  .werkstatt__copy h1 {
+    font-size: 28px;
+    letter-spacing: -1.5px;
+  }
+
+  .werkstatt__copy p {
+    display: none;
+  }
+
+  .werkstatt__hotspot {
+    max-width: calc(100vw - 28px);
+    min-height: 48px;
+    padding: 11px 12px;
+    gap: 7px;
+  }
+
+  .werkstatt__hotspot strong {
+    font-size: 14px;
+  }
+
+  .werkstatt__hotspot-num {
+    padding-right: 7px;
+  }
+
+  .werkstatt__hotspot-plus {
+    margin-left: 0;
+    font-size: 16px;
+  }
+
+  .werkstatt__station-icon {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .werkstatt__hotspot::after {
+    height: 15px;
+  }
+
+  .werkstatt__detail {
+    top: auto;
+    right: 18px;
+    bottom: 93px;
+    left: 18px;
+    width: auto;
+    padding: 18px 20px;
+  }
+
+  .werkstatt__detail h2 {
+    margin: 11px 0 9px;
+    font-size: 23px;
+  }
+
+  .werkstatt__detail p {
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .werkstatt__cta {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .werkstatt__detail-note {
+    display: none;
+  }
+
+  .werkstatt__nav {
+    bottom: 18px;
+    width: calc(100% - 28px);
+    justify-content: space-between;
+    gap: 0;
+    padding: 5px;
+    border-radius: 18px;
+    align-items: stretch;
+  }
+
+  .werkstatt__nav-station {
+    flex: 1;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 6px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .werkstatt__nav-station span {
+    font-size: 10px;
+  }
+
+  .werkstatt__caption {
+    bottom: 98px;
+    left: 24px;
+    max-width: 190px;
+    font-size: 10px;
+  }
+
+  .werkstatt__intro-copy {
+    top: 23%;
+    left: 7%;
+    max-width: 76%;
+  }
+
+  .werkstatt__intro-copy h2 {
+    font-size: 43px;
+    letter-spacing: -2px;
+  }
+
+  .werkstatt__intro-copy p {
+    max-width: 220px;
+    font-size: 16px;
+  }
+
+  .werkstatt__intro-shade {
+    background: linear-gradient(180deg, rgba(243, 239, 230, 0.86), rgba(243, 239, 230, 0.26) 55%, transparent);
+  }
+
+  .werkstatt__intro-cue {
+    bottom: 111px;
+    left: 7%;
+    font-size: 12px;
+  }
+
+  .werkstatt__intro-jump {
+    right: auto;
+    bottom: 45px;
+    left: 7%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .werkstatt-scroll,
+  .werkstatt-scroll * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .werkstatt-scroll {
+    height: auto !important;
+  }
+
+  .werkstatt-scroll__pin {
+    position: relative !important;
+  }
+
+  .werkstatt__intro {
+    display: none;
+  }
+}

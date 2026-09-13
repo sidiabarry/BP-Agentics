@@ -77,8 +77,14 @@ export type SceneOptions = {
   vars?: (p: number) => Record<string, number | string>;
   /** Für alles, was CSS nicht kann (Canvas). Läuft nur im Enhanced-Modus. */
   onFrame?: (p: number, el: HTMLElement) => void;
-  /** Wird aufgerufen, wenn zwischen statisch und Enhanced umgeschaltet wird. */
-  onMode?: (enhanced: boolean) => void;
+  /**
+   * Wird aufgerufen, wenn zwischen statisch und Enhanced umgeschaltet wird.
+   * Das zweite Argument ist der rohe OS-Wert von `prefers-reduced-motion`,
+   * unabhängig von einer zu kleinen Viewport-Höhe – nützlich für Szenen, die
+   * abseits von `onFrame` eine eigene, dauerhafte Animationsschleife führen
+   * (z. B. Three.js) und diese unabhängig vom Scroll-Zustand reduzieren müssen.
+   */
+  onMode?: (enhanced: boolean, osReducedMotion: boolean) => void;
 };
 
 /**
@@ -131,7 +137,7 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
           el.removeAttribute("data-scroll-ready");
           el.removeAttribute("style");
         }
-        opts.current.onMode?.(enhanced);
+        opts.current.onMode?.(enhanced, reduced.matches);
       }
       schedule();
     };

@@ -137,6 +137,10 @@
     padding-bottom: 5.5rem;
     overflow-x: clip;
   }
+  /* Die Werkstatt läuft bildschirmfüllend und ohne WhatsApp-Knopf — kein Platzhalter unten. */
+  body:has(.werkstatt-scroll) {
+    padding-bottom: 0;
+  }
   @media (min-width: 768px) {
     body {
       padding-bottom: 0;

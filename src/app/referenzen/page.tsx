@@ -21,6 +21,7 @@ export default function ReferenzenPage() {
       related={[
         { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
+        { href: "/werkstatt", label: "Die Werkstatt in 3D erkunden" },
         { href: "/leistungen", label: "Leistungen" },
         { href: "/kontakt", label: "Kontakt" },
       ]}
