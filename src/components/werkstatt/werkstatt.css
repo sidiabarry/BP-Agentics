@@ -1001,9 +1001,10 @@
   }
 
   .werkstatt__hotspots--row {
-    left: 12px;
-    right: 5.35rem;
-    bottom: 1.15rem;
+    left: 10px;
+    right: 10px;
+    bottom: auto;
+    top: 56%;
     gap: 6px;
   }
 
