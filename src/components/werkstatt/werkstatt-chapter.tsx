@@ -97,6 +97,7 @@ export function WerkstattChapter() {
   const pinRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
   const [osReduced, setOsReduced] = useState(false);
+  const [motionReady, setMotionReady] = useState(false);
   const [webgl, setWebgl] = useState(false);
 
   const sectionRef = useScrollScene<HTMLElement>({
@@ -117,6 +118,17 @@ export function WerkstattChapter() {
   }, []);
 
   useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      setOsReduced(motion.matches);
+      setMotionReady(true);
+    };
+    sync();
+    motion.addEventListener("change", sync);
+    return () => motion.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
     const host = pinRef.current;
     if (!host) return;
     const observer = new IntersectionObserver(
@@ -127,7 +139,7 @@ export function WerkstattChapter() {
     return () => observer.disconnect();
   }, []);
 
-  const skipScene = osReduced || !webgl;
+  const skipScene = !motionReady || osReduced || !webgl;
 
   return (
     <>

@@ -125,9 +125,10 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
       opts.current.onFrame?.(p, el);
     };
 
+    let modeNotified = false;
     const configure = () => {
-      const next =
-        !reduced.matches && window.innerHeight >= (opts.current.minHeight ?? 560);
+      const osReduced = reduced.matches;
+      const next = !osReduced && window.innerHeight >= (opts.current.minHeight ?? 560);
       if (next !== enhanced) {
         enhanced = next;
         last = -1;
@@ -137,7 +138,11 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
           el.removeAttribute("data-scroll-ready");
           el.removeAttribute("style");
         }
-        opts.current.onMode?.(enhanced, reduced.matches);
+        opts.current.onMode?.(enhanced, osReduced);
+        modeNotified = true;
+      } else if (!modeNotified) {
+        opts.current.onMode?.(enhanced, osReduced);
+        modeNotified = true;
       }
       schedule();
     };

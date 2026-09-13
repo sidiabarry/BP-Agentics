@@ -47,6 +47,7 @@
 .werkstatt__scene {
   position: absolute;
   inset: 0;
+  z-index: 0;
   touch-action: pan-y;
 }
 
