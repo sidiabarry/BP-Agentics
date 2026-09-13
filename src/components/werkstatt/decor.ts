@@ -20,6 +20,11 @@ type DecorAsset = {
   rotation?: [number, number, number];
   /** Breite in Szeneneinheiten; das Modell wird proportional darauf skaliert. */
   fitWidth?: number;
+  /**
+   * Modell bereits in Werkstatt-Koordinaten gebaut: nicht zentrieren, nicht
+   * skalieren, einfach an Ort und Stelle einsetzen.
+   */
+  keepOrigin?: boolean;
   /** Leichtes Eigenleuchten, damit dunkle Wandobjekte nicht absaufen. */
   emissive?: number;
   name?: string;
@@ -34,6 +39,13 @@ const decorAssets: DecorAsset[] = [
     position: [4.3, 4.35, -5.93],
     fitWidth: 1.85,
     emissive: 0.4,
+  },
+  {
+    url: "/models/werkstatt-deko.glb",
+    name: "Ausstattung: Kaffeetasse, Pflanzen, Aktenordner, Kabel",
+    // In Blender direkt in Werkstatt-Koordinaten gebaut.
+    position: [0, 0, 0],
+    keepOrigin: true,
   },
 ];
 
@@ -55,12 +67,16 @@ export function loadDecorAssets(scene: THREE.Scene) {
         }
 
         // Auf Zielbreite skalieren und den Mittelpunkt in den Ursprung holen.
-        const box = new THREE.Box3().setFromObject(root);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
-        const scale = asset.fitWidth && size.x > 0 ? asset.fitWidth / size.x : 1;
-        root.scale.setScalar(scale);
-        root.position.copy(center).multiplyScalar(-scale);
+        // Bei keepOrigin bleibt beides unangetastet: das Modell bringt seine
+        // Position selbst mit.
+        if (!asset.keepOrigin) {
+          const box = new THREE.Box3().setFromObject(root);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+          const scale = asset.fitWidth && size.x > 0 ? asset.fitWidth / size.x : 1;
+          root.scale.setScalar(scale);
+          root.position.copy(center).multiplyScalar(-scale);
+        }
 
         root.traverse((o) => {
           const mesh = o as THREE.Mesh;

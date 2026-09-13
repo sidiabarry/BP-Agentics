@@ -278,6 +278,8 @@ export function createWerkstattScene(
   // Regale, Fenster, Deckenlampen, rotes Signallicht
   for (let j = 0; j < 3; j++) {
     box(3.6, 0.13, 0.7, wood, [-3.85, 0.1 + j * 1.05, -5.5]);
+    // Das mittlere Brett bleibt frei — dort stehen die Aktenordner aus decor.ts.
+    if (j === 1) continue;
     for (let i = 0; i < 5; i++) {
       box(0.4 + rand() * 0.15, 0.32 + rand() * 0.22, 0.38, mat(["#5c5d50", "#354b50", "#795b40"][i % 3]), [
         -5.2 + i * 0.63,
