@@ -72,8 +72,11 @@ const EMPHASIS: Record<StationId, { pos: Vec3Tuple; color: string; peak: number 
 const STATION_IDS: StationId[] = ["web", "chat", "office"];
 
 /** Gleiche Bild-Versetzung für alle drei: etwas nach oben und rechts vom Mesh. */
-function labelScreenShift(width: number) {
-  return width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
+function labelScreenShift(width: number, id: StationId) {
+  const shift = width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
+  // Mobil: weniger nach oben, sonst liegt das Roboter-Schild auf dem CRT.
+  if (id === "office" && width < 800) return { right: 28, up: 4 };
+  return shift;
 }
 
 const READY_TIMEOUT_MS = 12000;
@@ -724,7 +727,7 @@ export function createWerkstattScene(
         projected.y < 1.25;
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      const shift = labelScreenShift(width);
+      const shift = labelScreenShift(width, id);
       const x = clamp(
         (projected.x * 0.5 + 0.5) * width + shift.right,
         12,
