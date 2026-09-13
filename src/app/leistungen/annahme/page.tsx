@@ -9,9 +9,9 @@ import { pageMetadata } from "@/lib/seo";
 import { PRICE_NOTE, cta, whatsappOffer } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Die Angaben liegen vor, bevor Sie zurückrufen",
+  title: "WhatsApp- und E-Mail-Assistent für Betriebe",
   description:
-    "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten. 1.290 € Einrichtung + 99 € monatlich.",
+    "KI-Assistent für WhatsApp und E-Mail in Handwerksbetrieben: Angaben erfassen und Termine aus dem Kalender anbieten. 1.290 € plus 99 € monatlich.",
   path: "/leistungen/annahme",
 });
 

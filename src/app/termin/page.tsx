@@ -9,7 +9,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Kostenloses Erstgespräch anfragen",
   description:
-    "Erzählen Sie kurz von Ihrem Vorhaben und nennen Sie einen Wunschtermin. 90 Minuten vor Ort in Ihrem Betrieb in NRW.",
+    "Kostenloses Erstgespräch: 90 Minuten vor Ort in Ihrem Betrieb in NRW. Erzählen Sie kurz vom Vorhaben und nennen Sie einen Wunschtermin. Unverbindlich.",
   path: "/termin",
 });
 

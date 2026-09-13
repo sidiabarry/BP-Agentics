@@ -18,7 +18,7 @@ export function organizationGraph() {
           "Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Hagen und Nordrhein-Westfalen. Inhabergeführt von Sidia Jerome Barry.",
         url: site.url,
         email: site.email,
-        telephone: site.phoneDisplay,
+        telephone: site.phoneE164,
         image: `${site.url}/icon-512.png`,
         logo: {
           "@type": "ImageObject",
@@ -49,8 +49,8 @@ export function organizationGraph() {
         contactPoint: [
           {
             "@type": "ContactPoint",
-            telephone: site.phoneDisplay,
-            contactType: "customer service",
+            telephone: site.phoneE164,
+            contactType: "Kundenservice",
             areaServed: "DE",
             availableLanguage: ["German"],
             url: site.whatsappUrl,
@@ -86,21 +86,6 @@ export function organizationGraph() {
             },
           ],
         },
-        makesOffer: [
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "MobileApplication",
-              name: "Feinkost Kreta",
-              operatingSystem: "Android",
-              applicationCategory: "BusinessApplication",
-              description:
-                "Bestell-App für Feinkost Kreta — ein Kundenprojekt, entwickelt von BP Agentics.",
-              url: `${site.url}/referenzen/feinkost-kreta`,
-              creator: { "@id": orgId },
-            },
-          },
-        ],
       },
       {
         "@type": "Person",
@@ -117,7 +102,7 @@ export function organizationGraph() {
           addressCountry: site.addressCountry,
         },
         email: site.email,
-        telephone: site.phoneDisplay,
+        telephone: site.phoneE164,
       },
       {
         "@type": "WebSite",

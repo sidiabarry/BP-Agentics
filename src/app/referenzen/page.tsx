@@ -7,7 +7,7 @@ import { cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Arbeiten und Demos — was bisher entstanden ist",
   description:
-    "Projekt Feinkost Kreta: angemeldet bestellen. Produktdemo Dachdecker: eine mögliche Website. Beschreibungen erklären, was zu sehen ist.",
+    "Kundenprojekt Feinkost Kreta und eine Website-Demo für Dachdecker. Beschreibungen erklären, was zu sehen ist — Demos sind als solche gekennzeichnet.",
   path: "/referenzen",
 });
 

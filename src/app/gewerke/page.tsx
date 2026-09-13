@@ -14,10 +14,13 @@ import { cta } from "@/lib/offers";
 const title = "Derselbe Weg. Anderer Arbeitsalltag.";
 const description =
   "Anwendungsbeispiele für Websites und Automatisierung. Welcher davon passt, hängt von Ihrem Vorhaben und den vorhandenen Programmen ab.";
+const metaTitle = "Websites und Automatisierung nach Gewerk";
+const metaDescription =
+  "Websites und Automatisierung für Dachdecker, SHK, Elektro, GaLaBau und weitere Gewerke in NRW. Derselbe Weg, angepasst an den Arbeitsalltag.";
 
 export const metadata: Metadata = pageMetadata({
-  title,
-  description,
+  title: metaTitle,
+  description: metaDescription,
   path: "/gewerke",
 });
 

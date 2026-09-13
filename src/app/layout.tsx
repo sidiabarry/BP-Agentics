@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsAppFab } from "@/components/whatsapp-button";
 import { organizationGraph } from "@/lib/json-ld";
-import { site, getDeploymentUrl } from "@/lib/site";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -21,15 +21,12 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getDeploymentUrl()),
+  metadataBase: new URL(site.url),
   title: {
     default: site.defaultTitle,
     template: `%s | ${site.name}`,
   },
   description: site.defaultDescription,
-  alternates: {
-    canonical: site.url,
-  },
   openGraph: {
     title: site.defaultTitle,
     description: site.defaultDescription,
@@ -73,19 +70,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="de"
       className={`${sourceSans.variable} ${sora.variable} h-full antialiased`}
     >
-      <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/hero/poster.avif"
-          type="image/avif"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/hero/poster-fallback.jpg"
-        />
-      </head>
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">
         <a
           href="#inhalt"

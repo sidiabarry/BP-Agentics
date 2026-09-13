@@ -7,9 +7,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Was soll leichter werden? Orientierung für den Einstieg",
+  title: "Orientierung: passt das Angebot zu Ihrem Betrieb",
   description:
-    "Eine Angabe hilft bei der Orientierung: Was soll leichter werden? Der genaue Umfang wird im Gespräch geklärt.",
+    "Kurze Orientierung, ob Website, Nachrichten-Assistent oder Automatisierung zu Ihrem Betrieb passt. Den genauen Umfang klären wir im Gespräch.",
   path: "/passt-das",
 });
 

@@ -8,9 +8,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Sidia Jerome Barry – Inhaber von BP Agentics in Hagen",
+  title: "Sidia Jerome Barry – Inhaber in Hagen",
   description:
-    "BP Agentics ist die Agentur von Sidia Jerome Barry in Hagen. Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Nordrhein-Westfalen.",
+    "Sidia Jerome Barry führt BP Agentics in Hagen. Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Nordrhein-Westfalen, ein Ansprechpartner.",
   path: "/ueber-mich",
 });
 

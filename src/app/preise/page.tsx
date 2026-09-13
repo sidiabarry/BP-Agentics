@@ -5,9 +5,9 @@ import { pageMetadata } from "@/lib/seo";
 import { PRICE_NOTE, offerTable, yearTableHint } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Was Einrichtung und laufende Betreuung kosten",
+  title: "Preise für Website, Assistent und Betreuung",
   description:
-    "Website Start 690 €, Betrieb 1.790 €, Signature ab 3.490 €. Website-Betreuung optional. Nachrichten-Assistent 1.290 € + 99 € monatlich. Datenbasis + 1 Modul ab 2.490 € ohne monatliche Betreuung. Endpreise ohne Umsatzsteuer.",
+    "Orientierung zu Einrichtung und Betreuung: Website, Nachrichten-Assistent und Abläufe. Der verbindliche Preis steht vor der Beauftragung im Angebot.",
   path: "/preise",
 });
 

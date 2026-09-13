@@ -9,9 +9,9 @@ import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Drei Bausteine. Ein Weg durch den Betrieb.",
+  title: "Website, WhatsApp-Annahme und Abläufe für Handwerk",
   description:
-    "Eine Website macht Leistungen verständlich. Ein Nachrichten-Assistent bereitet WhatsApp- und E-Mail-Anfragen vor. Automatisierte Abläufe verbinden Büro und Außendienst.",
+    "Website, WhatsApp-Annahme und automatisierte Abläufe für Handwerk in NRW. Die Bausteine sind einzeln beauftragbar; den Umfang klären wir im Gespräch.",
   path: "/leistungen",
 });
 

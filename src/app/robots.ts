@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 
 const allowAll = {
   allow: "/",
+  disallow: "/api/",
 } as const;
 
 export default function robots(): MetadataRoute.Robots {

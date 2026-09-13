@@ -50,7 +50,7 @@ export function StagePage({
   const ink = tone === "ink";
 
   return (
-    <div id="inhalt" className="bg-[#F3EFE6]">
+    <main id="inhalt" className="bg-[#F3EFE6]">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -173,7 +173,7 @@ export function StagePage({
       ) : null}
 
       {next ? <StageNext step={next} /> : null}
-    </div>
+    </main>
   );
 }
 
