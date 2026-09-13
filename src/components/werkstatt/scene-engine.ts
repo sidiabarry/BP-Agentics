@@ -74,8 +74,8 @@ const STATION_IDS: StationId[] = ["web", "chat", "office"];
 /** Gleiche Bild-Versetzung für alle drei: etwas nach oben und rechts vom Mesh. */
 function labelScreenShift(width: number, id: StationId) {
   const shift = width < 800 ? { right: 22, up: 16 } : { right: 30, up: 22 };
-  // Mobil sitzt der Roboter-Kopf auf CRT-Höhe — Pille nach rechts, nicht nach oben.
-  if (id === "office" && width < 800) return { right: 52, up: -6 };
+  // Mobil: Lücke rechts vom CRT, knapp über dem Roboterkopf — nicht auf den Körper.
+  if (id === "office" && width < 800) return { right: 34, up: 48 };
   return shift;
 }
 
@@ -728,20 +728,19 @@ export function createWerkstattScene(
       const w = el.offsetWidth;
       const h = el.offsetHeight;
       const shift = labelScreenShift(width, id);
-      const beside = id === "office" && width < 800;
       const x = clamp(
         (projected.x * 0.5 + 0.5) * width + shift.right,
-        12,
-        width - w - 12,
+        w * 0.18 + 8,
+        width - w * 0.82 - 8,
       );
       const y = clamp(
         (-projected.y * 0.5 + 0.5) * height - shift.up,
-        headerPad + (beside ? h / 2 : h),
+        headerPad + h,
         height - footerPad,
       );
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
-      el.style.transform = beside ? "translate(4px, -50%)" : "";
+      el.style.transform = "";
       el.style.opacity = onScreen ? "1" : "0";
       el.style.pointerEvents = onScreen ? "auto" : "none";
       el.tabIndex = onScreen ? 0 : -1;
