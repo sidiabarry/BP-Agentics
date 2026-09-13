@@ -81,8 +81,6 @@ const ANCHOR_POINTS: Record<StationId, THREE.Vector3> = {
   office: new THREE.Vector3(3.0, 0.05, 2.35),
 };
 
-const MOBILE_ANCHOR_FRACTION: Record<StationId, number> = { web: 0.31, office: 0.37, chat: 0.68 };
-
 const READY_TIMEOUT_MS = 12000;
 
 export function createWerkstattScene(
@@ -133,7 +131,6 @@ export function createWerkstattScene(
   function mat(color: THREE.ColorRepresentation, roughness = 0.6, metalness = 0.0) {
     return new THREE.MeshStandardMaterial({ color, roughness, metalness });
   }
-  const brass = mat("#b89462", 0.34, 0.72);
   const dark = mat("#14222b", 0.55, 0.55);
   const cream = mat("#b8b2a1", 0.62, 0.12);
   const black = mat("#071116", 0.34, 0.15);
