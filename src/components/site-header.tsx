@@ -100,11 +100,22 @@ export function SiteHeader() {
                     linkClass(onHome && (active === "werkstatt" || active === "leistungen")),
                     "inline-flex items-center",
                   )}
-                  onClick={() => {
+                  onClick={(event) => {
                     setDrop(false);
                     if (!onHome) return;
-                    const target = document.getElementById("werkstatt");
-                    target?.scrollIntoView({ block: "start" });
+                    event.preventDefault();
+                    const headerH = Math.ceil(
+                      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+                    );
+                    const hero = document.getElementById("einstieg");
+                    const werkstatt = document.getElementById("werkstatt");
+                    const y = hero
+                      ? hero.getBoundingClientRect().bottom + window.scrollY - headerH
+                      : werkstatt
+                        ? werkstatt.getBoundingClientRect().top + window.scrollY - headerH
+                        : 0;
+                    window.scrollTo({ top: Math.max(0, y) });
+                    history.replaceState(null, "", leistungenParent.homeHref);
                   }}
                 >
                   {leistungenParent.label}
