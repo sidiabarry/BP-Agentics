@@ -45,6 +45,13 @@ export const mobileOverview = {
   label: labels.leistungenOverview,
 } as const;
 
+/** Elternpunkt „Leistungen“: auf der Startseite die drei Stationen, sonst die Übersichtsseite. */
+export const leistungenParent = {
+  homeHref: `#${anchors.werkstatt}`,
+  href: paths.leistungen,
+  label: labels.leistungen,
+} as const;
+
 export const mobileReferenzen = [
   { href: paths.feinkost, label: "Feinkost Kreta" },
   { href: paths.dachdecker, label: "Dachdecker Signature" },

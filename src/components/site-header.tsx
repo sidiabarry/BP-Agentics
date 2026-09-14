@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { Wordmark } from "@/components/brand";
 import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
-import { homeExpandLinks, leistungItems, mainLinks } from "@/lib/nav";
+import { homeExpandLinks, leistungItems, leistungenParent, mainLinks } from "@/lib/nav";
 import { cta } from "@/lib/offers";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!onHome) return;
-    const ids = ["werkstatt", "beweis", "problem", "referenzen", "person", "start", "preise", "entscheidung"];
+    const ids = ["werkstatt", "beweis", "problem", "referenzen", "person", "start", "preise", "leistungen", "entscheidung"];
     const nodes = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -74,9 +74,9 @@ export function SiteHeader() {
         </Link>
         <div
           className={cn(
-            "hidden overflow-hidden lg:block",
+            "hidden lg:block",
             "transition-[max-width] duration-200 ease-out motion-reduce:transition-none",
-            expanded ? "max-w-[48rem]" : "max-w-0",
+            expanded ? "max-w-[48rem] overflow-visible" : "max-w-0 overflow-hidden",
           )}
           aria-hidden={!expanded}
           inert={!expanded || undefined}
@@ -93,16 +93,33 @@ export function SiteHeader() {
               onMouseEnter={() => setDrop(true)}
               onMouseLeave={() => setDrop(false)}
             >
-              <button
-                type="button"
-                className={cn(linkClass(onHome && active === "leistungen"), "inline-flex items-center gap-1")}
-                aria-expanded={drop}
-                aria-haspopup="true"
-                onClick={() => setDrop((value) => !value)}
-              >
-                Leistungen
-                <ChevronDown className="size-3.5" />
-              </button>
+              <div className="inline-flex items-center gap-0.5">
+                <Link
+                  href={onHome ? leistungenParent.homeHref : leistungenParent.href}
+                  className={cn(
+                    linkClass(onHome && (active === "werkstatt" || active === "leistungen")),
+                    "inline-flex items-center",
+                  )}
+                  onClick={() => {
+                    setDrop(false);
+                    if (!onHome) return;
+                    const target = document.getElementById("werkstatt");
+                    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                >
+                  {leistungenParent.label}
+                </Link>
+                <button
+                  type="button"
+                  className={cn(linkClass(onHome && (active === "werkstatt" || active === "leistungen")), "p-1")}
+                  aria-expanded={drop}
+                  aria-haspopup="true"
+                  aria-label="Leistungen-Untermenü"
+                  onClick={() => setDrop((value) => !value)}
+                >
+                  <ChevronDown className="size-3.5" />
+                </button>
+              </div>
               {drop ? (
                 <div className="absolute top-full left-0 z-50 w-[22rem] pt-2">
                   <div className="rounded-2xl border border-black/8 bg-white p-2 shadow-xl">
@@ -111,6 +128,7 @@ export function SiteHeader() {
                         key={item.href}
                         href={item.href}
                         className="block rounded-xl px-3 py-2.5 hover:bg-[#E8F4FC]"
+                        onClick={() => setDrop(false)}
                       >
                         <span className="block font-medium">{item.title}</span>
                         <span className="block text-sm text-[#5C5F66]">{item.sub}</span>

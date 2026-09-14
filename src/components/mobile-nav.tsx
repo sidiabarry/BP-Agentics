@@ -62,9 +62,13 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
             Per WhatsApp schreiben
           </WhatsAppInline>
 
-          <p className="mt-8 text-sm tracking-[0.16em] text-muted-foreground uppercase">
+          <Link
+            href={mobileOverview.href}
+            onClick={close}
+            className="mt-8 rounded-lg px-2 py-2.5 text-sm tracking-[0.16em] text-muted-foreground uppercase"
+          >
             Leistungen
-          </p>
+          </Link>
           <Link href={mobileOverview.href} onClick={close} className="rounded-lg px-2 py-2.5 text-lg">
             {mobileOverview.label}
           </Link>
