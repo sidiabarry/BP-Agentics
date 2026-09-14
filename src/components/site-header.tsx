@@ -104,7 +104,7 @@ export function SiteHeader() {
                     setDrop(false);
                     if (!onHome) return;
                     const target = document.getElementById("werkstatt");
-                    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    target?.scrollIntoView({ block: "start" });
                   }}
                 >
                   {leistungenParent.label}
