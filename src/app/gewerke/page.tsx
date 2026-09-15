@@ -47,16 +47,19 @@ export default function GewerkePage() {
       related={thread.related}
       next={thread.next}
     >
-      <nav aria-label="Gewerke auf dieser Seite" className="flex max-w-full flex-wrap gap-2">
-        {industryList.map((item) => (
-          <a
-            key={item.slug}
-            href={gewerkHref(item.slug)}
-            className="inline-flex min-h-11 max-w-full items-center rounded-full border border-black/12 bg-white px-4 py-2 text-[0.95rem] break-words text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8]"
-          >
-            {item.title}
-          </a>
-        ))}
+      <nav aria-label="Gewerke auf dieser Seite">
+        <ul className="flex flex-wrap gap-2">
+          {industryList.map((item) => (
+            <li key={item.slug} className="max-w-full shrink-0">
+              <a
+                href={gewerkHref(item.slug)}
+                className="inline-flex min-h-11 w-fit max-w-full items-center rounded-full border border-black/12 bg-white px-4 py-2 text-[0.95rem] leading-snug text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8]"
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
 
       <StageGrid cols={2} className="mt-10">
