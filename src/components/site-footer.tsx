@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/brand";
 import { industryList } from "@/lib/content";
-import { gewerkHref, labels, paths, stations } from "@/lib/journey";
+import { gewerkHref } from "@/lib/nav";
 import { site } from "@/lib/site";
 import { PRICE_NOTE } from "@/lib/offers";
 import { WhatsAppInline } from "@/components/whatsapp-button";
@@ -13,31 +13,34 @@ export function SiteFooter() {
         <div>
           <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Leistungen</p>
           <ul className="mt-3 space-y-2 text-white/85">
-            {stations.map((item) => (
-              <li key={item.id}>
-                <Link href={item.href} className="hover:text-white">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="/leistungen/auftritt" className="hover:text-white">
+                Websites
+              </Link>
+            </li>
+            <li>
+              <Link href="/leistungen/annahme" className="hover:text-white">
+                Nachrichten-Assistent
+              </Link>
+            </li>
+            <li>
+              <Link href="/leistungen/ablaeufe" className="hover:text-white">
+                Büroabläufe
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
           <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Arbeiten und Demos</p>
           <ul className="mt-3 space-y-2 text-white/85">
             <li>
-              <Link href={paths.feinkost} className="hover:text-white">
+              <Link href="/referenzen/feinkost-kreta" className="hover:text-white">
                 Feinkost Kreta
               </Link>
             </li>
             <li>
-              <Link href={paths.dachdecker} className="hover:text-white">
+              <Link href="/referenzen/dachdecker-signature" className="hover:text-white">
                 Dachdecker Signature
-              </Link>
-            </li>
-            <li>
-              <Link href={paths.werkstattAlias} className="hover:text-white">
-                {labels.werkstattNav}
               </Link>
             </li>
           </ul>
@@ -46,38 +49,38 @@ export function SiteFooter() {
           <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Info</p>
           <ul className="mt-3 space-y-2 text-white/85">
             <li>
-              <Link href={paths.preise} className="hover:text-white">
-                {labels.preise}
+              <Link href="/preise" className="hover:text-white">
+                Preise
               </Link>
             </li>
             <li>
-              <Link href={paths.foerderung} className="hover:text-white">
-                {labels.foerderung}
+              <Link href="/foerderung/mid-digitale-prozesse" className="hover:text-white">
+                Förderung
               </Link>
             </li>
             <li>
-              <Link href={paths.passtDas} className="hover:text-white">
-                {labels.passtDas}
+              <Link href="/passt-das" className="hover:text-white">
+                Welcher Einstieg passt?
               </Link>
             </li>
             <li>
-              <Link href={paths.ueberMich} className="hover:text-white">
-                {labels.ueberMich}
+              <Link href="/ueber-mich" className="hover:text-white">
+                Über mich
               </Link>
             </li>
             <li>
-              <Link href={paths.kontakt} className="hover:text-white">
-                {labels.kontakt}
+              <Link href="/kontakt" className="hover:text-white">
+                Kontakt
               </Link>
             </li>
             <li>
-              <Link href={paths.impressum} className="hover:text-white">
-                {labels.impressum}
+              <Link href="/impressum" className="hover:text-white">
+                Impressum
               </Link>
             </li>
             <li>
-              <Link href={paths.datenschutz} className="hover:text-white">
-                {labels.datenschutz}
+              <Link href="/datenschutz" className="hover:text-white">
+                Datenschutz
               </Link>
             </li>
           </ul>
@@ -112,8 +115,8 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:justify-between">
           <span>{PRICE_NOTE}</span>
           <span className="flex flex-wrap gap-x-4 gap-y-1">
-            <Link href={paths.gewerke} className="hover:text-white">
-              {labels.gewerke}
+            <Link href="/gewerke" className="hover:text-white">
+              Alle Gewerke
             </Link>
             {industryList.map((item) => (
               <Link key={item.slug} href={gewerkHref(item.slug)} scroll={false} className="hover:text-white">

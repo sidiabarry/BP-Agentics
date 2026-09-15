@@ -1,46 +1,50 @@
 import type { MetadataRoute } from "next";
 import { foerderung } from "@/lib/foerderung";
-import { paths, sitemapPaths } from "@/lib/journey";
 import { site } from "@/lib/site";
 
 const contentUpdated = new Date("2026-09-08");
 const foerderungUpdated = new Date(foerderung.reviewed);
 
-const meta: Record<
-  string,
+const staticRoutes: {
+  path: string;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+  priority: number;
+  lastModified: Date;
+}[] = [
+  { path: "/", changeFrequency: "weekly", priority: 1, lastModified: contentUpdated },
+  { path: "/leistungen", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/leistungen/auftritt", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/leistungen/annahme", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/leistungen/ablaeufe", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/passt-das", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  { path: "/gewerke", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  { path: "/ueber-mich", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
   {
-    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
-    priority: number;
-  }
-> = {
-  [paths.home]: { changeFrequency: "weekly", priority: 1 },
-  [paths.leistungen]: { changeFrequency: "monthly", priority: 0.9 },
-  [paths.auftritt]: { changeFrequency: "monthly", priority: 0.9 },
-  [paths.annahme]: { changeFrequency: "monthly", priority: 0.9 },
-  [paths.ablaeufe]: { changeFrequency: "monthly", priority: 0.9 },
-  [paths.passtDas]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.gewerke]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.ueberMich]: { changeFrequency: "monthly", priority: 0.7 },
-  [paths.foerderung]: { changeFrequency: "weekly", priority: 0.8 },
-  [paths.referenzen]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.feinkost]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.dachdecker]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.werkstattAlias]: { changeFrequency: "monthly", priority: 0.7 },
-  [paths.preise]: { changeFrequency: "monthly", priority: 0.9 },
-  [paths.kontakt]: { changeFrequency: "monthly", priority: 0.8 },
-  [paths.termin]: { changeFrequency: "monthly", priority: 0.7 },
-  [paths.impressum]: { changeFrequency: "yearly", priority: 0.2 },
-  [paths.datenschutz]: { changeFrequency: "yearly", priority: 0.2 },
-};
+    path: "/foerderung/mid-digitale-prozesse",
+    changeFrequency: "weekly",
+    priority: 0.8,
+    lastModified: foerderungUpdated,
+  },
+  { path: "/referenzen", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  { path: "/referenzen/feinkost-kreta", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  {
+    path: "/referenzen/dachdecker-signature",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: contentUpdated,
+  },
+  { path: "/preise", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/kontakt", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  { path: "/termin", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
+  { path: "/impressum", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
+  { path: "/datenschutz", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return sitemapPaths.map((path) => {
-    const item = meta[path] ?? { changeFrequency: "monthly" as const, priority: 0.5 };
-    return {
-      url: path === paths.home ? site.url : `${site.url}${path}`,
-      lastModified: path === paths.foerderung ? foerderungUpdated : contentUpdated,
-      changeFrequency: item.changeFrequency,
-      priority: item.priority,
-    };
-  });
+  return staticRoutes.map((route) => ({
+    url: route.path === "/" ? site.url : `${site.url}${route.path}`,
+    lastModified: route.lastModified,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+  }));
 }

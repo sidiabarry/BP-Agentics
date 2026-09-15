@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import { StageCard } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
-import { paths, stageThread } from "@/lib/journey";
 import { foerderung } from "@/lib/foerderung";
 
 export const metadata: Metadata = pageMetadata({
   title: foerderung.title,
   description:
     "MID Digitale Prozesse fördert bestimmte Beratungen zur Digitalisierung interner Abläufe in NRW. Keine pauschale Förderung von Website- oder Softwarepaketen.",
-  path: paths.foerderung,
+  path: "/foerderung/mid-digitale-prozesse",
 });
 
 export default function MidPage() {
@@ -19,11 +18,22 @@ export default function MidPage() {
       title={foerderung.title}
       lead={foerderung.lead}
       crumbs={[
-        { name: "MID-Digitale Prozesse", path: paths.foerderung },
+        { name: "MID-Digitale Prozesse", path: "/foerderung/mid-digitale-prozesse" },
       ]}
       reviewed={foerderung.reviewed}
-      related={stageThread(paths.foerderung).related}
-      next={stageThread(paths.foerderung).next}
+      related={[
+        { href: "/leistungen/ablaeufe", label: "Automatisierung ansehen" },
+        { href: "/leistungen", label: "Leistungen" },
+        { href: "/preise", label: "Preise" },
+        { href: "/kontakt", label: "Kontakt" },
+      ]}
+      next={{
+        title: "Ob eine Prozessberatung passt, klären wir sachlich.",
+        body: "Diese kurze Fassung enthält keine vollständige Förderberatung. Die Bewilligungsstelle entscheidet über einen Antrag.",
+        chips: ["Keine pauschale 50-Prozent-Rechnung", "Vor Beauftragung klären", "Offizielle Quellen zuerst"],
+        primary: { href: "/kontakt", label: "Kontakt zu BP Agentics" },
+        secondary: { href: foerderung.nrwBankUrl, label: "NRW.BANK-Aufruf" },
+      }}
     >
       <h2 className="mb-4 text-2xl font-semibold tracking-[-0.03em]">
         Die Richtlinie in Kürze

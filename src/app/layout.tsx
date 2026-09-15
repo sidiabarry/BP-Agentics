@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Sora } from "next/font/google";
-import { ChromeGate } from "@/components/chrome-gate";
 import { JsonLd } from "@/components/json-ld";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { WhatsAppFab } from "@/components/whatsapp-button";
 import { organizationGraph } from "@/lib/json-ld";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -76,7 +78,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Zum Inhalt springen
         </a>
         <JsonLd data={organizationGraph()} />
-        <ChromeGate>{children}</ChromeGate>
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+        <WhatsAppFab />
       </body>
     </html>
   );

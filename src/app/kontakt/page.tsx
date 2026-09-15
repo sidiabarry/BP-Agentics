@@ -6,14 +6,13 @@ import { StagePage } from "@/components/stage-page";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
-import { paths, stageThread } from "@/lib/journey";
 import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Anrufen, schreiben oder einen Terminwunsch senden",
   description:
     "Kontakt zu BP Agentics in Hagen: Sidia Jerome Barry per Telefon, E-Mail oder WhatsApp erreichen oder ein kostenloses Erstgespräch anfragen.",
-  path: paths.kontakt,
+  path: "/kontakt",
 });
 
 export default function KontaktPage() {
@@ -33,9 +32,14 @@ export default function KontaktPage() {
           />
         </div>
       }
-      crumbs={[{ name: "Kontakt", path: paths.kontakt }]}
-      related={stageThread(paths.kontakt).related}
-      next={stageThread(paths.kontakt).next}
+      crumbs={[{ name: "Kontakt", path: "/kontakt" }]}
+      related={[
+        { href: "/termin", label: "Kostenloses Erstgespräch anfragen" },
+        { href: "/leistungen", label: "Leistungen" },
+        { href: "/preise", label: "Preise" },
+        { href: "/impressum", label: "Impressum" },
+      ]}
+      next={null}
     >
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8">
         <aside className="min-w-0 lg:sticky lg:top-24">
@@ -76,7 +80,7 @@ export default function KontaktPage() {
           </div>
           <p className="mt-4 text-[1.02rem] leading-relaxed text-[#5C5F66]">
             Anfahrt und Termin stimmen wir vorab ab.{" "}
-            <Link href={paths.termin} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+            <Link href={cta.href} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
               {cta.short}
             </Link>
           </p>

@@ -60,14 +60,12 @@
   height: 100svh;
   min-height: 34rem;
   overflow: hidden;
-  pointer-events: none;
   background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
 .hero-portal__film {
   position: absolute;
   inset: 0;
-  pointer-events: none;
   background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
@@ -170,9 +168,10 @@
   border-radius: 50%;
   background: radial-gradient(
     circle at 42% 34%,
-    #1a3a4a 0%,
-    #0d1e2a 42%,
-    #08121a 100%
+    #d9ecfc 0%,
+    #7cbcf1 30%,
+    #2288d8 60%,
+    #0b5ea8 100%
   );
 }
 
