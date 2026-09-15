@@ -2,14 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
 import { ChevronDown } from "lucide-react";
 import { Wordmark } from "@/components/brand";
 import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
-import { homeExpandLinks, leistungItems, leistungenParent, mainLinks } from "@/lib/nav";
+import {
+  homeExpandLinks,
+  leistungItems,
+  leistungenHref,
+  leistungenParent,
+  mainLinks,
+  scrollHomeToWerkstatt,
+} from "@/lib/nav";
 import { cta } from "@/lib/offers";
 import { cn } from "@/lib/utils";
+
+function heroStillCovers(headerHeight: number) {
+  const hero = document.getElementById("einstieg");
+  if (!hero) return false;
+  const pin = hero.querySelector(".hero-portal__pin") ?? hero;
+  return pin.getBoundingClientRect().bottom > headerHeight + 8;
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -27,15 +41,31 @@ export function SiteHeader() {
     if (!onHome) return;
     const hero = document.getElementById("einstieg");
     if (!hero) return;
-    const headerHeight = Math.ceil(
-      headerRef.current?.getBoundingClientRect().height ?? 72,
-    );
-    const observer = new IntersectionObserver(
-      ([entry]) => setHeroState({ path: "/", inView: entry.isIntersecting }),
-      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` },
-    );
-    observer.observe(hero);
-    return () => observer.disconnect();
+
+    const sync = () => {
+      const headerHeight = Math.ceil(
+        headerRef.current?.getBoundingClientRect().height ?? 72,
+      );
+      const inView = heroStillCovers(headerHeight);
+      setHeroState((prev) =>
+        prev.path === "/" && prev.inView === inView ? prev : { path: "/", inView },
+      );
+    };
+
+    sync();
+    const pin = hero.querySelector(".hero-portal__pin") ?? hero;
+    const observer = new IntersectionObserver(sync, {
+      threshold: [0, 0.01, 1],
+      rootMargin: "0px",
+    });
+    observer.observe(pin);
+    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
   }, [onHome]);
 
   useEffect(() => {
@@ -60,6 +90,7 @@ export function SiteHeader() {
 
   const expanded = !onHome || !heroState.inView;
   const desktopLinks = onHome ? homeExpandLinks : mainLinks;
+  const parentHref = leistungenHref(pathname);
 
   useLayoutEffect(() => {
     const el = headerRef.current;
@@ -82,90 +113,81 @@ export function SiteHeader() {
       on ? "text-[#198BE8]" : "text-foreground/70 hover:text-foreground",
     );
 
+  const onLeistungenClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    setDrop(false);
+    if (!onHome) return;
+    event.preventDefault();
+    event.stopPropagation();
+    scrollHomeToWerkstatt();
+  };
+
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 isolate z-[80] border-b border-black/8 bg-[#F3EFE6]"
+      className="sticky top-0 z-[100] isolate border-b border-black/8 bg-[#F3EFE6] pointer-events-auto"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+      <div className="relative z-[100] mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
         <Link href="/" aria-label="BP Agentics Startseite" className="inline-flex min-h-11 items-center">
           <Wordmark />
         </Link>
-        <div
-          className={cn(
-            "hidden lg:block",
-            expanded ? "max-w-[48rem] overflow-visible" : "pointer-events-none max-w-0 overflow-hidden",
-          )}
-          aria-hidden={!expanded}
+        <nav
+          className="hidden min-w-0 items-center gap-6 lg:flex"
+          aria-label="Hauptnavigation"
         >
-          <nav
-            className={cn(
-              "flex items-center gap-6 pr-1 whitespace-nowrap",
-              expanded ? "opacity-100" : "opacity-0",
-            )}
-            aria-label="Hauptnavigation"
+          <div
+            className="relative pointer-events-auto"
+            onMouseEnter={() => setDrop(true)}
+            onMouseLeave={() => setDrop(false)}
           >
-            <div
-              className="relative"
-              onMouseEnter={() => setDrop(true)}
-              onMouseLeave={() => setDrop(false)}
-            >
-              <div className="inline-flex items-center gap-0.5">
-                <Link
-                  href={onHome ? leistungenParent.homeHref : leistungenParent.href}
-                  className={cn(
-                    linkClass(onHome && (active === "werkstatt" || active === "leistungen")),
-                    "inline-flex min-h-11 items-center px-1",
-                  )}
-                  onClick={(event) => {
-                    setDrop(false);
-                    if (!onHome) return;
-                    event.preventDefault();
-                    const headerH = Math.ceil(
-                      headerRef.current?.getBoundingClientRect().height ?? 72,
-                    );
-                    const hero = document.getElementById("einstieg");
-                    const werkstatt = document.getElementById("werkstatt");
-                    const y = hero
-                      ? hero.getBoundingClientRect().bottom + window.scrollY - headerH
-                      : werkstatt
-                        ? werkstatt.getBoundingClientRect().top + window.scrollY - headerH
-                        : 0;
-                    window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
-                    history.replaceState(null, "", leistungenParent.homeHref);
-                  }}
-                >
-                  {leistungenParent.label}
-                </Link>
-                <button
-                  type="button"
-                  className={cn(linkClass(onHome && (active === "werkstatt" || active === "leistungen")), "p-1")}
-                  aria-expanded={drop}
-                  aria-haspopup="true"
-                  aria-label="Leistungen-Untermenü"
-                  onClick={() => setDrop((value) => !value)}
-                >
-                  <ChevronDown className="size-3.5" />
-                </button>
-              </div>
-              {drop ? (
-                <div className="absolute top-full left-0 z-50 w-[22rem] pt-2">
-                  <div className="rounded-2xl border border-black/8 bg-white p-2 shadow-xl">
-                    {leistungItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="block rounded-xl px-3 py-2.5 hover:bg-[#E8F4FC]"
-                        onClick={() => setDrop(false)}
-                      >
-                        <span className="block font-medium">{item.title}</span>
-                        <span className="block text-sm text-[#5C5F66]">{item.sub}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
+            <div className="inline-flex items-center gap-0.5">
+              <Link
+                href={parentHref}
+                scroll={!onHome}
+                data-nav="leistungen"
+                className={cn(
+                  linkClass(onHome && (active === "werkstatt" || active === "leistungen")),
+                  "inline-flex min-h-11 items-center px-1",
+                )}
+                onClick={onLeistungenClick}
+              >
+                {leistungenParent.label}
+              </Link>
+              <button
+                type="button"
+                className={cn(linkClass(onHome && (active === "werkstatt" || active === "leistungen")), "p-1")}
+                aria-expanded={drop}
+                aria-haspopup="true"
+                aria-label="Leistungen-Untermenü"
+                onClick={() => setDrop((value) => !value)}
+              >
+                <ChevronDown className="size-3.5" />
+              </button>
             </div>
+            {drop ? (
+              <div className="absolute top-full left-0 z-50 w-[22rem] pt-2">
+                <div className="rounded-2xl border border-black/8 bg-white p-2 shadow-xl">
+                  {leistungItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block rounded-xl px-3 py-2.5 hover:bg-[#E8F4FC]"
+                      onClick={() => setDrop(false)}
+                    >
+                      <span className="block font-medium">{item.title}</span>
+                      <span className="block text-sm text-[#5C5F66]">{item.sub}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+          <div
+            className={cn(
+              "flex items-center gap-6 whitespace-nowrap",
+              expanded ? "max-w-[48rem] overflow-visible opacity-100" : "pointer-events-none max-w-0 overflow-hidden opacity-0",
+            )}
+            aria-hidden={!expanded}
+          >
             {desktopLinks.map((item) => (
               <Link
                 key={item.href}
@@ -181,8 +203,8 @@ export function SiteHeader() {
             >
               <Link href={cta.href}>{cta.short}</Link>
             </Button>
-          </nav>
-        </div>
+          </div>
+        </nav>
         <MobileNav open={open} onOpenChange={setOpen} />
       </div>
     </header>

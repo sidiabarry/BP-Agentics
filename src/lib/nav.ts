@@ -52,6 +52,43 @@ export const leistungenParent = {
   label: labels.leistungen,
 } as const;
 
+export function leistungenHref(pathname: string) {
+  return pathname === "/" ? leistungenParent.homeHref : leistungenParent.href;
+}
+
+/** Springt auf der Startseite zur Werkstatt — hinter dem klebenden Hero, unter der Kopfzeile. */
+export function scrollHomeToWerkstatt() {
+  const werkstatt = document.getElementById(anchors.werkstatt);
+  if (!werkstatt) return false;
+
+  const snap = () => {
+    const headerH = Math.ceil(
+      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+    );
+    const y = Math.max(0, werkstatt.getBoundingClientRect().top + window.scrollY - headerH);
+    window.scrollTo({ top: y, behavior: "auto" });
+    if (location.hash !== leistungenParent.homeHref) {
+      history.replaceState(null, "", leistungenParent.homeHref);
+    }
+  };
+
+  snap();
+  requestAnimationFrame(snap);
+
+  const hero = document.getElementById("einstieg");
+  if (hero && !hero.hasAttribute("data-scroll-ready")) {
+    const mo = new MutationObserver(() => {
+      if (!hero.hasAttribute("data-scroll-ready")) return;
+      mo.disconnect();
+      snap();
+    });
+    mo.observe(hero, { attributes: true, attributeFilter: ["data-scroll-ready"] });
+    window.setTimeout(() => mo.disconnect(), 2500);
+  }
+
+  return true;
+}
+
 export const mobileReferenzen = [
   { href: paths.feinkost, label: "Feinkost Kreta" },
   { href: paths.dachdecker, label: "Dachdecker Signature" },

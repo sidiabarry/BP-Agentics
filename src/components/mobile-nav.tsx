@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,9 +16,12 @@ import { industryList } from "@/lib/content";
 import {
   gewerkHref,
   leistungItems,
+  leistungenHref,
+  leistungenParent,
   mobileInfo,
   mobileOverview,
   mobileReferenzen,
+  scrollHomeToWerkstatt,
 } from "@/lib/nav";
 import { cta } from "@/lib/offers";
 
@@ -31,6 +35,9 @@ function closeOnClick(onOpenChange: (open: boolean) => void) {
 }
 
 export function MobileNav({ open, onOpenChange }: MobileNavProps) {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const parentHref = leistungenHref(pathname);
   const close = closeOnClick(onOpenChange);
 
   return (
@@ -63,11 +70,22 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
           </WhatsAppInline>
 
           <Link
-            href={mobileOverview.href}
-            onClick={close}
+            href={parentHref}
+            scroll={!onHome}
+            data-nav="leistungen-mobile"
+            onClick={(event) => {
+              if (onHome) {
+                event.preventDefault();
+                event.stopPropagation();
+                scrollHomeToWerkstatt();
+                onOpenChange(false);
+                return;
+              }
+              close();
+            }}
             className="mt-8 rounded-lg px-2 py-2.5 text-sm tracking-[0.16em] text-muted-foreground uppercase"
           >
-            Leistungen
+            {leistungenParent.label}
           </Link>
           <Link href={mobileOverview.href} onClick={close} className="rounded-lg px-2 py-2.5 text-lg">
             {mobileOverview.label}
