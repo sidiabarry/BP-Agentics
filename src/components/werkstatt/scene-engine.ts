@@ -606,10 +606,11 @@ export function createWerkstattScene(
     const r = renderer.domElement.getBoundingClientRect();
     v2.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     raycaster.setFromCamera(v2, camera);
-    const hits = raycaster.intersectObjects(Object.values(stationObjects), true);
-    if (hits.length) {
-      const station = hits[0].object.userData.station as StationId | undefined;
-      if (station) goTo(station);
+    const hits = raycaster.intersectObjects(scene.children, true);
+    const hit = hits.find((h) => (h.object as THREE.Mesh).isMesh);
+    const station = hit?.object.userData.station as StationId | undefined;
+    if (station) {
+      goTo(station);
       return;
     }
     if (current !== "overview") goTo("overview");

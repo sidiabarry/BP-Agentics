@@ -73,9 +73,9 @@ export function SiteHeader() {
         </Link>
         <div
           className={cn(
-            "hidden overflow-hidden lg:block",
+            "hidden lg:block",
             "transition-[max-width] duration-200 ease-out motion-reduce:transition-none",
-            expanded ? "max-w-[48rem]" : "max-w-0",
+            expanded ? "max-w-[48rem] overflow-visible" : "max-w-0 overflow-hidden",
           )}
           aria-hidden={!expanded}
           inert={!expanded || undefined}
