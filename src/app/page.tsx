@@ -37,21 +37,21 @@ export default function HomePage() {
       <HeroPortal />
       <ActRail />
       <WerkstattChapter />
-      <div id={anchors.beweis} className="scroll-mt-28">
+      <div id={anchors.beweis} className="scroll-mt-[7.5rem]">
         <ProblemWall />
         <HomeReferenzen />
       </div>
-      <div id={anchors.person} className="scroll-mt-28">
+      <div id={anchors.person} className="scroll-mt-[7.5rem]">
         <HomeStart />
       </div>
-      <div id={anchors.entscheidung} className="scroll-mt-28">
+      <div id={anchors.entscheidung} className="scroll-mt-[7.5rem]">
         <nav aria-label="Entscheidung" className="bg-[#F3EFE6] px-5 pb-2 md:px-8">
-          <ul className="mx-auto flex max-w-6xl flex-wrap gap-2">
+          <ul className="mx-auto flex max-w-6xl flex-col gap-2 sm:flex-row sm:flex-wrap">
             {entscheidungLinks.map((item) => (
-              <li key={item.href}>
+              <li key={item.href} className="sm:w-auto">
                 <Link
                   href={item.href}
-                  className="inline-flex min-h-11 items-center rounded-full border border-black/12 bg-white px-4 py-2 text-[0.98rem] text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8]"
+                  className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-black/12 bg-white px-4 py-2 text-[0.98rem] text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8] sm:w-auto"
                 >
                   {item.label}
                 </Link>

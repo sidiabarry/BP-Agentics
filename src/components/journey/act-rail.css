@@ -1,9 +1,9 @@
 .act-rail {
   position: fixed;
-  top: 4.35rem;
+  top: var(--site-header-h, 4.85rem);
   right: 0;
   left: 0;
-  z-index: 45;
+  z-index: 40;
   pointer-events: none;
   opacity: 1;
   transition: opacity 0.2s ease;
@@ -49,9 +49,12 @@
 }
 
 .act-rail__mobile {
+  display: flex;
   pointer-events: none;
+  align-items: center;
+  gap: 0.35rem;
   width: max-content;
-  margin: 0 1.25rem 0 auto;
+  margin: 0 auto;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
   background: color-mix(in srgb, #f3efe6 92%, transparent);

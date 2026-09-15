@@ -39,7 +39,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
         <Button
           variant="ghost"
           size="icon-lg"
-          className="rounded-full bg-black/80 text-white hover:bg-black lg:hidden"
+          className="size-11 rounded-full bg-black/80 text-white hover:bg-black lg:hidden"
           aria-label="Menü öffnen"
         >
           <Menu className="size-5" />

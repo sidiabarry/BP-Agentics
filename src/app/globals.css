@@ -52,6 +52,7 @@
 :root {
   /* Sampled from public/hero/sequence-desktop/0071.webp */
   --hero-exit: #82bbf0;
+  --site-header-h: 4.85rem;
   --background: #f3efe6;
   --foreground: #14161c;
   --primary: #198be8;
@@ -129,12 +130,12 @@
     font-size: 18px;
     hyphens: none;
     -webkit-hyphens: none;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: calc(var(--site-header-h, 4.85rem) + 3.25rem);
     overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground;
-    padding-bottom: 5.5rem;
+    padding-bottom: 6.25rem;
     overflow-x: clip;
   }
   /* Die Werkstatt läuft bildschirmfüllend und ohne WhatsApp-Knopf — kein Platzhalter unten. */
@@ -1351,5 +1352,19 @@ body:has(.system-scroll[data-pinned]) [data-analytics="whatsapp-fab"] {
     left: auto;
     right: max(0.85rem, env(safe-area-inset-right));
     bottom: max(0.7rem, env(safe-area-inset-bottom));
+  }
+
+  /* Stationsdetail und Werkstatt-Leiste brauchen den unteren Rand frei. */
+  body:has(.werkstatt__world-ui[data-view]:not([data-view="overview"])) [data-analytics="whatsapp-fab"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  body:has([data-demo-loop]) [data-analytics="whatsapp-fab"],
+  body:has([data-page="ueber-mich"]) [data-analytics="whatsapp-fab"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 }

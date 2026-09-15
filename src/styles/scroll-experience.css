@@ -60,12 +60,14 @@
   height: 100svh;
   min-height: 34rem;
   overflow: hidden;
+  pointer-events: none;
   background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 
 .hero-portal__film {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
 }
 

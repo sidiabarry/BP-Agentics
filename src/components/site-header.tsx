@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Wordmark } from "@/components/brand";
 import { MobileNav } from "@/components/mobile-nav";
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const pathname = usePathname();
   const onHome = pathname === "/";
+  const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
   const [active, setActive] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export function SiteHeader() {
     const hero = document.getElementById("einstieg");
     if (!hero) return;
     const headerHeight = Math.ceil(
-      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+      headerRef.current?.getBoundingClientRect().height ?? 72,
     );
     const observer = new IntersectionObserver(
       ([entry]) => setHeroState({ path: "/", inView: entry.isIntersecting }),
@@ -60,6 +61,21 @@ export function SiteHeader() {
   const expanded = !onHome || !heroState.inView;
   const desktopLinks = onHome ? homeExpandLinks : mainLinks;
 
+  useLayoutEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const sync = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-h",
+        `${Math.ceil(el.getBoundingClientRect().height)}px`,
+      );
+    };
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [expanded]);
+
   const linkClass = (on: boolean) =>
     cn(
       "text-[0.95rem] transition",
@@ -67,24 +83,25 @@ export function SiteHeader() {
     );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/8 bg-[#F3EFE6]/95 backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className="sticky top-0 isolate z-[80] border-b border-black/8 bg-[#F3EFE6]"
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
-        <Link href="/" aria-label="BP Agentics Startseite">
+        <Link href="/" aria-label="BP Agentics Startseite" className="inline-flex min-h-11 items-center">
           <Wordmark />
         </Link>
         <div
           className={cn(
             "hidden lg:block",
-            "transition-[max-width] duration-200 ease-out motion-reduce:transition-none",
-            expanded ? "max-w-[48rem] overflow-visible" : "max-w-0 overflow-hidden",
+            expanded ? "max-w-[48rem] overflow-visible" : "pointer-events-none max-w-0 overflow-hidden",
           )}
           aria-hidden={!expanded}
-          inert={!expanded || undefined}
         >
           <nav
             className={cn(
-              "flex items-center gap-6 pr-1 whitespace-nowrap transition-[opacity,translate] duration-200 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none",
-              expanded ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0",
+              "flex items-center gap-6 pr-1 whitespace-nowrap",
+              expanded ? "opacity-100" : "opacity-0",
             )}
             aria-label="Hauptnavigation"
           >
@@ -98,14 +115,14 @@ export function SiteHeader() {
                   href={onHome ? leistungenParent.homeHref : leistungenParent.href}
                   className={cn(
                     linkClass(onHome && (active === "werkstatt" || active === "leistungen")),
-                    "inline-flex items-center",
+                    "inline-flex min-h-11 items-center px-1",
                   )}
                   onClick={(event) => {
                     setDrop(false);
                     if (!onHome) return;
                     event.preventDefault();
                     const headerH = Math.ceil(
-                      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+                      headerRef.current?.getBoundingClientRect().height ?? 72,
                     );
                     const hero = document.getElementById("einstieg");
                     const werkstatt = document.getElementById("werkstatt");
@@ -114,7 +131,7 @@ export function SiteHeader() {
                       : werkstatt
                         ? werkstatt.getBoundingClientRect().top + window.scrollY - headerH
                         : 0;
-                    window.scrollTo({ top: Math.max(0, y) });
+                    window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
                     history.replaceState(null, "", leistungenParent.homeHref);
                   }}
                 >

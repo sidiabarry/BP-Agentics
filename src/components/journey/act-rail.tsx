@@ -52,7 +52,7 @@ export function ActRail() {
       </ol>
       <p className="act-rail__mobile">
         <span className="act-rail__roman">{active.roman}</span>
-        {active.label}
+        <span>{active.label}</span>
       </p>
     </nav>
   );

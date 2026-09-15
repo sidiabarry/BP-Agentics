@@ -34,6 +34,7 @@
   position: relative;
   height: 100svh;
   overflow: hidden;
+  pointer-events: none;
   background: #0b1721;
 }
 
@@ -48,6 +49,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  pointer-events: none;
   touch-action: pan-y;
 }
 
