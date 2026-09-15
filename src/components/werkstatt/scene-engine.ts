@@ -39,6 +39,8 @@ export interface WerkstattSceneController {
   setIntroProgress: (p: number) => void;
   /** OS-Einstellung ODER manueller Schalter, bereits zusammengeführt. */
   setReduced: (reduced: boolean) => void;
+  /** Renderschleife anhalten, ohne die Szene abzubauen (Scroll-Weg, Tab im Hintergrund). */
+  setPaused: (paused: boolean) => void;
   /** Einmalig nach dem Mount aufrufen, sobald die drei Hotspot-Buttons im DOM existieren. */
   setHotspotElements: (elements: Partial<Record<StationId, HTMLElement>>) => void;
   dispose: () => void;
@@ -53,15 +55,22 @@ const POSES: Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }> = {
   office: { p: [4.25, 1.12, 3.65], t: [3.55, 1.04, 0.35] },
 };
 
+const NARROW = 800;
+/** Kurzer Ease — Pos und Look zusammen, kein Sprung. */
+const CAMERA_MS = 520;
+const SWIPE_DOWN_PX = 72;
+
 const MOBILE_POSES: Partial<Record<ViewId, { p: Vec3Tuple; t: Vec3Tuple }>> = {
   // Im Hochformat passt die frontale Dreierreihe nur, wenn die Kamera so weit
   // zuruecksteht, dass das Studio zu einem schmalen Band schrumpft. Deshalb
   // hier eine diagonale Sicht: die Reihe laeuft in die Tiefe und fuellt das
   // Bild. Alle drei Stationen bleiben ueber die untere Navigation erreichbar.
   overview: { p: [6.1, 3.9, 11.4], t: [-0.35, 0.85, 0.4] },
-  web: { p: [-2.5, 2.4, 7.2], t: [-3.05, 0.28, 0.3] },
-  chat: { p: [0, 2.2, 7.05], t: [0, 0.25, 1] },
-  office: { p: [4.4, 1.7, 6.7], t: [3, 0.25, 0.35] },
+  // Stationen: Objekt in der oberen Bildhaelfte (Platz fuer das Compact-Sheet).
+  // Nicht nur die Distanz aendern — Blickhoehe und Ziel mitziehen.
+  web: { p: [-2.25, 1.42, 4.85], t: [-2.72, 0.62, 0.32] },
+  chat: { p: [0.28, 1.58, 5.05], t: [0.42, 0.58, 1.0] },
+  office: { p: [3.95, 1.18, 4.55], t: [3.42, 0.58, 0.35] },
 };
 
 /** Zusaetzliches Licht je Station - hebt beim Zoomen genau das hervor, worum es geht. */
@@ -117,6 +126,8 @@ export function createWerkstattScene(
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
+  renderer.domElement.style.pointerEvents = "auto";
+  renderer.domElement.style.touchAction = "pan-y";
   container.appendChild(renderer.domElement);
 
   renderer.domElement.addEventListener("webglcontextlost", (e) => {
@@ -272,11 +283,10 @@ export function createWerkstattScene(
   const roofImage = new Image();
   roofImage.src = "/demos/dach-poster.jpg";
   const roofVideo = document.createElement("video");
-  roofVideo.src = "/demos/dach-loop.mp4";
   roofVideo.muted = true;
   roofVideo.loop = true;
   roofVideo.playsInline = true;
-  roofVideo.preload = "auto";
+  roofVideo.preload = "none";
   const screenTex = new THREE.CanvasTexture(screenC);
   screenTex.colorSpace = THREE.SRGBColorSpace;
   meshAt(new THREE.PlaneGeometry(1.7, 1.15), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }), monitor, [
@@ -508,10 +518,34 @@ export function createWerkstattScene(
   // ---------------------------------------------------------------------
   // Kamera-Posen, Übergänge, Raycasting
   // ---------------------------------------------------------------------
+  let paused = false;
+  let looping = false;
+  let wasNarrow = container.clientWidth < NARROW;
+
+  function isNarrow() {
+    return container.clientWidth < NARROW;
+  }
+
   function pose(id: ViewId) {
-    const table = container.clientWidth < 800 ? MOBILE_POSES : POSES;
+    const table = isNarrow() ? MOBILE_POSES : POSES;
     const s = table[id] ?? POSES[id];
     return { p: new THREE.Vector3(...s.p), t: new THREE.Vector3(...s.t) };
+  }
+
+  function syncCanvasTouch() {
+    renderer.domElement.style.touchAction = current === "overview" ? "pan-y" : "none";
+  }
+
+  function syncRoofVideo() {
+    if (paused || reduced || isNarrow() || introProgress < 0.85) {
+      roofVideo.pause();
+      return;
+    }
+    if (!roofVideo.getAttribute("src")) {
+      roofVideo.preload = "auto";
+      roofVideo.src = "/demos/dach-loop.mp4";
+    }
+    roofVideo.play().catch(() => {});
   }
 
   // Die Kamera hat zwei Ebenen: `base` ist die erzählte Position (Pose/Übergang),
@@ -527,10 +561,7 @@ export function createWerkstattScene(
 
   let transition: { start: number; from: THREE.Vector3; fromT: THREE.Vector3; to: THREE.Vector3; toT: THREE.Vector3; duration: number } | null = null;
 
-  function goTo(id: ViewId) {
-    current = id;
-    callbacks.onStationChange(id);
-    if (id === "chat") chatStarted = performance.now() / 1000;
+  function easeTo(id: ViewId, duration: number) {
     const dest = pose(id);
     transition = {
       start: performance.now(),
@@ -538,9 +569,17 @@ export function createWerkstattScene(
       fromT: baseLook.clone(),
       to: dest.p,
       toT: dest.t,
-      duration: reduced ? 0 : 1300,
+      duration,
     };
-    if (!reduced) roofVideo.play().catch(() => {});
+  }
+
+  function goTo(id: ViewId) {
+    current = id;
+    callbacks.onStationChange(id);
+    if (id === "chat") chatStarted = performance.now() / 1000;
+    easeTo(id, reduced ? 0 : CAMERA_MS);
+    syncCanvasTouch();
+    syncRoofVideo();
   }
 
   renderer.domElement.addEventListener("pointermove", (e) => {
@@ -554,12 +593,26 @@ export function createWerkstattScene(
   let down: [number, number] | null = null;
   renderer.domElement.addEventListener("pointerdown", (e) => (down = [e.clientX, e.clientY]));
   renderer.domElement.addEventListener("pointerup", (e) => {
-    if (introProgress < 1 || !down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 8) return;
+    if (introProgress < 0.85 || !down) return;
+    const dx = e.clientX - down[0];
+    const dy = e.clientY - down[1];
+    const dist = Math.hypot(dx, dy);
+    down = null;
+    if (current !== "overview" && dy > SWIPE_DOWN_PX && Math.abs(dx) < 96) {
+      goTo("overview");
+      return;
+    }
+    if (dist > 8) return;
     const r = renderer.domElement.getBoundingClientRect();
     v2.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     raycaster.setFromCamera(v2, camera);
     const hits = raycaster.intersectObjects(Object.values(stationObjects), true);
-    if (hits.length) goTo(hits[0].object.userData.station as StationId);
+    if (hits.length) {
+      const station = hits[0].object.userData.station as StationId | undefined;
+      if (station) goTo(station);
+      return;
+    }
+    if (current !== "overview") goTo("overview");
   });
 
   // ---------------------------------------------------------------------
@@ -576,7 +629,7 @@ export function createWerkstattScene(
     for (const id of Object.keys(ANCHOR_POINTS) as StationId[]) {
       const el = hotspotElements[id];
       if (!el) continue;
-      if (narrow || current !== "overview" || introProgress < 0.99) {
+      if (narrow || current !== "overview" || introProgress < 0.85) {
         el.style.opacity = "0";
         el.style.pointerEvents = "none";
         el.tabIndex = -1;
@@ -610,10 +663,13 @@ export function createWerkstattScene(
     renderer.setSize(container.clientWidth, container.clientHeight);
     camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
-    if (!transition) {
-      const d = pose(current);
-      basePos.copy(d.p);
-      baseLook.copy(d.t);
+    const narrow = isNarrow();
+    if (narrow !== wasNarrow) {
+      wasNarrow = narrow;
+      // Pose wechselt, FOV bleibt — kein Ruck bei 800px.
+      easeTo(current, reduced ? 0 : CAMERA_MS);
+      syncRoofVideo();
+      syncCanvasTouch();
     }
   }
   window.addEventListener("resize", resize);
@@ -624,10 +680,29 @@ export function createWerkstattScene(
   let lastTexture = -1;
   let readyFired = false;
 
-  function render(ms: number) {
-    if (disposed) return;
+  function stopLoop() {
+    looping = false;
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+  }
+
+  function startLoop() {
+    if (disposed || paused || webglFailed || looping) return;
+    looping = true;
     rafId = requestAnimationFrame(render);
-    if (document.hidden || webglFailed) return;
+  }
+
+  function render(ms: number) {
+    if (disposed || paused || webglFailed) {
+      stopLoop();
+      return;
+    }
+    if (document.hidden) {
+      looping = false;
+      roofVideo.pause();
+      return;
+    }
+    rafId = requestAnimationFrame(render);
     const t = ms / 1000;
 
     if (transition) {
@@ -636,7 +711,7 @@ export function createWerkstattScene(
       basePos.lerpVectors(transition.from, transition.to, k);
       baseLook.lerpVectors(transition.fromT, transition.toT, k);
       if (q === 1) transition = null;
-    } else if (introProgress < 1) {
+    } else if (current === "overview" && introProgress < 0.85) {
       // Vor Abschluss des Intros: leichter Näherkommen-Effekt (kein eigener Kamera-Tween nötig).
       const h = pose("overview");
       basePos.copy(h.p);
@@ -677,7 +752,18 @@ export function createWerkstattScene(
       callbacks.onReady();
     }
   }
-  rafId = requestAnimationFrame(render);
+
+  function onVisibility() {
+    if (document.hidden) {
+      roofVideo.pause();
+      return;
+    }
+    syncRoofVideo();
+    startLoop();
+  }
+
+  startLoop();
+  document.addEventListener("visibilitychange", onVisibility);
 
   // Sobald echte Fonts geladen sind, Texturen einmal neu zeichnen (schärferer Text).
   document.fonts?.ready
@@ -696,17 +782,23 @@ export function createWerkstattScene(
     goTo,
     setIntroProgress(p: number) {
       introProgress = p;
-      if (p < 0.97 && current !== "overview") goTo("overview");
-      if (p > 0.85 && !reduced && roofVideo.paused) roofVideo.play().catch(() => {});
-      if (p < 0.7) roofVideo.pause();
+      if (p < 0.55 && current !== "overview") goTo("overview");
+      syncRoofVideo();
     },
     setReduced(next: boolean) {
       reduced = next;
-      if (reduced) {
+      if (reduced && transition) transition.duration = 0;
+      syncRoofVideo();
+    },
+    setPaused(next: boolean) {
+      if (paused === next) return;
+      paused = next;
+      if (paused) {
+        stopLoop();
         roofVideo.pause();
-        if (transition) transition.duration = 0;
-      } else if (introProgress > 0.85) {
-        roofVideo.play().catch(() => {});
+      } else {
+        syncRoofVideo();
+        startLoop();
       }
     },
     setHotspotElements(elements) {
@@ -714,9 +806,10 @@ export function createWerkstattScene(
     },
     dispose() {
       disposed = true;
+      stopLoop();
       window.clearTimeout(readyTimeout);
-      cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
       roofVideo.pause();
       roofVideo.removeAttribute("src");
       roofVideo.load();

@@ -16,7 +16,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { LogoMark } from "@/components/brand";
 import { cta } from "@/lib/offers";
 import { useScrollScene, clamp01, range, smooth } from "@/lib/scroll-engine";
 import {
@@ -43,7 +42,7 @@ type Kind = keyof typeof SETS;
 const REVEAL_START = 0.55;
 const REVEAL_END = 0.85;
 /** Ab hier ist die Werkstatt bedienbar (Hotspots, Klicks in die Szene). */
-const INTRO_DONE = 0.99;
+const INTRO_DONE = REVEAL_END;
 
 const STATION_ICONS: Record<StationId, React.ReactNode> = {
   web: (
@@ -89,6 +88,7 @@ export function WerkstattScene() {
   const introCanvasRef = useRef<HTMLCanvasElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const detailHeadingRef = useRef<HTMLHeadingElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const hotspotRefs = useRef<Partial<Record<StationId, HTMLButtonElement | null>>>({});
   const navRefs = useRef<Partial<Record<StationId, HTMLButtonElement | null>>>({});
   const controllerRef = useRef<WerkstattSceneController | null>(null);
@@ -188,7 +188,20 @@ export function WerkstattScene() {
     });
     controller?.setReduced(osReducedRef.current || manualReduced);
 
+    const pin = pinRef.current;
+    const io =
+      pin &&
+      new IntersectionObserver(
+        ([entry]) => {
+          // Nur Rendern pausieren — Szene bleibt stehen, kein dispose/Rebuild.
+          controller?.setPaused(!entry.isIntersecting);
+        },
+        { threshold: 0.02 },
+      );
+    if (pin && io) io.observe(pin);
+
     return () => {
+      io?.disconnect();
       controller?.dispose();
       controllerRef.current = null;
     };
@@ -219,7 +232,7 @@ export function WerkstattScene() {
       const first = navRefs.current[stationOrder[0]];
       first?.focus({ preventScroll: true });
     } else {
-      detailHeadingRef.current?.focus({ preventScroll: true });
+      closeBtnRef.current?.focus({ preventScroll: true });
     }
   }, [active]);
 
@@ -244,6 +257,7 @@ export function WerkstattScene() {
       ref={sectionRef}
       className="werkstatt-scroll"
       data-intro="true"
+      data-station={active}
       aria-label="Die Werkstatt — interaktiver 3D-Rundgang durch die drei Leistungen"
     >
       <div className="werkstatt-scroll__pin" ref={pinRef}>
@@ -257,25 +271,30 @@ export function WerkstattScene() {
         <div className="werkstatt__grain" aria-hidden="true" />
 
         <header className="werkstatt__topbar">
-          <Link href="/" className="werkstatt__brand">
-            <LogoMark className="h-9 w-12" />
-            <span className="werkstatt__brand-name">
-              BP AGENTICS<small>HAGEN · NRW</small>
-            </span>
-          </Link>
+          <button
+            type="button"
+            className="werkstatt__quiet-btn"
+            aria-pressed={manualReduced}
+            onClick={() => setManualReduced((v) => !v)}
+          >
+            {manualReduced ? "Bewegung reduziert" : "Bewegung reduzieren"}
+          </button>
           <div className="werkstatt__actions">
-            <button
-              type="button"
-              className="werkstatt__quiet-btn"
-              aria-pressed={manualReduced}
-              onClick={() => setManualReduced((v) => !v)}
-            >
-              {manualReduced ? "Bewegung reduziert" : "Bewegung reduzieren"}
-            </button>
             {active !== "overview" && (
-              <button type="button" className="werkstatt__outline-btn" onClick={() => goTo("overview")}>
-                <span aria-hidden="true">↖</span> Zur Übersicht
-              </button>
+              <>
+                <button type="button" className="werkstatt__outline-btn" onClick={() => goTo("overview")}>
+                  <span aria-hidden="true">↖</span> Zur Übersicht
+                </button>
+                <button
+                  type="button"
+                  ref={closeBtnRef}
+                  className="werkstatt__close"
+                  aria-label="Zur Übersicht"
+                  onClick={() => goTo("overview")}
+                >
+                  <span aria-hidden="true">✕</span>
+                </button>
+              </>
             )}
             <Link href={cta.href} className="werkstatt__top-link">
               {cta.short} ↗
@@ -367,8 +386,9 @@ export function WerkstattScene() {
               <p className="werkstatt__eyebrow">
                 {detail.num} / {detail.name}
               </p>
+              <p className="werkstatt__nutzen">{detail.promise}</p>
               <h2 ref={detailHeadingRef} tabIndex={-1} dangerouslySetInnerHTML={{ __html: detail.title }} />
-              <p>{detail.text}</p>
+              <p className="werkstatt__detail-text">{detail.text}</p>
 
               <ol className="werkstatt__steps">
                 {detail.steps.map((step, i) => (

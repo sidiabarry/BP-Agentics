@@ -17,25 +17,27 @@
   --cyan: #8dcee2;
   --brass: #cba66e;
   --line: rgba(243, 239, 230, 0.2);
+  --werkstatt-chrome: 4.75rem;
   position: relative;
   background: #08121a;
   color: var(--paper);
 }
 
 .werkstatt-scroll[data-scroll-ready] {
-  height: 270svh;
+  height: calc(270svh - var(--werkstatt-chrome));
 }
 
 .werkstatt-scroll__pin {
   position: relative;
-  height: 100svh;
+  height: calc(100svh - var(--werkstatt-chrome));
   overflow: hidden;
   background: #0b1721;
+  pointer-events: none;
 }
 
 .werkstatt-scroll[data-scroll-ready] .werkstatt-scroll__pin {
   position: sticky;
-  top: 0;
+  top: var(--werkstatt-chrome);
 }
 
 /* --- Bühne ---------------------------------------------------------------- */
@@ -43,13 +45,17 @@
 .werkstatt__scene {
   position: absolute;
   inset: 0;
+  z-index: 0;
   touch-action: pan-y;
+  pointer-events: auto;
 }
 
 .werkstatt__scene canvas {
   display: block;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
+  touch-action: pan-y;
 }
 
 .werkstatt__vignette {
@@ -76,13 +82,14 @@
 .werkstatt__topbar {
   position: absolute;
   z-index: 30;
-  top: 25px;
+  top: 16px;
   right: 36px;
   left: 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  pointer-events: auto;
 }
 
 .werkstatt__brand {
@@ -139,6 +146,7 @@
   font-size: 11px;
   color: #a6bdca;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .werkstatt__top-link {
@@ -149,6 +157,34 @@
 
 .werkstatt__top-link:hover {
   opacity: 1;
+}
+
+.werkstatt__close {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: rgba(5, 16, 25, 0.72);
+  backdrop-filter: blur(14px);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--paper);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.werkstatt__close:hover {
+  background: rgba(243, 239, 230, 0.16);
+}
+
+.werkstatt__nutzen {
+  display: none;
 }
 
 /* --- Übersichtstext ------------------------------------------------------- */
@@ -385,7 +421,8 @@
   color: #f4eee3;
 }
 
-.werkstatt__detail p {
+.werkstatt__detail p,
+.werkstatt__detail-text {
   margin: 0 0 23px;
   font-size: 16px;
   line-height: 1.55;
@@ -496,6 +533,7 @@
   box-shadow: 0 10px 40px #0004;
   backdrop-filter: blur(20px);
   transform: translateX(-50%);
+  pointer-events: auto;
 }
 
 .werkstatt__nav-station {
@@ -701,7 +739,17 @@
 }
 
 .werkstatt__world-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
   transition: opacity 0.3s;
+}
+
+.werkstatt__world-ui .werkstatt__hotspot,
+.werkstatt__world-ui .werkstatt__nav,
+.werkstatt__world-ui .werkstatt__tour {
+  pointer-events: auto;
 }
 
 /* --- Fallback ------------------------------------------------------------ */
@@ -727,6 +775,7 @@
   z-index: 41;
   display: grid;
   gap: 10px;
+  pointer-events: auto;
 }
 
 .werkstatt__fallback-links a {
@@ -749,10 +798,15 @@
 
 @media (max-width: 800px) {
   .werkstatt__topbar {
-    top: 20px;
+    top: 12px;
     right: 20px;
     left: 20px;
     gap: 8px;
+  }
+
+  .werkstatt__close {
+    width: 44px;
+    height: 44px;
   }
 
   .werkstatt__brand-name {
@@ -764,7 +818,8 @@
   .werkstatt__top-link,
   .werkstatt__marker,
   .werkstatt__note,
-  .werkstatt__index {
+  .werkstatt__index,
+  .werkstatt__topbar .werkstatt__outline-btn {
     display: none;
   }
 
@@ -772,16 +827,8 @@
     gap: 2px;
   }
 
-  .werkstatt__outline-btn {
-    min-height: 42px;
-    padding: 9px 12px;
-    white-space: nowrap;
-  }
-
   .werkstatt__quiet-btn {
-    position: absolute;
-    top: 48px;
-    right: 0;
+    position: static;
     min-height: 32px;
     font-size: 10px;
   }
@@ -832,22 +879,37 @@
 
   .werkstatt__detail {
     top: auto;
-    right: 18px;
-    bottom: 93px;
-    left: 18px;
+    right: 12px;
+    bottom: 14px;
+    left: 12px;
     width: auto;
-    padding: 18px 20px;
+    padding: 12px 14px 14px;
   }
 
-  .werkstatt__detail h2 {
-    margin: 11px 0 9px;
-    font-size: 23px;
+  .werkstatt__detail .werkstatt__eyebrow,
+  .werkstatt__detail h2,
+  .werkstatt__detail-text,
+  .werkstatt__steps,
+  .werkstatt__limit,
+  .werkstatt__next,
+  .werkstatt__detail-note {
+    display: none;
   }
 
-  .werkstatt__detail p {
-    margin-bottom: 14px;
+  .werkstatt__nutzen {
+    display: block;
+    margin: 0 0 8px;
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.35;
+    color: #d5e4ea;
+  }
+
+  .werkstatt__price {
+    display: block !important;
+    margin: 0 0 10px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.02em;
+    color: #8da8b5 !important;
   }
 
   .werkstatt__cta {
@@ -855,29 +917,8 @@
     font-size: 14px;
   }
 
-  .werkstatt__detail-note,
-  .werkstatt__price {
+  .werkstatt-scroll[data-station]:not([data-station="overview"]) .werkstatt__nav {
     display: none;
-  }
-
-  .werkstatt__steps {
-    margin-bottom: 12px;
-    gap: 6px;
-  }
-
-  .werkstatt__steps li {
-    font-size: 13px;
-  }
-
-  .werkstatt__limit {
-    margin-bottom: 12px !important;
-    font-size: 12px !important;
-  }
-
-  .werkstatt__next {
-    margin-top: 8px;
-    padding-top: 10px;
-    font-size: 12.5px;
   }
 
   .werkstatt__hotspot small {

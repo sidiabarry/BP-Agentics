@@ -7,16 +7,22 @@ import { SiteFooter } from "@/components/site-footer";
 import { WhatsAppFab } from "@/components/whatsapp-button";
 
 /**
- * Routen, die ihre eigene, bildschirmfüllende Oberfläche mitbringen und deshalb
- * ohne Kopfzeile, Fußzeile und schwebenden WhatsApp-Knopf laufen. Die Werkstatt
- * hat eine eigene Topbar und eine untere Stationsnavigation — die globale
- * Kopf-/Fußzeile würde damit kollidieren.
+ * Die Werkstatt behält die Site-Kopfzeile (Leistungen muss klickbar bleiben),
+ * läuft aber ohne Fußzeile und ohne den schwebenden WhatsApp-Knopf — beides
+ * würde die 3D-Bühne und die Stationsnavigation zudecken.
  */
-const CHROMELESS_ROUTES = new Set(["/werkstatt"]);
+const HEADER_ONLY_ROUTES = new Set(["/werkstatt"]);
 
 export function ChromeGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  if (CHROMELESS_ROUTES.has(pathname)) return <>{children}</>;
+  if (HEADER_ONLY_ROUTES.has(pathname)) {
+    return (
+      <>
+        <SiteHeader />
+        {children}
+      </>
+    );
+  }
 
   return (
     <>
