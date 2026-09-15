@@ -1,54 +1,104 @@
+import {
+  anchors,
+  labels,
+  paths,
+  stations,
+} from "@/lib/journey";
+
+export { gewerkHref } from "@/lib/journey";
+
 export const leistungItems = [
   {
-    href: "/leistungen/auftritt",
-    title: "Websites",
+    href: stations[0].href,
+    title: stations[0].label,
     sub: "Leistungen, Referenzen und Einsatzgebiet verständlich zeigen.",
   },
   {
-    href: "/leistungen/annahme",
-    title: "Nachrichten-Assistent",
+    href: stations[1].href,
+    title: stations[1].label,
     sub: "Anfragen per WhatsApp und E-Mail beantworten und Termine abstimmen.",
   },
   {
-    href: "/leistungen/ablaeufe",
-    title: "Büroabläufe automatisieren",
+    href: stations[2].href,
+    title: stations[2].label,
     sub: "Informationen einmal erfassen und weitergeben.",
   },
 ] as const;
 
 export const mainLinks = [
-  { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
-  { href: "/preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
-  { href: "/kontakt", label: "Kontakt", spy: null },
+  { href: paths.referenzen, label: labels.referenzen, spy: anchors.referenzen },
+  { href: paths.preise, label: labels.preise, spy: anchors.preise },
+  { href: paths.ueberMich, label: labels.ueberMich, spy: null },
+  { href: paths.kontakt, label: labels.kontakt, spy: null },
 ] as const;
 
 /** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
 export const homeExpandLinks = [
-  { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
-  { href: "#preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
-  { href: "/kontakt", label: "Kontakt", spy: null },
+  { href: `#${anchors.referenzen}`, label: labels.referenzen, spy: anchors.referenzen },
+  { href: `#${anchors.preise}`, label: labels.preise, spy: anchors.preise },
+  { href: paths.ueberMich, label: labels.ueberMich, spy: null },
+  { href: paths.kontakt, label: labels.kontakt, spy: null },
 ] as const;
 
 export const mobileOverview = {
-  href: "/leistungen",
-  label: "Leistungen im Überblick",
+  href: paths.leistungen,
+  label: labels.leistungenOverview,
 } as const;
 
+/** Elternpunkt „Leistungen“: auf der Startseite die drei Stationen, sonst die Übersichtsseite. */
+export const leistungenParent = {
+  homeHref: `#${anchors.werkstatt}`,
+  href: paths.leistungen,
+  label: labels.leistungen,
+} as const;
+
+export function leistungenHref(pathname: string) {
+  return pathname === "/" ? leistungenParent.homeHref : leistungenParent.href;
+}
+
+/** Springt auf der Startseite zur Werkstatt — hinter dem klebenden Hero, unter der Kopfzeile. */
+export function scrollHomeToWerkstatt() {
+  const werkstatt = document.getElementById(anchors.werkstatt);
+  if (!werkstatt) return false;
+
+  const snap = () => {
+    const headerH = Math.ceil(
+      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
+    );
+    const y = Math.max(0, werkstatt.getBoundingClientRect().top + window.scrollY - headerH);
+    window.scrollTo({ top: y, behavior: "auto" });
+    if (location.hash !== leistungenParent.homeHref) {
+      history.replaceState(null, "", leistungenParent.homeHref);
+    }
+  };
+
+  snap();
+  requestAnimationFrame(snap);
+
+  const hero = document.getElementById("einstieg");
+  if (hero && !hero.hasAttribute("data-scroll-ready")) {
+    const mo = new MutationObserver(() => {
+      if (!hero.hasAttribute("data-scroll-ready")) return;
+      mo.disconnect();
+      snap();
+    });
+    mo.observe(hero, { attributes: true, attributeFilter: ["data-scroll-ready"] });
+    window.setTimeout(() => mo.disconnect(), 2500);
+  }
+
+  return true;
+}
+
 export const mobileReferenzen = [
-  { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta" },
-  { href: "/referenzen/dachdecker-signature", label: "Dachdecker Signature" },
+  { href: paths.feinkost, label: "Feinkost Kreta" },
+  { href: paths.dachdecker, label: "Dachdecker Signature" },
+  { href: paths.werkstattAlias, label: labels.werkstattNav },
 ] as const;
 
 export const mobileInfo = [
-  { href: "/preise", label: "Preise" },
-  { href: "/foerderung/mid-digitale-prozesse", label: "Förderung" },
-  { href: "/passt-das", label: "Welcher Einstieg passt?" },
-  { href: "/ueber-mich", label: "Über mich" },
-  { href: "/kontakt", label: "Kontakt" },
+  { href: paths.preise, label: labels.preise },
+  { href: paths.foerderung, label: labels.foerderung },
+  { href: paths.passtDas, label: labels.passtDas },
+  { href: paths.ueberMich, label: labels.ueberMich },
+  { href: paths.kontakt, label: labels.kontakt },
 ] as const;
-
-export function gewerkHref(slug: string) {
-  return `/gewerke#${slug}`;
-}

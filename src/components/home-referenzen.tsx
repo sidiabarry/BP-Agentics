@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DemoLoop, PhoneDemo } from "@/components/demo-player";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
+import { labels, paths } from "@/lib/journey";
 import { cn } from "@/lib/utils";
 
 export function DemoPair({
@@ -35,7 +36,7 @@ export function DemoPair({
         </div>
         <p className="mt-5">
           <Link
-            href="/referenzen/feinkost-kreta"
+            href={paths.feinkost}
             className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
           >
             Kundenprojekt Feinkost Kreta
@@ -66,7 +67,7 @@ export function DemoPair({
         </div>
         <p className="mt-5">
           <Link
-            href="/referenzen/dachdecker-signature"
+            href={paths.dachdecker}
             className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
           >
             Website-Demo ansehen
@@ -95,6 +96,24 @@ export function HomeReferenzen() {
         <div className="mt-12">
           <DemoPair surface="cream" />
         </div>
+
+        <p className="mt-8">
+          <Link
+            href={paths.gewerke}
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            {labels.gewerke}
+          </Link>
+          <span className="mx-3 text-[#5C5F66]" aria-hidden="true">
+            ·
+          </span>
+          <Link
+            href={paths.werkstattAlias}
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            {labels.zurWerkstatt}
+          </Link>
+        </p>
       </div>
     </section>
   );

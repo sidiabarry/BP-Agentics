@@ -152,7 +152,7 @@ export function DemoLoop({
   const close = useCallback(() => setOpen(false), []);
 
   return (
-    <figure ref={wrapRef} className={className}>
+    <figure ref={wrapRef} className={className} data-demo-loop="">
       <div className="relative overflow-hidden rounded-2xl bg-[#14161C] shadow-xl ring-1 ring-black/10">
         {motion ? (
           <video
@@ -177,7 +177,7 @@ export function DemoLoop({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="absolute right-4 bottom-4 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-[#14161C] shadow-lg transition hover:bg-white focus-visible:ring-4 focus-visible:ring-white/40 focus-visible:outline-none"
+            className="absolute bottom-4 left-4 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-[#14161C] shadow-lg transition hover:bg-white focus-visible:ring-4 focus-visible:ring-white/40 focus-visible:outline-none"
           >
             Ganze Demo ansehen
           </button>

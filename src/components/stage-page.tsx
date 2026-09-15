@@ -50,7 +50,7 @@ export function StagePage({
   const ink = tone === "ink";
 
   return (
-    <main id="inhalt" className="bg-[#F3EFE6]">
+    <main id="inhalt" className="bg-[#F3EFE6]" data-page={path.replace(/^\//, "")}>
       <JsonLd
         data={{
           "@context": "https://schema.org",

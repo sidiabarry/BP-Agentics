@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
+import { paths } from "@/lib/journey";
 
 export default function KiSetterLegacyPage() {
-  redirect("/leistungen/annahme");
+  redirect(paths.annahme);
 }

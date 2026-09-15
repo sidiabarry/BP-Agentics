@@ -5,12 +5,13 @@ import { BookingForm } from "@/components/booking-form";
 import { StagePage } from "@/components/stage-page";
 import { WhatsAppInline } from "@/components/whatsapp-button";
 import { pageMetadata } from "@/lib/seo";
+import { paths, stageThread } from "@/lib/journey";
 
 export const metadata: Metadata = pageMetadata({
   title: "Kostenloses Erstgespräch anfragen",
   description:
     "Kostenloses Erstgespräch: 90 Minuten vor Ort in Ihrem Betrieb in NRW. Erzählen Sie kurz vom Vorhaben und nennen Sie einen Wunschtermin. Unverbindlich.",
-  path: "/termin",
+  path: paths.termin,
 });
 
 export default function TerminPage() {
@@ -19,13 +20,9 @@ export default function TerminPage() {
       kicker="Vor Ort in Ihrem Betrieb"
       title="Kostenloses Erstgespräch anfragen"
       lead="Erzählen Sie kurz von Ihrem Vorhaben und nennen Sie einen Wunschtermin. Ich melde mich unter der angegebenen Nummer und stimme den Termin mit Ihnen ab."
-      crumbs={[{ name: "Erstgespräch anfragen", path: "/termin" }]}
-      related={[
-        { href: "/kontakt", label: "Zur Kontaktseite" },
-        { href: "/leistungen", label: "Leistungen" },
-        { href: "/preise", label: "Preise" },
-      ]}
-      next={null}
+      crumbs={[{ name: "Erstgespräch anfragen", path: paths.termin }]}
+      related={stageThread(paths.termin).related}
+      next={stageThread(paths.termin).next}
     >
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8">
         <ul className="space-y-4">

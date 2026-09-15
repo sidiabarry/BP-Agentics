@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,10 +16,14 @@ import { industryList } from "@/lib/content";
 import {
   gewerkHref,
   leistungItems,
+  leistungenHref,
+  leistungenParent,
   mobileInfo,
   mobileOverview,
   mobileReferenzen,
+  scrollHomeToWerkstatt,
 } from "@/lib/nav";
+import { cta } from "@/lib/offers";
 
 type MobileNavProps = {
   open: boolean;
@@ -30,6 +35,9 @@ function closeOnClick(onOpenChange: (open: boolean) => void) {
 }
 
 export function MobileNav({ open, onOpenChange }: MobileNavProps) {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const parentHref = leistungenHref(pathname);
   const close = closeOnClick(onOpenChange);
 
   return (
@@ -38,7 +46,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
         <Button
           variant="ghost"
           size="icon-lg"
-          className="rounded-full bg-black/80 text-white hover:bg-black lg:hidden"
+          className="size-11 rounded-full bg-black/80 text-white hover:bg-black lg:hidden"
           aria-label="Menü öffnen"
         >
           <Menu className="size-5" />
@@ -53,17 +61,32 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
             asChild
             className="h-12 w-full rounded-full bg-[#198BE8] text-base text-white hover:bg-[#1576C4]"
           >
-            <Link href="/termin" onClick={close}>
-              Erstgespräch anfragen
+            <Link href={cta.href} onClick={close}>
+              {cta.short}
             </Link>
           </Button>
           <WhatsAppInline className="mt-2 h-12 w-full justify-center rounded-full px-5 text-base">
             Per WhatsApp schreiben
           </WhatsAppInline>
 
-          <p className="mt-8 text-sm tracking-[0.16em] text-muted-foreground uppercase">
-            Leistungen
-          </p>
+          <Link
+            href={parentHref}
+            scroll={!onHome}
+            data-nav="leistungen-mobile"
+            onClick={(event) => {
+              if (onHome) {
+                event.preventDefault();
+                event.stopPropagation();
+                scrollHomeToWerkstatt();
+                onOpenChange(false);
+                return;
+              }
+              close();
+            }}
+            className="mt-8 rounded-lg px-2 py-2.5 text-sm tracking-[0.16em] text-muted-foreground uppercase"
+          >
+            {leistungenParent.label}
+          </Link>
           <Link href={mobileOverview.href} onClick={close} className="rounded-lg px-2 py-2.5 text-lg">
             {mobileOverview.label}
           </Link>

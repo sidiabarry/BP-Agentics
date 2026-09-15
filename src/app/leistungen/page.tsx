@@ -6,13 +6,13 @@ import { Process } from "@/components/process";
 import { StagePage } from "@/components/stage-page";
 import { LevelCards } from "@/components/three-levels";
 import { pageMetadata } from "@/lib/seo";
-import { cta } from "@/lib/offers";
+import { paths, stageThread } from "@/lib/journey";
 
 export const metadata: Metadata = pageMetadata({
   title: "Website, WhatsApp-Annahme und Abläufe für Handwerk",
   description:
     "Website, WhatsApp-Annahme und automatisierte Abläufe für Handwerk in NRW. Die Bausteine sind einzeln beauftragbar; den Umfang klären wir im Gespräch.",
-  path: "/leistungen",
+  path: paths.leistungen,
 });
 
 export default function LeistungenPage() {
@@ -21,7 +21,7 @@ export default function LeistungenPage() {
       kicker="Leistungen"
       title="Drei Bausteine. Ein Weg durch den Betrieb."
       lead="Website, Nachrichten-Assistent und Büroablauf sind einzeln beauftragbar. Im Gespräch klären wir, welcher Baustein zuerst den Alltag erleichtert."
-      crumbs={[{ name: "Leistungen", path: "/leistungen" }]}
+      crumbs={[{ name: "Leistungen", path: paths.leistungen }]}
       visual={
         <div className="overflow-hidden rounded-[1.6rem] shadow-xl ring-1 ring-black/10">
           <Image
@@ -33,20 +33,8 @@ export default function LeistungenPage() {
           />
         </div>
       }
-      related={[
-        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-        { href: "/preise", label: "Preise" },
-        { href: "/referenzen", label: "Arbeiten und Demos" },
-      ]}
-      next={{
-        title: "Welcher Baustein zuerst?",
-        body: "90 Minuten vor Ort in Nordrhein-Westfalen. Sie senden einen Terminwunsch. Den Termin bestätigen wir persönlich.",
-        chips: ["90 Minuten im Betrieb", "Kostenloses Erstgespräch", "Persönlich bestätigt"],
-        primary: { href: cta.href, label: cta.primary },
-        secondary: { href: "/passt-das", label: "Erst Orientierung holen" },
-      }}
+      related={stageThread(paths.leistungen).related}
+      next={stageThread(paths.leistungen).next}
       appendix={
         <>
           <Process />
@@ -70,7 +58,7 @@ export default function LeistungenPage() {
       <LevelCards />
       <p className="mt-8 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
         Einrichtung und Betreuung stehen auf der{" "}
-        <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+        <Link href={paths.preise} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
           Preisseite
         </Link>
         .

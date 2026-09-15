@@ -6,13 +6,14 @@ import { StagePage } from "@/components/stage-page";
 import { annahmeFaqs } from "@/lib/content";
 import { faqPage, serviceOffer } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
-import { PRICE_NOTE, cta, whatsappOffer } from "@/lib/offers";
+import { paths, stageThread } from "@/lib/journey";
+import { PRICE_NOTE, whatsappOffer } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "WhatsApp- und E-Mail-Assistent für Betriebe",
   description:
     "KI-Assistent für WhatsApp und E-Mail in Handwerksbetrieben: Angaben erfassen und Termine aus dem Kalender anbieten. 1.290 € plus 99 € monatlich.",
-  path: "/leistungen/annahme",
+  path: paths.annahme,
 });
 
 export default function AnnahmePage() {
@@ -22,15 +23,15 @@ export default function AnnahmePage() {
       title="Die Angaben liegen vor, bevor Sie zurückrufen."
       lead="Der KI-Assistent beantwortet Nachrichten per WhatsApp und E-Mail, fragt vereinbarte Angaben ab und bietet Termine aus dem angebundenen Kalender an."
       crumbs={[
-        { name: "Leistungen", path: "/leistungen" },
-        { name: "Nachrichten-Assistent", path: "/leistungen/annahme" },
+        { name: "Leistungen", path: paths.leistungen },
+        { name: "Nachrichten-Assistent", path: paths.annahme },
       ]}
       extraJsonLd={[
         serviceOffer({
           name: "Nachrichten-Assistent",
           description:
             "KI-Assistent für WhatsApp- und E-Mail-Anfragen: Angaben erfassen und Termine aus dem angebundenen Kalender anbieten.",
-          path: "/leistungen/annahme",
+          path: paths.annahme,
           offers: [
             { name: "Nachrichten-Assistent Einrichtung", price: "1290" },
             { name: "Nachrichten-Assistent Betreuung", price: "99", unit: "MON" },
@@ -38,18 +39,8 @@ export default function AnnahmePage() {
         }),
         faqPage(annahmeFaqs),
       ]}
-      related={[
-        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-        { href: "/preise", label: "Preise" },
-      ]}
-      next={{
-        title: "Nachrichten-Assistent besprechen",
-        body: "Sinnvoll, wenn Kunden per WhatsApp oder E-Mail anfragen und wiederkehrende Fragen oder Terminabstimmungen anfallen. 90 Minuten vor Ort.",
-        chips: ["WhatsApp und E-Mail", "Kalenderregeln", "Mensch übernimmt bei Bedarf"],
-        primary: { href: cta.href, label: "Nachrichten-Assistent besprechen" },
-        secondary: { href: "/preise", label: "Preis ansehen" },
-      }}
+      related={stageThread(paths.annahme).related}
+      next={stageThread(paths.annahme).next}
       prelude={<LivingChat />}
     >
       <StageCard tone="ink" kicker="Einrichtung und Betrieb" title="Ein Preis für den laufenden Assistenten.">

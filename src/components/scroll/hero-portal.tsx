@@ -19,13 +19,20 @@
 
 import { useRef } from "react";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
+import {
+  createImageStore,
+  ensureKind,
+  pumpFrames,
+  nearestLoadedFrame,
+  type FrameSet,
+} from "@/lib/image-sequence";
 
 const SMALL_MAX = 700;
 
 const SETS = {
   desktop: { dir: "/hero/sequence-desktop", count: 71 },
   mobile: { dir: "/hero/sequence-mobile", count: 48 },
-} as const;
+} as const satisfies Record<string, FrameSet>;
 
 type Kind = keyof typeof SETS;
 
@@ -34,21 +41,12 @@ const FILM_END = 0.6;
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
 
-function frameSrc(kind: Kind, index: number) {
-  return `${SETS[kind].dir}/${String(index + 1).padStart(4, "0")}.webp`;
-}
-
 export function HeroPortal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
 
   // Bildspeicher lebt außerhalb von React – kein Re-Render pro Frame.
-  const store = useRef({
-    kind: "" as Kind | "",
-    images: [] as (HTMLImageElement | null)[],
-    inflight: 0,
-    target: 0,
-  });
+  const store = useRef(createImageStore());
 
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
@@ -62,15 +60,14 @@ export function HeroPortal() {
         ? "mobile"
         : "desktop";
       const s = store.current;
-      if (s.kind !== kind) {
-        s.kind = kind;
-        s.images = new Array(SETS[kind].count).fill(null);
-        s.inflight = 0;
-      }
+      ensureKind(s, kind, SETS[kind].count);
 
-      const count = SETS[kind].count;
-      s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
-      pump(kind);
+      s.target = Math.round(range(p, 0, FILM_END) * (SETS[kind].count - 1));
+      pumpFrames(s, SETS[kind], () => {
+        const c = canvasRef.current;
+        const pn = pinRef.current;
+        if (c && pn) paint(c, pn, 0);
+      });
 
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
       if (p > 0.94) return;
@@ -78,57 +75,12 @@ export function HeroPortal() {
     },
   });
 
-  /** Lädt die Frames nach, immer die nächstgelegenen zuerst, max. 4 parallel. */
-  function pump(kind: Kind) {
-    const s = store.current;
-    while (s.inflight < 4) {
-      let next = -1;
-      let best = Infinity;
-      for (let i = 0; i < s.images.length; i += 1) {
-        if (s.images[i]) continue;
-        const d = Math.abs(i - s.target);
-        if (d < best) {
-          best = d;
-          next = i;
-        }
-      }
-      if (next < 0) return;
-      const index = next;
-      const img = new window.Image();
-      s.images[index] = img; // Platz reservieren, damit er nicht doppelt geladen wird
-      s.inflight += 1;
-      img.decoding = "async";
-      img.onload = () => {
-        s.inflight -= 1;
-        const canvas = canvasRef.current;
-        const pin = pinRef.current;
-        if (canvas && pin) paint(canvas, pin, 0);
-        pump(kind);
-      };
-      img.onerror = () => {
-        s.inflight -= 1;
-      };
-      img.src = frameSrc(kind, index);
-    }
-  }
-
   /** Zeichnet den nächstbesten geladenen Frame, formatfüllend, mit Extra-Zoom. */
   function paint(canvas: HTMLCanvasElement, pin: HTMLElement, overdrive: number) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const s = store.current;
-
-    let best: HTMLImageElement | null = null;
-    let delta = Infinity;
-    for (let i = 0; i < s.images.length; i += 1) {
-      const img = s.images[i];
-      if (!img || !img.naturalWidth) continue;
-      const d = Math.abs(i - s.target);
-      if (d < delta) {
-        delta = d;
-        best = img;
-      }
-    }
+    const best = nearestLoadedFrame(s);
     if (!best) return;
 
     const rect = pin.getBoundingClientRect();

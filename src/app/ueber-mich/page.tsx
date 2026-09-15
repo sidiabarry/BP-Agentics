@@ -5,13 +5,13 @@ import { StageCard, StageGrid } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { napLine, site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
-import { cta } from "@/lib/offers";
+import { paths, stageThread } from "@/lib/journey";
 
 export const metadata: Metadata = pageMetadata({
   title: "Sidia Jerome Barry – Inhaber in Hagen",
   description:
     "Sidia Jerome Barry führt BP Agentics in Hagen. Website-Erstellung und Online-Marketing für Handwerk und Betriebe in Nordrhein-Westfalen, ein Ansprechpartner.",
-  path: "/ueber-mich",
+  path: paths.ueberMich,
 });
 
 export default function UeberMichPage() {
@@ -21,20 +21,9 @@ export default function UeberMichPage() {
       kicker="Über mich"
       title="Sidia Jerome Barry. Ein Ansprechpartner."
       lead="BP Agentics ist meine Agentur in Hagen — ich entwickle Websites und digitale Abläufe für Handwerk und Betriebe in Nordrhein-Westfalen. Ausgangspunkt ist Ihr Arbeitsalltag, nicht eine Agenturkulisse."
-      crumbs={[{ name: "Über mich", path: "/ueber-mich" }]}
-      related={[
-        { href: "/passt-das", label: "Welcher Einstieg passt?" },
-        { href: "/leistungen", label: "Leistungen" },
-        { href: "/referenzen", label: "Arbeiten und Demos" },
-        { href: "/kontakt", label: "Kontakt" },
-      ]}
-      next={{
-        title: "Direkt mit mir sprechen",
-        body: "Im Erstgespräch lernen wir das Vorhaben kennen. Danach erhalten Sie ein Angebot mit nachvollziehbarem Umfang und Preis.",
-        chips: ["90 Minuten vor Ort", "Ein Ansprechpartner", "Sitz Hagen"],
-        primary: { href: cta.href, label: cta.primary },
-        secondary: { href: "/kontakt", label: "Kontakt aufnehmen" },
-      }}
+      crumbs={[{ name: "Über mich", path: paths.ueberMich }]}
+      related={stageThread(paths.ueberMich).related}
+      next={stageThread(paths.ueberMich).next}
       visual={
         <div className="rounded-[1.6rem] border border-white/10 bg-white/6 p-6">
           <p className="text-sm tracking-[0.16em] text-[#9FD0F8] uppercase">Sitz</p>

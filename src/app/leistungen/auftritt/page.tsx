@@ -8,9 +8,9 @@ import { StagePage } from "@/components/stage-page";
 import { auftrittFaqs } from "@/lib/content";
 import { faqPage, serviceOffer } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
+import { paths, stageThread } from "@/lib/journey";
 import {
   PRICE_NOTE,
-  cta,
   websiteOwnership,
 } from "@/lib/offers";
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Website für Handwerksbetriebe in NRW",
   description:
     "Website für Handwerksbetriebe in NRW: Arbeiten zeigen und den Weg zur Anfrage klar machen. Stufen von 690 € bis ab 3.490 €, Betreuung optional.",
-  path: "/leistungen/auftritt",
+  path: paths.auftritt,
 });
 
 export default function AuftrittPage() {
@@ -28,15 +28,15 @@ export default function AuftrittPage() {
       title="Leistungen zeigen. Anfrage möglich machen."
       lead="Interessenten sehen, welche Arbeiten Sie übernehmen — und wie sie Kontakt aufnehmen. Die Stufe richtet sich nach dem Umfang."
       crumbs={[
-        { name: "Leistungen", path: "/leistungen" },
-        { name: "Websites", path: "/leistungen/auftritt" },
+        { name: "Leistungen", path: paths.leistungen },
+        { name: "Websites", path: paths.auftritt },
       ]}
       extraJsonLd={[
         serviceOffer({
           name: "Website für Betriebe",
           description:
             "Website Start, Betrieb und Signature für Betriebe in Nordrhein-Westfalen.",
-          path: "/leistungen/auftritt",
+          path: paths.auftritt,
           offers: [
             { name: "Website Start", price: "690" },
             { name: "Website Betrieb", price: "1790" },
@@ -47,19 +47,8 @@ export default function AuftrittPage() {
         }),
         faqPage(auftrittFaqs),
       ]}
-      related={[
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-        { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
-        { href: "/preise", label: "Preise" },
-      ]}
-      next={{
-        title: "Website-Projekt besprechen",
-        body: "Welche Stufe passt, hängt von Leistungen, vorhandenen Inhalten und dem gewünschten Umfang ab. 90 Minuten vor Ort. Den Wunschtermin bestätigen wir persönlich.",
-        chips: ["Start, Betrieb oder Signature", "Betreuung optional", "Umfang im Angebot"],
-        primary: { href: cta.href, label: "Website-Projekt besprechen" },
-        secondary: { href: "/referenzen/dachdecker-signature", label: "Demo ansehen" },
-      }}
+      related={stageThread(paths.auftritt).related}
+      next={stageThread(paths.auftritt).next}
       visual={
         <DemoLoop
           src="/demos/dach-loop.mp4"
@@ -86,13 +75,13 @@ export default function AuftrittPage() {
 
       <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
         Eine mögliche Gestaltung zeigt die{" "}
-        <Link href="/referenzen/dachdecker-signature" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+        <Link href={paths.dachdecker} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
           Website-Demo
         </Link>
         {" "}
         — Produktdemo, kein Echtbetrieb. Einen Bestellweg als Kundengeschichte
         zeigt das{" "}
-        <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+        <Link href={paths.feinkost} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
           Projekt Feinkost Kreta
         </Link>
         .
