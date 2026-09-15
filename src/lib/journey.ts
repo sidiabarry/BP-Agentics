@@ -351,6 +351,21 @@ const threads: Record<string, StageThread> = {
       secondary: { href: paths.leistungen, label: labels.leistungenAnsehen },
     },
   },
+  [paths.gewerke]: {
+    related: [
+      { href: paths.leistungen, label: labels.leistungen },
+      { href: paths.referenzen, label: labels.referenzen },
+      { href: paths.preise, label: labels.preise },
+      { href: paths.dachdecker, label: labels.dachdecker },
+      { href: chapter.werkstatt, label: labels.zurWerkstatt },
+    ],
+    next: {
+      title: "Welches Beispiel zu Ihrem Vorhaben passt, klären wir im Gespräch.",
+      body: "Anwendungsbeispiele, keine Referenzen. Welcher Weg passt, hängt von Ihrem Vorhaben und den vorhandenen Programmen ab.",
+      primary: { href: cta.href, label: cta.primary },
+      secondary: { href: paths.leistungen, label: labels.leistungenAnsehen },
+    },
+  },
   [paths.ueberMich]: {
     related: [
       { href: paths.passtDas, label: labels.passtDas },
