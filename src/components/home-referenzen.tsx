@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DemoLoop, PhoneDemo } from "@/components/demo-player";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
+import { ReviewsBand } from "@/components/reviews-band";
 import { cn } from "@/lib/utils";
 
 export function DemoPair({
@@ -94,6 +95,10 @@ export function HomeReferenzen() {
 
         <div className="mt-12">
           <DemoPair surface="cream" />
+        </div>
+
+        <div className="mt-16">
+          <ReviewsBand tone="cream" />
         </div>
       </div>
     </section>

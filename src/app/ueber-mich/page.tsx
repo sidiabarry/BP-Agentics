@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Process } from "@/components/process";
+import { ReviewsBand } from "@/components/reviews-band";
 import { StageCard, StageGrid } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { napLine, site } from "@/lib/site";
@@ -95,6 +96,9 @@ export default function UeberMichPage() {
           </p>
         </StageCard>
       </StageGrid>
+      <div className="mt-6">
+        <ReviewsBand tone="white" />
+      </div>
     </StagePage>
   );
 }
