@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Process } from "@/components/process";
 import { WhyTeaser } from "@/components/why-teaser";
-import { personLinks } from "@/lib/journey";
 import { cta } from "@/lib/offers";
 
 export function HomeStart() {
@@ -20,22 +19,13 @@ export function HomeStart() {
             oder weniger doppelte Büroarbeit: Im Erstgespräch prüfen wir, welcher
             Einstieg zu Ihrem Vorhaben passt.
           </p>
-          <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:flex-wrap">
+          <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Button
               asChild
               className="h-auto max-w-full whitespace-normal rounded-full bg-[#198BE8] px-7 py-3.5 text-center text-[1.05rem] text-white hover:bg-[#1576C4]"
             >
               <Link href={cta.href}>{cta.primary}</Link>
             </Button>
-            {personLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
-              >
-                {item.label}
-              </Link>
-            ))}
             <p className="text-[1.05rem] text-[#5C5F66]">
               90 Minuten vor Ort. Den Wunschtermin bestätigen wir persönlich.
             </p>

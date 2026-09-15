@@ -4,13 +4,13 @@ import { Process } from "@/components/process";
 import { SchnellCheck } from "@/components/schnell-check";
 import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
-import { paths, stageThread } from "@/lib/journey";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Orientierung: passt das Angebot zu Ihrem Betrieb",
   description:
     "Kurze Orientierung, ob Website, Nachrichten-Assistent oder Automatisierung zu Ihrem Betrieb passt. Den genauen Umfang klären wir im Gespräch.",
-  path: paths.passtDas,
+  path: "/passt-das",
 });
 
 export default function PasstDasPage() {
@@ -30,9 +30,20 @@ export default function PasstDasPage() {
           />
         </div>
       }
-      crumbs={[{ name: "Welcher Einstieg passt?", path: paths.passtDas }]}
-      related={stageThread(paths.passtDas).related}
-      next={stageThread(paths.passtDas).next}
+      crumbs={[{ name: "Welcher Einstieg passt?", path: "/passt-das" }]}
+      related={[
+        { href: "/leistungen", label: "Leistungen" },
+        { href: "/preise", label: "Preise" },
+        { href: "/ueber-mich", label: "Über mich" },
+        { href: "/termin", label: "Erstgespräch anfragen" },
+      ]}
+      next={{
+        title: "Die Richtung im Gespräch prüfen",
+        body: "Die passende Leistung richtet sich nach Ihrem Vorhaben, nicht nach der Teamgröße. Den verbindlichen Umfang halten wir im Angebot fest.",
+        chips: ["Eine Angabe reicht", "Keine Prüfung der Wirtschaftlichkeit", "90 Minuten vor Ort"],
+        primary: { href: cta.href, label: cta.primary },
+        secondary: { href: "/leistungen", label: "Leistungen ansehen" },
+      }}
       appendix={<Process />}
     >
       <SchnellCheck embedded />

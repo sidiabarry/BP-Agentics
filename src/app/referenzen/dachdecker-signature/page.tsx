@@ -5,13 +5,13 @@ import { StageCard, StageGrid } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { videoObject } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
-import { paths, stageThread } from "@/lib/journey";
+import { cta } from "@/lib/offers";
 
 export const metadata: Metadata = pageMetadata({
   title: "Website-Demo für einen Dachdeckerbetrieb",
   description:
     "Produktdemo, kein Echtbetrieb: eine mögliche Website für einen Dachdeckerbetrieb mit Bildern, Leistungsbeschreibung und klarem Anfrageweg.",
-  path: paths.dachdecker,
+  path: "/referenzen/dachdecker-signature",
 });
 
 export default function DachdeckerSignaturePage() {
@@ -21,8 +21,8 @@ export default function DachdeckerSignaturePage() {
       title="Bilder, Leistungen, Anfrageweg — in einem Auftritt."
       lead="Die Demo zeigt eine mögliche Präsentation von Dacharbeiten: mit Bildern, Leistungsbeschreibung und einem klaren Anfrageweg."
       crumbs={[
-        { name: "Arbeiten und Demos", path: paths.referenzen },
-        { name: "Dachdecker Signature", path: paths.dachdecker },
+        { name: "Arbeiten und Demos", path: "/referenzen" },
+        { name: "Dachdecker Signature", path: "/referenzen/dachdecker-signature" },
       ]}
       extraJsonLd={[
         videoObject({
@@ -35,8 +35,18 @@ export default function DachdeckerSignaturePage() {
           uploadDate: "2026-09-09",
         }),
       ]}
-      related={stageThread(paths.dachdecker).related}
-      next={stageThread(paths.dachdecker).next}
+      related={[
+        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
+        { href: "/gewerke#dachdecker", label: "Anwendungsbeispiel Dachdecker" },
+        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
+        { href: "/preise", label: "Preise" },
+      ]}
+      next={{
+        title: "Website-Projekt besprechen",
+        body: "Ob ein solcher Umfang sinnvoll ist, wird am konkreten Vorhaben entschieden. 90 Minuten vor Ort. Den Wunschtermin bestätigen wir persönlich.",
+        primary: { href: cta.href, label: "Website-Projekt besprechen" },
+        secondary: { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
+      }}
       visual={
         <DemoLoop
           src="/demos/dach-loop.mp4"
@@ -64,7 +74,7 @@ export default function DachdeckerSignaturePage() {
             sinnvoll ist, wird am konkreten Vorhaben entschieden.
           </p>
           <p className="mt-3">
-            <Link href={paths.termin} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+            <Link href={cta.href} className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
               Website-Projekt besprechen
             </Link>
           </p>
