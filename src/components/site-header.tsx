@@ -58,6 +58,7 @@ export function SiteHeader() {
 
   const expanded = !onHome || !heroState.inView;
   const desktopLinks = onHome ? homeExpandLinks : mainLinks;
+  const workshopHref = onHome ? "#werkstatt" : "/#werkstatt";
 
   const linkClass = (on: boolean) =>
     cn(
@@ -92,16 +93,25 @@ export function SiteHeader() {
               onMouseEnter={() => setDrop(true)}
               onMouseLeave={() => setDrop(false)}
             >
-              <button
-                type="button"
-                className={cn(linkClass(onHome && active === "leistungen"), "inline-flex items-center gap-1")}
-                aria-expanded={drop}
-                aria-haspopup="true"
-                onClick={() => setDrop((value) => !value)}
-              >
-                Leistungen
-                <ChevronDown className="size-3.5" />
-              </button>
+              <div className="inline-flex items-center gap-1">
+                <Link
+                  href={workshopHref}
+                  className={linkClass(onHome && active === "werkstatt")}
+                  onClick={() => setDrop(false)}
+                >
+                  Leistungen
+                </Link>
+                <button
+                  type="button"
+                  className={cn(linkClass(onHome && active === "werkstatt"), "inline-flex rounded-sm p-0.5")}
+                  aria-label="Leistungsmenü öffnen"
+                  aria-expanded={drop}
+                  aria-haspopup="true"
+                  onClick={() => setDrop((value) => !value)}
+                >
+                  <ChevronDown className="size-3.5" />
+                </button>
+              </div>
               {drop ? (
                 <div className="absolute top-full left-0 z-50 w-[22rem] pt-2">
                   <div className="rounded-2xl border border-black/8 bg-white p-2 shadow-xl">

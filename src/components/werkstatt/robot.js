@@ -15,7 +15,7 @@ export function createRobot(THREE, parent) {
   const eyeShine = new THREE.MeshBasicMaterial({ color: 0xe8fff5, toneMapped: false });
   const paperMat = new THREE.MeshStandardMaterial({ color: 0xf4ecd9, roughness: 0.92 });
   const ink = new THREE.MeshStandardMaterial({ color: 0x678c8b, roughness: 0.9 });
-  const green = new THREE.MeshStandardMaterial({ color: 0xaaffbe, roughness: 0.32, emissive: 0x49f296, emissiveIntensity: 1.1, toneMapped: false });
+  const signalBlue = new THREE.MeshStandardMaterial({ color: 0x9fd0f8, roughness: 0.32, emissive: 0x198be8, emissiveIntensity: 1.1, toneMapped: false });
   const geometryCache = new Map();
   const sphereGeometry = new THREE.SphereGeometry(1, 32, 24);
   const linkGeometry = new THREE.CylinderGeometry(1, 1, 1, 32);
@@ -112,7 +112,7 @@ export function createRobot(THREE, parent) {
     for (let k = 0; k < 2; k++) ball(0.012, yellow, side * (0.226 + k * 0.03), -0.107, 0.334, head);
   }
   box(0.13, 0.017, 0.17, 0.006, inset, 0, 0.312, -0.055, head);
-  const topSignal = ball(0.027, green, 0, 0.343, -0.055, head);
+  const topSignal = ball(0.027, signalBlue, 0, 0.343, -0.055, head);
 
   function makeArm(side) {
     const shoulder = new THREE.Vector3(side * 0.348, 0.815, -0.025);
@@ -173,7 +173,7 @@ export function createRobot(THREE, parent) {
     outgoing.rotation.x = -Math.PI / 2;
   }
   const activePaper = makePaper(group, true);
-  const completedSignal = box(0.095, 0.025, 0.032, 0.009, green, destination.x, 0.052, destination.z + 0.212);
+  const completedSignal = box(0.095, 0.025, 0.032, 0.009, signalBlue, destination.x, 0.052, destination.z + 0.212);
   const rightRest = new THREE.Vector3(0.43, 0.48, 0.27);
   const leftRest = new THREE.Vector3(-0.43, 0.48, 0.27);
   const rightWrist = new THREE.Vector3(), leftWrist = new THREE.Vector3();
@@ -253,7 +253,7 @@ export function createRobot(THREE, parent) {
     leftEye.scale.y = blink; rightEye.scale.y = blink;
     shineL.visible = shineR.visible = blink > 0.55;
     const success = smooth(5.5, 5.8, phase) * (1 - smooth(9, 9.8, phase));
-    green.emissiveIntensity = reduced ? .8 : 0.35 + success * .65;
+    signalBlue.emissiveIntensity = reduced ? .8 : 0.35 + success * .65;
     topSignal.scale.setScalar(0.027 * (1 + (reduced ? 0 : success * 0.08)));
     completedSignal.visible = true;
   }
