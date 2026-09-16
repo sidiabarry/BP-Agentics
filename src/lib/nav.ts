@@ -32,7 +32,7 @@ export const homeExpandLinks = [
 ] as const;
 
 export const mobileOverview = {
-  href: "/leistungen",
+  href: "/#werkstatt",
   label: "Leistungen im Überblick",
 } as const;
 

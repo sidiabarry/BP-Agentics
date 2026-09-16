@@ -258,12 +258,12 @@ function PackageCards({
               "transition-[border-color,box-shadow,background-color] duration-200 motion-reduce:transition-none",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-[#2F7D4A] bg-[#F4FBF6] shadow-[0_16px_36px_-20px_rgba(47,125,74,0.55)]"
+                ? "border-[#198BE8] bg-[#E8F4FC] shadow-[0_16px_36px_-20px_rgba(25,139,232,0.42)]"
                 : "border-black/10 hover:border-black/20",
             )}
           >
             {on ? (
-              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1 rounded-full bg-[#2F7D4A]" />
+              <span aria-hidden="true" className="absolute inset-y-3 left-0 w-1 rounded-full bg-[#198BE8]" />
             ) : null}
             {offer.badge ? (
               <span className="text-sm text-[#198BE8]">{offer.badge}</span>
@@ -274,7 +274,7 @@ function PackageCards({
                 aria-hidden="true"
                 className={cn(
                   "mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2",
-                  on ? "border-[#2F7D4A] bg-[#2F7D4A] text-white" : "border-black/20 bg-white",
+                  on ? "border-[#198BE8] bg-[#198BE8] text-white" : "border-black/20 bg-white",
                 )}
               >
                 {on ? (
@@ -331,17 +331,17 @@ function MobilePackageCards({
               "transition-[border-color,background-color,box-shadow] duration-200 motion-reduce:transition-none",
               "focus-visible:ring-2 focus-visible:ring-[#198BE8] focus-visible:ring-offset-2 focus-visible:outline-none",
               on
-                ? "border-[#2F7D4A] bg-[#F4FBF6] shadow-[0_18px_40px_-20px_rgba(47,125,74,0.45)]"
+                ? "border-[#198BE8] bg-[#E8F4FC] shadow-[0_18px_40px_-20px_rgba(25,139,232,0.38)]"
                 : "border-transparent",
             )}
           >
             {on ? (
-              <span aria-hidden="true" className="absolute inset-y-4 left-0 w-1.5 rounded-full bg-[#2F7D4A]" />
+              <span aria-hidden="true" className="absolute inset-y-4 left-0 w-1.5 rounded-full bg-[#198BE8]" />
             ) : null}
             <span className="flex items-start justify-between gap-3">
               <span>
                 {on ? (
-                  <span className="mb-1.5 inline-block rounded-full bg-[#2F7D4A] px-2.5 py-0.5 text-[0.78rem] font-semibold tracking-[0.04em] text-white uppercase">
+                  <span className="mb-1.5 inline-block rounded-full bg-[#198BE8] px-2.5 py-0.5 text-[0.78rem] font-semibold tracking-[0.04em] text-white uppercase">
                     Gewählt
                   </span>
                 ) : null}
@@ -353,7 +353,7 @@ function MobilePackageCards({
                 aria-hidden="true"
                 className={cn(
                   "mt-1 inline-flex size-7 shrink-0 items-center justify-center rounded-full border-2",
-                  on ? "border-[#2F7D4A] bg-[#2F7D4A] text-white" : "border-black/15 bg-white",
+                  on ? "border-[#198BE8] bg-[#198BE8] text-white" : "border-black/15 bg-white",
                 )}
               >
                 {on ? (
@@ -464,7 +464,7 @@ function DetailPanel({
                   aria-hidden="true"
                   className={cn(
                     "absolute top-2.5 left-0 size-4 rounded-full border-2 bg-white",
-                    on ? "border-[#2F7D4A]" : "border-black/25",
+                    on ? "border-[#198BE8]" : "border-black/25",
                   )}
                 />
                 <button
@@ -598,7 +598,7 @@ function CostCard({
 
       <Link
         href={offerInquiryHref(offer.id, careOn)}
-        className="mt-6 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#2F7D4A] px-5 text-center text-[1.15rem] font-semibold text-white shadow-[0_12px_24px_-12px_rgba(47,125,74,0.9)] transition-colors hover:bg-[#276840] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
+        className="mt-6 inline-flex min-h-13 w-full items-center justify-center rounded-full bg-[#198BE8] px-5 text-center text-[1.15rem] font-semibold text-white shadow-[0_12px_24px_-12px_rgba(25,139,232,0.72)] transition-colors hover:bg-[#1576C4] focus-visible:ring-2 focus-visible:ring-[#9FD0F8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#14161C] focus-visible:outline-none"
       >
         {offer.inquiryLabel}
       </Link>
@@ -643,7 +643,7 @@ function CareToggle({
             aria-hidden="true"
             className={cn(
               "relative h-7 w-12 rounded-full transition-colors duration-200 motion-reduce:transition-none",
-              checked ? "bg-[#2F7D4A]" : "bg-white/25",
+              checked ? "bg-[#198BE8]" : "bg-white/25",
             )}
           >
             <span
