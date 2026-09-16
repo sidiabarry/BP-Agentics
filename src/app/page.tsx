@@ -1,5 +1,5 @@
 import { HeroPortal } from "@/components/scroll/hero-portal";
-import { LeistungsMaschine } from "@/components/scroll/leistungs-maschine";
+import { WerkstattSection } from "@/components/werkstatt/werkstatt-section";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { LeistungenPreise } from "@/components/leistungen-preise";
@@ -32,7 +32,7 @@ export default function HomePage() {
         }}
       />
       <HeroPortal />
-      <LeistungsMaschine />
+      <WerkstattSection />
       <ProblemWall />
       <HomeReferenzen />
       <LeistungenPreise />
