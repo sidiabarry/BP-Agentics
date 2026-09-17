@@ -108,10 +108,11 @@ export function createWerkstattScene(
   // ---------------------------------------------------------------------
   // Renderer
   // ---------------------------------------------------------------------
+  const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
   let renderer: THREE.WebGLRenderer;
   try {
     renderer = new THREE.WebGLRenderer({
-      antialias: !lite || window.devicePixelRatio < 2,
+      antialias: pixelRatio() < 2,
       alpha: false,
       powerPreference: lite ? "default" : "high-performance",
     });
@@ -120,7 +121,7 @@ export function createWerkstattScene(
     return null;
   }
   const size = () => ({ w: Math.max(1, container.clientWidth), h: Math.max(1, container.clientHeight) });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 1.75));
+  renderer.setPixelRatio(pixelRatio());
   renderer.setSize(size().w, size().h, false);
   renderer.domElement.style.width = "100%";
   renderer.domElement.style.height = "100%";
@@ -288,6 +289,9 @@ export function createWerkstattScene(
   }
   const screenTex = new THREE.CanvasTexture(screenCanvas);
   screenTex.colorSpace = THREE.SRGBColorSpace;
+  screenTex.generateMipmaps = false;
+  screenTex.minFilter = THREE.LinearFilter;
+  screenTex.magFilter = THREE.LinearFilter;
   const screenMesh = meshAt(
     new THREE.PlaneGeometry(1.7, 1.15),
     new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }),
@@ -402,6 +406,9 @@ export function createWerkstattScene(
   cc.scale(1.5, 1.5);
   const chatTex = new THREE.CanvasTexture(chatCanvas);
   chatTex.colorSpace = THREE.SRGBColorSpace;
+  chatTex.generateMipmaps = false;
+  chatTex.minFilter = THREE.LinearFilter;
+  chatTex.magFilter = THREE.LinearFilter;
   chatTex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const chatMesh = meshAt(
     new THREE.PlaneGeometry(1.23, 1.76),
@@ -836,6 +843,7 @@ export function createWerkstattScene(
   // ---------------------------------------------------------------------
   function resize() {
     const { w, h } = size();
+    renderer.setPixelRatio(pixelRatio());
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
