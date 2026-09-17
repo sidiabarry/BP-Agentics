@@ -33,6 +33,22 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/apple-icon",
+        destination: "/apple-icon.png",
+      },
+      {
+        source: "/apple-touch-icon.png",
+        destination: "/apple-icon.png",
+      },
+      {
+        source: "/apple-touch-icon",
+        destination: "/apple-icon.png",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

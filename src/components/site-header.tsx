@@ -16,25 +16,6 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
   const [active, setActive] = useState<string | null>(null);
-  const [heroState, setHeroState] = useState({ path: onHome ? "/" : pathname, inView: true });
-  if (heroState.path !== (onHome ? "/" : pathname)) {
-    setHeroState({ path: onHome ? "/" : pathname, inView: true });
-  }
-
-  useEffect(() => {
-    if (!onHome) return;
-    const hero = document.getElementById("einstieg");
-    if (!hero) return;
-    const headerHeight = Math.ceil(
-      document.querySelector("header")?.getBoundingClientRect().height ?? 72,
-    );
-    const observer = new IntersectionObserver(
-      ([entry]) => setHeroState({ path: "/", inView: entry.isIntersecting }),
-      { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` },
-    );
-    observer.observe(hero);
-    return () => observer.disconnect();
-  }, [onHome]);
 
   useEffect(() => {
     if (!onHome) return;
@@ -56,7 +37,6 @@ export function SiteHeader() {
     return () => observer.disconnect();
   }, [onHome]);
 
-  const expanded = !onHome || !heroState.inView;
   const desktopLinks = onHome ? homeExpandLinks : mainLinks;
 
   const linkClass = (on: boolean) =>
@@ -71,71 +51,68 @@ export function SiteHeader() {
         <Link href="/" aria-label="BP Agentics Startseite">
           <Wordmark />
         </Link>
-        <div
-          className={cn(
-            "hidden overflow-hidden lg:block",
-            "transition-[max-width] duration-200 ease-out motion-reduce:transition-none",
-            expanded ? "max-w-[48rem]" : "max-w-0",
-          )}
-          aria-hidden={!expanded}
-          inert={!expanded || undefined}
+        <nav
+          className="hidden items-center gap-6 pr-1 lg:flex"
+          aria-label="Hauptnavigation"
         >
-          <nav
-            className={cn(
-              "flex items-center gap-6 pr-1 whitespace-nowrap transition-[opacity,translate] duration-200 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none",
-              expanded ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0",
-            )}
-            aria-label="Hauptnavigation"
+          <div
+            className="relative"
+            onMouseEnter={() => setDrop(true)}
+            onMouseLeave={() => setDrop(false)}
           >
-            <div
-              className="relative"
-              onMouseEnter={() => setDrop(true)}
-              onMouseLeave={() => setDrop(false)}
+            <button
+              type="button"
+              className={cn(
+                linkClass(onHome && active === "leistungen"),
+                "inline-flex items-center gap-1 whitespace-nowrap",
+              )}
+              aria-expanded={drop}
+              aria-haspopup="true"
+              onClick={() => setDrop((value) => !value)}
             >
-              <button
-                type="button"
-                className={cn(linkClass(onHome && active === "leistungen"), "inline-flex items-center gap-1")}
-                aria-expanded={drop}
-                aria-haspopup="true"
-                onClick={() => setDrop((value) => !value)}
-              >
-                Leistungen
-                <ChevronDown className="size-3.5" />
-              </button>
-              {drop ? (
-                <div className="absolute top-full left-0 z-50 w-[22rem] pt-2">
-                  <div className="rounded-2xl border border-black/8 bg-white p-2 shadow-xl">
-                    {leistungItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="block rounded-xl px-3 py-2.5 hover:bg-[#E8F4FC]"
-                      >
-                        <span className="block font-medium">{item.title}</span>
-                        <span className="block text-sm text-[#5C5F66]">{item.sub}</span>
-                      </Link>
-                    ))}
-                  </div>
+              Leistungen
+              <ChevronDown className="size-3.5" />
+            </button>
+            {drop ? (
+              <div className="absolute top-full left-0 z-50 pt-2">
+                <div className="w-max max-w-[min(32rem,calc(100vw-2.5rem))] rounded-2xl border border-black/8 bg-white p-1.5 shadow-xl">
+                  {leistungItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block rounded-xl px-3.5 py-2.5 hover:bg-[#E8F4FC]"
+                    >
+                      <span className="block text-[0.95rem] leading-5 font-medium whitespace-nowrap">
+                        {item.title}
+                      </span>
+                      <span className="mt-1 block text-[0.8125rem] leading-5 text-[#5C5F66] whitespace-nowrap">
+                        {item.sub}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
-              ) : null}
-            </div>
-            {desktopLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={linkClass(onHome && item.spy ? active === item.spy : pathname.startsWith(item.href))}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Button
-              asChild
-              className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
+              </div>
+            ) : null}
+          </div>
+          {desktopLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                linkClass(onHome && item.spy ? active === item.spy : pathname.startsWith(item.href)),
+                "whitespace-nowrap",
+              )}
             >
-              <Link href="/termin">Erstgespräch anfragen</Link>
-            </Button>
-          </nav>
-        </div>
+              {item.label}
+            </Link>
+          ))}
+          <Button
+            asChild
+            className="h-11 rounded-full bg-[#198BE8] px-5 text-base text-white hover:bg-[#1576C4]"
+          >
+            <Link href="/termin">Erstgespräch anfragen</Link>
+          </Button>
+        </nav>
         <MobileNav open={open} onOpenChange={setOpen} />
       </div>
     </header>

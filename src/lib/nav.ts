@@ -19,15 +19,15 @@ export const leistungItems = [
 export const mainLinks = [
   { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "/preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
+  { href: "/über-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
-/** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
+/** Desktop-Navigation der Startseite (Abschnitte per Anker, Rest als Seiten). */
 export const homeExpandLinks = [
   { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "#preise", label: "Preise", spy: "preise" },
-  { href: "/ueber-mich", label: "Über mich", spy: null },
+  { href: "/über-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
@@ -45,10 +45,10 @@ export const mobileInfo = [
   { href: "/preise", label: "Preise" },
   { href: "/foerderung/mid-digitale-prozesse", label: "Förderung" },
   { href: "/passt-das", label: "Welcher Einstieg passt?" },
-  { href: "/ueber-mich", label: "Über mich" },
+  { href: "/über-mich", label: "Über mich" },
   { href: "/kontakt", label: "Kontakt" },
 ] as const;
 
 export function gewerkHref(slug: string) {
-  return `/gewerke#${slug}`;
+  return `/${slug}`;
 }
