@@ -119,7 +119,7 @@ export function SiteFooter() {
               Alle Gewerke
             </Link>
             {industryList.map((item) => (
-              <Link key={item.slug} href={gewerkHref(item.slug)} scroll={false} className="hover:text-white">
+              <Link key={item.slug} href={gewerkHref(item.slug)} className="hover:text-white">
                 {item.title}
               </Link>
             ))}

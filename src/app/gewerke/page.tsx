@@ -79,13 +79,13 @@ export default function GewerkePage() {
           className="mt-8 flex flex-wrap gap-2"
         >
           {industryList.map((item) => (
-            <a
+            <Link
               key={item.slug}
               href={gewerkHref(item.slug)}
               className="rounded-full border border-black/12 bg-white px-4 py-2 text-[0.95rem] text-[#14161C] transition hover:border-[#198BE8] hover:text-[#198BE8]"
             >
               {item.title}
-            </a>
+            </Link>
           ))}
         </nav>
 
