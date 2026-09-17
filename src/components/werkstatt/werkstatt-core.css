@@ -1,0 +1,106 @@
+.ws {
+  --ws-paper: #f3efe6;
+  --ws-ink: #14161c;
+  --ws-night: #0b1a27;
+  --ws-portal: var(--hero-exit, #82bbf0);
+  --ws-mist: #dbeaf6;
+  --ws-action: #198be8;
+  --ws-action-deep: #0b5ea8;
+  --ws-action-hover: #1576c4;
+  --ws-gutter: max(5vw, 1.5rem);
+  position: relative;
+  overflow-x: clip;
+  padding: 6rem 0 9rem;
+  color: #eaf3fa;
+  background:
+    linear-gradient(var(--ws-portal) 0, var(--ws-night) 26svh),
+    var(--ws-night);
+}
+.ws::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7rem;
+  pointer-events: none;
+  background: linear-gradient(transparent, var(--ws-paper));
+}
+.ws__head {
+  max-width: 46ch;
+  margin: 0 0 2rem;
+  padding: 0 var(--ws-gutter);
+  box-sizing: content-box;
+}
+.ws__head h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-heading, var(--font-sora)), sans-serif;
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.ws__head p {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--ws-mist);
+}
+.ws__stage {
+  position: relative;
+  height: clamp(560px, 78svh, 780px);
+  overflow: hidden;
+  background: var(--ws-night);
+  color: var(--ws-paper);
+  isolation: isolate;
+}
+.ws__stage::before,
+.ws__stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 4.5rem;
+  pointer-events: none;
+}
+.ws__stage::before {
+  top: 0;
+  background: linear-gradient(var(--ws-night), transparent);
+}
+.ws__stage::after {
+  bottom: 0;
+  background: linear-gradient(transparent, var(--ws-night));
+}
+.ws__poster,
+.ws__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.ws__poster img {
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+}
+.ws[data-phase="ready"] .ws__poster img {
+  opacity: 0;
+}
+.ws__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  touch-action: pan-y;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.ws[data-phase="ready"] .ws__canvas {
+  opacity: 1;
+}
+.ws__canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
