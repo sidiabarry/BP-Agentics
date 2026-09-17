@@ -38,33 +38,16 @@ export function LogoMark({ className = "h-10 w-10" }: { className?: string }) {
   );
 }
 
-export function Wordmark({
-  invert = false,
-  compact = false,
-}: {
-  invert?: boolean;
-  compact?: boolean;
-}) {
+export function Wordmark({ invert = false }: { invert?: boolean }) {
   return (
     <span className="flex items-center gap-3">
       <LogoMark className="h-9 w-12 shrink-0" />
-      <span className="leading-tight">
-        <span
-          className={`block text-[0.72rem] font-semibold tracking-[0.18em] ${
-            invert ? "text-white" : "text-[#1A365D]"
-          }`}
-        >
-          BP AGENTICS
-        </span>
-        {!compact ? (
-          <span
-            className={`block text-[0.62rem] tracking-[0.22em] uppercase ${
-              invert ? "text-white/70" : "text-[#6B7280]"
-            }`}
-          >
-            Hagen
-          </span>
-        ) : null}
+      <span
+        className={`text-[0.72rem] font-semibold tracking-[0.18em] ${
+          invert ? "text-white" : "text-[#1A365D]"
+        }`}
+      >
+        BP AGENTICS
       </span>
     </span>
   );

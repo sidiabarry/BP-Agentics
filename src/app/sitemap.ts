@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { industryList } from "@/lib/content";
 import { foerderung } from "@/lib/foerderung";
 import { site } from "@/lib/site";
 
@@ -38,6 +39,12 @@ const staticRoutes: {
   { path: "/termin", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
   { path: "/impressum", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
   { path: "/datenschutz", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
+  ...industryList.map((item) => ({
+    path: `/${item.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+    lastModified: contentUpdated,
+  })),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

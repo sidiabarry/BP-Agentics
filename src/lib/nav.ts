@@ -23,7 +23,7 @@ export const mainLinks = [
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
-/** Desktop-Erweiterung der Startseiten-Kopfzeile, sobald der Hero den Viewport verlässt. */
+/** Desktop-Navigation der Startseite (Abschnitte per Anker, Rest als Seiten). */
 export const homeExpandLinks = [
   { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "#preise", label: "Preise", spy: "preise" },
@@ -50,5 +50,5 @@ export const mobileInfo = [
 ] as const;
 
 export function gewerkHref(slug: string) {
-  return `/gewerke#${slug}`;
+  return `/${slug}`;
 }
