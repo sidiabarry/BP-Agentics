@@ -26,7 +26,7 @@ export const mainLinks = [
 /** Desktop-Navigation der Startseite (Abschnitte per Anker, Rest als Seiten). */
 export const homeExpandLinks = [
   { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
-  { href: "#preise", label: "Preise", spy: "preise" },
+  { href: "/preise", label: "Preise", spy: "preise" },
   { href: "/ueber-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;

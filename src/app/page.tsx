@@ -2,7 +2,6 @@ import { HeroPortal } from "@/components/scroll/hero-portal";
 import { WerkstattSection } from "@/components/werkstatt/werkstatt-section";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
-import { LeistungenPreise } from "@/components/leistungen-preise";
 import { HomeStart } from "@/components/home-start";
 import { Faq } from "@/components/faq";
 import { JsonLd } from "@/components/json-ld";
@@ -35,7 +34,6 @@ export default function HomePage() {
       <WerkstattSection />
       <ProblemWall />
       <HomeReferenzen />
-      <LeistungenPreise />
       <HomeStart />
       <Faq />
     </main>
