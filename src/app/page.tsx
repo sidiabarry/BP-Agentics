@@ -1,5 +1,5 @@
 import { HeroPortal } from "@/components/scroll/hero-portal";
-import { WerkstattSection } from "@/components/werkstatt/werkstatt-section";
+import { WerkstattSection } from "@/components/werkstatt/werkstatt-with-sharp";
 import { ProblemWall } from "@/components/problem-wall";
 import { HomeReferenzen } from "@/components/home-referenzen";
 import { HomeStart } from "@/components/home-start";
