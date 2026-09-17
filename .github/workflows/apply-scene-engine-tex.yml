@@ -1,0 +1,25 @@
+name: apply-scene-engine-tex
+on:
+  push:
+    branches: [cursor/werkstatt-tex-325a]
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/apply-werkstatt-tex.py
+      - name: Commit patch and drop helper files
+        run: |
+          rm -f scripts/apply-werkstatt-tex.py .github/workflows/apply-scene-engine-tex.yml
+          git config user.name sidiabarry
+          git config user.email sidiabarry@gmail.com
+          git add src/components/werkstatt/scene-engine.ts
+          git add -u scripts/apply-werkstatt-tex.py .github/workflows/apply-scene-engine-tex.yml
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "Sharpen Werkstatt canvas textures and pixel ratio on phones"
+          git push
