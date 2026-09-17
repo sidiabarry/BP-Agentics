@@ -74,8 +74,10 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
               onClick={close}
               className="rounded-lg px-2 py-2.5"
             >
-              <span className="block">{item.title}</span>
-              <span className="block text-sm text-[#5C5F66]">{item.sub}</span>
+              <span className="block leading-5 font-medium">{item.title}</span>
+              <span className="mt-1 block text-sm leading-5 text-[#5C5F66] text-pretty">
+                {item.sub}
+              </span>
             </Link>
           ))}
 
@@ -116,7 +118,6 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
                     <Link
                       key={item.slug}
                       href={gewerkHref(item.slug)}
-                      scroll={false}
                       onClick={close}
                       className="rounded-lg px-2 py-2.5 text-lg"
                     >

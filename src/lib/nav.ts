@@ -19,7 +19,7 @@ export const leistungItems = [
 export const mainLinks = [
   { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "/preise", label: "Preise", spy: "preise" },
-  { href: "/über-mich", label: "Über mich", spy: null },
+  { href: "/ueber-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
@@ -27,7 +27,7 @@ export const mainLinks = [
 export const homeExpandLinks = [
   { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "#preise", label: "Preise", spy: "preise" },
-  { href: "/über-mich", label: "Über mich", spy: null },
+  { href: "/ueber-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },
 ] as const;
 
@@ -45,7 +45,7 @@ export const mobileInfo = [
   { href: "/preise", label: "Preise" },
   { href: "/foerderung/mid-digitale-prozesse", label: "Förderung" },
   { href: "/passt-das", label: "Welcher Einstieg passt?" },
-  { href: "/über-mich", label: "Über mich" },
+  { href: "/ueber-mich", label: "Über mich" },
   { href: "/kontakt", label: "Kontakt" },
 ] as const;
 
