@@ -19,9 +19,18 @@
   --ws-action-deep: #0b5ea8;
   --ws-action-hover: #1576c4;
   --ws-gutter: max(5vw, 1.5rem);
+  --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
+  --ws-pad-top: 1.25rem;
+  --ws-pad-bottom: 9rem;
+  --ws-gap: 2rem;
+  --ws-head-block: 10rem;
+  --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-head-block) + var(--ws-gap));
   position: relative;
+  display: flex;
+  flex-direction: column;
   overflow-x: clip;
-  padding: 6rem 0 9rem;
+  scroll-margin-top: var(--ws-header);
+  padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
   background:
     linear-gradient(var(--ws-portal) 0, var(--ws-night) 26svh),
@@ -43,10 +52,14 @@
 /* --- Kopf ----------------------------------------------------------------- */
 
 .ws__head {
-  max-width: 46ch;
-  margin: 0 0 2rem;
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  max-width: 58ch;
+  margin: 0 0 var(--ws-gap);
   padding: 0 var(--ws-gutter);
   box-sizing: content-box;
+  overflow: visible;
 }
 
 .ws__head h2 {
@@ -54,8 +67,9 @@
   font-family: var(--font-heading, var(--font-sora)), sans-serif;
   font-size: clamp(1.8rem, 3.4vw, 3rem);
   font-weight: 600;
-  line-height: 1.02;
+  line-height: 1.15;
   letter-spacing: -0.03em;
+  overflow: visible;
   color: #fff;
 }
 
@@ -71,7 +85,9 @@
 /* Randlos: die Bühne hat dieselbe Tinte wie die Sektion und läuft oben und unten weich aus. */
 .ws__stage {
   position: relative;
-  height: clamp(560px, 78svh, 780px);
+  flex: 0 1 auto;
+  height: min(64svh, calc(100svh - var(--ws-chrome)), 720px);
+  min-height: 320px;
   overflow: hidden;
   background: var(--ws-night);
   color: var(--ws-paper);
@@ -641,11 +657,11 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 
 @media (max-width: 799px) {
   .ws {
-    padding: 4.5rem 0 7.5rem;
-  }
-
-  .ws__head {
-    margin-bottom: 1.25rem;
+    --ws-header: calc(4.5rem + env(safe-area-inset-top, 0px));
+    --ws-pad-top: 0.85rem;
+    --ws-pad-bottom: 7.5rem;
+    --ws-gap: 1.25rem;
+    --ws-head-block: 9.25rem;
   }
 
   .ws__head p {
@@ -653,8 +669,9 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__stage {
-    /* Passt vollständig unter die Kopfzeile. */
-    height: clamp(500px, calc(100svh - 5.5rem), 760px);
+    /* Kopf + Bühne im ersten Viewport: Header und Copy in --ws-chrome. */
+    height: min(52svh, calc(100svh - var(--ws-chrome)));
+    min-height: 300px;
   }
 
   .ws__stage::before,
