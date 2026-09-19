@@ -11,7 +11,6 @@ import {
   affiliateFaqs,
   affiliateHero,
   affiliatePath,
-  affiliateRelated,
 } from "@/lib/affiliate";
 import { breadcrumbList, faqPage, serviceOffer, webPageNode } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
@@ -33,7 +32,6 @@ const related = [
   { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
   { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
   { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-  affiliateRelated,
   { href: "/preise", label: "Preise" },
 ];
 
