@@ -16,23 +16,23 @@ export const affiliateHero = {
 export const affiliateSteps = [
   {
     title: "Setup",
-    body: "Programm, Feeds, Konditionen. Nur was Vertrag und Netzwerk hergeben.",
+    body: "Zuerst die Fakten. Programm, Feeds, Konditionen stehen schriftlich — so weit Vertrag und ADCELL das hergeben.",
   },
   {
     title: "Tracking",
-    body: "Shopify, WooCommerce oder GTM. Eine Quelle, die sich prüfen lässt.",
+    body: "Eine Spur, die sich prüfen lässt. Shopify, WooCommerce oder GTM. Nicht drei Wahrheiten.",
   },
   {
     title: "Publisher",
-    body: "Qualität statt Masse. Wer wirbt, ist ausgewählt.",
+    body: "Ausgewählt, nicht eingesammelt. Wer wirbt, passt zum Sortiment.",
   },
   {
     title: "Reporting",
-    body: "Zahlen aus ADCELL, nicht aus einer Folie.",
+    body: "Dieselbe Wahrheit wie im Netzwerk. Zahlen aus ADCELL, ohne extra Folie.",
   },
   {
     title: "Vergütung",
-    body: "1–2 % der bestätigten Publisher-Provision. Rechnung außerhalb des Netzwerks, kein In-Network-Override.",
+    body: "1–2 % der bestätigten Publisher-Provision. Rechnung außerhalb des Netzwerks. Kein In-Network-Override.",
   },
 ] as const;
 
