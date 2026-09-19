@@ -1,0 +1,136 @@
+/* Affiliate-Leistung: Pin-Rollup + einmaliges Case-Settle.
+   Choreografie hängt an [data-scroll-ready]. Ohne JS, bei
+   prefers-reduced-motion oder kurzem Viewport: Stapel, alles lesbar. */
+
+.affiliate-rollup {
+  --header-offset: 4.5rem;
+}
+
+.affiliate-rollup__pin {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.affiliate-rollup__steps {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.affiliate-rollup__step {
+  border-radius: 1.4rem;
+  background: #14161c;
+  color: #f3efe6;
+  padding: 1.15rem 1.25rem;
+}
+
+.affiliate-rollup__index {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fd0f8;
+}
+
+.affiliate-rollup__ticks {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.affiliate-rollup__ticks span {
+  height: 2px;
+  flex: 1;
+  border-radius: 999px;
+  background: color-mix(in srgb, #198be8 28%, transparent);
+}
+
+.affiliate-rollup[data-scroll-ready] {
+  height: 320svh;
+}
+
+.affiliate-rollup[data-scroll-ready] .affiliate-rollup__pin {
+  position: sticky;
+  top: var(--header-offset);
+  height: calc(100svh - var(--header-offset) - 1.5rem);
+  justify-content: center;
+}
+
+.affiliate-rollup[data-scroll-ready] .affiliate-rollup__steps {
+  position: relative;
+  display: block;
+  min-height: 13.5rem;
+}
+
+.affiliate-rollup[data-scroll-ready] .affiliate-rollup__step {
+  position: absolute;
+  inset: 0;
+  opacity: max(0.08, var(--s, 0));
+  transform: translate3d(0, calc((1 - var(--s, 0)) * 14px), 0);
+}
+
+.affiliate-rollup[data-scroll-ready] .affiliate-rollup__ticks span {
+  background: color-mix(in srgb, #198be8 calc(28% + var(--s, 0) * 72%), transparent);
+}
+
+.affiliate-case__status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  border-radius: 999px;
+  background: #198be8;
+  color: #fff;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.affiliate-case[data-settled][data-motion="on"] .affiliate-case__status {
+  animation: affiliate-settle 0.7s ease forwards;
+}
+
+@keyframes affiliate-settle {
+  from {
+    opacity: 0.45;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .affiliate-rollup {
+    --header-offset: 4.15rem;
+  }
+
+  .affiliate-rollup[data-scroll-ready] .affiliate-rollup__steps {
+    min-height: 15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .affiliate-rollup[data-scroll-ready] {
+    height: auto;
+  }
+
+  .affiliate-rollup[data-scroll-ready] .affiliate-rollup__pin {
+    position: static;
+    height: auto;
+  }
+
+  .affiliate-rollup[data-scroll-ready] .affiliate-rollup__steps {
+    display: grid;
+    min-height: 0;
+  }
+
+  .affiliate-rollup[data-scroll-ready] .affiliate-rollup__step {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .affiliate-case[data-settled][data-motion="on"] .affiliate-case__status {
+    animation: none;
+  }
+}
