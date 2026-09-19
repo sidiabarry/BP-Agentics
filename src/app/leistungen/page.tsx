@@ -5,6 +5,7 @@ import { DemoPair } from "@/components/home-referenzen";
 import { Process } from "@/components/process";
 import { StagePage } from "@/components/stage-page";
 import { LevelCards } from "@/components/three-levels";
+import { affiliateHero, affiliatePath, affiliateRelated } from "@/lib/affiliate";
 import { pageMetadata } from "@/lib/seo";
 import { cta } from "@/lib/offers";
 
@@ -37,6 +38,7 @@ export default function LeistungenPage() {
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
         { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+        affiliateRelated,
         { href: "/preise", label: "Preise" },
         { href: "/referenzen", label: "Arbeiten und Demos" },
       ]}
@@ -68,6 +70,25 @@ export default function LeistungenPage() {
     >
       <h2 className="sr-only">Drei Leistungszugänge</h2>
       <LevelCards />
+      <aside className="mt-10 rounded-[1.6rem] bg-white p-6 md:p-8">
+        <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
+          {affiliateHero.kicker}
+        </p>
+        <h2 className="mt-3 max-w-[20ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-4xl">
+          {affiliateHero.title}
+        </h2>
+        <p className="mt-4 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
+          {affiliateHero.lead}
+        </p>
+        <p className="mt-5">
+          <Link
+            href={affiliatePath}
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            {affiliateRelated.label}
+          </Link>
+        </p>
+      </aside>
       <p className="mt-8 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
         Einrichtung und Betreuung stehen auf der{" "}
         <Link href="/preise" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
