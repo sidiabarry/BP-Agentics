@@ -17,6 +17,7 @@ const staticRoutes: {
   { path: "/leistungen/auftritt", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
   { path: "/leistungen/annahme", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
   { path: "/leistungen/ablaeufe", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
+  { path: "/leistungen/affiliate", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
   { path: "/passt-das", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
   { path: "/gewerke", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
   { path: "/ueber-mich", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
