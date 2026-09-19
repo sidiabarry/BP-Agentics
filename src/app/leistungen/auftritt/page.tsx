@@ -50,6 +50,7 @@ export default function AuftrittPage() {
       related={[
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
         { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+        { href: "/leistungen/affiliate", label: "Affiliate-Programme" },
         { href: "/referenzen/dachdecker-signature", label: "Website-Demo ansehen" },
         { href: "/preise", label: "Preise" },
       ]}
