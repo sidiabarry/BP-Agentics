@@ -10,51 +10,51 @@ export const affiliateHero = {
   kicker: "Affiliate-Programme",
   title: "Sie zahlen, wenn Publisher verkaufen.",
   lead:
-    "Wir richten Ihr Merchant-Programm auf ADCELL ein. Feeds, Tracking, Publisher, Reporting. Unsere Vergütung ist ein Anteil an der bestätigten Provision. Das Netzwerk bleibt das Netzwerk.",
+    "Wir setzen ADCELL auf. Wir verdienen nur mit, wenn die Provision wirklich bestätigt ist. Das Netzwerk bleibt ADCELL.",
 } as const;
 
 export const affiliateSteps = [
   {
     title: "Setup",
-    body: "Zuerst die Fakten. Programm, Feeds, Konditionen stehen schriftlich — so weit Vertrag und ADCELL das hergeben.",
+    body: "Wir bauen Ihr Partnerprogramm bei ADCELL (Angebote, Feeds, Konditionen, Werbemittel). Ohne Programm können Publisher nichts bewerben. Ergebnis: ein echtes Programm, keine Idee.",
   },
   {
     title: "Tracking",
-    body: "Eine Spur, die sich prüfen lässt. Shopify, WooCommerce oder GTM. Nicht drei Wahrheiten.",
+    body: "Shop und ADCELL werden verbunden (Shopify / Woo / GTM), damit jeder Verkauf dem richtigen Publisher gehört. Lügt Tracking, lügt Geld. Ergebnis: Zahlen, denen alle vertrauen.",
   },
   {
     title: "Publisher",
-    body: "Ausgewählt, nicht eingesammelt. Wer wirbt, passt zum Sortiment.",
+    body: "Blogs, Coupons, Creator bewerben Ihre Produkte mit Ihren Links. Sie zahlen nicht für leere Klicks — Sie zahlen bei Verkauf. Ergebnis: Reichweite unter Ihren Regeln.",
   },
   {
     title: "Reporting",
-    body: "Dieselbe Wahrheit wie im Netzwerk. Zahlen aus ADCELL, ohne extra Folie.",
+    body: "Was läuft, was bricht, wer performt, wo Ausreißer bei Auszahlungen. Blindflug vermeiden. Ergebnis: kurzer Status + klarer nächster Schritt.",
   },
   {
     title: "Vergütung",
-    body: "1–2 % der bestätigten Publisher-Provision. Rechnung außerhalb des Netzwerks. Kein In-Network-Override.",
+    body: "Publisher-Provision läuft über ADCELL. Wir rechnen außerhalb ab: 1–2 % der bestätigten Publisher-Provision. Kein In-Network-Override. Ergebnis: Sie zahlen Erfolg, nicht Hoffnung.",
   },
 ] as const;
 
 export const affiliatePay = {
   title: "Sie zahlen Erfolg, nicht Hoffnung.",
   body:
-    "ADCELL bleibt das Netzwerk. Dessen Provision und AGB gelten weiter — „keine Gebühren“ heißt nicht „keine Netzwerkprovision“. Merchant oft mindestens 500 € Transaktionsguthaben (AGB). Offizieller Agentur-Account von Firstlead GmbH / adcell.de ist kostenlos (Multi-Kunden, Reporting). Unsere Betreuung läuft per Servicevertrag: 1–2 % der bestätigten Publisher-Provision, per Rechnung.",
+    "ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“. Oft mind. 500 € Transaktionsguthaben (AGB). 1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
 } as const;
 
 /** Nur Auszüge aus affiliatePay.body — keine neuen Zahlen. */
 export const affiliatePayFacts = [
   {
     label: "Netzwerk",
-    text: "ADCELL bleibt das Netzwerk. Dessen Provision und AGB gelten weiter.",
+    text: "ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“.",
   },
   {
     label: "Guthaben",
-    text: "Merchant oft mindestens 500 € Transaktionsguthaben (AGB).",
+    text: "oft mind. 500 € Transaktionsguthaben (AGB).",
   },
   {
     label: "Beteiligung",
-    text: "1–2 % der bestätigten Publisher-Provision, per Rechnung.",
+    text: "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
   },
 ] as const;
 
