@@ -20,7 +20,7 @@ export const affiliateSteps = [
   },
   {
     title: "Tracking",
-    body: "Shop und ADCELL werden verbunden (Shopify / Woo / GTM), damit jeder Verkauf dem richtigen Publisher gehört. Lügt Tracking, lügt Geld. Ergebnis: Zahlen, denen alle vertrauen.",
+    body: "Shop und ADCELL werden verbunden (Shopify / Woo / GTM), damit jeder Verkauf dem richtigen Publisher gehört. Stimmt das Tracking nicht, stimmen die Zahlen nicht. Ergebnis: Zahlen, denen alle vertrauen.",
   },
   {
     title: "Publisher",
@@ -39,11 +39,15 @@ export const affiliateSteps = [
 export const affiliatePay = {
   title: "Sie zahlen Erfolg, nicht Hoffnung.",
   body:
-    "ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“. Oft mind. 500 € Transaktionsguthaben (AGB). 1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
+    "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos. ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“. Oft mind. 500 € Transaktionsguthaben (AGB).",
 } as const;
 
 /** Nur Auszüge aus affiliatePay.body — keine neuen Zahlen. */
 export const affiliatePayFacts = [
+  {
+    label: "Beteiligung",
+    text: "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
+  },
   {
     label: "Netzwerk",
     text: "ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“.",
@@ -51,10 +55,6 @@ export const affiliatePayFacts = [
   {
     label: "Guthaben",
     text: "oft mind. 500 € Transaktionsguthaben (AGB).",
-  },
-  {
-    label: "Beteiligung",
-    text: "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
   },
 ] as const;
 
