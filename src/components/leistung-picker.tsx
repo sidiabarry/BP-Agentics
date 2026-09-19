@@ -2,10 +2,14 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { AffiliatePreview } from "@/components/affiliate/affiliate-preview";
+import { affiliatePicker } from "@/lib/affiliate";
 import { levels } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-type LevelId = (typeof levels)[number]["id"];
+type PickerId = (typeof levels)[number]["id"] | typeof affiliatePicker.id;
+
+const pickerItems = [...levels, affiliatePicker] as const;
 
 function WebsiteMini() {
   return (
@@ -103,27 +107,28 @@ function LedgerMini() {
   );
 }
 
-const previews: Record<LevelId, { kicker: string; node: ReactNode }> = {
+const previews: Record<PickerId, { kicker: string; node: ReactNode }> = {
   auftritt: { kicker: "Website · Beispiel", node: <WebsiteMini /> },
   annahme: { kicker: "WhatsApp · Beispiel", node: <ChatMini /> },
   ablaeufe: { kicker: "Büro · Beispiel", node: <LedgerMini /> },
+  affiliate: { kicker: "Affiliate · Rahmen", node: <AffiliatePreview /> },
 };
 
 export function LeistungPicker() {
-  const [active, setActive] = useState<LevelId>(levels[0].id);
-  const current = levels.find((level) => level.id === active) ?? levels[0];
+  const [active, setActive] = useState<PickerId>(pickerItems[0].id);
+  const current = pickerItems.find((item) => item.id === active) ?? pickerItems[0];
 
   useEffect(() => {
     const applyHash = () => {
       const id = window.location.hash.replace("#", "");
-      if (levels.some((level) => level.id === id)) setActive(id as LevelId);
+      if (pickerItems.some((item) => item.id === id)) setActive(id as PickerId);
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
     return () => window.removeEventListener("hashchange", applyHash);
   }, []);
 
-  function select(id: LevelId) {
+  function select(id: PickerId) {
     setActive(id);
   }
 
@@ -143,17 +148,17 @@ export function LeistungPicker() {
           {previews[current.id].kicker}
         </p>
         <div className="relative mt-4 h-[12.5rem] md:h-[13.5rem]" aria-hidden="true">
-          {levels.map((level) => (
+          {pickerItems.map((item) => (
             <div
-              key={level.id}
+              key={item.id}
               className={cn(
                 "absolute inset-0 transition-all duration-300 ease-out motion-reduce:transition-none",
-                active === level.id
+                active === item.id
                   ? "translate-y-0 opacity-100"
                   : "pointer-events-none translate-y-2 opacity-0",
               )}
             >
-              {previews[level.id].node}
+              {previews[item.id].node}
             </div>
           ))}
         </div>
@@ -185,30 +190,31 @@ export function LeistungPicker() {
         aria-label="Leistungsbausteine"
         className="flex flex-col border-b border-white/10 lg:border-b-0 lg:border-l lg:border-white/10"
       >
-        {levels.map((level) => {
-          const on = level.id === active;
+        {pickerItems.map((item) => {
+          const on = item.id === active;
+          const roman = "roman" in item ? item.roman : null;
           return (
             <button
-              key={level.id}
-              id={level.id}
+              key={item.id}
+              id={item.id}
               type="button"
               role="tab"
               aria-selected={on}
-              aria-controls={`${level.id}-tafel`}
+              aria-controls={`${item.id}-tafel`}
               tabIndex={on ? 0 : -1}
-              onClick={() => select(level.id)}
+              onClick={() => select(item.id)}
               onMouseEnter={() => {
                 if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                  select(level.id);
+                  select(item.id);
                 }
               }}
               onKeyDown={(event) => {
-                const index = levels.findIndex((item) => item.id === active);
+                const index = pickerItems.findIndex((entry) => entry.id === active);
                 const next =
                   event.key === "ArrowDown" || event.key === "ArrowRight"
-                    ? levels[(index + 1) % levels.length]
+                    ? pickerItems[(index + 1) % pickerItems.length]
                     : event.key === "ArrowUp" || event.key === "ArrowLeft"
-                      ? levels[(index - 1 + levels.length) % levels.length]
+                      ? pickerItems[(index - 1 + pickerItems.length) % pickerItems.length]
                       : null;
                 if (!next) return;
                 event.preventDefault();
@@ -221,21 +227,23 @@ export function LeistungPicker() {
                 on ? "bg-white/8" : "bg-transparent hover:bg-white/4",
               )}
             >
-              <span
-                className={cn(
-                  "text-sm tracking-[0.18em]",
-                  on ? "text-[#9FD0F8]" : "text-white/40",
-                )}
-              >
-                {level.roman}
-              </span>
+              {roman ? (
+                <span
+                  className={cn(
+                    "text-sm tracking-[0.18em]",
+                    on ? "text-[#9FD0F8]" : "text-white/40",
+                  )}
+                >
+                  {roman}
+                </span>
+              ) : null}
               <span
                 className={cn(
                   "mt-2 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em]",
                   on ? "text-[#F3EFE6]" : "text-white/70",
                 )}
               >
-                {level.name}
+                {item.name}
               </span>
               <span
                 className={cn(
@@ -243,7 +251,7 @@ export function LeistungPicker() {
                   on ? "text-white/70" : "text-white/40",
                 )}
               >
-                {level.sub}
+                {item.sub}
               </span>
               <span
                 aria-hidden="true"

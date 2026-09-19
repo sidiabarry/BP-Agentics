@@ -147,6 +147,7 @@ export default function AblaeufePage() {
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
+        { href: "/leistungen/affiliate", label: "Affiliate-Programme" },
         { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/preise", label: "Preise" },
       ]}
