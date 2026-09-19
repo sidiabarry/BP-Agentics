@@ -4,14 +4,16 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Framing, ViewId, WerkstattSceneController } from "./scene-engine";
 import { nextStation, stationOrder, stations, type StationId } from "./content";
+import { useSoftScrollHold } from "./use-soft-scroll-hold";
 import "./werkstatt.css";
 
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Bewusst ohne Scroll-Pinning: die Bühne ist eine normale Sektion. Die 3D-Szene
- * lädt erst kurz bevor sie ins Bild kommt, rendert nur solange sie sichtbar ist
- * und bleibt danach bestehen (kein Abbau beim Wegscrollen).
+ * Bewusst ohne Scroll-Pinning. Beim Eintritt dämpft useSoftScrollHold Wheel
+ * und Touch für 1,5 s — kein Schloss, kein overflow:hidden auf html/body.
+ * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
+ * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
  * Bedienung: Station antippen → Sheet mit einer Aussage, Preis und einem Button.
  * Zurück über „Übersicht", Tippen ins Leere oder Escape. Wischen wechselt die
@@ -87,6 +89,21 @@ export function WerkstattSection() {
   const open = view !== "overview";
   const detail = stations[shown];
   const next = nextStation(shown);
+
+  useSoftScrollHold(sectionRef, { enabled: !open });
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const head = section?.querySelector<HTMLElement>(".ws__head");
+    if (!section || !head) return;
+    const write = () => {
+      section.style.setProperty("--ws-head-block", `${head.offsetHeight}px`);
+    };
+    write();
+    const ro = new ResizeObserver(write);
+    ro.observe(head);
+    return () => ro.disconnect();
+  }, []);
 
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
@@ -263,7 +280,7 @@ export function WerkstattSection() {
     <section
       ref={sectionRef}
       id="werkstatt"
-      className="ws scroll-mt-16"
+      className="ws"
       data-view={view}
       data-phase={phase}
       aria-labelledby="ws-title"
