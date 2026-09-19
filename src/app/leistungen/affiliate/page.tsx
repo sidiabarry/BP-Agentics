@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AffiliateCase } from "@/components/affiliate/affiliate-case";
-import { AffiliatePreview } from "@/components/affiliate/affiliate-preview";
+import { AffiliateCta } from "@/components/affiliate/affiliate-cta";
+import { AffiliateHero } from "@/components/affiliate/affiliate-hero";
+import { AffiliatePay } from "@/components/affiliate/affiliate-pay";
 import { AffiliateRollup } from "@/components/affiliate/affiliate-rollup";
+import { JsonLd } from "@/components/json-ld";
 import { PageFaqs } from "@/components/page-faqs";
-import { RevealIn } from "@/components/reveal-in";
-import { StageCard } from "@/components/stage-blocks";
-import { StagePage } from "@/components/stage-page";
 import {
   affiliateFaqs,
   affiliateHero,
-  affiliateNext,
   affiliatePath,
-  affiliatePay,
   affiliateRelated,
 } from "@/lib/affiliate";
-import { faqPage, serviceOffer } from "@/lib/json-ld";
+import { breadcrumbList, faqPage, serviceOffer, webPageNode } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 import "@/styles/affiliate.css";
 
@@ -24,45 +23,63 @@ export const metadata: Metadata = pageMetadata({
   path: affiliatePath,
 });
 
+const crumbs = [
+  { name: "Startseite", path: "/" },
+  { name: "Leistungen", path: "/leistungen" },
+  { name: "Affiliate-Programme", path: affiliatePath },
+];
+
+const related = [
+  { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
+  { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
+  { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+  affiliateRelated,
+  { href: "/preise", label: "Preise" },
+];
+
 export default function AffiliatePage() {
   return (
-    <StagePage
-      kicker={affiliateHero.kicker}
-      title={affiliateHero.title}
-      lead={affiliateHero.lead}
-      crumbs={[
-        { name: "Leistungen", path: "/leistungen" },
-        { name: "Affiliate-Programme", path: affiliatePath },
-      ]}
-      extraJsonLd={[
-        serviceOffer({
-          name: "Affiliate-Programme",
-          description: affiliateHero.lead,
-          path: affiliatePath,
-        }),
-        faqPage([...affiliateFaqs]),
-      ]}
-      related={[
-        { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
-        { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
-        { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
-        affiliateRelated,
-        { href: "/preise", label: "Preise" },
-      ]}
-      next={affiliateNext}
-      visual={<AffiliatePreview />}
-    >
+    <main id="inhalt" className="affiliate-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            webPageNode({
+              path: affiliatePath,
+              name: affiliateHero.title,
+              description: affiliateHero.lead,
+            }),
+            breadcrumbList(crumbs),
+            serviceOffer({
+              name: "Affiliate-Programme",
+              description: affiliateHero.lead,
+              path: affiliatePath,
+            }),
+            faqPage([...affiliateFaqs]),
+          ],
+        }}
+      />
+
+      <AffiliateHero />
       <AffiliateRollup />
-
-      <RevealIn as="div" variant="rise" className="mt-10">
-        <StageCard tone="ink" title={affiliatePay.title}>
-          <p>{affiliatePay.body}</p>
-        </StageCard>
-      </RevealIn>
-
+      <AffiliatePay />
       <AffiliateCase />
 
-      <PageFaqs items={[...affiliateFaqs]} />
-    </StagePage>
+      <div className="affiliate-page__column">
+        <PageFaqs items={[...affiliateFaqs]} />
+        <nav aria-label="Weiterlesen" className="affiliate-related">
+          <p>Weiterlesen</p>
+          <ul>
+            {related.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href}>{item.label}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      <AffiliateCta />
+    </main>
   );
 }

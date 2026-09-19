@@ -42,6 +42,22 @@ export const affiliatePay = {
     "ADCELL bleibt das Netzwerk. Dessen Provision und AGB gelten weiter — „keine Gebühren“ heißt nicht „keine Netzwerkprovision“. Merchant oft mindestens 500 € Transaktionsguthaben (AGB). Offizieller Agentur-Account von Firstlead GmbH / adcell.de ist kostenlos (Multi-Kunden, Reporting). Unsere Betreuung läuft per Servicevertrag: 1–2 % der bestätigten Publisher-Provision, per Rechnung.",
 } as const;
 
+/** Nur Auszüge aus affiliatePay.body — keine neuen Zahlen. */
+export const affiliatePayFacts = [
+  {
+    label: "Netzwerk",
+    text: "ADCELL bleibt das Netzwerk. Dessen Provision und AGB gelten weiter.",
+  },
+  {
+    label: "Guthaben",
+    text: "Merchant oft mindestens 500 € Transaktionsguthaben (AGB).",
+  },
+  {
+    label: "Beteiligung",
+    text: "1–2 % der bestätigten Publisher-Provision, per Rechnung.",
+  },
+] as const;
+
 export const affiliateCaseCopy = {
   kicker: "Beispiel",
   title: "Poolseller GmbH",
