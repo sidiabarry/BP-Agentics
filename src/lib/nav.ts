@@ -14,6 +14,11 @@ export const leistungItems = [
     title: "Büroabläufe automatisieren",
     sub: "Informationen einmal erfassen und weitergeben.",
   },
+  {
+    href: "/leistungen/affiliate",
+    title: "Affiliate-Programme",
+    sub: "Merchants auf ADCELL bringen.",
+  },
 ] as const;
 
 export const mainLinks = [
