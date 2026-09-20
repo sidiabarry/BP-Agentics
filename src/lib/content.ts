@@ -173,8 +173,8 @@ export const workReferences =
 
 export const whyPoints = [
   {
-    title: "Die Erfahrung Ihres Teams gehört in den Ablauf",
-    body: "Die Mitarbeitenden kennen die täglichen Handgriffe und Ausnahmen. Im Gespräch klären wir, welche Informationen sie brauchen, wo doppelte Eingaben entstehen und wie der neue Ablauf eingeführt werden soll. Fachliche Entscheidungen und Freigaben bleiben im Betrieb.",
+    title: "Wir arbeiten mit Ihrem Team, nicht an ihm vorbei",
+    body: "Die Leute im Betrieb kennen die Ausnahmen. Wir setzen uns mit ihnen hin, schauen uns den echten Weg an und bauen den Ablauf so, dass er im Alltag hält. Freigaben und fachliche Entscheidungen bleiben bei Ihnen.",
   },
   {
     title: "Ein Ansprechpartner",
