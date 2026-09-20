@@ -28,6 +28,11 @@ export function SiteFooter() {
                 Büroabläufe
               </Link>
             </li>
+            <li>
+              <Link href="/leistungen/affiliate" className="hover:text-white">
+                Affiliate-Programme
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

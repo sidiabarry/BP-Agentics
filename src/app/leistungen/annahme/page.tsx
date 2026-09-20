@@ -41,6 +41,7 @@ export default function AnnahmePage() {
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/ablaeufe", label: "Büroabläufe ansehen" },
+        { href: "/leistungen/affiliate", label: "Affiliate-Programme" },
         { href: "/preise", label: "Preise" },
       ]}
       next={{

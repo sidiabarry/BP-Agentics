@@ -84,6 +84,14 @@ export function organizationGraph() {
                 url: `${site.url}/leistungen/ablaeufe`,
               },
             },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Affiliate-Programme",
+                url: `${site.url}/leistungen/affiliate`,
+              },
+            },
           ],
         },
       },
@@ -159,12 +167,12 @@ export function serviceOffer({
   name,
   description,
   path,
-  offers,
+  offers = [],
 }: {
   name: string;
   description: string;
   path: string;
-  offers: { name: string; price: string; unit?: string }[];
+  offers?: { name: string; price: string; unit?: string }[];
 }) {
   return {
     "@type": "Service",
@@ -174,15 +182,19 @@ export function serviceOffer({
     url: `${site.url}${path}`,
     provider: { "@id": orgId },
     areaServed: site.areaServed.map((n) => ({ "@type": "AdministrativeArea", name: n })),
-    offers: offers.map((offer) => ({
-      "@type": "Offer",
-      name: offer.name,
-      price: offer.price,
-      priceCurrency: "EUR",
-      ...(offer.unit ? { unitText: offer.unit } : {}),
-      url: `${site.url}${path}`,
-      seller: { "@id": orgId },
-    })),
+    ...(offers.length
+      ? {
+          offers: offers.map((offer) => ({
+            "@type": "Offer",
+            name: offer.name,
+            price: offer.price,
+            priceCurrency: "EUR",
+            ...(offer.unit ? { unitText: offer.unit } : {}),
+            url: `${site.url}${path}`,
+            seller: { "@id": orgId },
+          })),
+        }
+      : {}),
   };
 }
 
