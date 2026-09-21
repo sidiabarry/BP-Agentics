@@ -202,8 +202,12 @@ export function HeroPortal() {
 
         {/* Ankunft: der Moment, in dem wir im Display sind. */}
         <div className="hero-portal__arrival">
-          <p>Websites, Software, Abläufe.</p>
+          <p className="hero-portal__arrival-kicker">Websites, Software, Abläufe.</p>
           <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
+          <h3>Was BP Agentics für Ihren Betrieb einrichten kann</h3>
+          <p className="hero-portal__arrival-lead">
+            Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.
+          </p>
         </div>
       </div>
     </section>
