@@ -89,19 +89,6 @@ export function WerkstattSection() {
 
   useSoftScrollHold(sectionRef, { enabled: !open });
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const head = section?.querySelector<HTMLElement>(".ws__head");
-    if (!section || !head) return;
-    const write = () => {
-      section.style.setProperty("--ws-head-block", `${head.offsetHeight}px`);
-    };
-    write();
-    const ro = new ResizeObserver(write);
-    ro.observe(head);
-    return () => ro.disconnect();
-  }, []);
-
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
   }, []);
@@ -281,12 +268,10 @@ export function WerkstattSection() {
       data-phase={phase}
       aria-labelledby="ws-title"
     >
-      <div className="ws__head">
-        <h2 id="ws-title">Was BP Agentics für Ihren Betrieb einrichten kann</h2>
-        <p>Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.</p>
-      </div>
-
       <div className="ws__stage" ref={stageRef}>
+        <h2 id="ws-title" className="ws__title">
+          Die Werkstatt
+        </h2>
         <picture className="ws__poster">
           <source media="(max-width: 799px)" type="image/webp" srcSet={`${POSTER}-mobile.webp`} />
           <source media="(max-width: 799px)" srcSet={`${POSTER}-mobile.jpg`} />
