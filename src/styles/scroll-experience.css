@@ -1,1 +1,219 @@
-SEE_NEXT_FOR_SCROLL
+/* ==========================================================================
+   BP Agentics — Scroll-Choreografie
+   An globals.css anhängen (oder per @import einbinden).
+
+   Aufbau dieser Datei:
+     1. Registrierte Custom Properties (damit calc() sauber typisiert ist)
+     2. Tokens für die beiden inszenierten Sektionen
+     3. AKT I  — Hero-Portal
+     4. AKT III — Leistungs-Maschine (Rahmen, Text, Schiene)
+     5. Die vier Bühnen im Gerät
+     6. Kleine Viewports und reduzierte Bewegung
+
+   Grundregel: Der statische Zustand steht IMMER zuerst und ist vollständig
+   lesbar. Alles Inszenierte hängt an [data-scroll-ready]. Ohne JS, bei
+   prefers-reduced-motion und auf kurzen Viewports fällt die Seite auf eine
+   ruhige, vollständige Fassung zurück — nie auf eine leere Fläche.
+   ========================================================================== */
+
+@property --p    { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f    { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --i    { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --intro{ syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --rail { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --shell-wn { syntax: "<number>"; inherits: true; initial-value: 44; }
+@property --shell-hn { syntax: "<number>"; inherits: true; initial-value: 27.5; }
+
+.hero-portal,
+.machine {
+  --ink: #0b1a27;
+  --ink-2: #12293b;
+  --mist: #d8e6f2;
+  --signal: #198be8;
+  --signal-deep: #0b5ea8;
+  --paper: #f3efe6;
+  --marker: #b4762a; /* nur für Zustände VOR dem System */
+  --hair: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* ==========================================================================
+   3. AKT I — Hero-Portal
+   ========================================================================== */
+
+.hero-portal {
+  position: relative;
+  background: #e8e6e2;
+  overflow-x: clip;
+  color: var(--ink);
+}
+
+.hero-portal__pin {
+  position: relative;
+  height: 100svh;
+  min-height: 34rem;
+  overflow: hidden;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
+}
+
+.hero-portal__film {
+  position: absolute;
+  inset: 0;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
+}
+
+.hero-portal__film img,
+.hero-portal__film canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Canvas bleibt unsichtbar, bis der erste Frame wirklich gezeichnet ist. */
+.hero-portal__film canvas {
+  opacity: 0;
+}
+
+.hero-portal__copy {
+  position: absolute;
+  top: 6vh;
+  left: max(3.5vw, 1.15rem);
+  z-index: 3;
+  width: min(18.5rem, 30vw);
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.hero-portal__kicker {
+  margin: 0 0 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 58%, transparent);
+}
+
+.hero-portal__copy h1 {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.hero-portal__accent {
+  color: var(--signal-deep);
+}
+
+.hero-portal__lead {
+  margin: 0 0 0.85rem;
+  max-width: 28ch;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+}
+
+.hero-portal__link {
+  display: inline-block;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid currentColor;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--signal-deep);
+}
+
+.hero-portal__cue {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  z-index: 3;
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: color-mix(in srgb, var(--ink) 50%, transparent);
+}
+
+/* Portal und Ankunft sind ohne Inszenierung unsichtbar. */
+.hero-portal__portal,
+.hero-portal__arrival {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-portal__portal {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 2;
+  width: 100vmax;
+  height: 100vmax;
+  margin: -50vmax 0 0 -50vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 42% 34%,
+    #d9ecfc 0%,
+    #7cbcf1 30%,
+    #2288d8 60%,
+    #0b5ea8 100%
+  );
+}
+
+.hero-portal__arrival {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 4;
+  padding: 0 max(5vw, 1.5rem) 8svh;
+  color: #fff;
+  text-shadow: 0 1px 30px #0b5ea855;
+}
+
+.hero-portal__arrival-kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+
+.hero-portal__arrival h2 {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.25rem, 2.8vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.hero-portal__arrival h3 {
+  margin: 0 0 0.4rem;
+  max-width: 28ch;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.02rem, 2vw, 1.35rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.hero-portal__arrival-lead {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  opacity: 0.92;
+}
