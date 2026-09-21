@@ -74,7 +74,7 @@ const PORTRAIT_OVERVIEW: V3 = [0.612, 0.5, 0.612];
 const PORTRAIT_OVERVIEW_FOV = 58;
 
 /** Wie viel der freien Fläche das Objekt füllen darf. */
-const FILL: Record<ViewId, number> = { overview: 0.9, web: 0.8, chat: 0.74, office: 0.78 };
+const FILL: Record<ViewId, number> = { overview: 0.9, web: 0.94, chat: 0.92, office: 0.94 };
 
 const FOCUS_LIGHT: Record<StationId, { pos: V3; color: string; peak: number }> = {
   web: { pos: [-3.05, 1.95, 1.7], color: "#cfe6ff", peak: 22 },
@@ -105,9 +105,6 @@ export function createWerkstattScene(
   let needsRender = true;
   let framing: Framing = { right: 0, bottom: 0 };
 
-  // ---------------------------------------------------------------------
-  // Renderer
-  // ---------------------------------------------------------------------
   const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
   let renderer: THREE.WebGLRenderer;
   try {
@@ -140,15 +137,11 @@ export function createWerkstattScene(
   renderer.domElement.addEventListener("webglcontextlost", onContextLost);
 
   const scene = new THREE.Scene();
-  // Gleiche Tinte wie die Sektion (#0b1a27), damit die Bühne randlos übergeht.
   scene.background = new THREE.Color("#0b1a27");
   scene.fog = new THREE.FogExp2("#0b1a27", 0.035);
 
   const camera = new THREE.PerspectiveCamera(BASE_FOV, size().w / size().h, 0.06, 80);
 
-  // ---------------------------------------------------------------------
-  // Bau-Helfer
-  // ---------------------------------------------------------------------
   const mat = (color: THREE.ColorRepresentation, roughness = 0.6, metalness = 0) =>
     new THREE.MeshStandardMaterial({ color, roughness, metalness });
   const dark = mat("#14222b", 0.55, 0.55);
@@ -202,9 +195,6 @@ export function createWerkstattScene(
     return l;
   }
 
-  // ---------------------------------------------------------------------
-  // Licht — auf schwachen Geräten zwei Fülllichter weniger.
-  // ---------------------------------------------------------------------
   scene.add(new THREE.HemisphereLight("#b8d5ec", "#70452a", lite ? 1.6 : 1.4));
   const key = new THREE.SpotLight("#f8ce9c", 125, 20, 0.85, 0.8, 1.7);
   key.position.set(-3, 6, 4);
@@ -221,13 +211,9 @@ export function createWerkstattScene(
     point("#ffe0af", [0, 2, -1.35], 8, 4);
     point("#fac081", [0, -0.4, 2.1], 5, 6);
   }
-  // Ein wanderndes Fokuslicht statt drei ständig vorhandener Lichter.
   const focusLight = point("#ffffff", [0, 2, 2], 0, 9);
   const focusColor = new THREE.Color();
 
-  // ---------------------------------------------------------------------
-  // Der Raum aus Blender (Meshopt-komprimiert, instanziert)
-  // ---------------------------------------------------------------------
   let roomRoot: THREE.Object3D | null = null;
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
@@ -261,9 +247,6 @@ export function createWerkstattScene(
     if (!roomReady && !disposed) callbacks.onFallback("Das Studio lädt gerade zu langsam. Die Leistungen bleiben unten erreichbar.");
   }, ROOM_TIMEOUT_MS);
 
-  // ---------------------------------------------------------------------
-  // Station „Websites" — Monitor mit Dachdecker-Demo
-  // ---------------------------------------------------------------------
   const monitor = new THREE.Group();
   monitor.position.set(-3.05, 0.025, 0.3);
   monitor.rotation.y = 0.16;
@@ -279,7 +262,6 @@ export function createWerkstattScene(
   const sc = screenCanvas.getContext("2d")!;
   const roofImage = new Image();
   roofImage.decoding = "async";
-  // Video nur auf starken Geräten und erst, wenn die Station geöffnet wird.
   const roofVideo: HTMLVideoElement | null = lite ? null : document.createElement("video");
   if (roofVideo) {
     roofVideo.muted = true;
@@ -390,9 +372,6 @@ export function createWerkstattScene(
   roofImage.addEventListener("load", drawMonitor);
   roofImage.src = "/demos/dach-poster.jpg";
 
-  // ---------------------------------------------------------------------
-  // Station „Nachrichten-Assistent" — Tablet
-  // ---------------------------------------------------------------------
   const tablet = new THREE.Group();
   tablet.position.set(0, 1.08, 1);
   tablet.rotation.set(-0.27, 0, 0);
@@ -419,7 +398,6 @@ export function createWerkstattScene(
   chatMesh.castShadow = false;
   meshAt(new THREE.SphereGeometry(0.013, 10, 6), dark, tablet, [0, 0.94, 0.072]);
 
-  // Große Schrift, weil das Tablet auf dem Handy klein erscheint.
   const bigType = lite;
   function bubble(lines: string[], y: number, outgoing = false) {
     const px = bigType ? 43 : 32;
@@ -500,9 +478,6 @@ export function createWerkstattScene(
     needsRender = true;
   }
 
-  // ---------------------------------------------------------------------
-  // Station „Büroabläufe" — Roboter
-  // ---------------------------------------------------------------------
   const robot = createRobot(THREE, scene);
   robot.group.position.set(3, 0.025, 0.25);
   robot.group.rotation.y = -0.13;
@@ -530,9 +505,6 @@ export function createWerkstattScene(
   );
   scene.add(dust);
 
-  // ---------------------------------------------------------------------
-  // Geometrie der Stationen: Trefferflächen, Etikett-Anker, Bildausschnitt
-  // ---------------------------------------------------------------------
   const stationObjects: Record<StationId, THREE.Object3D> = { web: monitor, chat: tablet, office: robot.group };
   robot.animate(0, true);
   scene.updateMatrixWorld(true);
@@ -557,7 +529,6 @@ export function createWerkstattScene(
     return w / h < 0.9;
   }
 
-  /** Kamera so weit zurücksetzen, dass das Objekt in die freie Fläche passt. */
   function solvePose(view: ViewId) {
     const { w, h } = size();
     const b = view === "overview" ? overviewBox : focusBoxes[view];
@@ -606,9 +577,6 @@ export function createWerkstattScene(
     };
   }
 
-  // ---------------------------------------------------------------------
-  // Kamera-Zustand und Übergänge
-  // ---------------------------------------------------------------------
   const start = solvePose("overview");
   const basePos = start.pos.clone();
   const baseTarget = start.target.clone();
@@ -706,9 +674,6 @@ export function createWerkstattScene(
     if (i >= 0 && i < stationOrder.length) goTo(stationOrder[i]);
   }
 
-  // ---------------------------------------------------------------------
-  // Zeiger: Tippen, Wischen, Hover
-  // ---------------------------------------------------------------------
   const raycaster = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
   const hitPoint = new THREE.Vector3();
@@ -776,17 +741,12 @@ export function createWerkstattScene(
   el.addEventListener("pointermove", onMove);
   el.addEventListener("pointerleave", onLeave);
 
-  // ---------------------------------------------------------------------
-  // Etiketten (DOM) über den Stationen
-  // ---------------------------------------------------------------------
   let labelEls: Partial<Record<StationId, HTMLElement>> = {};
   let leaderEls: Partial<Record<StationId, { line: SVGLineElement; dot: SVGCircleElement }>> = {};
   const proj = new THREE.Vector3();
   function placeLabels() {
     if (current !== "overview" && !transition) return;
     const { w, h } = size();
-    // Auf schmalen Schirmen stehen die Etiketten höher, damit sie das Objekt
-    // nicht berühren; eine Führungslinie zeigt, wozu sie gehören.
     const lift = w < 560 ? 34 : 14;
     const items = stationOrder
       .map((id) => {
@@ -799,8 +759,6 @@ export function createWerkstattScene(
       })
       .filter((v): v is NonNullable<typeof v> => v !== null)
       .sort((a, b) => a.x - b.x);
-    // Innerhalb der Bühne halten; wo sich zwei Etiketten decken, weicht das
-    // höher stehende nach oben aus — weg vom Objekt, nie darüber.
     const top = 64;
     const bottom = h - Math.max(72, framing.bottom + 16);
     const boxes = items.map((it) => ({
@@ -838,9 +796,6 @@ export function createWerkstattScene(
     }
   }
 
-  // ---------------------------------------------------------------------
-  // Größe
-  // ---------------------------------------------------------------------
   function resize() {
     const { w, h } = size();
     renderer.setPixelRatio(pixelRatio());
@@ -852,9 +807,6 @@ export function createWerkstattScene(
   const ro = new ResizeObserver(() => resize());
   ro.observe(container);
 
-  // ---------------------------------------------------------------------
-  // Render-Schleife — nur wenn sichtbar, auf schwachen Geräten 30 fps
-  // ---------------------------------------------------------------------
   const minInterval = lite ? 1000 / 30 : 0;
   let last = 0;
   let lastVideoDraw = 0;
@@ -886,7 +838,6 @@ export function createWerkstattScene(
       if (q >= 1) transition = null;
     }
 
-    // Leichte Mausparallaxe nur am Desktop.
     const reach = current === "overview" ? 0.5 : 0.22;
     const wantX = reduced || lite ? 0 : pointer.x * 0.8 * reach;
     const wantY = reduced || lite ? 0 : -pointer.y * 0.4 * reach;
@@ -902,7 +853,6 @@ export function createWerkstattScene(
     camera.fov = baseFov;
     applyOffset(baseOffset);
 
-    // Fokuslicht wandert zur offenen Station.
     const active = current === "overview" ? null : FOCUS_LIGHT[current];
     const wantI = active ? active.peak : 0;
     if (active) {
@@ -914,7 +864,6 @@ export function createWerkstattScene(
       moving = true;
     }
 
-    // Texturen nur bei Inhaltsänderung.
     const { phase, index } = chatState(t);
     const chatNow = `${phase}-${index}`;
     if (chatNow !== chatKey) {
@@ -965,7 +914,6 @@ export function createWerkstattScene(
       if (Math.abs(next.right - framing.right) < 1 && Math.abs(next.bottom - framing.bottom) < 1) return;
       framing = next;
       if (transition && !reduced) {
-        // Ziel einer laufenden Fahrt nachführen, Startpunkt und Takt bleiben.
         const dest = solvePose(current);
         const chord = transition.p0.distanceTo(dest.pos);
         const outward = transition.p0

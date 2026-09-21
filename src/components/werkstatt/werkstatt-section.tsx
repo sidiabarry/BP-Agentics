@@ -27,12 +27,9 @@ const POSTER = "/werkstatt/studio-v6";
 type Phase = "idle" | "loading" | "ready" | "fallback";
 
 function detectLite() {
-  const nav = navigator as Navigator & { deviceMemory?: number };
   return (
     window.matchMedia("(pointer: coarse)").matches ||
-    window.innerWidth < 800 ||
-    (nav.deviceMemory ?? 8) <= 4 ||
-    (navigator.hardwareConcurrency ?? 8) <= 4
+    window.innerWidth < 800
   );
 }
 
@@ -232,7 +229,6 @@ export function WerkstattSection() {
       const framing: Framing = { right: 0, bottom: 0 };
       if (open) {
         if (narrow) framing.bottom = sheet.offsetHeight + 16;
-        else framing.right = sheet.offsetWidth + 40;
       } else if (narrow) {
         framing.bottom = 56;
       }
