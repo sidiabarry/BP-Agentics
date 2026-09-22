@@ -15,6 +15,9 @@
  *    bis 45 %.
  *  - Die Sektion macht genau eine Sache. Kein Layout-Fit-Check, der im
  *    Zweifel die ganze Inszenierung abschaltet.
+ *
+ * Film, Iris, Typo und Three.js lesen dieselbe gedämpfte --p. Der Film
+ * blendet zwei Nachbarframes, statt auf ganze Indizes zu springen.
  */
 
 import { useEffect, useRef } from "react";
@@ -23,6 +26,7 @@ import "./arrival-system.css";
 
 type ArrivalSystem = {
   setProgress: (p: number) => void;
+  setPointer: (nx: number, ny: number, active: boolean) => void;
   dispose: () => void;
 };
 
@@ -39,9 +43,14 @@ type Kind = keyof typeof SETS;
 const FILM_END = 0.6;
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
+const RESIZE_WAIT = 140;
 
 function frameSrc(kind: Kind, index: number) {
   return `${SETS[kind].dir}/${String(index + 1).padStart(4, "0")}.webp`;
+}
+
+function readyImg(img: HTMLImageElement | null | undefined) {
+  return img && img.naturalWidth > 0 ? img : null;
 }
 
 export function HeroPortal() {
@@ -58,39 +67,64 @@ export function HeroPortal() {
     images: [] as (HTMLImageElement | null)[],
     inflight: 0,
     target: 0,
+    index: 0,
+    overdrive: 0,
+    pixelW: 0,
+    pixelH: 0,
   });
 
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
     minHeight: 560,
+    damp: 0.24,
     onFrame: (p) => {
       const canvas = canvasRef.current;
       const pin = pinRef.current;
       if (!canvas || !pin) return;
 
-      const kind: Kind = window.matchMedia(`(max-width: ${SMALL_MAX}px)`).matches
-        ? "mobile"
-        : "desktop";
       const s = store.current;
-      if (s.kind !== kind) {
-        s.kind = kind;
-        s.images = new Array(SETS[kind].count).fill(null);
-        s.inflight = 0;
-      }
+      if (!s.kind) syncKind();
+      if (!s.pixelW) measurePin(pin);
 
+      const kind = s.kind || "desktop";
       const count = SETS[kind].count;
-      s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
+      const f = range(p, 0, FILM_END) * (count - 1);
+      s.index = f;
+      s.target = Math.round(f);
+      s.overdrive = smooth(range(p, FILM_END, 0.92));
       pump(kind);
 
-      if (p > 0.48) bootArrival();
+      if (p > 0.38) bootArrival();
       systemProgress.current = range(p, 0.5, 1);
       systemRef.current?.setProgress(systemProgress.current);
+      pin.toggleAttribute("data-arrival", p > 0.52);
 
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
       if (p > 0.94) return;
-      paint(canvas, pin, smooth(range(p, FILM_END, 0.92)));
+      paint(canvas);
     },
   });
+
+  function syncKind() {
+    const kind: Kind = window.matchMedia(`(max-width: ${SMALL_MAX}px)`).matches
+      ? "mobile"
+      : "desktop";
+    const s = store.current;
+    if (s.kind === kind) return;
+    s.kind = kind;
+    s.images = new Array(SETS[kind].count).fill(null);
+    s.inflight = 0;
+  }
+
+  function measurePin(pin: HTMLElement) {
+    const s = store.current;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const width = pin.clientWidth;
+    const height = pin.clientHeight;
+    if (width < 2 || height < 2) return;
+    s.pixelW = Math.max(1, Math.round(width * dpr));
+    s.pixelH = Math.max(1, Math.round(height * dpr));
+  }
 
   function bootArrival() {
     if (systemBoot.current || !systemHostRef.current) return;
@@ -106,7 +140,74 @@ export function HeroPortal() {
   }
 
   useEffect(() => {
+    const pin = pinRef.current;
+    const point = (event: PointerEvent, active: boolean) => {
+      const host = systemHostRef.current;
+      const sys = systemRef.current;
+      if (!host || !sys) return;
+      if (!active) {
+        sys.setPointer(0.5, 0.5, false);
+        return;
+      }
+      const r = host.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) return;
+      sys.setPointer((event.clientX - r.left) / r.width, (event.clientY - r.top) / r.height, true);
+    };
+    const onMove = (event: PointerEvent) => point(event, true);
+    const onLeave = (event: PointerEvent) => point(event, false);
+    pin?.addEventListener("pointermove", onMove, { passive: true });
+    pin?.addEventListener("pointerdown", onMove, { passive: true });
+    pin?.addEventListener("pointerleave", onLeave, { passive: true });
+    pin?.addEventListener("pointercancel", onLeave, { passive: true });
+    const onUp = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || event.pointerType === "pen") point(event, false);
+    };
+    pin?.addEventListener("pointerup", onUp, { passive: true });
+
+    syncKind();
+    if (pin) measurePin(pin);
+
+    const mq = window.matchMedia(`(max-width: ${SMALL_MAX}px)`);
+    const onKind = () => {
+      syncKind();
+      pump(store.current.kind || "desktop");
+    };
+    mq.addEventListener("change", onKind);
+
+    let resizeTimer = 0;
+    let sized = false;
+    const applySize = (width: number, height: number) => {
+      const s = store.current;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      s.pixelW = Math.max(1, Math.round(width * dpr));
+      s.pixelH = Math.max(1, Math.round(height * dpr));
+      const canvas = canvasRef.current;
+      if (canvas) paint(canvas);
+    };
+    const ro = new ResizeObserver((entries) => {
+      const cr = entries[0]?.contentRect;
+      if (!cr || cr.width < 2 || cr.height < 2) return;
+      const width = cr.width;
+      const height = cr.height;
+      if (!sized) {
+        sized = true;
+        applySize(width, height);
+        return;
+      }
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => applySize(width, height), RESIZE_WAIT);
+    });
+    if (pin) ro.observe(pin);
+
     return () => {
+      pin?.removeEventListener("pointermove", onMove);
+      pin?.removeEventListener("pointerdown", onMove);
+      pin?.removeEventListener("pointerleave", onLeave);
+      pin?.removeEventListener("pointercancel", onLeave);
+      pin?.removeEventListener("pointerup", onUp);
+      mq.removeEventListener("change", onKind);
+      ro.disconnect();
+      if (resizeTimer) window.clearTimeout(resizeTimer);
       systemRef.current?.dispose();
       systemRef.current = null;
       systemBoot.current = false;
@@ -136,8 +237,7 @@ export function HeroPortal() {
       img.onload = () => {
         s.inflight -= 1;
         const canvas = canvasRef.current;
-        const pin = pinRef.current;
-        if (canvas && pin) paint(canvas, pin, 0);
+        if (canvas) paint(canvas);
         pump(kind);
       };
       img.onerror = () => {
@@ -147,46 +247,71 @@ export function HeroPortal() {
     }
   }
 
-  /** Zeichnet den nächstbesten geladenen Frame, formatfüllend, mit Extra-Zoom. */
-  function paint(canvas: HTMLCanvasElement, pin: HTMLElement, overdrive: number) {
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  function nearestReady(around: number) {
     const s = store.current;
-
     let best: HTMLImageElement | null = null;
     let delta = Infinity;
     for (let i = 0; i < s.images.length; i += 1) {
-      const img = s.images[i];
-      if (!img || !img.naturalWidth) continue;
-      const d = Math.abs(i - s.target);
+      const img = readyImg(s.images[i]);
+      if (!img) continue;
+      const d = Math.abs(i - around);
       if (d < delta) {
         delta = d;
         best = img;
       }
     }
-    if (!best) return;
+    return best;
+  }
 
-    const rect = pin.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    const w = Math.round(rect.width * dpr);
-    const h = Math.round(rect.height * dpr);
+  function drawCover(
+    ctx: CanvasRenderingContext2D,
+    img: HTMLImageElement,
+    w: number,
+    h: number,
+    overdrive: number,
+    isMobile: boolean,
+  ) {
+    const cover = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const cropZoom = isMobile ? 1.15 : 1;
+    const scale = cover * cropZoom * (1 + overdrive * OVERDRIVE);
+    const dw = img.naturalWidth * scale;
+    const dh = img.naturalHeight * scale;
+    const xOff = (w - dw) / 2;
+    const yOff = isMobile ? (h - dh) * 0.22 : (h - dh) / 2;
+    ctx.drawImage(img, xOff, yOff, dw, dh);
+  }
+
+  /** Zwei Nachbarframes, weich überblendet — kein Sprung von Keyframe zu Keyframe. */
+  function paint(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const s = store.current;
+    if (!s.pixelW || !s.pixelH) return;
+
+    const i0 = Math.floor(s.index);
+    const i1 = Math.min(s.images.length - 1, i0 + 1);
+    const mix = s.index - i0;
+    const a = readyImg(s.images[i0]);
+    const b = readyImg(s.images[i1]);
+    const base = a ?? b ?? nearestReady(s.index);
+    if (!base) return;
+
+    const w = s.pixelW;
+    const h = s.pixelH;
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
     }
 
     const isMobile = s.kind === "mobile";
-    const cover = Math.max(w / best.naturalWidth, h / best.naturalHeight);
-    const cropZoom = isMobile ? 1.15 : 1;
-    const scale = cover * cropZoom * (1 + overdrive * OVERDRIVE);
-    const dw = best.naturalWidth * scale;
-    const dh = best.naturalHeight * scale;
-
-    const xOff = (w - dw) / 2;
-    const yOff = isMobile ? (h - dh) * 0.22 : (h - dh) / 2;
-
     ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(best, xOff, yOff, dw, dh);
+    drawCover(ctx, base, w, h, s.overdrive, isMobile);
+    if (a && b && a !== b && mix > 0.012) {
+      ctx.save();
+      ctx.globalAlpha = mix;
+      drawCover(ctx, b, w, h, s.overdrive, isMobile);
+      ctx.restore();
+    }
     canvas.dataset.ready = "";
   }
 
