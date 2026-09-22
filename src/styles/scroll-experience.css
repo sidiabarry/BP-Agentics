@@ -714,7 +714,7 @@
 .site__h1,
 .site__h2,
 .site__cta,
-.site__grid > span {
+.site__grid \u003e span {
   --in: 1;
 }
 
@@ -723,7 +723,7 @@
 .machine[data-scroll-ready] .site__h1,
 .machine[data-scroll-ready] .site__h2,
 .machine[data-scroll-ready] .site__cta,
-.machine[data-scroll-ready] .site__grid > span {
+.machine[data-scroll-ready] .site__grid \u003e span {
   --in: clamp(0, calc((var(--s1) - 0.06 - var(--i) * 0.07) * 14), 1);
   opacity: var(--in);
   transform: translate3d(0, calc((1 - var(--in)) * 10px), 0);
@@ -814,7 +814,7 @@
   min-height: 3.2rem;
 }
 
-.site__grid > span {
+.site__grid \u003e span {
   border-radius: 6px;
   background: #d5e0ea;
 }
