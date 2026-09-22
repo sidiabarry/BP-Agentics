@@ -1,8 +1,8 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  --leave: clamp(0, calc((var(--p) - 0.62) / 0.38), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 72%, #0b1a27);
+  --leave: clamp(0, calc((var(--p) - 0.76) / 0.24), 1);
+  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 78%, #0b1a27);
   background: var(--hero-exit, #82bbf0);
 }
 
@@ -38,8 +38,9 @@
   background: linear-gradient(
     180deg,
     transparent 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 88%, #0b1a27) 42%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 78%, #0b1a27) 68%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 92%, #0b1a27) 28%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 86%, #0b1a27) 52%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 80%, #0b1a27) 76%,
     var(--join) 100%
   );
   opacity: var(--leave);
