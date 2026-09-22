@@ -23,16 +23,14 @@
   --ws-pad-top: 1.25rem;
   --ws-pad-bottom: max(12rem, 30svh);
   --ws-gap: 2rem;
-  --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-gap));
   --ws-join: color-mix(in srgb, var(--ws-portal) 92%, var(--ws-night));
-  --ws-join-shift: 32svh;
   position: relative;
   display: flex;
   flex-direction: column;
   overflow-x: clip;
   scroll-margin-top: var(--ws-header);
-  margin-top: calc(-1 * var(--ws-join-shift));
-  padding: calc(var(--ws-pad-top) + var(--ws-join-shift)) 0 var(--ws-pad-bottom);
+  margin-top: 0;
+  padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
   background:
     linear-gradient(
@@ -73,44 +71,12 @@
 .ws__stage {
   position: relative;
   flex: 0 1 auto;
-  height: clamp(560px, 78svh, 780px);
+  height: min(68svh, calc(100svh - var(--ws-header) - 12.75rem), 720px);
+  min-height: 28rem;
   overflow: hidden;
   background: transparent;
   color: var(--ws-paper);
   isolation: isolate;
-}
-
-.ws__stage::before,
-.ws__stage::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  height: 4.5rem;
-  pointer-events: none;
-}
-
-.ws__stage::before {
-  top: 0;
-  height: 36%;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--ws-portal) 70%, transparent) 0,
-    color-mix(in srgb, var(--ws-portal) 28%, transparent) 42%,
-    transparent 100%
-  );
-}
-
-.ws__stage::after {
-  bottom: 0;
-  height: 7.5rem;
-  background: linear-gradient(
-    180deg,
-    transparent 0,
-    color-mix(in srgb, var(--ws-night) 38%, transparent) 48%,
-    var(--ws-night) 100%
-  );
 }
 
 .ws__poster,
@@ -137,8 +103,6 @@
   touch-action: pan-y;
   opacity: 0;
   transition: opacity 1.05s ease;
-  mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.55) 0, rgb(0 0 0 / 0.88) 18%, #000 42%);
-  -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.55) 0, rgb(0 0 0 / 0.88) 18%, #000 42%);
 }
 
 .ws[data-phase="ready"] .ws__canvas {
@@ -662,26 +626,11 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     --ws-pad-top: 0.85rem;
     --ws-pad-bottom: max(9rem, 28svh);
     --ws-gap: 1.25rem;
-    --ws-join-shift: 36svh;
   }
 
   .ws__stage {
-    /* Header + Abstand in --ws-chrome. */
-    height: min(72svh, calc(100svh - var(--ws-chrome) - 1.25rem));
-    min-height: 300px;
-  }
-
-  .ws__canvas {
-    mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.5) 0, rgb(0 0 0 / 0.86) 20%, #000 46%);
-    -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.5) 0, rgb(0 0 0 / 0.86) 20%, #000 46%);
-  }
-
-  .ws__stage::after {
-    height: 6.5rem;
-  }
-
-  .ws__stage::before {
-    height: 32%;
+    height: min(40svh, calc(100svh - var(--ws-header) - 20.5rem));
+    min-height: 16rem;
   }
 
   .ws__label {
