@@ -3,14 +3,14 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 /**
- * Weicher Halt an der Werkstatt-Bühne: Wheel- und Touch-Deltas werden etwa
- * 1 s stark gedämpft (0,05 → 1,0), nicht auf 0 gesetzt und nicht per Pin /
- * body-overflow gesperrt. Einmal pro Eintritt, sobald die Bühne im Bild ist.
+ * Weicher Halt an der Werkstatt-Bühne: etwa 1 s stark dämpfen
+ * (kein Pin, kein overflow:hidden, keine Falle). Einmal pro Eintritt.
  * Offene Station: kein Halt. Tastatur bleibt frei.
  */
 
 const HOLD_MS = 1000;
-const DAMP_START = 0.05;
+const SOLID_MS = 720;
+const DAMP_START = 0.04;
 const DAMP_END = 1;
 
 function headerPx() {
@@ -23,21 +23,24 @@ function headerPx() {
 }
 
 function dampAt(holdStart: number) {
-  const t = Math.min(1, (performance.now() - holdStart) / HOLD_MS);
-  const eased = 1 - (1 - t) * (1 - t);
+  const elapsed = performance.now() - holdStart;
+  if (elapsed >= HOLD_MS) return DAMP_END;
+  if (elapsed <= SOLID_MS) return DAMP_START;
+  const t = (elapsed - SOLID_MS) / (HOLD_MS - SOLID_MS);
+  const eased = t * t;
   return DAMP_START + (DAMP_END - DAMP_START) * eased;
 }
 
 function stageArrived(rect: DOMRectReadOnly) {
   const header = headerPx();
   const vh = window.innerHeight;
-  return rect.top <= header + vh * 0.3 && rect.bottom > header + 96;
+  return rect.top <= header + vh * 0.38 && rect.bottom > header + 80;
 }
 
 function stageClearlyAway(rect: DOMRectReadOnly) {
   const header = headerPx();
   const vh = window.innerHeight;
-  return rect.bottom < header - 24 || rect.top > vh * 0.7;
+  return rect.bottom < header - 24 || rect.top > vh * 0.82;
 }
 
 function mark(el: HTMLElement | null, on: boolean) {
@@ -56,21 +59,27 @@ export function useSoftScrollHold(
   const releaseRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motion.matches) return;
 
+    let cancelled = false;
     let holding = false;
     let holdStart = 0;
     let holdTimer = 0;
     let lastTouchY = 0;
+    let expectedY = 0;
+    let syncing = false;
     let observer: IntersectionObserver | null = null;
+    let retry = 0;
+    let poll = 0;
+    let bound: HTMLElement | null = null;
+
+    const stage = () =>
+      stageRef.current ?? document.querySelector<HTMLElement>("#werkstatt .ws__stage");
 
     const release = () => {
       holding = false;
-      mark(stage, false);
+      mark(stage(), false);
       if (holdTimer) {
         window.clearTimeout(holdTimer);
         holdTimer = 0;
@@ -78,23 +87,50 @@ export function useSoftScrollHold(
     };
 
     const begin = () => {
-      if (!enabledRef.current || !armedRef.current || holding) return;
-      if (!stageArrived(stage.getBoundingClientRect())) return;
+      const el = stage();
+      if (!el || !enabledRef.current || !armedRef.current || holding) return;
+      if (!stageArrived(el.getBoundingClientRect())) return;
       armedRef.current = false;
       holding = true;
       holdStart = performance.now();
-      mark(stage, true);
+      expectedY = window.scrollY;
+      mark(el, true);
       holdTimer = window.setTimeout(release, HOLD_MS);
     };
 
     const inspect = () => {
-      const rect = stage.getBoundingClientRect();
+      const el = stage();
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
       if (stageClearlyAway(rect)) {
         armedRef.current = true;
         release();
         return;
       }
       if (enabledRef.current) begin();
+    };
+
+    const applyDelta = (raw: number) => {
+      if (!holding || raw === 0) return;
+      expectedY += raw * dampAt(holdStart);
+      syncing = true;
+      window.scrollTo(0, expectedY);
+      syncing = false;
+    };
+
+    const restrain = () => {
+      if (syncing || !holding) return;
+      if (performance.now() - holdStart >= HOLD_MS) {
+        release();
+        return;
+      }
+      const current = window.scrollY;
+      const raw = current - expectedY;
+      if (Math.abs(raw) < 0.5) return;
+      expectedY += raw * dampAt(holdStart);
+      syncing = true;
+      window.scrollTo(0, expectedY);
+      syncing = false;
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -109,8 +145,7 @@ export function useSoftScrollHold(
         return;
       }
       event.preventDefault();
-      const dy = event.deltaY * dampAt(holdStart);
-      if (dy !== 0) window.scrollBy(0, dy);
+      applyDelta(event.deltaY);
     };
 
     const onTouchStart = (event: TouchEvent) => {
@@ -133,43 +168,61 @@ export function useSoftScrollHold(
       lastTouchY = y;
       if (Math.abs(raw) < 2) return;
       event.preventDefault();
-      window.scrollBy(0, raw * dampAt(holdStart));
+      applyDelta(raw);
     };
 
-    const connectObserver = () => {
+    const onScroll = () => {
+      if (syncing) return;
+      inspect();
+      restrain();
+    };
+
+    const watch = (el: HTMLElement) => {
       observer?.disconnect();
       const header = headerPx();
-      observer = new IntersectionObserver(
-        () => inspect(),
-        { rootMargin: `-${header}px 0px -45% 0px`, threshold: [0, 0.05, 0.15] },
-      );
-      observer.observe(stage);
+      observer = new IntersectionObserver(inspect, {
+        rootMargin: `-${Math.round(header)}px 0px -36% 0px`,
+        threshold: [0, 0.08, 0.2, 0.35],
+      });
+      observer.observe(el);
+      bound = el;
+    };
+
+    const attach = () => {
+      if (cancelled) return;
+      const el = stage();
+      if (!el) {
+        retry = window.setTimeout(attach, 80);
+        return;
+      }
+      if (bound !== el) watch(el);
       inspect();
     };
 
-    const onMotionChange = () => {
-      if (motion.matches) release();
-    };
-
     releaseRef.current = release;
-    connectObserver();
-    window.addEventListener("scroll", inspect, { passive: true });
-    window.addEventListener("resize", connectObserver);
+    attach();
+    poll = window.setInterval(attach, 140);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", attach);
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-    motion.addEventListener("change", onMotionChange);
+    motion.addEventListener("change", () => {
+      if (motion.matches) release();
+    });
 
     return () => {
+      cancelled = true;
       releaseRef.current = () => {};
       release();
       observer?.disconnect();
-      window.removeEventListener("scroll", inspect);
-      window.removeEventListener("resize", connectObserver);
+      window.clearTimeout(retry);
+      window.clearInterval(poll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", attach);
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("touchstart", onTouchStart, true);
       window.removeEventListener("touchmove", onTouchMove, true);
-      motion.removeEventListener("change", onMotionChange);
     };
   }, [stageRef]);
 
