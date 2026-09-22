@@ -200,14 +200,17 @@ export function HeroPortal() {
           Scrollen
         </p>
 
-        {/* Ankunft: der Moment, in dem wir im Display sind. */}
-        <div className="hero-portal__arrival">
-          <p className="hero-portal__arrival-kicker">Websites, Software, Abläufe.</p>
-          <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
-          <h3>Was BP Agentics für Ihren Betrieb einrichten kann</h3>
-          <p className="hero-portal__arrival-lead">
+        {/* Ankunft: Überschrift oben links, Bausteine unten — ein blaues Bild. */}
+        <div className="hero-portal__intro">
+          <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
+          <p className="hero-portal__intro-lead">
             Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.
           </p>
+        </div>
+
+        <div className="hero-portal__arrival">
+          <p className="hero-portal__arrival-kicker">Websites, Software, Abläufe.</p>
+          <p className="hero-portal__arrival-line">Drei Bausteine. Einzeln beauftragbar.</p>
         </div>
       </div>
     </section>
