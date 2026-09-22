@@ -1,1 +1,33 @@
-FILE_BYTES_36471_FROM_/tmp/bp-github/src/styles/scroll-experience.css
+/* ==========================================================================
+   BP Agentics — Scroll-Choreografie
+   An globals.css anhängen (oder per @import einbinden).
+
+   Aufbau dieser Datei:
+     1. Registrierte Custom Properties (damit calc() sauber typisiert ist)
+     2. Tokens für die beiden inszenierten Sektionen
+     3. AKT I  — Hero-Portal
+     4. AKT III — Leistungs-Maschine (Rahmen, Text, Schiene)
+     5. Die vier Bühnen im Gerät
+     6. Kleine Viewports und reduzierte Bewegung
+
+   Grundregel: Der statische Zustand steht IMMER zuerst und ist vollständig
+   lesbar. Alles Inszenierte hängt an [data-scroll-ready]. Ohne JS, bei
+   prefers-reduced-motion und auf kurzen Viewports fällt die Seite auf eine
+   ruhige, vollständige Fassung zurück — nie auf eine leere Fläche.
+   ========================================================================== */
+
+@property --p    { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --s1   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --s2   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --s3   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --s4   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --f1   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --f2   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --f3   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --f4   { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --f    { syntax: "\u003cnumber>"; inherits: true; initial-value: 1; }
+@property --i    { syntax: "\u003cnumber>"; inherits: false; initial-value: 0; }
+@property --intro{ syntax: "\u003cnumber>"; inherits: true; initial-value: 1; }
+@property --rail { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
+@property --shell-wn { syntax: "\u003cnumber>"; inherits: true; initial-value: 44; }
+@property --shell-hn { syntax: "\u003cnumber>"; inherits: true; initial-value: 27.5; }
