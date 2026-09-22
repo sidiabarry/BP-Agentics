@@ -17,8 +17,14 @@
  *    Zweifel die ganze Inszenierung abschaltet.
  */
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
+import "./arrival-system.css";
+
+type ArrivalSystem = {
+  setProgress: (p: number) => void;
+  dispose: () => void;
+};
 
 const SMALL_MAX = 700;
 
@@ -41,6 +47,10 @@ function frameSrc(kind: Kind, index: number) {
 export function HeroPortal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
+  const systemHostRef = useRef<HTMLDivElement>(null);
+  const systemRef = useRef<ArrivalSystem | null>(null);
+  const systemBoot = useRef(false);
+  const systemProgress = useRef(0);
 
   // Bildspeicher lebt außerhalb von React – kein Re-Render pro Frame.
   const store = useRef({
@@ -72,11 +82,36 @@ export function HeroPortal() {
       s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
       pump(kind);
 
+      if (p > 0.48) bootArrival();
+      systemProgress.current = smooth(range(p, 0.58, 0.98));
+      systemRef.current?.setProgress(systemProgress.current);
+
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
       if (p > 0.94) return;
       paint(canvas, pin, smooth(range(p, FILM_END, 0.92)));
     },
   });
+
+  function bootArrival() {
+    if (systemBoot.current || !systemHostRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    systemBoot.current = true;
+    const host = systemHostRef.current;
+    void import("./arrival-system").then(({ createArrivalSystem }) => {
+      if (!host.isConnected) return;
+      systemRef.current?.dispose();
+      systemRef.current = createArrivalSystem(host);
+      systemRef.current.setProgress(systemProgress.current);
+    });
+  }
+
+  useEffect(() => {
+    return () => {
+      systemRef.current?.dispose();
+      systemRef.current = null;
+      systemBoot.current = false;
+    };
+  }, []);
 
   /** Lädt die Frames nach, immer die nächstgelegenen zuerst, max. 4 parallel. */
   function pump(kind: Kind) {
@@ -180,6 +215,7 @@ export function HeroPortal() {
 
         {/* Das Display, das sich öffnet. */}
         <div className="hero-portal__portal" aria-hidden="true" />
+        <div className="hero-portal__system" ref={systemHostRef} aria-hidden="true" />
 
         <div className="hero-portal__copy">
           <p className="hero-portal__kicker">BP Agentics — Hagen</p>
@@ -200,7 +236,7 @@ export function HeroPortal() {
           Scrollen
         </p>
 
-        {/* Ankunft: Iris, dann Überschrift von links, dann die untere Zeile. */}
+        {/* Ankunft: Iris + Three.js-System, Typo setzt sich schlicht. */}
         <div className="hero-portal__intro">
           <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
         </div>
