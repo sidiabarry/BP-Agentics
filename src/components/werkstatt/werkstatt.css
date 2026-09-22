@@ -24,7 +24,7 @@
   --ws-pad-bottom: max(12rem, 30svh);
   --ws-gap: 2rem;
   --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-gap));
-  --ws-join: color-mix(in srgb, var(--ws-portal) 78%, var(--ws-night));
+  --ws-join: color-mix(in srgb, var(--ws-portal) 92%, var(--ws-night));
   --ws-join-shift: 32svh;
   position: relative;
   display: flex;
@@ -37,13 +37,13 @@
   background:
     linear-gradient(
       180deg,
-      var(--ws-join) 0,
-      color-mix(in srgb, var(--ws-portal) 64%, var(--ws-night)) 18svh,
-      color-mix(in srgb, var(--ws-portal) 46%, var(--ws-night)) 40svh,
-      color-mix(in srgb, var(--ws-portal) 28%, var(--ws-night)) 68svh,
-      color-mix(in srgb, var(--ws-portal) 14%, var(--ws-night)) 98svh,
-      color-mix(in srgb, var(--ws-portal) 5%, var(--ws-night)) 128svh,
-      var(--ws-night) 158svh
+      var(--ws-portal) 0,
+      var(--ws-join) 22svh,
+      color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 48svh,
+      color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night)) 78svh,
+      color-mix(in srgb, var(--ws-portal) 26%, var(--ws-night)) 110svh,
+      color-mix(in srgb, var(--ws-portal) 12%, var(--ws-night)) 142svh,
+      var(--ws-night) 188svh
     ),
     var(--ws-night);
 }
@@ -55,14 +55,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 28svh;
+  height: 36svh;
   pointer-events: none;
   background: linear-gradient(
     180deg,
     transparent 0,
-    color-mix(in srgb, var(--ws-paper) 16%, transparent) 22%,
-    color-mix(in srgb, var(--ws-night) 58%, var(--ws-paper)) 48%,
-    color-mix(in srgb, var(--ws-night) 24%, var(--ws-paper)) 74%,
+    color-mix(in srgb, var(--ws-paper) 10%, transparent) 28%,
+    color-mix(in srgb, var(--ws-paper) 42%, transparent) 58%,
+    color-mix(in srgb, var(--ws-night) 18%, var(--ws-paper)) 82%,
     var(--ws-paper) 100%
   );
 }
@@ -93,12 +93,11 @@
 
 .ws__stage::before {
   top: 0;
-  height: 64%;
+  height: 36%;
   background: linear-gradient(
     180deg,
-    var(--ws-join) 0,
-    color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 26%,
-    color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 58%,
+    color-mix(in srgb, var(--ws-portal) 70%, transparent) 0,
+    color-mix(in srgb, var(--ws-portal) 28%, transparent) 42%,
     transparent 100%
   );
 }
@@ -138,8 +137,8 @@
   touch-action: pan-y;
   opacity: 0;
   transition: opacity 1.05s ease;
-  mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.22) 24%, rgb(0 0 0 / 0.7) 52%, #000 72%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.22) 24%, rgb(0 0 0 / 0.7) 52%, #000 72%);
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.55) 0, rgb(0 0 0 / 0.88) 18%, #000 42%);
+  -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.55) 0, rgb(0 0 0 / 0.88) 18%, #000 42%);
 }
 
 .ws[data-phase="ready"] .ws__canvas {
@@ -673,8 +672,8 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__canvas {
-    mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.2) 26%, rgb(0 0 0 / 0.65) 54%, #000 76%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.2) 26%, rgb(0 0 0 / 0.65) 54%, #000 76%);
+    mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.5) 0, rgb(0 0 0 / 0.86) 20%, #000 46%);
+    -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.5) 0, rgb(0 0 0 / 0.86) 20%, #000 46%);
   }
 
   .ws__stage::after {
@@ -682,7 +681,7 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__stage::before {
-    height: 70%;
+    height: 32%;
   }
 
   .ws__label {

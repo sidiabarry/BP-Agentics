@@ -1,8 +1,9 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  --leave: clamp(0, calc((var(--p) - 0.76) / 0.24), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 78%, #0b1a27);
+  /* Nachtwäsche spät und himmelblau — kein Navy-Klotz über der Ruhepose. */
+  --leave: clamp(0, calc((var(--p) - 0.9) / 0.16), 1);
+  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 94%, #0b1a27);
   background: var(--hero-exit, #82bbf0);
 }
 
@@ -25,10 +26,12 @@
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
   --sys: clamp(0, calc((var(--p) - 0.48) / 0.16), 1);
-  opacity: calc(var(--sys) * (1 - var(--leave)));
+  /* Ruhepose bleibt in die Werkstatt-Überlappung sichtbar, nicht mit --leave. */
+  --sys-out: clamp(0, calc((var(--p) - 0.97) / 0.05), 1);
+  opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
-/* Langer Farbfluss: Himmel → Mischton, nie ein Navy-Klotz. */
+/* Langer Farbfluss: Himmel bleibt sichtbar, Nacht nur als hauchdünne Wäsche. */
 .hero-portal[data-scroll-ready] .hero-portal__pin::after {
   content: "";
   position: absolute;
@@ -38,12 +41,12 @@
   background: linear-gradient(
     180deg,
     transparent 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 92%, #0b1a27) 28%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 86%, #0b1a27) 52%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 80%, #0b1a27) 76%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 96%, transparent) 22%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 88%, #0b1a27) 58%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 82%,
     var(--join) 100%
   );
-  opacity: var(--leave);
+  opacity: calc(var(--leave) * 0.42);
 }
 
 /* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */
