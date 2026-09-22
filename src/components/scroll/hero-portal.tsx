@@ -95,7 +95,7 @@ export function HeroPortal() {
       if (next < 0) return;
       const index = next;
       const img = new window.Image();
-      s.images[index] = img;
+      s.images[index] = img; // Platz reservieren, damit er nicht doppelt geladen wird
       s.inflight += 1;
       img.decoding = "async";
       img.onload = () => {
@@ -112,6 +112,7 @@ export function HeroPortal() {
     }
   }
 
+  /** Zeichnet den nächstbesten geladenen Frame, formatfüllend, mit Extra-Zoom. */
   function paint(canvas: HTMLCanvasElement, pin: HTMLElement, overdrive: number) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -177,6 +178,7 @@ export function HeroPortal() {
           <canvas ref={canvasRef} />
         </div>
 
+        {/* Das Display, das sich öffnet. */}
         <div className="hero-portal__portal" aria-hidden="true" />
 
         <div className="hero-portal__copy">
@@ -198,6 +200,7 @@ export function HeroPortal() {
           Scrollen
         </p>
 
+        {/* Ankunft: Iris, dann Überschrift von links, dann die untere Zeile. */}
         <div className="hero-portal__intro">
           <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
         </div>
