@@ -2,14 +2,15 @@
 
 .hero-portal[data-scroll-ready] {
   /* Blend already under the header: Himmel läuft langsam in Nacht, kein Messer. */
-  --leave: clamp(0, calc((var(--p) - 0.72) / 0.28), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 52%, #0b1a27);
+  --leave: clamp(0, calc((var(--p) - 0.58) / 0.36), 1);
+  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 28%, #0b1a27);
   background: linear-gradient(
     180deg,
     var(--hero-exit, #82bbf0) 0,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 36%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 58%, #0b1a27) 64%,
-    var(--join) 100%
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 62%, #0b1a27) 28%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 34%, #0b1a27) 58%,
+    var(--join) 82%,
+    #0b1a27 100%
   );
 }
 
@@ -30,6 +31,29 @@
   height: 100%;
 }
 
+.hero-portal[data-scroll-ready] .hero-portal__pin {
+  background: linear-gradient(
+    180deg,
+    var(--hero-exit, #82bbf0) 0,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 55%, #0b1a27) 36%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 22%, #0b1a27) 68%,
+    #0b1a27 100%
+  );
+  box-shadow: inset 0 -22rem 12rem -1rem #0b1a27;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__portal {
+  z-index: 1;
+  background: radial-gradient(
+    circle at 42% 34%,
+    #d9ecfc 0%,
+    #7cbcf1 22%,
+    color-mix(in srgb, #2288d8 50%, #0b1a27) 48%,
+    color-mix(in srgb, #0b5ea8 35%, #0b1a27) 72%,
+    #0b1a27 100%
+  );
+}
+
 .hero-portal[data-scroll-ready] .hero-portal__system {
   --sys: clamp(0, calc((var(--p) - 0.48) / 0.16), 1);
   /* Ruhepose bleibt in die Werkstatt-Überlappung sichtbar, nicht mit --leave. */
@@ -42,17 +66,17 @@
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 55%, transparent) 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 70%, #0b1a27) 22%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 42%, #0b1a27) 52%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 18%, #0b1a27) 78%,
+    transparent 0%,
+    transparent 38%,
+    color-mix(in srgb, #0b1a27 28%, transparent) 62%,
+    color-mix(in srgb, #0b1a27 72%, var(--hero-exit, #82bbf0)) 84%,
     #0b1a27 100%
   );
-  opacity: calc(0.28 + var(--leave) * 0.55);
+  opacity: 1;
 }
 
 /* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */

@@ -35,12 +35,11 @@
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ws-portal) 62%, var(--ws-night)) 0,
-      var(--ws-join) 28svh,
-      color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 58svh,
-      color-mix(in srgb, var(--ws-portal) 16%, var(--ws-night)) 96svh,
-      color-mix(in srgb, var(--ws-portal) 7%, var(--ws-night)) 140svh,
-      var(--ws-night) 188svh
+      color-mix(in srgb, var(--ws-portal) 38%, var(--ws-night)) 0,
+      var(--ws-join) 32svh,
+      color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 64svh,
+      color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 110svh,
+      var(--ws-night) 168svh
     ),
     var(--ws-night);
 }
@@ -107,9 +106,9 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--ws-portal) 48%, transparent) 0,
-    color-mix(in srgb, var(--ws-portal) 22%, transparent) 36%,
-    color-mix(in srgb, var(--ws-night) 8%, transparent) 70%,
+    color-mix(in srgb, var(--ws-portal) 36%, transparent) 0,
+    color-mix(in srgb, var(--ws-portal) 16%, transparent) 42%,
+    color-mix(in srgb, var(--ws-night) 10%, transparent) 74%,
     transparent 100%
   );
 }
