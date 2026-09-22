@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Source_Sans_3, Sora } from "next/font/google";
+import { Source_Sans_3, Sora } from "next/font/google";
 import { JsonLd } from "@/components/json-ld";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -17,14 +17,6 @@ const sourceSans = Source_Sans_3({
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: "400",
-  style: "italic",
   display: "swap",
 });
 
@@ -76,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="de"
-      className={`${sourceSans.variable} ${sora.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F3EFE6] text-[#14161C]">
         <a
