@@ -19,16 +19,16 @@ const LINKS: Array<[number, number]> = [
   [2, 0],
 ];
 
-/** Start links außerhalb, VIA quer durchs Feld (näher an der Kamera), REST lesbar. */
+/** Start knapp links außerhalb, VIA quer durchs Feld, REST lesbar (nicht auf der Typo). */
 const START_WIDE: Vec3[] = [
-  [-4.55, 1.58, 1.25],
-  [-5.15, 0.32, 0.62],
-  [-4.2, -1.28, 1.05],
+  [-3.85, 1.42, 1.12],
+  [-4.2, 0.22, 0.52],
+  [-3.55, -1.12, 0.92],
 ];
 const VIA_WIDE: Vec3[] = [
-  [-0.28, 0.92, 1.55],
-  [0.22, 0.18, 1.05],
-  [-0.42, -0.22, 1.32],
+  [-0.12, 0.88, 1.48],
+  [0.58, 0.1, 1.02],
+  [0.08, -0.28, 1.22],
 ];
 const REST_WIDE: Vec3[] = [
   [0.72, 0.48, 0.16],
@@ -37,14 +37,14 @@ const REST_WIDE: Vec3[] = [
 ];
 
 const START_NARROW: Vec3[] = [
-  [-2.95, 1.12, 1.15],
-  [-3.25, 0.18, 0.52],
-  [-2.7, -1.02, 0.98],
+  [-1.58, 0.92, 1.02],
+  [-1.78, 0.1, 0.46],
+  [-1.42, -0.82, 0.88],
 ];
 const VIA_NARROW: Vec3[] = [
-  [-0.82, 0.48, 1.22],
-  [0.08, 0.1, 0.78],
-  [-0.32, -0.18, 1.05],
+  [-0.18, 0.4, 1.12],
+  [0.28, 0.06, 0.7],
+  [0.02, -0.2, 0.95],
 ];
 const REST_NARROW: Vec3[] = [
   [-0.62, 0.26, 0.12],
@@ -52,8 +52,8 @@ const REST_NARROW: Vec3[] = [
   [0.06, -0.5, 0.16],
 ];
 
-const STAGGER = 0.1;
-const FLIGHT = 0.8;
+const STAGGER = 0.07;
+const FLIGHT = 0.82;
 
 function hasWebGL() {
   try {
