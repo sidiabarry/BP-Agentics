@@ -278,8 +278,7 @@
   opacity: clamp(0, calc(var(--open) * 5), 1);
   transform: scale(calc(0.3 + var(--open) * 2.5));
   border-radius: calc(50% - var(--open) * 30%);
-  /* Lichtblüte in der Iris — hellste Mitte, dann wieder ruhiges Blau. */
-  filter: brightness(calc(1 + 0.5 * 4 * var(--open) * (1 - var(--open))));
+  filter: none;
 }
 
 /* Editorial: Feld steht, Überschrift wischt von links, Zeile steigt danach. */
@@ -1341,7 +1340,7 @@
 
 @media (max-width: 700px) {
   .hero-portal {
-    --header-offset: 4.15rem;
+    --header-offset: calc(4.75rem + env(safe-area-inset-top, 0px));
     z-index: 0;
   }
 
@@ -1411,21 +1410,21 @@
   }
 
   .hero-portal__intro {
-    top: 0.7rem;
+    top: 1rem;
     left: 1rem;
-    right: 1rem;
+    right: 1.15rem;
     max-width: none;
   }
 
   .hero-portal__intro h2 {
-    max-width: 11.5em;
-    font-size: clamp(1.55rem, 8vw, 1.9rem);
+    max-width: 14em;
+    font-size: clamp(1.38rem, 6.8vw, 1.78rem);
   }
 
   .hero-portal__arrival {
-    padding-bottom: 5.5svh;
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
     padding-left: 1rem;
-    padding-right: 4.75rem;
+    padding-right: 1rem;
   }
 
   .hero-portal__arrival-kicker {
