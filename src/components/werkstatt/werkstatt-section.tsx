@@ -10,8 +10,9 @@ import "./werkstatt.css";
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Bewusst ohne Scroll-Pinning. Beim Eintritt dämpft useSoftScrollHold Wheel
- * und Touch für 1,5 s — kein Schloss, kein overflow:hidden auf html/body.
+ * Bewusst ohne Scroll-Pinning. Beim Eintritt der Bühne dämpft
+ * useSoftScrollHold Wheel und Touch etwa 1 s — kein Schloss, kein
+ * overflow:hidden auf html/body. Offene Station: kein Halt.
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
@@ -87,7 +88,7 @@ export function WerkstattSection() {
   const detail = stations[shown];
   const next = nextStation(shown);
 
-  useSoftScrollHold(sectionRef, { enabled: !open });
+  useSoftScrollHold(stageRef, { enabled: !open });
 
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
