@@ -96,21 +96,11 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let enhanced = false;
-    let last = -1;
+    let target = 0;
+    let shown = -1;
+    let chase = 0;
 
-    const read = () => {
-      if (!enhanced) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const mode = opts.current.mode ?? "pin";
-      const p =
-        mode === "pin"
-          ? clamp01(-rect.top / Math.max(1, el.offsetHeight - vh))
-          : clamp01((vh - rect.top) / Math.max(1, vh + rect.height));
-
-      if (p === last) return;
-      last = p;
-
+    const apply = (p: number) => {
       el.style.setProperty("--p", p.toFixed(4));
       const extra = opts.current.vars?.(p);
       if (extra) {
@@ -119,12 +109,45 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
       opts.current.onFrame?.(p, el);
     };
 
+    const tick = () => {
+      chase = 0;
+      if (!enhanced) return;
+      if (shown < 0) {
+        shown = target;
+        apply(shown);
+        return;
+      }
+      const gap = target - shown;
+      if (Math.abs(gap) < 0.0008) {
+        if (shown !== target) {
+          shown = target;
+          apply(shown);
+        }
+        return;
+      }
+      shown += gap * 0.2;
+      apply(shown);
+      chase = requestAnimationFrame(tick);
+    };
+
+    const read = () => {
+      if (!enhanced) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const mode = opts.current.mode ?? "pin";
+      target =
+        mode === "pin"
+          ? clamp01(-rect.top / Math.max(1, el.offsetHeight - vh))
+          : clamp01((vh - rect.top) / Math.max(1, vh + rect.height));
+      if (!chase) chase = requestAnimationFrame(tick);
+    };
+
     const configure = () => {
       const next =
         !reduced.matches && window.innerHeight >= (opts.current.minHeight ?? 560);
       if (next !== enhanced) {
         enhanced = next;
-        last = -1;
+        shown = -1;
         if (enhanced) {
           el.setAttribute("data-scroll-ready", "");
         } else {
@@ -146,6 +169,7 @@ export function useScrollScene<T extends HTMLElement>(options: SceneOptions = {}
 
     return () => {
       readers.delete(read);
+      if (chase) cancelAnimationFrame(chase);
       window.removeEventListener("resize", configure);
       window.removeEventListener("orientationchange", configure);
       reduced.removeEventListener("change", configure);
