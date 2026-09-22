@@ -10,9 +10,9 @@ import "./werkstatt.css";
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Bewusst ohne Scroll-Pinning. Beim Eintritt der Bühne dämpft
- * useSoftScrollHold Wheel und Touch etwa 1 s — kein Schloss, kein
- * overflow:hidden auf html/body. Offene Station: kein Halt.
+ * Bewusst ohne Scroll-Pinning. Halt erst, wenn Tisch, Stationen 01–03
+ * und Preiskarten gemeinsam im Bild sind — nicht in der blauen Ankunft.
+ * useSoftScrollHold dämpft Wheel und Touch etwa 1 s. Offene Station: kein Halt.
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *

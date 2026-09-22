@@ -3,9 +3,10 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 /**
- * Weicher Halt an der Werkstatt-Bühne: etwa 1 s stark dämpfen
- * (kein Pin, kein overflow:hidden, keine Falle). Einmal pro Eintritt.
- * Offene Station: kein Halt. Tastatur bleibt frei.
+ * Weicher Halt erst an der ruhenden Übersicht: volle Bühne (01–03),
+ * Etiketten und Preiskarten darunter. Kein Halt in der blauen Ankunft
+ * und kein Halt, solange nur der obere Rand des Tisches zu sehen ist.
+ * Etwa 1 s dämpfen, kein Pin. Offene Station: kein Halt.
  */
 
 const HOLD_MS = 1000;
@@ -32,26 +33,56 @@ function dampAt(holdStart: number) {
   return DAMP_START + (DAMP_END - DAMP_START) * eased;
 }
 
-function stageArrived(rect: DOMRectReadOnly) {
-  const header = headerPx();
-  const vh = window.innerHeight;
-  return rect.top <= header + vh * 0.38 && rect.bottom > header + 80;
+function listEl(stage: HTMLElement) {
+  return stage.parentElement?.querySelector<HTMLElement>(".ws__list") ?? null;
 }
 
-function stageClearlyAway(rect: DOMRectReadOnly) {
+function heroStillInFrame(header: number) {
+  const hero = document.querySelector(".hero-portal");
+  if (!(hero instanceof HTMLElement)) return false;
+  return hero.getBoundingClientRect().bottom > header + 20;
+}
+
+/** Volle Werkstatt-Übersicht: Tisch, 01–03, Preiskarten. Nicht die Ankunft. */
+function overviewParked(stage: HTMLElement) {
   const header = headerPx();
   const vh = window.innerHeight;
-  return rect.bottom < header - 24 || rect.top > vh * 0.82;
+  if (heroStillInFrame(header)) return false;
+
+  const s = stage.getBoundingClientRect();
+  const list = listEl(stage)?.getBoundingClientRect();
+  if (!list) return false;
+
+  if (s.top > header + 18) return false;
+  if (s.bottom < header + Math.min(s.height * 0.62, vh * 0.48)) return false;
+  if (list.top > vh - 20) return false;
+  if (list.top < header + 8) return false;
+  return true;
+}
+
+function overviewClearlyAway(stage: HTMLElement) {
+  const header = headerPx();
+  const vh = window.innerHeight;
+  const s = stage.getBoundingClientRect();
+  const list = listEl(stage)?.getBoundingClientRect();
+  if (heroStillInFrame(header)) return true;
+  if (s.top > vh * 0.55) return true;
+  if (s.bottom < header + 40) return true;
+  if (list && list.bottom < header - 16) return true;
+  return false;
 }
 
 function mark(el: HTMLElement | null, on: boolean, at = 0) {
   if (!el) return;
+  const section = el.closest<HTMLElement>("#werkstatt");
   if (on) {
     el.setAttribute("data-ws-hold", "on");
     el.setAttribute("data-ws-hold-at", String(Math.round(at)));
+    section?.setAttribute("data-ws-hold", "on");
   } else {
     el.removeAttribute("data-ws-hold");
     el.removeAttribute("data-ws-hold-at");
+    section?.removeAttribute("data-ws-hold");
   }
 }
 
@@ -112,7 +143,7 @@ export function useSoftScrollHold(
       const el = stage();
       if (!el || !enabledRef.current || !armed || holding) return;
       if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
-      if (!stageArrived(el.getBoundingClientRect())) return;
+      if (!overviewParked(el)) return;
       armed = false;
       holding = true;
       holdStart = performance.now();
@@ -127,8 +158,7 @@ export function useSoftScrollHold(
       if (!el) return;
       if (holding) return;
       if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
-      const rect = el.getBoundingClientRect();
-      if (stageClearlyAway(rect)) {
+      if (overviewClearlyAway(el)) {
         armed = true;
         releasedAt = 0;
         return;
@@ -207,10 +237,12 @@ export function useSoftScrollHold(
       observer?.disconnect();
       const header = headerPx();
       observer = new IntersectionObserver(inspect, {
-        rootMargin: `-${Math.round(header)}px 0px -36% 0px`,
-        threshold: [0, 0.08, 0.2, 0.35],
+        rootMargin: `-${Math.round(header)}px 0px 0px 0px`,
+        threshold: [0, 0.15, 0.4, 0.7, 1],
       });
       observer.observe(el);
+      const cards = listEl(el);
+      if (cards) observer.observe(cards);
       bound = el;
     };
 
