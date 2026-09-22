@@ -93,7 +93,6 @@ export function WerkstattSection() {
     controllerRef.current?.goTo(target);
   }, []);
 
-  // --- Szene starten ----------------------------------------------------
   const start = useCallback(async () => {
     if (startedRef.current) return;
     const host = hostRef.current;
@@ -148,7 +147,6 @@ export function WerkstattSection() {
     }
   }, []);
 
-  // Bei Fallback die Szene abbauen: Standbild und Liste bleiben.
   useEffect(() => {
     if (phase !== "fallback") return;
     controllerRef.current?.dispose();
@@ -164,7 +162,6 @@ export function WerkstattSection() {
     };
   }, []);
 
-  // --- Laden kurz vor dem Sichtbarwerden, Rendern nur solange sichtbar ---
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -172,7 +169,6 @@ export function WerkstattSection() {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         near.disconnect();
-        // Datensparmodus: erst nach ausdrücklichem Tippen laden.
         if (prefersSaveData()) setNeedsConsent(true);
         else void start();
       },
@@ -181,7 +177,6 @@ export function WerkstattSection() {
     const seen = new IntersectionObserver(
       ([entry]) => {
         inViewRef.current = entry.isIntersecting;
-        // Direkt am DOM, ohne Re-Render: blendet den WhatsApp-Knopf über der Bühne aus.
         sectionRef.current?.toggleAttribute("data-stage-visible", entry.isIntersecting);
         const controller = controllerRef.current;
         if (!controller) return;
@@ -198,7 +193,6 @@ export function WerkstattSection() {
     };
   }, [start]);
 
-  // --- Bewegung reduzieren (Systemeinstellung) ---------------------------
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => controllerRef.current?.setReduced(mq.matches);
@@ -206,7 +200,6 @@ export function WerkstattSection() {
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  // --- Freie Bildfläche an die Kamera melden ------------------------------
   useEffect(() => {
     const stage = stageRef.current;
     const sheet = sheetRef.current;
@@ -228,7 +221,6 @@ export function WerkstattSection() {
     return () => ro.disconnect();
   }, [open, phase]);
 
-  // --- Fokus: nur wenn die Bedienung aus der Sektion kam (Tastatur/Buttons)
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || !section.contains(document.activeElement)) return;
@@ -236,8 +228,6 @@ export function WerkstattSection() {
     else labelRefs.current[shown]?.focus({ preventScroll: true });
   }, [open, shown]);
 
-  // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
-  // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -266,12 +256,9 @@ export function WerkstattSection() {
       className="ws"
       data-view={view}
       data-phase={phase}
-      aria-labelledby="ws-title"
+      aria-label="Die Werkstatt"
     >
       <div className="ws__stage" ref={stageRef}>
-        <h2 id="ws-title" className="ws__title">
-          Die Werkstatt
-        </h2>
         <picture className="ws__poster">
           <source media="(max-width: 799px)" type="image/webp" srcSet={`${POSTER}-mobile.webp`} />
           <source media="(max-width: 799px)" srcSet={`${POSTER}-mobile.jpg`} />
