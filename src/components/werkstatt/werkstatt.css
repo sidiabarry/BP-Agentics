@@ -20,7 +20,7 @@
   --ws-action-hover: #1576c4;
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-  --ws-pad-top: 0.35rem;
+  --ws-pad-top: 0;
   --ws-pad-bottom: max(5.5rem, 14svh);
   --ws-gap: 2rem;
   --ws-join: color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night));
@@ -35,8 +35,8 @@
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ws-portal) 38%, var(--ws-night)) 0,
-      var(--ws-join) 32svh,
+      color-mix(in srgb, var(--ws-portal) 42%, var(--ws-night)) 0,
+      var(--ws-join) 22svh,
       color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 64svh,
       color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 110svh,
       var(--ws-night) 168svh
@@ -44,21 +44,20 @@
     var(--ws-night);
 }
 
-/* Statischer Farbfluss in den Header — kein Hochziehen, keine Maske. */
+/* Anschluss nur in den Header — keine Wäsche über der Wandmarke. */
 .ws::before {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   top: calc(-1 * var(--ws-header));
-  height: calc(var(--ws-header) + 46svh);
+  height: calc(var(--ws-header) + 10svh);
   z-index: 0;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 0,
-    color-mix(in srgb, var(--ws-portal) 42%, transparent) 34%,
-    color-mix(in srgb, var(--ws-portal) 16%, transparent) 68%,
+    color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night)) 0,
+    color-mix(in srgb, var(--ws-portal) 22%, transparent) 55%,
     transparent 100%
   );
 }
@@ -88,27 +87,26 @@
 .ws__stage {
   position: relative;
   flex: 0 1 auto;
-  height: min(68svh, calc(100svh - var(--ws-header) - 12.75rem), 720px);
-  min-height: 28rem;
+  height: min(78svh, calc(100svh - var(--ws-header) - 8.5rem), 820px);
+  min-height: 30rem;
   overflow: hidden;
   background: transparent;
   color: var(--ws-paper);
   isolation: isolate;
 }
 
-/* Weiche Wäsche über der 3D-Bühne: Himmel sickert in die Nacht, Etiketten bleiben oben. */
+/* Kurzer Saum unter dem Header — BP AGENTICS bleibt lesbar. */
 .ws__stage::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: 62%;
+  height: 14%;
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--ws-portal) 36%, transparent) 0,
-    color-mix(in srgb, var(--ws-portal) 16%, transparent) 42%,
-    color-mix(in srgb, var(--ws-night) 10%, transparent) 74%,
+    color-mix(in srgb, var(--ws-portal) 16%, transparent) 0,
+    color-mix(in srgb, var(--ws-night) 8%, transparent) 55%,
     transparent 100%
   );
 }
@@ -660,13 +658,17 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   pointer-events: none;
 }
 
-/* Header sitzt im selben Fluss: kein Papiermesser auf Nacht. */
+/* Header bleibt flach: kein Blau-Band über der Wandmarke. */
 body:has(#werkstatt[data-stage-visible]) header {
-  background: color-mix(in srgb, var(--hero-exit, #82bbf0) 36%, #f3efe6);
-  border-bottom-color: color-mix(in srgb, var(--hero-exit, #82bbf0) 18%, transparent);
-  box-shadow:
-    0 14rem 10rem -2rem color-mix(in srgb, var(--hero-exit, #82bbf0) 38%, transparent),
-    0 28rem 16rem -4rem color-mix(in srgb, #0b1a27 22%, transparent);
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 42%, #0b1a27) 28%,
+    #f3efe6
+  );
+  border-bottom-color: color-mix(in srgb, var(--hero-exit, #82bbf0) 10%, transparent);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* --- Handy und schmale Tablets --------------------------------------------- */
@@ -674,14 +676,14 @@ body:has(#werkstatt[data-stage-visible]) header {
 @media (max-width: 799px) {
   .ws {
     --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-    --ws-pad-top: 0.25rem;
+    --ws-pad-top: 0;
     --ws-pad-bottom: max(4.5rem, 12svh);
     --ws-gap: 1.25rem;
   }
 
   .ws__stage {
-    height: min(40svh, calc(100svh - var(--ws-header) - 20.5rem));
-    min-height: 16rem;
+    height: min(48svh, calc(100svh - var(--ws-header) - 16rem));
+    min-height: 18rem;
   }
 
   .ws__label {
