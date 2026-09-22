@@ -16,21 +16,21 @@
    ruhige, vollständige Fassung zurück — nie auf eine leere Fläche.
    ========================================================================== */
 
-@property --p    { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --s1   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --s2   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --s3   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --s4   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --f1   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --f2   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --f3   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --f4   { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --f    { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 1; }
-@property --i    { syntax: "\u003cnumber\u003e"; inherits: false; initial-value: 0; }
-@property --intro{ syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 1; }
-@property --rail { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 0; }
-@property --shell-wn { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 44; }
-@property --shell-hn { syntax: "\u003cnumber\u003e"; inherits: true; initial-value: 27.5; }
+@property --p    { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --s4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f1   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f2   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f3   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f4   { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f    { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --i    { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --intro{ syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --rail { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --shell-wn { syntax: "<number>"; inherits: true; initial-value: 44; }
+@property --shell-hn { syntax: "<number>"; inherits: true; initial-value: 27.5; }
 
 .hero-portal,
 .machine {
@@ -714,7 +714,7 @@
 .site__h1,
 .site__h2,
 .site__cta,
-.site__grid \u003e span {
+.site__grid > span {
   --in: 1;
 }
 
@@ -723,7 +723,7 @@
 .machine[data-scroll-ready] .site__h1,
 .machine[data-scroll-ready] .site__h2,
 .machine[data-scroll-ready] .site__cta,
-.machine[data-scroll-ready] .site__grid \u003e span {
+.machine[data-scroll-ready] .site__grid > span {
   --in: clamp(0, calc((var(--s1) - 0.06 - var(--i) * 0.07) * 14), 1);
   opacity: var(--in);
   transform: translate3d(0, calc((1 - var(--in)) * 10px), 0);
@@ -814,7 +814,7 @@
   min-height: 3.2rem;
 }
 
-.site__grid \u003e span {
+.site__grid > span {
   border-radius: 6px;
   background: #d5e0ea;
 }
