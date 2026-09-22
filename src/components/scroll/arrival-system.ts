@@ -267,6 +267,8 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
 
     group.rotation.y = Math.sin(time * 0.09) * 0.035;
     group.rotation.x = Math.sin(time * 0.07) * 0.018;
+    host.dataset.cx = cx.toFixed(3);
+    host.dataset.tide = tide.toFixed(3);
   }
 
   function frame(ms: number) {
