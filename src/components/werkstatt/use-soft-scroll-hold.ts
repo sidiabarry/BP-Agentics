@@ -43,10 +43,15 @@ function stageClearlyAway(rect: DOMRectReadOnly) {
   return rect.bottom < header - 24 || rect.top > vh * 0.82;
 }
 
-function mark(el: HTMLElement | null, on: boolean) {
+function mark(el: HTMLElement | null, on: boolean, at = 0) {
   if (!el) return;
-  if (on) el.setAttribute("data-ws-hold", "on");
-  else el.removeAttribute("data-ws-hold");
+  if (on) {
+    el.setAttribute("data-ws-hold", "on");
+    el.setAttribute("data-ws-hold-at", String(Math.round(at)));
+  } else {
+    el.removeAttribute("data-ws-hold");
+    el.removeAttribute("data-ws-hold-at");
+  }
 }
 
 export function useSoftScrollHold(
@@ -66,7 +71,7 @@ export function useSoftScrollHold(
     let holding = false;
     let holdStart = 0;
     let holdTimer = 0;
-    let raf = 0;
+    let pulse = 0;
     let lastTouchY = 0;
     let expectedY = 0;
     let syncing = false;
@@ -85,21 +90,19 @@ export function useSoftScrollHold(
         window.clearTimeout(holdTimer);
         holdTimer = 0;
       }
-      if (raf) {
-        window.cancelAnimationFrame(raf);
-        raf = 0;
+      if (pulse) {
+        window.clearInterval(pulse);
+        pulse = 0;
       }
     };
 
     const tick = () => {
-      raf = 0;
       if (!holding || cancelled) return;
       if (performance.now() - holdStart >= HOLD_MS) {
         release();
         return;
       }
       restrain();
-      raf = window.requestAnimationFrame(tick);
     };
 
     const begin = () => {
@@ -110,9 +113,9 @@ export function useSoftScrollHold(
       holding = true;
       holdStart = performance.now();
       expectedY = window.scrollY;
-      mark(el, true);
+      mark(el, true, holdStart);
       holdTimer = window.setTimeout(release, HOLD_MS);
-      if (!raf) raf = window.requestAnimationFrame(tick);
+      if (!pulse) pulse = window.setInterval(tick, 16);
     };
 
     const inspect = () => {
