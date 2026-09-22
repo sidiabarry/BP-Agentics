@@ -66,6 +66,7 @@ export function useSoftScrollHold(
     let holding = false;
     let holdStart = 0;
     let holdTimer = 0;
+    let raf = 0;
     let lastTouchY = 0;
     let expectedY = 0;
     let syncing = false;
@@ -84,6 +85,21 @@ export function useSoftScrollHold(
         window.clearTimeout(holdTimer);
         holdTimer = 0;
       }
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+
+    const tick = () => {
+      raf = 0;
+      if (!holding || cancelled) return;
+      if (performance.now() - holdStart >= HOLD_MS) {
+        release();
+        return;
+      }
+      restrain();
+      raf = window.requestAnimationFrame(tick);
     };
 
     const begin = () => {
@@ -96,15 +112,16 @@ export function useSoftScrollHold(
       expectedY = window.scrollY;
       mark(el, true);
       holdTimer = window.setTimeout(release, HOLD_MS);
+      if (!raf) raf = window.requestAnimationFrame(tick);
     };
 
     const inspect = () => {
       const el = stage();
       if (!el) return;
+      if (holding) return;
       const rect = el.getBoundingClientRect();
       if (stageClearlyAway(rect)) {
         armedRef.current = true;
-        release();
         return;
       }
       if (enabledRef.current) begin();
