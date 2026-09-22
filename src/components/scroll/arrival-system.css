@@ -15,7 +15,7 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
-  --sys: clamp(0, calc((var(--p) - 0.58) / 0.2), 1);
+  --sys: clamp(0, calc((var(--p) - 0.56) / 0.08), 1);
   opacity: var(--sys);
 }
 

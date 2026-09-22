@@ -83,7 +83,7 @@ export function HeroPortal() {
       pump(kind);
 
       if (p > 0.48) bootArrival();
-      systemProgress.current = smooth(range(p, 0.58, 0.98));
+      systemProgress.current = range(p, 0.58, 0.97);
       systemRef.current?.setProgress(systemProgress.current);
 
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
