@@ -1,10 +1,16 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  /* Nachtwäsche spät und himmelblau — kein Navy-Klotz über der Ruhepose. */
-  --leave: clamp(0, calc((var(--p) - 0.9) / 0.16), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 94%, #0b1a27);
-  background: var(--hero-exit, #82bbf0);
+  /* Blend already under the header: Himmel läuft langsam in Nacht, kein Messer. */
+  --leave: clamp(0, calc((var(--p) - 0.72) / 0.28), 1);
+  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 52%, #0b1a27);
+  background: linear-gradient(
+    180deg,
+    var(--hero-exit, #82bbf0) 0,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 36%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 58%, #0b1a27) 64%,
+    var(--join) 100%
+  );
 }
 
 .hero-portal__system {
@@ -31,7 +37,7 @@
   opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
-/* Langer Farbfluss: Himmel bleibt sichtbar, Nacht nur als hauchdünne Wäsche. */
+/* Langer Farbfluss, oben schon unter dem Header, unten in Tinte. */
 .hero-portal[data-scroll-ready] .hero-portal__pin::after {
   content: "";
   position: absolute;
@@ -40,13 +46,13 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    transparent 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 96%, transparent) 22%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 88%, #0b1a27) 58%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 82%,
-    var(--join) 100%
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 55%, transparent) 0%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 70%, #0b1a27) 22%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 42%, #0b1a27) 52%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 18%, #0b1a27) 78%,
+    #0b1a27 100%
   );
-  opacity: calc(var(--leave) * 0.42);
+  opacity: calc(0.28 + var(--leave) * 0.55);
 }
 
 /* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */

@@ -20,10 +20,10 @@
   --ws-action-hover: #1576c4;
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-  --ws-pad-top: 1.25rem;
+  --ws-pad-top: 0.35rem;
   --ws-pad-bottom: max(12rem, 30svh);
   --ws-gap: 2rem;
-  --ws-join: color-mix(in srgb, var(--ws-portal) 92%, var(--ws-night));
+  --ws-join: color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,15 +35,33 @@
   background:
     linear-gradient(
       180deg,
-      var(--ws-portal) 0,
-      var(--ws-join) 22svh,
-      color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 48svh,
-      color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night)) 78svh,
-      color-mix(in srgb, var(--ws-portal) 26%, var(--ws-night)) 110svh,
-      color-mix(in srgb, var(--ws-portal) 12%, var(--ws-night)) 142svh,
+      color-mix(in srgb, var(--ws-portal) 62%, var(--ws-night)) 0,
+      var(--ws-join) 28svh,
+      color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 58svh,
+      color-mix(in srgb, var(--ws-portal) 16%, var(--ws-night)) 96svh,
+      color-mix(in srgb, var(--ws-portal) 7%, var(--ws-night)) 140svh,
       var(--ws-night) 188svh
     ),
     var(--ws-night);
+}
+
+/* Statischer Farbfluss in den Header — kein Hochziehen, keine Maske. */
+.ws::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--ws-header));
+  height: calc(var(--ws-header) + 46svh);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 0,
+    color-mix(in srgb, var(--ws-portal) 42%, transparent) 34%,
+    color-mix(in srgb, var(--ws-portal) 16%, transparent) 68%,
+    transparent 100%
+  );
 }
 
 /* Übergang in die helle Folgesektion — wie bei der früheren LeistungsMaschine. */
@@ -77,6 +95,23 @@
   background: transparent;
   color: var(--ws-paper);
   isolation: isolate;
+}
+
+/* Weiche Wäsche über der 3D-Bühne: Himmel sickert in die Nacht, Etiketten bleiben oben. */
+.ws__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 62%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ws-portal) 48%, transparent) 0,
+    color-mix(in srgb, var(--ws-portal) 22%, transparent) 36%,
+    color-mix(in srgb, var(--ws-night) 8%, transparent) 70%,
+    transparent 100%
+  );
 }
 
 .ws__poster,
@@ -618,12 +653,21 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   pointer-events: none;
 }
 
+/* Header sitzt im selben Fluss: kein Papiermesser auf Nacht. */
+body:has(#werkstatt[data-stage-visible]) header {
+  background: color-mix(in srgb, var(--hero-exit, #82bbf0) 36%, #f3efe6);
+  border-bottom-color: color-mix(in srgb, var(--hero-exit, #82bbf0) 18%, transparent);
+  box-shadow:
+    0 14rem 10rem -2rem color-mix(in srgb, var(--hero-exit, #82bbf0) 38%, transparent),
+    0 28rem 16rem -4rem color-mix(in srgb, #0b1a27 22%, transparent);
+}
+
 /* --- Handy und schmale Tablets --------------------------------------------- */
 
 @media (max-width: 799px) {
   .ws {
     --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-    --ws-pad-top: 0.85rem;
+    --ws-pad-top: 0.25rem;
     --ws-pad-bottom: max(9rem, 28svh);
     --ws-gap: 1.25rem;
   }
