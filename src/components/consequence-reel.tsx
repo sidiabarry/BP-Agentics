@@ -17,26 +17,6 @@ function motionSnapshot() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function OfficeStamp({ time, caption }: { time: string; caption: string }) {
-  const [day, clock] = time.split(/\s+/, 2);
-
-  return (
-    <div className="pointer-events-none absolute inset-0 z-10">
-      <div className="absolute bottom-[10%] left-4 max-w-[13.5rem] sm:bottom-[12%] sm:left-6 sm:max-w-[17rem] md:left-8 md:max-w-[20rem]">
-        <p className="font-heading text-[0.7rem] tracking-[0.32em] text-white/80 uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] sm:text-sm md:text-base">
-          {day}
-        </p>
-        <p className="font-heading mt-0.5 text-4xl leading-none font-semibold tracking-[-0.04em] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] sm:text-5xl md:text-6xl">
-          {clock}
-        </p>
-        <p className="mt-3 max-w-[16ch] text-base leading-snug text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] sm:mt-4 sm:max-w-[20ch] sm:text-lg md:text-xl">
-          {caption}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function ConsequenceReel({
   activeIndex,
   onIndexChange,
@@ -196,7 +176,6 @@ export function ConsequenceReel({
             ))}
           </div>
         )}
-        <OfficeStamp time={slide.time} caption={slide.caption} />
       </div>
       <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
         <p className="text-[1.15rem] text-[#3A3D45]">{slide.caption}</p>

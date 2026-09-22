@@ -1,7 +1,7 @@
 /**
  * Werkstatt v6 — Leistungsübersicht als 3D-Studio.
  *
- * Aufbau: Kopf (Text) → Bühne (dunkles Studio mit Etiketten und Sheet) → Liste.
+ * Aufbau: Bühne (dunkles Studio mit Etiketten und Sheet) → Liste.
  * Übernimmt die Rolle der früheren LeistungsMaschine und damit auch ihren
  * Anschluss: Das Hellblau, in dem der Hero-Film endet (--hero-exit), läuft in
  * Tinte über; am Ende blendet die Sektion in Papier für die Problem-Sektion.
@@ -21,19 +21,30 @@
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
   --ws-pad-top: 1.25rem;
-  --ws-pad-bottom: 9rem;
+  --ws-pad-bottom: max(12rem, 30svh);
   --ws-gap: 2rem;
-  --ws-head-block: 10rem;
-  --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-head-block) + var(--ws-gap));
+  --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-gap));
+  --ws-join: color-mix(in srgb, var(--ws-portal) 78%, var(--ws-night));
+  --ws-join-shift: 32svh;
   position: relative;
   display: flex;
   flex-direction: column;
   overflow-x: clip;
   scroll-margin-top: var(--ws-header);
-  padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
+  margin-top: calc(-1 * var(--ws-join-shift));
+  padding: calc(var(--ws-pad-top) + var(--ws-join-shift)) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
   background:
-    linear-gradient(var(--ws-portal) 0, var(--ws-night) 26svh),
+    linear-gradient(
+      180deg,
+      var(--ws-join) 0,
+      color-mix(in srgb, var(--ws-portal) 64%, var(--ws-night)) 18svh,
+      color-mix(in srgb, var(--ws-portal) 46%, var(--ws-night)) 40svh,
+      color-mix(in srgb, var(--ws-portal) 28%, var(--ws-night)) 68svh,
+      color-mix(in srgb, var(--ws-portal) 14%, var(--ws-night)) 98svh,
+      color-mix(in srgb, var(--ws-portal) 5%, var(--ws-night)) 128svh,
+      var(--ws-night) 158svh
+    ),
     var(--ws-night);
 }
 
@@ -44,40 +55,16 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 7rem;
+  height: 28svh;
   pointer-events: none;
-  background: linear-gradient(transparent, var(--ws-paper));
-}
-
-/* --- Kopf ----------------------------------------------------------------- */
-
-.ws__head {
-  position: relative;
-  z-index: 2;
-  flex: 0 0 auto;
-  max-width: 58ch;
-  margin: 0 0 var(--ws-gap);
-  padding: 0 var(--ws-gutter);
-  box-sizing: content-box;
-  overflow: visible;
-}
-
-.ws__head h2 {
-  margin: 0 0 0.6rem;
-  font-family: var(--font-heading, var(--font-sora)), sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  overflow: visible;
-  color: #fff;
-}
-
-.ws__head p {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.5;
-  color: var(--ws-mist);
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    color-mix(in srgb, var(--ws-paper) 16%, transparent) 22%,
+    color-mix(in srgb, var(--ws-night) 58%, var(--ws-paper)) 48%,
+    color-mix(in srgb, var(--ws-night) 24%, var(--ws-paper)) 74%,
+    var(--ws-paper) 100%
+  );
 }
 
 /* --- Bühne ---------------------------------------------------------------- */
@@ -88,7 +75,7 @@
   flex: 0 1 auto;
   height: clamp(560px, 78svh, 780px);
   overflow: hidden;
-  background: var(--ws-night);
+  background: transparent;
   color: var(--ws-paper);
   isolation: isolate;
 }
@@ -106,12 +93,25 @@
 
 .ws__stage::before {
   top: 0;
-  background: linear-gradient(var(--ws-night), transparent);
+  height: 64%;
+  background: linear-gradient(
+    180deg,
+    var(--ws-join) 0,
+    color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 26%,
+    color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 58%,
+    transparent 100%
+  );
 }
 
 .ws__stage::after {
   bottom: 0;
-  background: linear-gradient(transparent, var(--ws-night));
+  height: 7.5rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    color-mix(in srgb, var(--ws-night) 38%, transparent) 48%,
+    var(--ws-night) 100%
+  );
 }
 
 .ws__poster,
@@ -137,7 +137,9 @@
   z-index: 1;
   touch-action: pan-y;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 1.05s ease;
+  mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.22) 24%, rgb(0 0 0 / 0.7) 52%, #000 72%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.22) 24%, rgb(0 0 0 / 0.7) 52%, #000 72%);
 }
 
 .ws[data-phase="ready"] .ws__canvas {
@@ -657,26 +659,30 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 
 @media (max-width: 799px) {
   .ws {
-    --ws-header: calc(4.5rem + env(safe-area-inset-top, 0px));
+    --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
     --ws-pad-top: 0.85rem;
-    --ws-pad-bottom: 7.5rem;
+    --ws-pad-bottom: max(9rem, 28svh);
     --ws-gap: 1.25rem;
-    --ws-head-block: 9.25rem;
-  }
-
-  .ws__head p {
-    font-size: 1.05rem;
+    --ws-join-shift: 36svh;
   }
 
   .ws__stage {
-    /* Kopf + Bühne im ersten Viewport: Header und Copy in --ws-chrome. */
-    height: min(52svh, calc(100svh - var(--ws-chrome)));
+    /* Header + Abstand in --ws-chrome. */
+    height: min(72svh, calc(100svh - var(--ws-chrome) - 1.25rem));
     min-height: 300px;
   }
 
-  .ws__stage::before,
+  .ws__canvas {
+    mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.2) 26%, rgb(0 0 0 / 0.65) 54%, #000 76%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, rgb(0 0 0 / 0.2) 26%, rgb(0 0 0 / 0.65) 54%, #000 76%);
+  }
+
   .ws__stage::after {
-    height: 3rem;
+    height: 6.5rem;
+  }
+
+  .ws__stage::before {
+    height: 70%;
   }
 
   .ws__label {

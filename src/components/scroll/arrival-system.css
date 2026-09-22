@@ -1,0 +1,138 @@
+/* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
+
+.hero-portal[data-scroll-ready] {
+  --leave: clamp(0, calc((var(--p) - 0.76) / 0.24), 1);
+  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 78%, #0b1a27);
+  background: var(--hero-exit, #82bbf0);
+}
+
+.hero-portal__system {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  contain: strict;
+}
+
+.hero-portal__system canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__system {
+  --sys: clamp(0, calc((var(--p) - 0.48) / 0.16), 1);
+  opacity: calc(var(--sys) * (1 - var(--leave)));
+}
+
+/* Langer Farbfluss: Himmel → Mischton, nie ein Navy-Klotz. */
+.hero-portal[data-scroll-ready] .hero-portal__pin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 92%, #0b1a27) 28%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 86%, #0b1a27) 52%,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 80%, #0b1a27) 76%,
+    var(--join) 100%
+  );
+  opacity: var(--leave);
+}
+
+/* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */
+.hero-portal[data-scroll-ready] .hero-portal__intro {
+  --head: clamp(0, calc((var(--p) - 0.7) / 0.14), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
+  opacity: calc(var(--head) * (1 - var(--type-out)));
+  clip-path: none;
+  transform: translate3d(0, calc((1 - var(--head)) * 0.35rem), 0);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__intro h2 {
+  letter-spacing: -0.035em;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival {
+  --rule: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
+  opacity: calc(var(--rule) * (1 - var(--type-out)));
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
+  --k: clamp(0, calc((var(--p) - 0.7) / 0.08), 1);
+  opacity: calc(var(--k) * 0.85);
+  letter-spacing: 0.2em;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival-line {
+  --ln: clamp(0, calc((var(--p) - 0.72) / 0.08), 1);
+  opacity: var(--ln);
+  clip-path: none;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__portal {
+  filter: none;
+}
+
+/* Bloom ohne filter:brightness — das hat die Iris jeden Tick neu gerastert. */
+.hero-portal[data-scroll-ready] .hero-portal__portal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at 42% 34%, #fff 0%, transparent 58%);
+  opacity: calc(0.4 * var(--open) * (1 - var(--open)));
+}
+
+/* WhatsApp sitzt sonst auf der unteren Zeile. */
+body:has(.hero-portal__pin[data-arrival]) [data-analytics="whatsapp-fab"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .hero-portal[data-scroll-ready] .hero-portal__intro {
+    top: 1rem;
+    left: 1rem;
+    right: 1.15rem;
+    max-width: none;
+  }
+
+  .hero-portal[data-scroll-ready] .hero-portal__intro h2 {
+    max-width: 14em;
+    font-size: clamp(1.38rem, 6.8vw, 1.78rem);
+  }
+
+  .hero-portal[data-scroll-ready] .hero-portal__arrival {
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero-portal[data-scroll-ready] .hero-portal__arrival-line {
+    font-size: clamp(1.02rem, 4.8vw, 1.28rem);
+    padding-bottom: 0.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portal__system {
+    display: none;
+  }
+
+  .hero-portal__intro,
+  .hero-portal__arrival {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+}

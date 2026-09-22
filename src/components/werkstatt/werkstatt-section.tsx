@@ -10,8 +10,9 @@ import "./werkstatt.css";
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Bewusst ohne Scroll-Pinning. Beim Eintritt dämpft useSoftScrollHold Wheel
- * und Touch für 1,5 s — kein Schloss, kein overflow:hidden auf html/body.
+ * Bewusst ohne Scroll-Pinning. Beim Eintritt der Bühne dämpft
+ * useSoftScrollHold Wheel und Touch etwa 1 s — kein Schloss, kein
+ * overflow:hidden auf html/body. Offene Station: kein Halt.
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
@@ -87,20 +88,7 @@ export function WerkstattSection() {
   const detail = stations[shown];
   const next = nextStation(shown);
 
-  useSoftScrollHold(sectionRef, { enabled: !open });
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const head = section?.querySelector<HTMLElement>(".ws__head");
-    if (!section || !head) return;
-    const write = () => {
-      section.style.setProperty("--ws-head-block", `${head.offsetHeight}px`);
-    };
-    write();
-    const ro = new ResizeObserver(write);
-    ro.observe(head);
-    return () => ro.disconnect();
-  }, []);
+  useSoftScrollHold(stageRef, { enabled: !open });
 
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
@@ -279,13 +267,8 @@ export function WerkstattSection() {
       className="ws"
       data-view={view}
       data-phase={phase}
-      aria-labelledby="ws-title"
+      aria-label="Die Werkstatt"
     >
-      <div className="ws__head">
-        <h2 id="ws-title">Was BP Agentics für Ihren Betrieb einrichten kann</h2>
-        <p>Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.</p>
-      </div>
-
       <div className="ws__stage" ref={stageRef}>
         <picture className="ws__poster">
           <source media="(max-width: 799px)" type="image/webp" srcSet={`${POSTER}-mobile.webp`} />
