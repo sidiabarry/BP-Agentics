@@ -1,0 +1,52 @@
+/* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
+
+.hero-portal__system {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hero-portal__system canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__system {
+  --sys: clamp(0, calc((var(--p) - 0.58) / 0.2), 1);
+  opacity: var(--sys);
+}
+
+/* Typo setzt sich schlicht; die 3D-Bewegung führt. */
+.hero-portal[data-scroll-ready] .hero-portal__intro {
+  opacity: var(--head);
+  clip-path: none;
+  transform: translate3d(0, calc((1 - var(--head)) * 0.55rem), 0);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__intro h2 {
+  letter-spacing: -0.035em;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
+  letter-spacing: 0.2em;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__arrival-line {
+  clip-path: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portal__system {
+    display: none;
+  }
+
+  .hero-portal__intro,
+  .hero-portal__arrival {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+}
