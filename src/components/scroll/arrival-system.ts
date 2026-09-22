@@ -8,6 +8,7 @@ import * as THREE from "three";
 
 export type ArrivalSystem = {
   setProgress: (p: number) => void;
+  setPointer: (nx: number, ny: number, active: boolean) => void;
   dispose: () => void;
 };
 
@@ -33,8 +34,8 @@ const OFFSET_NARROW: Vec3[] = [
 
 const START_X_WIDE = 4.15;
 const END_X_WIDE = 0.22;
-const START_X_NARROW = 1.82;
-const END_X_NARROW = 0.06;
+const START_X_NARROW = 1.72;
+const END_X_NARROW = 0.28;
 
 /** Bei p=1 erst ~70 % der Strecke — noch in Bewegung oder gerade überquert. */
 const TRAVEL_AT_END = 0.7;
@@ -56,7 +57,7 @@ function easeDrag(raw: number) {
 
 export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   if (!hasWebGL()) {
-    return { setProgress() {}, dispose() {} };
+    return { setProgress() {}, setPointer() {}, dispose() {} };
   }
 
   let disposed = false;
@@ -66,6 +67,12 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   let startX = START_X_WIDE;
   let endX = END_X_WIDE;
   let offsets = OFFSET_WIDE;
+  let onScreen = true;
+  let pointerNear = 0;
+  let tide = 0;
+  let resizeTimer = 0;
+  let pushSpan = 1.55;
+  const RESIZE_WAIT = 140;
 
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -172,7 +179,7 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     mat.opacity = 0.18 + visible * 0.42;
   }
 
-  function resize() {
+  function applySize() {
     const w = Math.max(1, host.clientWidth);
     const h = Math.max(1, host.clientHeight);
     renderer.setSize(w, h, true);
@@ -182,8 +189,27 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     startX = portrait ? START_X_NARROW : START_X_WIDE;
     endX = portrait ? END_X_NARROW : END_X_WIDE;
     offsets = portrait ? OFFSET_NARROW : OFFSET_WIDE;
-    group.position.set(0, 0, 0);
-    group.scale.setScalar(portrait ? 0.78 : 1);
+    pushSpan = portrait ? 0.7 : 1.55;
+    group.position.set(portrait ? 0.12 : 0, portrait ? -0.08 : 0, 0);
+    group.scale.setScalar(portrait ? 0.62 : 1);
+  }
+
+  function resize() {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(applySize, RESIZE_WAIT);
+  }
+
+  function kick() {
+    if (disposed || raf || document.hidden || !onScreen) return;
+    lastTime = 0;
+    raf = window.requestAnimationFrame(frame);
+  }
+
+  function stop() {
+    if (!raf) return;
+    window.cancelAnimationFrame(raf);
+    raf = 0;
+    lastTime = 0;
   }
 
   function pose(p: number, time: number) {
@@ -192,7 +218,9 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
 
     const travel = TRAVEL_AT_END * easeDrag(p);
     const crawl = THREE.MathUtils.smoothstep(p, 0.35, 1) * (1 - Math.exp(-time * 0.07)) * 0.26;
-    const cx = startX + (endX - startX) * travel - crawl;
+    const tideK = 1 - Math.exp(-dt / 0.9);
+    tide += (pointerNear - tide) * tideK;
+    const cx = startX + (endX - startX) * travel - crawl + tide * pushSpan;
     const live = THREE.MathUtils.smoothstep(p, 0.04, 0.28);
 
     nodes.forEach((node, i) => {
@@ -242,31 +270,59 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   }
 
   function frame(ms: number) {
+    raf = 0;
     if (disposed) return;
-    raf = window.requestAnimationFrame(frame);
-    if (document.hidden) return;
+    if (document.hidden || !onScreen) return;
     if (progress < 0.008) {
       renderer.clear();
       return;
     }
     pose(progress, ms / 1000);
     renderer.render(scene, camera);
+    raf = window.requestAnimationFrame(frame);
   }
 
   const ro = new ResizeObserver(resize);
   ro.observe(host);
-  resize();
-  raf = window.requestAnimationFrame(frame);
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      onScreen = Boolean(entry?.isIntersecting);
+      if (onScreen) kick();
+      else stop();
+    },
+    { threshold: 0.02 },
+  );
+  io.observe(host);
+  const onVisible = () => {
+    if (document.hidden) stop();
+    else kick();
+  };
+  document.addEventListener("visibilitychange", onVisible);
+  applySize();
+  kick();
 
   return {
     setProgress(next) {
       progress = Math.min(1, Math.max(0, next));
+      if (progress >= 0.008) kick();
+    },
+    setPointer(nx, ny, active) {
+      if (!active) {
+        pointerNear = 0;
+        return;
+      }
+      const dx = nx - 0.64;
+      const dy = (ny - 0.48) * 1.15;
+      pointerNear = Math.min(1, Math.max(0, 1 - Math.hypot(dx, dy) / 0.44));
     },
     dispose() {
       if (disposed) return;
       disposed = true;
-      window.cancelAnimationFrame(raf);
+      stop();
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      document.removeEventListener("visibilitychange", onVisible);
       ro.disconnect();
+      io.disconnect();
       scene.traverse((obj) => {
         const mesh = obj as THREE.Mesh;
         if (!mesh.isMesh) return;
