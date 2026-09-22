@@ -3,7 +3,8 @@ import * as THREE from "three";
 /**
  * Kleines abstraktes System hinter der blauen Ankunft.
  * Die drei Teile treiben von rechts nach links, langsam, wie durch Wasser.
- * Kein Einschnappen in ein Ruhedreieck. Kein GLB, keine Werkstatt-Szene.
+ * Im letzten Fünftel von --p gleiten sie ins erste Ruhedreieck rechts.
+ * Kein GLB, keine Werkstatt-Szene.
  */
 
 export type ArrivalSystem = {
@@ -20,7 +21,7 @@ const LINKS: Array<[number, number]> = [
   [2, 0],
 ];
 
-/** Lockere Abstände — nicht als gesetztes Dreieck komponiert. */
+/** Lockere Abstände während des Wasserstroms. */
 const OFFSET_WIDE: Vec3[] = [
   [-0.18, 0.46, 0.18],
   [0.88, 0.08, -0.2],
@@ -32,14 +33,27 @@ const OFFSET_NARROW: Vec3[] = [
   [0.1, -0.34, 0.1],
 ];
 
+/** Erstes Ruhedreieck (Stand auf der rechten Seite). */
+const REST: Vec3[] = [
+  [-1.05, 0.62, 0.12],
+  [1.12, 0.28, -0.22],
+  [0.08, -0.98, 0.18],
+];
+const REST_SHIFT_WIDE = 1.05;
+const REST_LIFT_WIDE = -0.08;
+const REST_SHIFT_NARROW = 0.72;
+const REST_LIFT_NARROW = 0.08;
+
 const START_X_WIDE = 4.15;
 const END_X_WIDE = 0.22;
 const START_X_NARROW = 1.72;
 const END_X_NARROW = 0.28;
 
-/** Bei p=1 erst ~70 % der Strecke — noch in Bewegung oder gerade überquert. */
+/** Bei p=1 erst ~70 % der Strecke — der Rest fängt das Dreieck rechts ein. */
 const TRAVEL_AT_END = 0.7;
 const DRAG = [0.78, 1.12, 0.94];
+/** Letztes Fünftel von --p: Ankunfts-p 0,6…1 entspricht Pin --p 0,8…1. */
+const SETTLE_START = 0.6;
 
 function hasWebGL() {
   try {
@@ -67,6 +81,8 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   let startX = START_X_WIDE;
   let endX = END_X_WIDE;
   let offsets = OFFSET_WIDE;
+  let restShift = REST_SHIFT_WIDE;
+  let restLift = REST_LIFT_WIDE;
   let onScreen = true;
   let pointerNear = 0;
   let tide = 0;
@@ -189,6 +205,8 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     startX = portrait ? START_X_NARROW : START_X_WIDE;
     endX = portrait ? END_X_NARROW : END_X_WIDE;
     offsets = portrait ? OFFSET_NARROW : OFFSET_WIDE;
+    restShift = portrait ? REST_SHIFT_NARROW : REST_SHIFT_WIDE;
+    restLift = portrait ? REST_LIFT_NARROW : REST_LIFT_WIDE;
     pushSpan = portrait ? 0.7 : 1.55;
     group.position.set(portrait ? 0.12 : 0, portrait ? -0.08 : 0, 0);
     group.scale.setScalar(portrait ? 0.62 : 1);
@@ -216,26 +234,34 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     const dt = lastTime ? Math.min(0.048, Math.max(0, time - lastTime)) : 0.016;
     lastTime = time;
 
+    const settle = THREE.MathUtils.smoothstep(p, SETTLE_START, 1);
     const travel = TRAVEL_AT_END * easeDrag(p);
-    const crawl = THREE.MathUtils.smoothstep(p, 0.35, 1) * (1 - Math.exp(-time * 0.07)) * 0.26;
+    const crawl =
+      (1 - settle) * THREE.MathUtils.smoothstep(p, 0.35, 1) * (1 - Math.exp(-time * 0.07)) * 0.26;
     const tideK = 1 - Math.exp(-dt / 0.9);
     tide += (pointerNear - tide) * tideK;
-    const cx = startX + (endX - startX) * travel - crawl + tide * pushSpan;
+    const wave = 1 - settle;
+    const cx = startX + (endX - startX) * travel - crawl + tide * pushSpan * (1 - settle * 0.35);
     const live = THREE.MathUtils.smoothstep(p, 0.04, 0.28);
+    const idle = 0.25 + settle * 0.75;
 
     nodes.forEach((node, i) => {
       const [ox, oy, oz] = offsets[i];
+      const [rx, ry, rz] = REST[i];
+      const waterX = cx + ox + Math.sin(time * 0.21 + i * 1.4) * 0.035 * wave;
+      const waterY = 0.06 + oy + Math.sin(time * 0.31 + i * 1.9) * 0.055 * wave;
+      const waterZ = oz + Math.sin(time * 0.17 + i) * 0.04 * wave;
       desired.set(
-        cx + ox + Math.sin(time * 0.21 + i * 1.4) * 0.035,
-        0.06 + oy + Math.sin(time * 0.31 + i * 1.9) * 0.055,
-        oz + Math.sin(time * 0.17 + i) * 0.04,
+        waterX + (rx + restShift - waterX) * settle,
+        waterY + (ry + restLift - waterY) * settle,
+        waterZ + (rz - waterZ) * settle,
       );
       const k = 1 - Math.exp(-dt / DRAG[i]);
       drifted[i].lerp(desired, k);
       node.position.copy(drifted[i]);
       node.scale.setScalar(1);
-      node.rotation.y = time * (0.055 + i * 0.012);
-      node.rotation.x = time * 0.028 + Math.sin(time * 0.19 + i) * 0.08;
+      node.rotation.y = time * (0.055 + i * 0.012) * idle;
+      node.rotation.x = (time * 0.028 + Math.sin(time * 0.19 + i) * 0.08) * (0.35 + wave * 0.65);
       const mat = node.material as THREE.MeshStandardMaterial;
       mat.emissiveIntensity = 0.2 + live * 0.45;
       mat.opacity = 0.96;
@@ -265,9 +291,11 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     fill.intensity = 0.7 + live * 2.05;
     rim.intensity = 0.5 + live * 1.95;
 
-    group.rotation.y = Math.sin(time * 0.09) * 0.035;
-    group.rotation.x = Math.sin(time * 0.07) * 0.018;
-    host.dataset.cx = cx.toFixed(3);
+    group.rotation.y = Math.sin(time * 0.09) * (0.018 + settle * 0.04);
+    group.rotation.x = Math.sin(time * 0.07) * (0.01 + settle * 0.02);
+    const restCx = restShift + (REST[0][0] + REST[1][0] + REST[2][0]) / 3;
+    host.dataset.cx = (cx + (restCx - cx) * settle).toFixed(3);
+    host.dataset.settle = settle.toFixed(3);
     host.dataset.tide = tide.toFixed(3);
   }
 
