@@ -31,3 +31,37 @@
 @property --rail { syntax: "\u003cnumber>"; inherits: true; initial-value: 0; }
 @property --shell-wn { syntax: "\u003cnumber>"; inherits: true; initial-value: 44; }
 @property --shell-hn { syntax: "\u003cnumber>"; inherits: true; initial-value: 27.5; }
+
+.hero-portal,
+.machine {
+  --ink: #0b1a27;
+  --ink-2: #12293b;
+  --mist: #d8e6f2;
+  --signal: #198be8;
+  --signal-deep: #0b5ea8;
+  --paper: #f3efe6;
+  --marker: #b4762a;
+  --hair: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.hero-portal {
+  position: relative;
+  background: #e8e6e2;
+  overflow-x: clip;
+  color: var(--ink);
+}
+
+.hero-portal__pin {
+  position: relative;
+  height: 100svh;
+  min-height: 34rem;
+  overflow: hidden;
+  background: #e8e6e2 url("/hero/poster-fallback.jpg") center / cover no-repeat;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__intro {
+  --head: clamp(0, calc((var(--p) - 0.79) / 0.10), 1);
+  opacity: 1;
+  clip-path: inset(0 calc((1 - var(--head)) * 100%) 0 -0.4em);
+  transform: translate3d(calc((1 - var(--head)) * -1.4rem), 0, 0);
+}
