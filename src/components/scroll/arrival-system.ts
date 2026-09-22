@@ -2,8 +2,8 @@ import * as THREE from "three";
 
 /**
  * Kleines abstraktes System hinter der blauen Ankunft.
- * Drei Teile fliegen durchs Bild (von einer Kante über das Feld in die Ruhe),
- * gebunden an die Hero-Scrollfahrt (--p). Kein GLB, keine Werkstatt-Szene.
+ * Die drei Teile treiben von rechts nach links, langsam, wie durch Wasser.
+ * Kein Einschnappen in ein Ruhedreieck. Kein GLB, keine Werkstatt-Szene.
  */
 
 export type ArrivalSystem = {
@@ -19,41 +19,26 @@ const LINKS: Array<[number, number]> = [
   [2, 0],
 ];
 
-/** Start knapp links außerhalb, VIA quer durchs Feld, REST lesbar (nicht auf der Typo). */
-const START_WIDE: Vec3[] = [
-  [-3.85, 1.42, 1.12],
-  [-4.2, 0.22, 0.52],
-  [-3.55, -1.12, 0.92],
+/** Lockere Abstände — nicht als gesetztes Dreieck komponiert. */
+const OFFSET_WIDE: Vec3[] = [
+  [-0.18, 0.46, 0.18],
+  [0.88, 0.08, -0.2],
+  [0.28, -0.4, 0.12],
 ];
-const VIA_WIDE: Vec3[] = [
-  [-0.12, 0.88, 1.48],
-  [0.58, 0.1, 1.02],
-  [0.08, -0.28, 1.22],
-];
-const REST_WIDE: Vec3[] = [
-  [0.72, 0.48, 0.16],
-  [2.02, 0.1, -0.22],
-  [1.08, -0.62, 0.2],
+const OFFSET_NARROW: Vec3[] = [
+  [-0.12, 0.24, 0.12],
+  [0.46, 0.04, -0.14],
+  [0.1, -0.34, 0.1],
 ];
 
-const START_NARROW: Vec3[] = [
-  [-1.58, 0.92, 1.02],
-  [-1.78, 0.1, 0.46],
-  [-1.42, -0.82, 0.88],
-];
-const VIA_NARROW: Vec3[] = [
-  [-0.18, 0.4, 1.12],
-  [0.28, 0.06, 0.7],
-  [0.02, -0.2, 0.95],
-];
-const REST_NARROW: Vec3[] = [
-  [-0.62, 0.26, 0.12],
-  [0.76, 0.14, -0.16],
-  [0.06, -0.5, 0.16],
-];
+const START_X_WIDE = 4.15;
+const END_X_WIDE = 0.22;
+const START_X_NARROW = 1.82;
+const END_X_NARROW = 0.06;
 
-const STAGGER = 0.07;
-const FLIGHT = 0.82;
+/** Bei p=1 erst ~70 % der Strecke — noch in Bewegung oder gerade überquert. */
+const TRAVEL_AT_END = 0.7;
+const DRAG = [0.78, 1.12, 0.94];
 
 function hasWebGL() {
   try {
@@ -64,17 +49,9 @@ function hasWebGL() {
   }
 }
 
-function flightT(p: number, i: number) {
-  return Math.min(1, Math.max(0, (p - i * STAGGER) / FLIGHT));
-}
-
-function bezier(out: THREE.Vector3, a: Vec3, b: Vec3, c: Vec3, t: number) {
-  const u = 1 - t;
-  out.set(
-    u * u * a[0] + 2 * u * t * b[0] + t * t * c[0],
-    u * u * a[1] + 2 * u * t * b[1] + t * t * c[1],
-    u * u * a[2] + 2 * u * t * b[2] + t * t * c[2],
-  );
+function easeDrag(raw: number) {
+  const t = Math.min(1, Math.max(0, raw));
+  return 1 - Math.pow(1 - t, 1.35);
 }
 
 export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
@@ -85,9 +62,10 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   let disposed = false;
   let progress = 0;
   let raf = 0;
-  let start = START_WIDE;
-  let via = VIA_WIDE;
-  let rest = REST_WIDE;
+  let lastTime = 0;
+  let startX = START_X_WIDE;
+  let endX = END_X_WIDE;
+  let offsets = OFFSET_WIDE;
 
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -135,12 +113,14 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   glass.opacity = 0.7;
   glass.roughness = 0.18;
 
-  const nodes = START_WIDE.map((pos, i) => {
+  const nodes = OFFSET_WIDE.map((off, i) => {
     const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(i === 1 ? 0.28 : 0.22, 0), ice.clone());
-    mesh.position.set(...pos);
+    mesh.position.set(START_X_WIDE + off[0], off[1], off[2]);
     group.add(mesh);
     return mesh;
   });
+
+  const drifted = nodes.map((node) => node.position.clone());
 
   const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.09, 1), glass);
   group.add(core);
@@ -167,6 +147,7 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     return { mesh, a, b, phase: i / 3 };
   });
 
+  const desired = new THREE.Vector3();
   const tmpA = new THREE.Vector3();
   const tmpB = new THREE.Vector3();
   const tmp = new THREE.Vector3();
@@ -188,7 +169,7 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
       mesh.quaternion.copy(quat);
     }
     const mat = mesh.material as THREE.MeshBasicMaterial;
-    mat.opacity = 0.22 + visible * 0.5;
+    mat.opacity = 0.18 + visible * 0.42;
   }
 
   function resize() {
@@ -198,46 +179,57 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     const portrait = w / h < 0.9;
-    start = portrait ? START_NARROW : START_WIDE;
-    via = portrait ? VIA_NARROW : VIA_WIDE;
-    rest = portrait ? REST_NARROW : REST_WIDE;
+    startX = portrait ? START_X_NARROW : START_X_WIDE;
+    endX = portrait ? END_X_NARROW : END_X_WIDE;
+    offsets = portrait ? OFFSET_NARROW : OFFSET_WIDE;
     group.position.set(0, 0, 0);
     group.scale.setScalar(portrait ? 0.78 : 1);
   }
 
   function pose(p: number, time: number) {
-    const live = THREE.MathUtils.smoothstep(p, 0.08, 0.55);
-    const idle = THREE.MathUtils.smoothstep(p, 0.88, 1);
+    const dt = lastTime ? Math.min(0.048, Math.max(0, time - lastTime)) : 0.016;
+    lastTime = time;
+
+    const travel = TRAVEL_AT_END * easeDrag(p);
+    const crawl = THREE.MathUtils.smoothstep(p, 0.35, 1) * (1 - Math.exp(-time * 0.07)) * 0.26;
+    const cx = startX + (endX - startX) * travel - crawl;
+    const live = THREE.MathUtils.smoothstep(p, 0.04, 0.28);
 
     nodes.forEach((node, i) => {
-      const t = flightT(p, i);
-      bezier(node.position, start[i], via[i], rest[i], t);
+      const [ox, oy, oz] = offsets[i];
+      desired.set(
+        cx + ox + Math.sin(time * 0.21 + i * 1.4) * 0.035,
+        0.06 + oy + Math.sin(time * 0.31 + i * 1.9) * 0.055,
+        oz + Math.sin(time * 0.17 + i) * 0.04,
+      );
+      const k = 1 - Math.exp(-dt / DRAG[i]);
+      drifted[i].lerp(desired, k);
+      node.position.copy(drifted[i]);
       node.scale.setScalar(1);
-      const spin = 0.28 + (1 - t) * 0.85 + idle * 0.55;
-      node.rotation.y = time * (0.2 + i * 0.05) * spin;
-      node.rotation.x = time * 0.09 * (0.25 + (1 - t) * 0.6);
+      node.rotation.y = time * (0.055 + i * 0.012);
+      node.rotation.x = time * 0.028 + Math.sin(time * 0.19 + i) * 0.08;
       const mat = node.material as THREE.MeshStandardMaterial;
-      mat.emissiveIntensity = 0.2 + live * 0.5;
+      mat.emissiveIntensity = 0.2 + live * 0.45;
       mat.opacity = 0.96;
     });
 
     tmp.set(0, 0, 0);
-    nodes.forEach((node) => tmp.add(node.position));
-    core.position.copy(tmp).multiplyScalar(1 / nodes.length);
-    core.scale.setScalar(0.85 + Math.sin(time * 1.6) * idle * 0.1);
-    core.rotation.y = time * 0.35;
-    (core.material as THREE.MeshStandardMaterial).opacity = 0.22 + live * 0.42;
+    drifted.forEach((pos) => tmp.add(pos));
+    core.position.copy(tmp).multiplyScalar(1 / drifted.length);
+    core.scale.setScalar(0.88 + Math.sin(time * 0.7) * 0.04);
+    core.rotation.y = time * 0.12;
+    (core.material as THREE.MeshStandardMaterial).opacity = 0.22 + live * 0.4;
 
     tubes.forEach((tube) => {
-      placeTube(tube.mesh, nodes[tube.a].position, nodes[tube.b].position, live);
+      placeTube(tube.mesh, drifted[tube.a], drifted[tube.b], live);
     });
 
     beads.forEach((bead) => {
-      const t = (bead.phase + time * 0.08 * (0.25 + live)) % 1;
-      tmpA.copy(nodes[bead.a].position);
-      tmpB.copy(nodes[bead.b].position);
+      const t = (bead.phase + time * 0.035 * (0.4 + live)) % 1;
+      tmpA.copy(drifted[bead.a]);
+      tmpB.copy(drifted[bead.b]);
       bead.mesh.position.lerpVectors(tmpA, tmpB, t);
-      bead.mesh.scale.setScalar(0.35 + live * 0.65);
+      bead.mesh.scale.setScalar(0.4 + live * 0.6);
       bead.mesh.visible = live > 0.04;
     });
 
@@ -245,8 +237,8 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
     fill.intensity = 0.7 + live * 2.05;
     rim.intensity = 0.5 + live * 1.95;
 
-    group.rotation.y = Math.sin(time * 0.22) * 0.1 * idle;
-    group.rotation.x = Math.sin(time * 0.17) * 0.04 * idle;
+    group.rotation.y = Math.sin(time * 0.09) * 0.035;
+    group.rotation.x = Math.sin(time * 0.07) * 0.018;
   }
 
   function frame(ms: number) {
