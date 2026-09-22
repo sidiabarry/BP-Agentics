@@ -134,16 +134,16 @@ export function ConsequenceReel({
             alt={slide.alt}
             width={1600}
             height={900}
-            className="aspect-video h-auto w-full origin-[88%_50%] scale-[1.22] object-cover object-[88%_48%]"
+            className="aspect-video h-auto w-full object-cover"
           />
         ) : (
-          <div className="relative aspect-video w-full overflow-hidden bg-[#14161C]">
+          <div className="relative aspect-video w-full bg-[#14161C]">
             <Image
               src={held.poster}
               alt={held.alt}
               fill
               sizes="(min-width: 1152px) 1152px, 100vw"
-              className="origin-[88%_50%] scale-[1.22] object-cover object-[88%_48%]"
+              className="object-cover"
             />
             {officeSlides.map((item, index) => (
               <video
@@ -152,7 +152,7 @@ export function ConsequenceReel({
                   videosRef.current[index] = node;
                 }}
                 className={cn(
-                  "pointer-events-none absolute inset-0 h-full w-full origin-[88%_50%] scale-[1.22] object-cover object-[88%_48%] transition-opacity ease-in-out",
+                  "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out",
                   isShown(index) ? "opacity-100" : "opacity-0",
                 )}
                 style={{

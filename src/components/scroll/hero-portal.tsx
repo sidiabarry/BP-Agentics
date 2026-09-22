@@ -203,9 +203,6 @@ export function HeroPortal() {
         {/* Ankunft: Überschrift oben links, Bausteine unten — ein blaues Bild. */}
         <div className="hero-portal__intro">
           <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
-          <p className="hero-portal__intro-lead">
-            Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.
-          </p>
         </div>
 
         <div className="hero-portal__arrival">
