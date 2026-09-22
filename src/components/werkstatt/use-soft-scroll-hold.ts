@@ -55,7 +55,6 @@ export function useSoftScrollHold(
 ) {
   const enabledRef = useRef(options.enabled);
   enabledRef.current = options.enabled;
-  const armedRef = useRef(true);
   const releaseRef = useRef<() => void>(() => {});
 
   useEffect(() => {
@@ -63,6 +62,7 @@ export function useSoftScrollHold(
     if (motion.matches) return;
 
     let cancelled = false;
+    let armed = true;
     let holding = false;
     let holdStart = 0;
     let holdTimer = 0;
@@ -104,9 +104,9 @@ export function useSoftScrollHold(
 
     const begin = () => {
       const el = stage();
-      if (!el || !enabledRef.current || !armedRef.current || holding) return;
+      if (!el || !enabledRef.current || !armed || holding) return;
       if (!stageArrived(el.getBoundingClientRect())) return;
-      armedRef.current = false;
+      armed = false;
       holding = true;
       holdStart = performance.now();
       expectedY = window.scrollY;
@@ -121,7 +121,7 @@ export function useSoftScrollHold(
       if (holding) return;
       const rect = el.getBoundingClientRect();
       if (stageClearlyAway(rect)) {
-        armedRef.current = true;
+        armed = true;
         return;
       }
       if (enabledRef.current) begin();
