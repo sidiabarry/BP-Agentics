@@ -1,1 +1,771 @@
-PLACEHOLDER
+/**
+ * Werkstatt v6 — Leistungsübersicht als 3D-Studio.
+ *
+ * Aufbau: Bühne (dunkles Studio mit Etiketten und Sheet) → Liste.
+ * Übernimmt die Rolle der früheren LeistungsMaschine und damit auch ihren
+ * Anschluss: Das Hellblau, in dem der Hero-Film endet (--hero-exit), läuft in
+ * Tinte über; am Ende blendet die Sektion in Papier für die Problem-Sektion.
+ * Keine Scroll-Pinning-Mechanik. Alles Klickbare sitzt in eigenen Ebenen mit
+ * eigenem pointer-events, die Leinwand selbst nimmt Tippen und Wischen an.
+ */
+
+.ws {
+  --ws-paper: #f3efe6;
+  --ws-ink: #14161c;
+  --ws-night: #0b1a27;
+  --ws-portal: var(--hero-exit, #82bbf0);
+  --ws-mist: #dbeaf6;
+  --ws-action: #198be8;
+  --ws-action-deep: #0b5ea8;
+  --ws-action-hover: #1576c4;
+  --ws-gutter: max(5vw, 1.5rem);
+  --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
+  --ws-pad-top: 0;
+  --ws-pad-bottom: max(5.5rem, 14svh);
+  --ws-gap: 2rem;
+  --ws-join: color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  scroll-margin-top: var(--ws-header);
+  margin-top: 0;
+  padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
+  color: #eaf3fa;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 0,
+      var(--ws-join) 22svh,
+      color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 64svh,
+      color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 110svh,
+      var(--ws-night) 168svh
+    ),
+    var(--ws-night);
+}
+
+/* Anschluss nur in den Header — keine Wäsche über der Wandmarke. */
+.ws::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--ws-header));
+  height: var(--ws-header);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 0,
+    color-mix(in srgb, var(--ws-night) 40%, transparent) 100%
+  );
+}
+
+/* Übergang in die helle Folgesektion — wie bei der früheren LeistungsMaschine. */
+.ws::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36svh;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    color-mix(in srgb, var(--ws-paper) 10%, transparent) 28%,
+    color-mix(in srgb, var(--ws-paper) 42%, transparent) 58%,
+    color-mix(in srgb, var(--ws-night) 18%, var(--ws-paper)) 82%,
+    var(--ws-paper) 100%
+  );
+}
+
+/* --- Bühne ---------------------------------------------------------------- */
+
+/* Randlos: die Bühne hat dieselbe Tinte wie die Sektion und läuft oben und unten weich aus. */
+.ws__stage {
+  position: relative;
+  flex: 0 1 auto;
+  height: min(78svh, calc(100svh - var(--ws-header) - 8.5rem), 820px);
+  min-height: 30rem;
+  overflow: hidden;
+  background: transparent;
+  color: var(--ws-paper);
+  isolation: isolate;
+}
+
+/* Kurzer Saum unter dem Header — BP AGENTICS bleibt lesbar. */
+.ws__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 8%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ws-night) 18%, transparent) 0,
+    transparent 100%
+  );
+}
+
+.ws__poster,
+.ws__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ws__poster img {
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+}
+
+.ws[data-phase="ready"] .ws__poster img {
+  opacity: 0;
+}
+
+.ws__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  touch-action: pan-y;
+  opacity: 0;
+  transition: opacity 1.05s ease;
+}
+
+.ws[data-phase="ready"] .ws__canvas {
+  opacity: 1;
+}
+
+.ws__canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ws__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 3px;
+  background: rgb(243 239 230 / 12%);
+}
+
+.ws__progress span {
+  display: block;
+  height: 100%;
+  background: var(--ws-portal);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+.ws__start,
+.ws__message {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 5;
+  transform: translateX(-50%);
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: rgb(8 20 28 / 86%);
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--ws-paper);
+}
+
+.ws__start {
+  border: 1px solid rgb(243 239 230 / 30%);
+  cursor: pointer;
+}
+
+/* --- Etiketten über den Stationen ----------------------------------------- */
+
+.ws__labels {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ws__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.45rem 1rem 0.45rem 0.55rem;
+  border: 1px solid rgb(243 239 230 / 20%);
+  border-radius: 999px;
+  background: rgb(8 20 28 / 84%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ws-paper);
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Führungslinien vom Etikett zum Objekt (Koordinaten setzt die Szene). */
+.ws__leaders {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.ws__leaders line {
+  stroke: rgb(243 239 230 / 55%);
+  stroke-width: 1;
+}
+
+.ws__leaders circle {
+  fill: var(--ws-portal);
+  stroke: var(--ws-night);
+  stroke-width: 1.5;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__leaders {
+  opacity: 1;
+  transition: opacity 0.35s ease 0.15s;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__label {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.35s ease 0.15s,
+    visibility 0s,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ws__label:hover {
+  border-color: var(--ws-portal);
+  background: rgb(18 41 59 / 94%);
+}
+
+.ws__label-num {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--ws-portal);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ws-night);
+}
+
+.ws__label-short {
+  display: none;
+}
+
+.ws__hint {
+  position: absolute;
+  left: var(--ws-gutter);
+  bottom: 1.1rem;
+  z-index: 3;
+  margin: 0;
+  font-size: 0.92rem;
+  color: rgb(243 239 230 / 72%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__hint {
+  opacity: 1;
+}
+
+.ws__hint-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .ws__hint-touch {
+    display: inline;
+  }
+  .ws__hint-mouse {
+    display: none;
+  }
+}
+
+/* --- Sheet (Handy unten) / Panel (Desktop rechts) ------------------------- */
+
+.ws__sheet {
+  position: absolute;
+  z-index: 4;
+  top: 1.25rem;
+  right: 1.25rem;
+  bottom: auto;
+  width: min(28rem, 48%);
+  max-height: calc(100% - 2.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.5rem 1.5rem;
+  border-radius: 22px;
+  background: var(--ws-paper);
+  color: var(--ws-ink);
+  box-shadow: 0 24px 60px -24px rgb(0 0 0 / 55%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(24px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.4s;
+}
+
+.ws__sheet[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.3s ease 0.12s,
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) 0.08s,
+    visibility 0s;
+}
+
+/* Bleibt beim Scrollen im Sheet oben stehen — „Übersicht" ist immer erreichbar. */
+.ws__sheet-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 -1.5rem 0.6rem;
+  padding: 1.1rem 1rem 0.5rem;
+  background: var(--ws-paper);
+}
+
+.ws__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 44px;
+  padding: 0 0.85rem 0 0.55rem;
+  border: 1px solid rgb(20 22 28 / 14%);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ws-ink);
+  cursor: pointer;
+}
+
+.ws__back:hover {
+  border-color: var(--ws-action);
+  color: var(--ws-action);
+}
+
+.ws__dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.ws__dot {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ws__dot span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgb(20 22 28 / 18%);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgb(20 22 28 / 60%);
+}
+
+.ws__dot[aria-current="true"] span {
+  border-color: var(--ws-ink);
+  background: var(--ws-ink);
+  color: var(--ws-paper);
+}
+
+.ws__kicker {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ws-action-deep);
+}
+
+.ws__sheet h3 {
+  margin: 0.35rem 0 0.7rem;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  outline: none;
+}
+
+.ws__text {
+  margin: 0 0 0.9rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgb(20 22 28 / 78%);
+}
+
+.ws__price {
+  margin: 0 0 1.1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: rgb(20 22 28 / 5%);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.ws__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.ws__cta,
+.ws__next {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.ws__cta {
+  border: 1px solid var(--ws-action);
+  background: var(--ws-action);
+  color: #fff;
+}
+
+.ws__cta:hover {
+  background: var(--ws-action-hover);
+}
+
+.ws__next {
+  border: 1px solid rgb(20 22 28 / 16%);
+  background: transparent;
+  color: var(--ws-ink);
+}
+
+.ws__next:hover {
+  border-color: var(--ws-ink);
+}
+
+.ws__more {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgb(20 22 28 / 10%);
+}
+
+.ws__more summary {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.ws__more summary::-webkit-details-marker {
+  display: none;
+}
+
+.ws__more summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: 0.6rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-3px);
+  transition: transform 0.2s ease;
+}
+
+.ws__more[open] summary::after {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+.ws__more ol {
+  margin: 0.3rem 0 0.7rem;
+  padding-left: 1.3rem;
+  line-height: 1.55;
+}
+
+.ws__more p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgb(20 22 28 / 65%);
+}
+
+/* --- Liste unter der Bühne ------------------------------------------------ */
+
+.ws__list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+  padding: 0 var(--ws-gutter);
+  list-style: none;
+}
+
+.ws__list-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  border: 1px solid #ffffff1f;
+  border-radius: 18px;
+  background: #ffffff0c;
+  color: #eaf3fa;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.ws__list-link:hover {
+  border-color: var(--ws-portal);
+  background: #ffffff14;
+}
+
+.ws__list-num {
+  font-family: var(--font-heading, var(--font-sora)), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  color: var(--ws-portal);
+}
+
+.ws__list-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ws__list-name {
+  font-family: var(--font-heading, var(--font-sora)), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ws__list-promise {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #b9cfe0;
+}
+
+.ws__list-price {
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ws-mist);
+}
+
+/* Ruhiges Papierkärtchen im Auslauf der Nacht — keine Marketingfläche. */
+.ws__prices {
+  position: relative;
+  z-index: 1;
+  width: min(40rem, calc(100% - 2 * var(--ws-gutter)));
+  margin: 1.75rem var(--ws-gutter) 0;
+}
+
+/* --- Fokus ---------------------------------------------------------------- */
+
+.ws button:focus-visible,
+.ws a:focus-visible,
+.ws summary:focus-visible {
+  outline: 3px solid var(--ws-portal);
+  outline-offset: 3px;
+}
+
+.ws__sheet button:focus-visible,
+.ws__sheet a:focus-visible,
+.ws__sheet summary:focus-visible {
+  outline-color: var(--ws-action);
+}
+
+.ws__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Solange die Bühne im Bild ist, liegt kein schwebender Knopf über Etiketten oder Liste. */
+body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Header bleibt flach: kein Blau-Band über der Wandmarke. */
+body:has(#werkstatt[data-stage-visible]) header {
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 42%, #0b1a27) 28%,
+    #f3efe6
+  );
+  border-bottom-color: color-mix(in srgb, var(--hero-exit, #82bbf0) 10%, transparent);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* --- Handy und schmale Tablets --------------------------------------------- */
+
+@media (max-width: 799px) {
+  .ws {
+    --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
+    --ws-pad-top: 0;
+    --ws-pad-bottom: max(4.5rem, 12svh);
+    --ws-gap: 1.25rem;
+    margin-top: -0.35rem;
+  }
+
+  .ws__stage {
+    height: min(54svh, calc(100svh - var(--ws-header) - 13rem));
+    min-height: 20rem;
+  }
+
+  .ws__label {
+    gap: 0.45rem;
+    padding: 0.35rem 0.8rem 0.35rem 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .ws__label-num {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .ws__label-long {
+    display: none;
+  }
+
+  .ws__label-short {
+    display: inline;
+  }
+
+  .ws__hint {
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .ws__sheet {
+    top: auto;
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    width: auto;
+    max-height: 58%;
+    padding: 0 1.1rem 1.1rem;
+    border-radius: 20px;
+    transform: translateY(24px);
+  }
+
+  .ws__sheet-bar {
+    margin: 0 -1.1rem 0.4rem;
+    padding: 0.6rem 0.7rem 0.4rem;
+  }
+
+  .ws__sheet h3 {
+    margin: 0.2rem 0 0.5rem;
+    font-size: 1.3rem;
+  }
+
+  .ws__text {
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+  }
+
+  .ws__price {
+    margin-bottom: 0.8rem;
+    font-size: 0.93rem;
+  }
+
+  .ws__cta,
+  .ws__next {
+    min-height: 46px;
+    font-size: 0.98rem;
+  }
+
+  .ws__list {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+}
+
+@media (min-width: 800px) and (max-width: 1100px) {
+  .ws__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws *,
+  .ws *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
