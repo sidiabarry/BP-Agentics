@@ -59,27 +59,31 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   const group = new THREE.Group();
   scene.add(group);
 
-  scene.add(new THREE.HemisphereLight("#d9ecfc", "#0b5ea8", 1.15));
-  const key = new THREE.PointLight("#f4fbff", 0, 12, 1.6);
-  key.position.set(0.2, 0.4, 2.2);
+  scene.add(new THREE.HemisphereLight("#d7ebfb", "#0a4e8f", 0.7));
+  const key = new THREE.DirectionalLight("#ffffff", 0.85);
+  key.position.set(1.6, 2.2, 2.8);
   scene.add(key);
-  const fill = new THREE.PointLight("#7cbcf1", 0, 10, 2);
-  fill.position.set(-1.4, -0.6, 1.2);
+  const fill = new THREE.PointLight("#7cbcf1", 1.4, 10, 2);
+  fill.position.set(-1.6, -0.4, 1.4);
   scene.add(fill);
+  const rim = new THREE.PointLight("#ffffff", 1.8, 8, 2);
+  rim.position.set(0.4, -1.2, -1.6);
+  scene.add(rim);
 
   const ice = new THREE.MeshStandardMaterial({
-    color: "#eef7ff",
-    emissive: "#4ea4e4",
-    emissiveIntensity: 0.28,
-    roughness: 0.28,
-    metalness: 0.22,
+    color: "#b7d8f3",
+    emissive: "#198be8",
+    emissiveIntensity: 0.22,
+    roughness: 0.42,
+    metalness: 0.18,
     transparent: true,
-    opacity: 0.92,
+    opacity: 0.96,
   });
   const glass = ice.clone();
-  glass.color = new THREE.Color("#f7fbff");
-  glass.opacity = 0.55;
-  glass.roughness = 0.12;
+  glass.color = new THREE.Color("#e8f4ff");
+  glass.emissive = new THREE.Color("#7cbcf1");
+  glass.opacity = 0.7;
+  glass.roughness = 0.18;
 
   const nodes = REST.map((pos, i) => {
     const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(i === 1 ? 0.28 : 0.22, 0), ice.clone());
@@ -92,9 +96,9 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
   group.add(core);
 
   const tubes = LINKS.map(([a, b]) => {
-    const geo = new THREE.CylinderGeometry(0.012, 0.012, 1, 7, 1, true);
+    const geo = new THREE.CylinderGeometry(0.018, 0.018, 1, 8, 1, true);
     const mat = new THREE.MeshBasicMaterial({
-      color: "#d4edff",
+      color: "#9fd0f8",
       transparent: true,
       opacity: 0,
       depthWrite: false,
@@ -184,8 +188,9 @@ export function createArrivalSystem(host: HTMLElement): ArrivalSystem {
       bead.mesh.visible = linked > 0.05;
     });
 
-    key.intensity = 2 + live * 10;
-    fill.intensity = 1 + live * 5;
+    key.intensity = 0.45 + live * 1.15;
+    fill.intensity = 0.6 + live * 2.2;
+    rim.intensity = 0.4 + live * 2.1;
 
     const camZ = 6.4 - live * 1.15;
     const camX = 0.15 - live * 0.2;
