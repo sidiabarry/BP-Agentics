@@ -9,9 +9,10 @@ import { useEffect, useRef, type RefObject } from "react";
  */
 
 const HOLD_MS = 1000;
-const SOLID_MS = 720;
-const DAMP_START = 0.04;
+const SOLID_MS = 480;
+const DAMP_START = 0.14;
 const DAMP_END = 1;
+const REARM_MS = 900;
 
 function headerPx() {
   const header = document.querySelector("header");
@@ -69,6 +70,7 @@ export function useSoftScrollHold(
     let cancelled = false;
     let armed = true;
     let holding = false;
+    let releasedAt = 0;
     let holdStart = 0;
     let holdTimer = 0;
     let pulse = 0;
@@ -84,6 +86,7 @@ export function useSoftScrollHold(
       stageRef.current ?? document.querySelector<HTMLElement>("#werkstatt .ws__stage");
 
     const release = () => {
+      if (holding) releasedAt = performance.now();
       holding = false;
       mark(stage(), false);
       if (holdTimer) {
@@ -108,6 +111,7 @@ export function useSoftScrollHold(
     const begin = () => {
       const el = stage();
       if (!el || !enabledRef.current || !armed || holding) return;
+      if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
       if (!stageArrived(el.getBoundingClientRect())) return;
       armed = false;
       holding = true;
@@ -122,9 +126,11 @@ export function useSoftScrollHold(
       const el = stage();
       if (!el) return;
       if (holding) return;
+      if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
       const rect = el.getBoundingClientRect();
       if (stageClearlyAway(rect)) {
         armed = true;
+        releasedAt = 0;
         return;
       }
       if (enabledRef.current) begin();
