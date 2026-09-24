@@ -198,7 +198,7 @@ function StageNext({ step }: { step: StageNext }) {
   const primary = step.primary ?? { href: cta.href, label: cta.primary };
   return (
     <section
-      className="mx-auto max-w-6xl px-5 pt-8 pb-20 md:px-8"
+      className="section-shell mx-auto max-w-6xl"
       aria-labelledby="stage-naechster-schritt"
     >
       <div className="rounded-[2rem] bg-[#14161C] px-6 py-8 text-[#F3EFE6] md:px-10 md:py-10">
