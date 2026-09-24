@@ -3,6 +3,16 @@
 @import "shadcn/tailwind.css";
 @import "../styles/scroll-experience.css";
 
+/* Gleicher Abstand wie die Problem-Wand: px-5 py-16, ab md px-8 py-24. */
+@utility section-shell {
+  padding-inline: 1.25rem;
+  padding-block: 4rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+    padding-block: 6rem;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
