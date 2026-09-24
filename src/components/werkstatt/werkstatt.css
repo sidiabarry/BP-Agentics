@@ -36,11 +36,11 @@
     linear-gradient(
       180deg,
       var(--ws-portal) 0,
-      color-mix(in srgb, var(--ws-portal) 58%, var(--ws-night)) 28svh,
-      var(--ws-join) 62svh,
-      color-mix(in srgb, var(--ws-portal) 16%, var(--ws-night)) 118svh,
-      var(--ws-night) 168svh,
-      color-mix(in srgb, var(--ws-paper) 32%, var(--ws-night)) 214svh,
+      var(--ws-join) 4svh,
+      var(--ws-night) 18svh,
+      var(--ws-night) 58%,
+      color-mix(in srgb, var(--ws-paper) 55%, var(--ws-night)) 78%,
+      var(--ws-paper) 90%,
       var(--ws-paper) 100%
     ),
     var(--ws-paper);
