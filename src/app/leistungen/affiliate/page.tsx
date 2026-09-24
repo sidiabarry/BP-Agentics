@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AffiliateCase } from "@/components/affiliate/affiliate-case";
 import { AffiliateCta } from "@/components/affiliate/affiliate-cta";
 import { AffiliateHero } from "@/components/affiliate/affiliate-hero";
 import { AffiliatePay } from "@/components/affiliate/affiliate-pay";
@@ -61,7 +60,6 @@ export default function AffiliatePage() {
       <AffiliateHero />
       <AffiliateRollup />
       <AffiliatePay />
-      <AffiliateCase />
 
       <div className="affiliate-page__column">
         <PageFaqs items={[...affiliateFaqs]} />

@@ -1,9 +1,13 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import { cn } from "@/lib/utils";
 
 const PROFILE_HREF =
   "https://www.provenexpert.com/bp-agentics/?utm_source=seals&utm_campaign=embedded-proseal&utm_medium=profile&utm_content=8b0237cd-48c0-4b6f-bb5f-86aa0b8c2045";
+
+const EMPTY_SEAL = "Noch keine Bewertungen";
 
 const PRO_SEAL_OPTIONS = {
   widgetId: "8b0237cd-48c0-4b6f-bb5f-86aa0b8c2045",
@@ -36,8 +40,39 @@ function loadProSeal() {
 }
 
 export function ProSeal() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+
+    const read = () => {
+      const text = host.innerText || host.textContent || "";
+      if (text.includes(EMPTY_SEAL)) {
+        host.replaceChildren();
+        setVisible(false);
+        return;
+      }
+      const compact = text.replace(/\s+/g, " ").trim();
+      if (compact.length > 12) setVisible(true);
+    };
+
+    const observer = new MutationObserver(read);
+    observer.observe(host, { childList: true, subtree: true, characterData: true });
+    const late = window.setTimeout(read, 4000);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(late);
+    };
+  }, []);
+
   return (
-    <div className="max-w-[26rem]">
+    <div
+      ref={hostRef}
+      className={cn("max-w-[26rem]", visible ? "mt-8" : "hidden")}
+      aria-hidden={visible ? undefined : true}
+    >
       <noscript>
         <a
           href={PROFILE_HREF}

@@ -58,15 +58,6 @@ export const affiliatePayFacts = [
   },
 ] as const;
 
-export const affiliateCaseCopy = {
-  kicker: "Beispiel",
-  title: "Poolseller GmbH",
-  body:
-    "Sidia hat beim Aufbau des ADCELL-Setups mitgewirkt. Das Programm läuft ohne täglichen Eingriff. Der vermittelte Erfolg liegt im sechsstelligen Bereich.",
-  from: "Setup",
-  to: "läuft",
-} as const;
-
 export const affiliateNext = {
   title: "Affiliate-Setup besprechen",
   body:
