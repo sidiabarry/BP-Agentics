@@ -14,7 +14,7 @@
 
 .hero-portal[data-scroll-ready] .hero-portal__film canvas[data-ready] {
   /* Film bleibt Himmel bis spät; dimmt nur die eigene Fläche. */
-  --dim: clamp(0, calc((var(--pe) - 0.52) / 0.40), 1);
+  --dim: clamp(0, calc((var(--p) - 0.58) / 0.32), 1);
   opacity: calc(1 - var(--dim) * 0.36);
 }
 
@@ -41,9 +41,9 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
-  /* IN ~0.30–0.88, analog zur Referenz (Karten ab 0.30). */
+  /* IN ~0.30–0.88 auf der cubic Ease; Ausgang bleibt spät auf --p. */
   --sys: clamp(0, calc((var(--pe) - 0.30) / 0.58), 1);
-  --sys-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
+  --sys-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
@@ -55,7 +55,7 @@
 /* Lange Überlappung: Ankunft kommt, während das System schon steht. */
 .hero-portal[data-scroll-ready] .hero-portal__intro {
   --head: clamp(0, calc((var(--pe) - 0.42) / 0.38), 1);
-  --type-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--head) * (1 - var(--type-out)));
   clip-path: none;
@@ -74,7 +74,7 @@
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival {
   --rule: clamp(0, calc((var(--pe) - 0.48) / 0.42), 1);
-  --type-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--rule) * (1 - var(--type-out)));
   will-change: opacity, transform, filter;
