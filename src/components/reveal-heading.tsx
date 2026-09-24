@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type RevealHeadingProps = {
@@ -29,30 +29,24 @@ export function RevealHeading({ children, className }: RevealHeadingProps) {
         }
         setArmed(true);
       },
-      { threshold: 0.4 },
+      { threshold: 0.08, rootMargin: "0px 0px 20% 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const words = children.trim().split(/\s+/);
-
   return (
     <h2
       ref={ref}
-      className={cn(armed && "reveal-armed", revealed && "reveal-heading-on", className)}
+      className={cn(
+        "reveal-in",
+        "reveal-in-rise",
+        armed && "reveal-armed",
+        revealed && "reveal-in-on",
+        className,
+      )}
     >
-      {words.map((word, index) => (
-        <span key={`${word}-${index}`}>
-          <span
-            className="reveal-word"
-            style={{ "--i": index } as CSSProperties}
-          >
-            {word}
-          </span>
-          {index < words.length - 1 ? " " : null}
-        </span>
-      ))}
+      {children}
     </h2>
   );
 }
