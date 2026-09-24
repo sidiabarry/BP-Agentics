@@ -6,10 +6,10 @@ import { useEffect, useRef, type RefObject } from "react";
  * Weicher Halt erst an der ruhenden Übersicht: volle Bühne (01–03),
  * Etiketten und Preiskarten darunter. Kein Halt in der blauen Ankunft
  * und kein Halt, solange nur der obere Rand des Tisches zu sehen ist.
- * Etwa 1 s dämpfen, kein Pin. Offene Station: kein Halt.
+ * Etwa 300 ms dämpfen, kein Pin. Offene Station: kein Halt.
  */
 
-const HOLD_MS = 1000;
+const HOLD_MS = 300;
 const SOLID_MS = 480;
 const DAMP_START = 0.14;
 const DAMP_END = 1;

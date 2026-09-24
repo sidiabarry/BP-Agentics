@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Card } from "@/components/ui/card";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Framing, ViewId, WerkstattSceneController } from "./scene-engine";
 import { nextStation, stationOrder, stations, type StationId } from "./content";
@@ -12,7 +13,7 @@ import "./werkstatt.css";
  *
  * Bewusst ohne Scroll-Pinning. Halt erst, wenn Tisch, Stationen 01–03
  * und Preiskarten gemeinsam im Bild sind — nicht in der blauen Ankunft.
- * useSoftScrollHold dämpft Wheel und Touch etwa 1 s. Offene Station: kein Halt.
+ * useSoftScrollHold dämpft Wheel und Touch etwa 300 ms. Offene Station: kein Halt.
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
@@ -430,6 +431,16 @@ export function WerkstattSection() {
           </li>
         ))}
       </ul>
+      <div className="ws__prices">
+        <Card size="sm" className="w-fit bg-[#F3EFE6] text-[#14161C] shadow-none ring-[#14161C]/10">
+          <Link
+            href="/preise"
+            className="px-(--card-spacing) text-[1.02rem] font-medium text-[#14161C]"
+          >
+            Alle Preise und Pakete
+          </Link>
+        </Card>
+      </div>
     </section>
   );
 }
