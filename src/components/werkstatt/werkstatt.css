@@ -21,7 +21,7 @@
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
   --ws-pad-top: 1.25rem;
-  --ws-pad-bottom: max(12rem, 30svh);
+  --ws-pad-bottom: 6.75rem;
   --ws-gap: 2rem;
   --ws-join: color-mix(in srgb, var(--ws-portal) 92%, var(--ws-night));
   position: relative;
@@ -33,16 +33,7 @@
   padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
   background:
-    linear-gradient(
-      180deg,
-      var(--ws-portal) 0,
-      var(--ws-join) 22svh,
-      color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 48svh,
-      color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night)) 78svh,
-      color-mix(in srgb, var(--ws-portal) 26%, var(--ws-night)) 110svh,
-      color-mix(in srgb, var(--ws-portal) 12%, var(--ws-night)) 142svh,
-      var(--ws-night) 188svh
-    ),
+    linear-gradient(180deg, var(--ws-portal) 0, var(--ws-night) 12svh),
     var(--ws-night);
 }
 
@@ -53,7 +44,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 36svh;
+  z-index: 0;
+  height: 10svh;
   pointer-events: none;
   background: linear-gradient(
     180deg,
@@ -519,6 +511,12 @@
 
 /* --- Liste unter der Bühne ------------------------------------------------ */
 
+.ws__prices {
+  position: relative;
+  z-index: 1;
+  margin: 0.75rem var(--ws-gutter) 0;
+}
+
 .ws__list {
   position: relative;
   z-index: 1;
@@ -620,11 +618,18 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 
 /* --- Handy und schmale Tablets --------------------------------------------- */
 
+@media (min-width: 1200px) {
+  .ws {
+    --ws-pad-top: 72px;
+    --ws-pad-bottom: 108px;
+  }
+}
+
 @media (max-width: 799px) {
   .ws {
     --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
     --ws-pad-top: 0.85rem;
-    --ws-pad-bottom: max(9rem, 28svh);
+    --ws-pad-bottom: 6.75rem;
     --ws-gap: 1.25rem;
   }
 
