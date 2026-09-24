@@ -40,7 +40,7 @@ export function RevealIn({
         }
         setArmed(true);
       },
-      { threshold: 0.22, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px 20% 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();

@@ -6,6 +6,9 @@ import { site } from "@/lib/site";
 const contentUpdated = new Date("2026-09-08");
 const foerderungUpdated = new Date(foerderung.reviewed);
 
+/** Keine echten Seiten. Die Sitemap listet nur vorhandene URLs und verspricht keine Indexierung. */
+const notShipped = new Set(["/referenzen/poolseller"]);
+
 const staticRoutes: {
   path: string;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
@@ -49,7 +52,7 @@ const staticRoutes: {
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return staticRoutes.map((route) => ({
+  return staticRoutes.filter((route) => !notShipped.has(route.path)).map((route) => ({
     url: route.path === "/" ? site.url : `${site.url}${route.path}`,
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,
