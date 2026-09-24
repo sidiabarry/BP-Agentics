@@ -1,10 +1,19 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  /* Nacht erst spät, am Pin-Fuß — der Film bleibt Himmel bis ~0.82. */
-  --leave: clamp(0, calc((var(--p) - 0.82) / 0.16), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 78%, #0b1a27);
+  /* Längere Pin-Strecke: Schichten überlappen, keine Deckfarbe dazwischen. */
+  --hero-scroll: 460svh;
   background: var(--hero-exit, #82bbf0);
+}
+
+/* Kein Verlauf über den Film — die Weichheit kommt aus Opacity der Schichten. */
+.hero-portal[data-scroll-ready] .hero-portal__film::after {
+  content: none;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__film canvas[data-ready] {
+  --dim: clamp(0, calc((var(--p) - 0.58) / 0.28), 1);
+  opacity: calc(1 - var(--dim) * 0.38);
 }
 
 .hero-portal__system {
@@ -25,37 +34,28 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
-  --sys: clamp(0, calc((var(--p) - 0.48) / 0.16), 1);
-  /* Ruhepose bleibt in die Werkstatt-Überlappung sichtbar, nicht mit --leave. */
-  --sys-out: clamp(0, calc((var(--p) - 0.97) / 0.05), 1);
+  --sys: clamp(0, calc((var(--p) - 0.42) / 0.28), 1);
+  --sys-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
-/* Nur der Pin-Fuß, erst mit --leave, unter Intro/Arrival (z-index 4). */
+/* Kein pin::after — keine Wäsche über Film oder System. */
 .hero-portal[data-scroll-ready] .hero-portal__pin::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 58%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 55%, #0b1a27) 82%,
-    var(--join) 100%
-  );
-  opacity: var(--leave);
+  content: none;
 }
 
-/* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */
+/* Lange Überlappung: Ankunft kommt, während das System schon steht. */
 .hero-portal[data-scroll-ready] .hero-portal__intro {
-  --head: clamp(0, calc((var(--p) - 0.7) / 0.14), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.97) / 0.05), 1);
+  --head: clamp(0, calc((var(--p) - 0.58) / 0.22), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--head) * (1 - var(--type-out)));
   clip-path: none;
-  transform: translate3d(0, calc((1 - var(--head)) * 0.35rem), 0);
+  transform: translate3d(
+    0,
+    calc((1 - var(--head)) * 1.5rem + var(--type-out) * -1.6rem),
+    0
+  );
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__intro h2 {
@@ -63,22 +63,24 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival {
-  --rule: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.97) / 0.05), 1);
+  --rule: clamp(0, calc((var(--p) - 0.62) / 0.24), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--rule) * (1 - var(--type-out)));
+  transform: translate3d(0, calc((1 - var(--rule)) * 1.4rem + var(--type-out) * -1.2rem), 0);
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
-  --k: clamp(0, calc((var(--p) - 0.7) / 0.08), 1);
+  --k: clamp(0, calc((var(--p) - 0.6) / 0.18), 1);
   opacity: calc(var(--k) * 0.85);
   letter-spacing: 0.2em;
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-line {
-  --ln: clamp(0, calc((var(--p) - 0.72) / 0.08), 1);
+  --ln: clamp(0, calc((var(--p) - 0.64) / 0.2), 1);
   opacity: var(--ln);
   clip-path: none;
+  transform: translate3d(0, calc((1 - var(--ln)) * 0.85rem), 0);
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__portal {
