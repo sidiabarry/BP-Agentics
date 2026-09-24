@@ -21,7 +21,7 @@
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
   --ws-pad-top: 0;
-  --ws-pad-bottom: max(5.5rem, 14svh);
+  --ws-pad-bottom: max(8rem, 22svh);
   --ws-gap: 2rem;
   --ws-join: color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night));
   position: relative;
@@ -35,49 +35,15 @@
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 0,
-      var(--ws-join) 22svh,
-      color-mix(in srgb, var(--ws-portal) 22%, var(--ws-night)) 64svh,
-      color-mix(in srgb, var(--ws-portal) 10%, var(--ws-night)) 110svh,
-      var(--ws-night) 168svh
+      var(--ws-portal) 0,
+      color-mix(in srgb, var(--ws-portal) 42%, var(--ws-night)) 18svh,
+      var(--ws-join) 40svh,
+      color-mix(in srgb, var(--ws-portal) 12%, var(--ws-night)) 96svh,
+      var(--ws-night) 150svh,
+      color-mix(in srgb, var(--ws-paper) 28%, var(--ws-night)) 190svh,
+      var(--ws-paper) 100%
     ),
-    var(--ws-night);
-}
-
-/* Anschluss nur in den Header — keine Wäsche über der Wandmarke. */
-.ws::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(-1 * var(--ws-header));
-  height: var(--ws-header);
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--ws-portal) 32%, var(--ws-night)) 0,
-    color-mix(in srgb, var(--ws-night) 40%, transparent) 100%
-  );
-}
-
-/* Übergang in die helle Folgesektion — wie bei der früheren LeistungsMaschine. */
-.ws::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 36svh;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0,
-    color-mix(in srgb, var(--ws-paper) 10%, transparent) 28%,
-    color-mix(in srgb, var(--ws-paper) 42%, transparent) 58%,
-    color-mix(in srgb, var(--ws-night) 18%, var(--ws-paper)) 82%,
-    var(--ws-paper) 100%
-  );
+    var(--ws-paper);
 }
 
 /* --- Bühne ---------------------------------------------------------------- */
@@ -92,21 +58,6 @@
   background: transparent;
   color: var(--ws-paper);
   isolation: isolate;
-}
-
-/* Kurzer Saum unter dem Header — BP AGENTICS bleibt lesbar. */
-.ws__stage::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 8%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--ws-night) 18%, transparent) 0,
-    transparent 100%
-  );
 }
 
 .ws__poster,
@@ -186,8 +137,6 @@
   cursor: pointer;
 }
 
-/* --- Etiketten über den Stationen ----------------------------------------- */
-
 .ws__labels {
   position: absolute;
   inset: 0;
@@ -226,7 +175,6 @@
     border-color 0.2s ease;
 }
 
-/* Führungslinien vom Etikett zum Objekt (Koordinaten setzt die Szene). */
 .ws__leaders {
   position: absolute;
   inset: 0;
@@ -317,8 +265,6 @@
   }
 }
 
-/* --- Sheet (Handy unten) / Panel (Desktop rechts) ------------------------- */
-
 .ws__sheet {
   position: absolute;
   z-index: 4;
@@ -353,7 +299,6 @@
     visibility 0s;
 }
 
-/* Bleibt beim Scrollen im Sheet oben stehen — „Übersicht" ist immer erreichbar. */
 .ws__sheet-bar {
   position: sticky;
   top: 0;
@@ -547,8 +492,6 @@
   color: rgb(20 22 28 / 65%);
 }
 
-/* --- Liste unter der Bühne ------------------------------------------------ */
-
 .ws__list {
   position: relative;
   z-index: 1;
@@ -617,15 +560,12 @@
   color: var(--ws-mist);
 }
 
-/* Ruhiges Papierkärtchen im Auslauf der Nacht — keine Marketingfläche. */
 .ws__prices {
   position: relative;
   z-index: 1;
   width: min(40rem, calc(100% - 2 * var(--ws-gutter)));
   margin: 1.75rem var(--ws-gutter) 0;
 }
-
-/* --- Fokus ---------------------------------------------------------------- */
 
 .ws button:focus-visible,
 .ws a:focus-visible,
@@ -649,14 +589,12 @@
   white-space: nowrap;
 }
 
-/* Solange die Bühne im Bild ist, liegt kein schwebender Knopf über Etiketten oder Liste. */
 body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-/* Header bleibt flach: kein Blau-Band über der Wandmarke. */
 body:has(#werkstatt[data-stage-visible]) header {
   background: color-mix(
     in srgb,
@@ -669,13 +607,11 @@ body:has(#werkstatt[data-stage-visible]) header {
   -webkit-backdrop-filter: none;
 }
 
-/* --- Handy und schmale Tablets --------------------------------------------- */
-
 @media (max-width: 799px) {
   .ws {
     --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
     --ws-pad-top: 0;
-    --ws-pad-bottom: max(4.5rem, 12svh);
+    --ws-pad-bottom: max(6.5rem, 18svh);
     --ws-gap: 1.25rem;
     margin-top: -0.35rem;
   }
@@ -753,7 +689,6 @@ body:has(#werkstatt[data-stage-visible]) header {
     grid-template-columns: 1fr;
     gap: 0.6rem;
   }
-
 }
 
 @media (min-width: 800px) and (max-width: 1100px) {
