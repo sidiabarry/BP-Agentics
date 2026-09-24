@@ -21,7 +21,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { useScrollScene, range, smooth, easeInOutCubic } from "@/lib/scroll-engine";
+import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
 import "./arrival-system.css";
 
 type ArrivalSystem = {
@@ -76,8 +76,7 @@ export function HeroPortal() {
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
     minHeight: 560,
-    damp: 0.34,
-    vars: (p) => ({ "--pe": easeInOutCubic(p).toFixed(5) }),
+    damp: 0.26,
     onFrame: (p) => {
       const canvas = canvasRef.current;
       const pin = pinRef.current;
