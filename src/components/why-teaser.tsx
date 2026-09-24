@@ -5,7 +5,7 @@ import { whyPoints } from "@/lib/content";
 
 export function WhyTeaser() {
   return (
-    <section id="warum" className="bg-[#F3EFE6] px-5 py-16 md:px-8 md:py-20">
+    <section id="warum" className="section-shell bg-[#F3EFE6]">
       <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
         <div>
           <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
