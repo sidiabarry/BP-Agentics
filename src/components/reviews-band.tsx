@@ -27,9 +27,7 @@ export function ReviewsBand({
         Auftraggeber können BP Agentics auf ProvenExpert bewerten. Das Siegel
         kommt von dort — nicht aus unseren Texten.
       </RevealIn>
-      <div className="mt-8">
-        <ProSeal />
-      </div>
+      <ProSeal />
     </section>
   );
 }
