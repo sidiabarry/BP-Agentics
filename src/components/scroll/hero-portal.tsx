@@ -76,7 +76,7 @@ export function HeroPortal() {
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
     minHeight: 560,
-    damp: 0.24,
+    damp: 0.26,
     onFrame: (p) => {
       const canvas = canvasRef.current;
       const pin = pinRef.current;

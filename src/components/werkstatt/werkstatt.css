@@ -20,10 +20,10 @@
   --ws-action-hover: #1576c4;
   --ws-gutter: max(5vw, 1.5rem);
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-  --ws-pad-top: 1.25rem;
-  --ws-pad-bottom: max(12rem, 30svh);
+  --ws-pad-top: 0;
+  --ws-pad-bottom: max(8rem, 22svh);
   --ws-gap: 2rem;
-  --ws-join: color-mix(in srgb, var(--ws-portal) 92%, var(--ws-night));
+  --ws-join: color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -36,33 +36,14 @@
     linear-gradient(
       180deg,
       var(--ws-portal) 0,
-      var(--ws-join) 22svh,
-      color-mix(in srgb, var(--ws-portal) 72%, var(--ws-night)) 48svh,
-      color-mix(in srgb, var(--ws-portal) 48%, var(--ws-night)) 78svh,
-      color-mix(in srgb, var(--ws-portal) 26%, var(--ws-night)) 110svh,
-      color-mix(in srgb, var(--ws-portal) 12%, var(--ws-night)) 142svh,
-      var(--ws-night) 188svh
+      var(--ws-join) 4svh,
+      var(--ws-night) 18svh,
+      var(--ws-night) 58%,
+      color-mix(in srgb, var(--ws-paper) 55%, var(--ws-night)) 78%,
+      var(--ws-paper) 90%,
+      var(--ws-paper) 100%
     ),
-    var(--ws-night);
-}
-
-/* Übergang in die helle Folgesektion — wie bei der früheren LeistungsMaschine. */
-.ws::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 36svh;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0,
-    color-mix(in srgb, var(--ws-paper) 10%, transparent) 28%,
-    color-mix(in srgb, var(--ws-paper) 42%, transparent) 58%,
-    color-mix(in srgb, var(--ws-night) 18%, var(--ws-paper)) 82%,
-    var(--ws-paper) 100%
-  );
+    var(--ws-paper);
 }
 
 /* --- Bühne ---------------------------------------------------------------- */
@@ -71,8 +52,8 @@
 .ws__stage {
   position: relative;
   flex: 0 1 auto;
-  height: min(68svh, calc(100svh - var(--ws-header) - 12.75rem), 720px);
-  min-height: 28rem;
+  height: min(78svh, calc(100svh - var(--ws-header) - 8.5rem), 820px);
+  min-height: 30rem;
   overflow: hidden;
   background: transparent;
   color: var(--ws-paper);
@@ -587,6 +568,14 @@
   color: var(--ws-mist);
 }
 
+/* Ruhiges Papierkärtchen im Auslauf der Nacht — keine Marketingfläche. */
+.ws__prices {
+  position: relative;
+  z-index: 1;
+  width: min(40rem, calc(100% - 2 * var(--ws-gutter)));
+  margin: 1.75rem var(--ws-gutter) 0;
+}
+
 /* --- Fokus ---------------------------------------------------------------- */
 
 .ws button:focus-visible,
@@ -618,19 +607,33 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   pointer-events: none;
 }
 
+/* Header bleibt flach: kein Blau-Band über der Wandmarke. */
+body:has(#werkstatt[data-stage-visible]) header {
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--hero-exit, #82bbf0) 42%, #0b1a27) 28%,
+    #f3efe6
+  );
+  border-bottom-color: color-mix(in srgb, var(--hero-exit, #82bbf0) 10%, transparent);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 /* --- Handy und schmale Tablets --------------------------------------------- */
 
 @media (max-width: 799px) {
   .ws {
     --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
-    --ws-pad-top: 0.85rem;
-    --ws-pad-bottom: max(9rem, 28svh);
+    --ws-pad-top: 0;
+    --ws-pad-bottom: max(6.5rem, 18svh);
     --ws-gap: 1.25rem;
+    margin-top: -0.35rem;
   }
 
   .ws__stage {
-    height: min(40svh, calc(100svh - var(--ws-header) - 20.5rem));
-    min-height: 16rem;
+    height: min(54svh, calc(100svh - var(--ws-header) - 13rem));
+    min-height: 20rem;
   }
 
   .ws__label {

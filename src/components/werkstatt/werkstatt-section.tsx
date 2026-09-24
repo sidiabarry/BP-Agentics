@@ -2,6 +2,15 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import type { Framing, ViewId, WerkstattSceneController } from "./scene-engine";
 import { nextStation, stationOrder, stations, type StationId } from "./content";
 import { useSoftScrollHold } from "./use-soft-scroll-hold";
@@ -430,6 +439,31 @@ export function WerkstattSection() {
           </li>
         ))}
       </ul>
+
+      <Card className="ws__prices gap-4 rounded-2xl bg-[#F3EFE6] py-5 text-[#14161C] ring-black/10">
+        <CardHeader className="gap-2">
+          <p className="text-[0.78rem] font-medium tracking-[0.18em] text-[#5C5F66] uppercase">
+            Preise
+          </p>
+          <CardTitle className="font-heading text-[1.35rem] leading-snug font-semibold tracking-[-0.03em] text-[#14161C] md:text-[1.55rem]">
+            Alle Preise und Pakete
+          </CardTitle>
+          <Separator className="mt-1 bg-[#14161C]/12" />
+          <CardDescription className="max-w-[36rem] text-[1.02rem] leading-relaxed text-[#3A3D45]">
+            Einmalige Einrichtung und monatliche Betreuung bleiben getrennt.
+            Den verbindlichen Umfang erhalten Sie vor der Beauftragung im Angebot.
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="border-t-0 bg-transparent p-0 px-(--card-spacing)">
+          <Button
+            asChild
+            variant="outline"
+            className="h-auto rounded-full border-[#14161C]/18 bg-white px-5 py-2.5 text-[0.98rem] font-medium text-[#14161C] hover:bg-white hover:text-[#14161C]"
+          >
+            <Link href="/preise">Zur Preisübersicht</Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </section>
   );
 }

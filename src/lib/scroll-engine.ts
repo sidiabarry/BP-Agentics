@@ -22,6 +22,10 @@ export const range = (v: number, a: number, b: number) => clamp01((v - a) / (b -
 export const smooth = (v: number) => v * v * (3 - 2 * v);
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+/** Wie in Sidias Referenz: weiche Mitte, ruhige Enden — nur für Schicht-Blends. */
+export const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+
 /** Dreiecksfenster: 0 an den Rändern, 1 in der Mitte des Abschnitts. */
 export function window3(v: number, start: number, end: number, edge = 0.18) {
   const span = end - start;

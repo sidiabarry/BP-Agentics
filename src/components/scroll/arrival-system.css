@@ -1,10 +1,25 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  /* Nachtwäsche spät und himmelblau — kein Navy-Klotz über der Ruhepose. */
-  --leave: clamp(0, calc((var(--p) - 0.9) / 0.16), 1);
-  --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 94%, #0b1a27);
+  /* Kürzere Pin-Strecke: nächste Schicht ist bald lesbar, keine Deckfarbe. */
+  --hero-scroll: 400svh;
   background: var(--hero-exit, #82bbf0);
+}
+
+/* Kein Verlauf über den Film — die Weichheit kommt aus Opacity der Schichten. */
+.hero-portal[data-scroll-ready] .hero-portal__film::after {
+  content: none;
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__film canvas[data-ready] {
+  /* Film bleibt Himmel bis spät; dimmt nur die eigene Fläche. */
+  --dim: clamp(0, calc((var(--p) - 0.62) / 0.18), 1);
+  opacity: calc(1 - var(--dim) * 0.28);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__copy,
+.hero-portal[data-scroll-ready] .hero-portal__cue {
+  --out: clamp(0, calc((var(--p) - 0.04) / 0.14), 1);
 }
 
 .hero-portal__system {
@@ -25,37 +40,30 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
-  --sys: clamp(0, calc((var(--p) - 0.48) / 0.16), 1);
-  /* Ruhepose bleibt in die Werkstatt-Überlappung sichtbar, nicht mit --leave. */
-  --sys-out: clamp(0, calc((var(--p) - 0.97) / 0.05), 1);
-  opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
+  /* Kurzes Hereinkommen: System ist bald voll da, Ausgang bleibt spät. */
+  --sys: clamp(0, calc((var(--p) - 0.46) / 0.14), 1);
+  --sys-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.18));
 }
 
-/* Langer Farbfluss: Himmel bleibt sichtbar, Nacht nur als hauchdünne Wäsche. */
+/* Kein pin::after — keine Wäsche über Film oder System. */
 .hero-portal[data-scroll-ready] .hero-portal__pin::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 96%, transparent) 22%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 88%, #0b1a27) 58%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 82%,
-    var(--join) 100%
-  );
-  opacity: calc(var(--leave) * 0.42);
+  content: none;
 }
 
-/* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */
+/* Sanfte Übergabe, nicht langes Verwaschen: Typo ist schnell lesbar. */
 .hero-portal[data-scroll-ready] .hero-portal__intro {
-  --head: clamp(0, calc((var(--p) - 0.7) / 0.14), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
+  --head: clamp(0, calc((var(--p) - 0.54) / 0.12), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  z-index: 4;
   opacity: calc(var(--head) * (1 - var(--type-out)));
   clip-path: none;
-  transform: translate3d(0, calc((1 - var(--head)) * 0.35rem), 0);
+  filter: none;
+  transform: translate3d(
+    0,
+    calc((1 - var(--head)) * 0.7rem + var(--type-out) * -0.7rem),
+    0
+  );
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__intro h2 {
@@ -63,24 +71,34 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival {
-  --rule: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
+  --rule: clamp(0, calc((var(--p) - 0.56) / 0.12), 1);
+  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  z-index: 4;
   opacity: calc(var(--rule) * (1 - var(--type-out)));
+  filter: none;
+  transform: translate3d(
+    0,
+    calc((1 - var(--rule)) * 0.6rem + var(--type-out) * -0.6rem),
+    0
+  );
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
-  --k: clamp(0, calc((var(--p) - 0.7) / 0.08), 1);
+  --k: clamp(0, calc((var(--p) - 0.56) / 0.1), 1);
   opacity: calc(var(--k) * 0.85);
   letter-spacing: 0.2em;
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-line {
-  --ln: clamp(0, calc((var(--p) - 0.72) / 0.08), 1);
+  --ln: clamp(0, calc((var(--p) - 0.58) / 0.1), 1);
   opacity: var(--ln);
   clip-path: none;
+  transform: translate3d(0, calc((1 - var(--ln)) * 0.45rem), 0);
 }
 
+/* Iris öffnet zügig — Ankunftsblau ist die nächste Folie, nicht ein Vorhang. */
 .hero-portal[data-scroll-ready] .hero-portal__portal {
+  --open: clamp(0, calc((var(--p) - 0.52) / 0.12), 1);
   filter: none;
 }
 
@@ -92,7 +110,7 @@
   border-radius: inherit;
   pointer-events: none;
   background: radial-gradient(circle at 42% 34%, #fff 0%, transparent 58%);
-  opacity: calc(0.4 * var(--open) * (1 - var(--open)));
+  opacity: calc(0.28 * var(--open) * (1 - var(--open)));
 }
 
 /* WhatsApp sitzt sonst auf der unteren Zeile. */
@@ -137,5 +155,6 @@ body:has(.hero-portal__pin[data-arrival]) [data-analytics="whatsapp-fab"] {
     opacity: 1;
     clip-path: none;
     transform: none;
+    filter: none;
   }
 }
