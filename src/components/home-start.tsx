@@ -9,7 +9,7 @@ export function HomeStart() {
     <section id="start" className="bg-[#F3EFE6]">
       <Process headingId="start-schritte" />
       <WhyTeaser />
-      <div className="bg-white px-5 py-12 md:px-8">
+      <div className="section-shell bg-white">
         <div className="mx-auto max-w-6xl rounded-3xl bg-[#F3EFE6] px-6 py-8 md:px-8">
           <h2 className="max-w-[22ch] text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
             Was soll für Ihren Betrieb leichter werden?

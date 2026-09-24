@@ -80,7 +80,7 @@ export function DemoPair({
 
 export function HomeReferenzen() {
   return (
-    <section id="referenzen" className="bg-white px-5 py-16 md:px-8">
+    <section id="referenzen" className="section-shell bg-white">
       <div className="mx-auto max-w-6xl">
         <RevealIn as="p" variant="kicker" className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           Arbeiten und Demos

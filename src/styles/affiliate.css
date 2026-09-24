@@ -19,7 +19,7 @@
 
 .affiliate-hero {
   overflow: visible;
-  padding: 2rem 0 3.5rem;
+  padding: 4rem 0;
   background:
     linear-gradient(180deg, #f3efe6 0%, #eef3f8 72%, #e7eef6 100%);
 }
@@ -331,7 +331,7 @@
 .affiliate-pay {
   width: min(68rem, calc(100% - 2.5rem));
   margin: 0 auto;
-  padding: 3.5rem 0 2rem;
+  padding: 4rem 0;
   overflow: visible;
 }
 
@@ -515,7 +515,7 @@
 
 .affiliate-cta {
   width: min(68rem, calc(100% - 2.5rem));
-  margin: 2rem auto 4.5rem;
+  margin: 4rem auto;
   padding: 1.8rem 1.5rem 1.7rem;
   border-radius: 2rem;
   background: #14161c;
@@ -589,9 +589,24 @@
   to { width: 100%; }
 }
 
+@media (min-width: 768px) {
+  .affiliate-page__column,
+  .affiliate-hero__inner,
+  .affiliate-pay,
+  .affiliate-case,
+  .affiliate-cta {
+    width: min(68rem, calc(100% - 4rem));
+  }
+}
+
 @media (min-width: 880px) {
-  .affiliate-hero {
-    padding: 2.4rem 0 4.5rem;
+  .affiliate-hero,
+  .affiliate-pay {
+    padding-block: 6rem;
+  }
+
+  .affiliate-cta {
+    margin-block: 6rem;
   }
 
   .affiliate-rollup__pin {
