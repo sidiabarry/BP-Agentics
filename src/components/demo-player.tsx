@@ -6,8 +6,8 @@
  * <DemoLoop />   Querformat-Schleife (Dachdecker) mit optionaler Vollversion
  * <PhoneDemo />  Hochformat-Schleife im Telefonrahmen (Feinkost Kreta)
  *
- * src steht erst, wenn der Block nahe ist. preload="none" allein reicht in
- * Chrome nicht. prefers-reduced-motion lädt nie ein Video.
+ * src steht erst, wenn der Block nahe ist. Das Poster bleibt sichtbar,
+ * preload="metadata". prefers-reduced-motion lädt nie ein Video.
  * ---------------------------------------------------------------------------
  */
 
@@ -147,6 +147,7 @@ export function DemoLoop({
   const videoRef = useRef<HTMLVideoElement>(null);
   const motion = useMotionAllowed();
   const [open, setOpen] = useState(false);
+  const [framed, setFramed] = useState(false);
   const { near, inView } = useNearAndPlaying(wrapRef, motion);
   useLoopPlayback(videoRef, inView, motion);
   const close = useCallback(() => setOpen(false), []);
@@ -154,6 +155,8 @@ export function DemoLoop({
   return (
     <figure ref={wrapRef} className={className}>
       <div className="relative overflow-hidden rounded-2xl bg-[#14161C] shadow-xl ring-1 ring-black/10">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={poster} alt={posterAlt ?? caption ?? "Produktdemo"} className="block h-auto w-full" />
         {motion ? (
           <video
             ref={videoRef}
@@ -162,17 +165,18 @@ export function DemoLoop({
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
             aria-label={posterAlt ?? caption ?? "Produktdemo"}
-            className="block h-auto w-full"
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity",
+              framed ? "opacity-100" : "opacity-0",
+            )}
             onLoadedData={() => {
+              setFramed(true);
               if (inView) videoRef.current?.play().catch(() => {});
             }}
           />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={poster} alt={posterAlt ?? caption ?? "Produktdemo"} className="block h-auto w-full" />
-        )}
+        ) : null}
         {fullSrc ? (
           <button
             type="button"
@@ -213,6 +217,7 @@ export function PhoneDemo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const motion = useMotionAllowed();
   const [open, setOpen] = useState(false);
+  const [framed, setFramed] = useState(false);
   const { near, inView } = useNearAndPlaying(wrapRef, motion);
   useLoopPlayback(videoRef, inView, motion);
   const close = useCallback(() => setOpen(false), []);
@@ -224,7 +229,9 @@ export function PhoneDemo({
         className="relative w-[min(100%,13.25rem)] rounded-[2.2rem] bg-[#14161C] p-2 shadow-2xl ring-1 ring-black/20"
       >
         <div className="absolute top-3 left-1/2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-white/20" />
-        <div className="overflow-hidden rounded-[1.7rem] bg-black">
+        <div className="relative overflow-hidden rounded-[1.7rem] bg-black">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} className="block h-auto w-full" />
           {motion ? (
             <video
               ref={videoRef}
@@ -233,17 +240,18 @@ export function PhoneDemo({
               muted
               loop
               playsInline
-              preload="none"
+              preload="metadata"
               aria-label={posterAlt ?? caption ?? "App-Demo"}
-              className="block h-auto w-full"
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-opacity",
+                framed ? "opacity-100" : "opacity-0",
+              )}
               onLoadedData={() => {
+                setFramed(true);
                 if (inView) videoRef.current?.play().catch(() => {});
               }}
             />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} className="block h-auto w-full" />
-          )}
+          ) : null}
         </div>
       </div>
       {fullSrc ? (
