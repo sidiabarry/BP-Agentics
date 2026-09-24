@@ -162,7 +162,7 @@ export function ConsequenceReel({
                 src={near ? item.src : undefined}
                 muted
                 playsInline
-                preload={near ? "auto" : "none"}
+                preload="metadata"
                 aria-hidden={index !== activeIndex}
                 aria-label={index === activeIndex ? `${item.time}: ${item.caption}` : undefined}
                 onPlaying={() => {
