@@ -20,7 +20,7 @@
  * blendet zwei Nachbarframes, statt auf ganze Indizes zu springen.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
 import "./arrival-system.css";
 
@@ -40,7 +40,9 @@ const SETS = {
 type Kind = keyof typeof SETS;
 
 /** Anteil der Scrollstrecke, in dem die Bildsequenz läuft. Danach: Portal. */
-const FILM_END = 0.6;
+const FILM_END = 0.45;
+/** Pin-Track, etwa die Hälfte der bisherigen 380svh. */
+const HERO_SCROLL = "190svh";
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
 const RESIZE_WAIT = 140;
@@ -320,6 +322,7 @@ export function HeroPortal() {
       ref={sectionRef}
       id="einstieg"
       className="hero-portal"
+      style={{ "--hero-scroll": HERO_SCROLL } as CSSProperties}
       aria-label="BP Agentics — Websites und Systeme für Betriebe"
     >
       <div className="hero-portal__pin" ref={pinRef}>

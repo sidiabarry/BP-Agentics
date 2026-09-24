@@ -1,8 +1,8 @@
 /* Three.js-System hinter der Ankunftstypo. Keine zweite Scroll-Fahrt. */
 
 .hero-portal[data-scroll-ready] {
-  /* Nachtwäsche spät und himmelblau — kein Navy-Klotz über der Ruhepose. */
-  --leave: clamp(0, calc((var(--p) - 0.9) / 0.16), 1);
+  /* Blau-Phase kurz: die Iris öffnet direkt nach dem Film und ist schnell durch. */
+  --leave: clamp(0, calc((var(--p) - 0.78) / 0.1), 1);
   --join: color-mix(in srgb, var(--hero-exit, #82bbf0) 94%, #0b1a27);
   background: var(--hero-exit, #82bbf0);
 }
@@ -31,53 +31,56 @@
   opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
-/* Langer Farbfluss: Himmel bleibt sichtbar, Nacht nur als hauchdünne Wäsche. */
+/* Kein Schleier über Film oder Three.js-System. */
 .hero-portal[data-scroll-ready] .hero-portal__pin::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 96%, transparent) 22%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 88%, #0b1a27) 58%,
-    color-mix(in srgb, var(--hero-exit, #82bbf0) 82%, #0b1a27) 82%,
-    var(--join) 100%
-  );
-  opacity: calc(var(--leave) * 0.42);
+  content: none;
+  background: none;
+  opacity: 0;
 }
 
-/* Typo bleibt durch die Ankunft lesbar und geht erst am Schnitt. */
-.hero-portal[data-scroll-ready] .hero-portal__intro {
-  --head: clamp(0, calc((var(--p) - 0.7) / 0.14), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
-  opacity: calc(var(--head) * (1 - var(--type-out)));
+/* Iris kürzer, direkt nach dem Filmende. */
+.hero-portal[data-scroll-ready] .hero-portal__portal {
+  --open: clamp(0, calc((var(--p) - 0.46) / 0.08), 1);
+}
+
+/* Ankunftstypo: Tinte, volle Deckkraft, unten nicht beschnitten. */
+.hero-portal.hero-portal[data-scroll-ready] .hero-portal__intro {
+  --head: clamp(0, calc((var(--p) - 0.5) / 0.08), 1);
+  color: #14161c;
+  opacity: var(--head);
   clip-path: none;
-  transform: translate3d(0, calc((1 - var(--head)) * 0.35rem), 0);
+  text-shadow: none;
+  transform: none;
 }
 
-.hero-portal[data-scroll-ready] .hero-portal__intro h2 {
+.hero-portal.hero-portal[data-scroll-ready] .hero-portal__intro h2 {
+  color: #14161c;
+  opacity: 1;
   letter-spacing: -0.035em;
+  text-shadow: none;
 }
 
-.hero-portal[data-scroll-ready] .hero-portal__arrival {
-  --rule: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.91) / 0.09), 1);
-  opacity: calc(var(--rule) * (1 - var(--type-out)));
+.hero-portal.hero-portal[data-scroll-ready] .hero-portal__arrival {
+  --rule: clamp(0, calc((var(--p) - 0.54) / 0.08), 1);
+  color: #14161c;
+  opacity: var(--rule);
+  padding-bottom: max(6.5rem, 12svh);
+  text-shadow: none;
 }
 
-.hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
-  --k: clamp(0, calc((var(--p) - 0.7) / 0.08), 1);
-  opacity: calc(var(--k) * 0.85);
+.hero-portal.hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
+  --k: clamp(0, calc((var(--p) - 0.52) / 0.08), 1);
+  color: #14161c;
+  opacity: var(--k);
   letter-spacing: 0.2em;
 }
 
-.hero-portal[data-scroll-ready] .hero-portal__arrival-line {
-  --ln: clamp(0, calc((var(--p) - 0.72) / 0.08), 1);
-  opacity: var(--ln);
+.hero-portal.hero-portal[data-scroll-ready] .hero-portal__arrival-line {
+  --ln: 1;
+  color: #14161c;
+  opacity: 1;
   clip-path: none;
+  transform: none;
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__portal {
@@ -102,6 +105,12 @@ body:has(.hero-portal__pin[data-arrival]) [data-analytics="whatsapp-fab"] {
   pointer-events: none;
 }
 
+@media (max-width: 480px) {
+  .hero-portal[data-scroll-ready] .hero-portal__system {
+    opacity: min(0.35, calc(var(--sys) * (1 - var(--sys-out) * 0.22)));
+  }
+}
+
 @media (max-width: 700px) {
   .hero-portal[data-scroll-ready] .hero-portal__intro {
     top: 1rem;
@@ -116,14 +125,17 @@ body:has(.hero-portal__pin[data-arrival]) [data-analytics="whatsapp-fab"] {
   }
 
   .hero-portal[data-scroll-ready] .hero-portal__arrival {
-    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
   .hero-portal[data-scroll-ready] .hero-portal__arrival-line {
     font-size: clamp(1.02rem, 4.8vw, 1.28rem);
-    padding-bottom: 0.15rem;
+    padding-bottom: 0.35rem;
+    clip-path: none;
+    opacity: 1;
+    color: #14161c;
   }
 }
 
