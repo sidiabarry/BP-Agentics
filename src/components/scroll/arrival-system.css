@@ -2,7 +2,8 @@
 
 .hero-portal[data-scroll-ready] {
   /* Längere Pin-Strecke: Schichten überlappen, keine Deckfarbe dazwischen. */
-  --hero-scroll: 460svh;
+  --hero-scroll: 520svh;
+  --pe: var(--p);
   background: var(--hero-exit, #82bbf0);
 }
 
@@ -12,8 +13,14 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__film canvas[data-ready] {
-  --dim: clamp(0, calc((var(--p) - 0.58) / 0.28), 1);
-  opacity: calc(1 - var(--dim) * 0.38);
+  /* Film bleibt Himmel bis spät; dimmt nur die eigene Fläche. */
+  --dim: clamp(0, calc((var(--pe) - 0.52) / 0.40), 1);
+  opacity: calc(1 - var(--dim) * 0.36);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__copy,
+.hero-portal[data-scroll-ready] .hero-portal__cue {
+  --out: clamp(0, calc((var(--pe) - 0.02) / 0.22), 1);
 }
 
 .hero-portal__system {
@@ -34,8 +41,9 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__system {
-  --sys: clamp(0, calc((var(--p) - 0.42) / 0.28), 1);
-  --sys-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  /* IN ~0.30–0.88, analog zur Referenz (Karten ab 0.30). */
+  --sys: clamp(0, calc((var(--pe) - 0.30) / 0.58), 1);
+  --sys-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
   opacity: calc(var(--sys) * (1 - var(--sys-out) * 0.22));
 }
 
@@ -46,16 +54,18 @@
 
 /* Lange Überlappung: Ankunft kommt, während das System schon steht. */
 .hero-portal[data-scroll-ready] .hero-portal__intro {
-  --head: clamp(0, calc((var(--p) - 0.58) / 0.22), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  --head: clamp(0, calc((var(--pe) - 0.42) / 0.38), 1);
+  --type-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--head) * (1 - var(--type-out)));
   clip-path: none;
+  will-change: opacity, transform, filter;
   transform: translate3d(
     0,
-    calc((1 - var(--head)) * 1.5rem + var(--type-out) * -1.6rem),
+    calc((1 - var(--head)) * 1.75rem + var(--type-out) * -1.75rem),
     0
-  );
+  ) scale(calc(0.97 + var(--head) * 0.03 - var(--type-out) * 0.03));
+  filter: blur(calc((1 - var(--head)) * 6px + var(--type-out) * 6px));
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__intro h2 {
@@ -63,27 +73,35 @@
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival {
-  --rule: clamp(0, calc((var(--p) - 0.62) / 0.24), 1);
-  --type-out: clamp(0, calc((var(--p) - 0.93) / 0.07), 1);
+  --rule: clamp(0, calc((var(--pe) - 0.48) / 0.42), 1);
+  --type-out: clamp(0, calc((var(--pe) - 0.93) / 0.07), 1);
   z-index: 4;
   opacity: calc(var(--rule) * (1 - var(--type-out)));
-  transform: translate3d(0, calc((1 - var(--rule)) * 1.4rem + var(--type-out) * -1.2rem), 0);
+  will-change: opacity, transform, filter;
+  transform: translate3d(
+    0,
+    calc((1 - var(--rule)) * 1.5rem + var(--type-out) * -1.5rem),
+    0
+  );
+  filter: blur(calc((1 - var(--rule)) * 6px + var(--type-out) * 6px));
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-kicker {
-  --k: clamp(0, calc((var(--p) - 0.6) / 0.18), 1);
+  --k: clamp(0, calc((var(--pe) - 0.46) / 0.36), 1);
   opacity: calc(var(--k) * 0.85);
   letter-spacing: 0.2em;
 }
 
 .hero-portal[data-scroll-ready] .hero-portal__arrival-line {
-  --ln: clamp(0, calc((var(--p) - 0.64) / 0.2), 1);
+  --ln: clamp(0, calc((var(--pe) - 0.50) / 0.40), 1);
   opacity: var(--ln);
   clip-path: none;
-  transform: translate3d(0, calc((1 - var(--ln)) * 0.85rem), 0);
+  transform: translate3d(0, calc((1 - var(--ln)) * 1.5rem), 0);
 }
 
+/* Iris ist die Ankunfts-Schicht selbst — langsames Öffnen, kein Vorhang darüber. */
 .hero-portal[data-scroll-ready] .hero-portal__portal {
+  --open: clamp(0, calc((var(--pe) - 0.50) / 0.38), 1);
   filter: none;
 }
 
@@ -140,5 +158,6 @@ body:has(.hero-portal__pin[data-arrival]) [data-analytics="whatsapp-fab"] {
     opacity: 1;
     clip-path: none;
     transform: none;
+    filter: none;
   }
 }
