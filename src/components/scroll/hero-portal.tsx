@@ -21,7 +21,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
+import { useScrollScene, range, smooth, easeInOutCubic } from "@/lib/scroll-engine";
 import "./arrival-system.css";
 
 type ArrivalSystem = {
@@ -61,6 +61,7 @@ export function HeroPortal() {
   const systemBoot = useRef(false);
   const systemProgress = useRef(0);
 
+  // Bildspeicher lebt außerhalb von React – kein Re-Render pro Frame.
   const store = useRef({
     kind: "" as Kind | "",
     images: [] as (HTMLImageElement | null)[],
@@ -76,6 +77,7 @@ export function HeroPortal() {
     mode: "pin",
     minHeight: 560,
     damp: 0.34,
+    vars: (p) => ({ "--pe": easeInOutCubic(p).toFixed(5) }),
     onFrame: (p) => {
       const canvas = canvasRef.current;
       const pin = pinRef.current;
@@ -98,6 +100,7 @@ export function HeroPortal() {
       systemRef.current?.setProgress(systemProgress.current);
       pin.toggleAttribute("data-arrival", p > 0.52);
 
+      // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
       if (p > 0.94) return;
       paint(canvas);
     },
@@ -212,6 +215,7 @@ export function HeroPortal() {
     };
   }, []);
 
+  /** Lädt die Frames nach, immer die nächstgelegenen zuerst, max. 4 parallel. */
   function pump(kind: Kind) {
     const s = store.current;
     while (s.inflight < 4) {
@@ -228,7 +232,7 @@ export function HeroPortal() {
       if (next < 0) return;
       const index = next;
       const img = new window.Image();
-      s.images[index] = img;
+      s.images[index] = img; // Platz reservieren, damit er nicht doppelt geladen wird
       s.inflight += 1;
       img.decoding = "async";
       img.onload = () => {
@@ -278,6 +282,7 @@ export function HeroPortal() {
     ctx.drawImage(img, xOff, yOff, dw, dh);
   }
 
+  /** Zwei Nachbarframes, weich überblendet — kein Sprung von Keyframe zu Keyframe. */
   function paint(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -334,6 +339,7 @@ export function HeroPortal() {
           <canvas ref={canvasRef} />
         </div>
 
+        {/* Das Display, das sich öffnet. */}
         <div className="hero-portal__portal" aria-hidden="true" />
         <div className="hero-portal__system" ref={systemHostRef} aria-hidden="true" />
 
@@ -356,6 +362,7 @@ export function HeroPortal() {
           Scrollen
         </p>
 
+        {/* Ankunft: Iris + Three.js-System, Typo setzt sich schlicht. */}
         <div className="hero-portal__intro">
           <h2>Was BP Agentics für Ihren Betrieb einrichten kann</h2>
         </div>
