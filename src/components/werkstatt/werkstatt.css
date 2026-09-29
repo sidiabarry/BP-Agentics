@@ -5,11 +5,11 @@
  * und Einleitung stehen im Hero (hero-portal__intro, id="ws-title"); dessen
  * Szene endet in --ws-night, deshalb beginnt die Sektion ohne Verlauf in
  * derselben Tinte. Am Ende blendet sie in Papier für die Problem-Sektion.
- * Ab 800px bleibt die Bühne mit den drei Preiskarten für etwa 32svh per
- * position: sticky stehen (kein Snap, kein Wheel-Hijacking). Unter 800px und
- * bei reduced-motion entfällt der Halt. Alles Klickbare sitzt in eigenen
- * Ebenen mit eigenem pointer-events, die Leinwand selbst nimmt Tippen und
- * Wischen an.
+ * Ab 800px bleibt die Bühne mit den drei Preiskarten per position: sticky
+ * stehen, bis etwa 30svh nach dem Ende des Heros (kein Snap, kein
+ * Wheel-Hijacking). Unter 800px und bei reduced-motion entfällt der Halt.
+ * Alles Klickbare sitzt in eigenen Ebenen mit eigenem pointer-events, die
+ * Leinwand selbst nimmt Tippen und Wischen an.
  */
 
 .ws {
@@ -595,9 +595,12 @@
 }
 
 /* Kurzer Desktop-Halt: Bühne und Preiskarten bleiben stehen, während der
-   Besucher etwa 32svh weiterrollt. Die Strecke ist Inhaltshöhe, nicht
-   Padding — sticky klebt nur innerhalb der Content-Box. Unter 800px und
-   bei reduced-motion erzeugen die Hüllen keine Box. */
+   Besucher weiterrollt. Die Bühne klebt schon, solange das Hero-Ende
+   (--ws-header minus --ws-pad-top) noch unter dem Kopf ausläuft; die
+   Strecke rechnet es dazu, damit die Werkstatt danach etwa 30svh allein
+   steht. Sie ist Inhaltshöhe, nicht Padding — sticky klebt nur innerhalb
+   der Content-Box. Unter 800px und bei reduced-motion erzeugen die Hüllen
+   keine Box. */
 .ws__dwell,
 .ws__dwell-frame,
 .ws__dwell-runway {
@@ -622,7 +625,7 @@
 
   .ws__dwell-runway {
     display: block;
-    height: 32svh;
+    height: calc(30svh + var(--ws-header) - var(--ws-pad-top));
   }
 
   .ws__dwell-frame .ws__stage {
