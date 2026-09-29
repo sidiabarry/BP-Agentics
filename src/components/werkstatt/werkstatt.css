@@ -1,10 +1,10 @@
 /**
  * Werkstatt v6 — Leistungsübersicht als 3D-Studio.
  *
- * Aufbau: Kopf (Text) → Bühne (dunkles Studio mit Etiketten und Sheet) → Liste.
- * Übernimmt die Rolle der früheren LeistungsMaschine und damit auch ihren
- * Anschluss: Das Hellblau, in dem der Hero-Film endet (--hero-exit), läuft in
- * Tinte über; am Ende blendet die Sektion in Papier für die Problem-Sektion.
+ * Aufbau: Bühne (dunkles Studio mit Etiketten und Sheet) → Liste. Überschrift
+ * und Einleitung stehen im Hero (hero-portal__intro, id="ws-title"); dessen
+ * Szene endet in --ws-night, deshalb beginnt die Sektion ohne Verlauf in
+ * derselben Tinte. Am Ende blendet sie in Papier für die Problem-Sektion.
  * Keine Scroll-Pinning-Mechanik. Alles Klickbare sitzt in eigenen Ebenen mit
  * eigenem pointer-events, die Leinwand selbst nimmt Tippen und Wischen an.
  */
@@ -32,9 +32,7 @@
   scroll-margin-top: var(--ws-header);
   padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
-  background:
-    linear-gradient(var(--ws-portal) 0, var(--ws-night) 26svh),
-    var(--ws-night);
+  background: var(--ws-night);
 }
 
 /* Übergang in die helle Folgesektion — wie bei der früheren LeistungsMaschine. */
@@ -47,37 +45,6 @@
   height: 7rem;
   pointer-events: none;
   background: linear-gradient(transparent, var(--ws-paper));
-}
-
-/* --- Kopf ----------------------------------------------------------------- */
-
-.ws__head {
-  position: relative;
-  z-index: 2;
-  flex: 0 0 auto;
-  max-width: 58ch;
-  margin: 0 0 var(--ws-gap);
-  padding: 0 var(--ws-gutter);
-  box-sizing: content-box;
-  overflow: visible;
-}
-
-.ws__head h2 {
-  margin: 0 0 0.6rem;
-  font-family: var(--font-heading, var(--font-sora)), sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  overflow: visible;
-  color: #fff;
-}
-
-.ws__head p {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.5;
-  color: var(--ws-mist);
 }
 
 /* --- Bühne ---------------------------------------------------------------- */
@@ -662,10 +629,6 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     --ws-pad-bottom: 7.5rem;
     --ws-gap: 1.25rem;
     --ws-head-block: 9.25rem;
-  }
-
-  .ws__head p {
-    font-size: 1.05rem;
   }
 
   .ws__stage {

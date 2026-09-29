@@ -15,10 +15,15 @@
  *    bis 45 %.
  *  - Die Sektion macht genau eine Sache. Kein Layout-Fit-Check, der im
  *    Zweifel die ganze Inszenierung abschaltet.
+ *
+ * Im geöffneten Display läuft danach die WebGL-Szene (hero-scene.ts) und
+ * führt in die Nacht der Werkstatt. Der Intro-Text darunter ist die einzige
+ * Überschrift für Szene und Werkstatt; er scrollt normal über die Szene.
  */
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useScrollScene, range, smooth } from "@/lib/scroll-engine";
+import type { HeroScene } from "./hero-scene";
 
 const SMALL_MAX = 700;
 
@@ -33,6 +38,12 @@ type Kind = keyof typeof SETS;
 const FILM_END = 0.6;
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
+/** Ab hier wird die Szene geladen – weit vor dem Portal, damit sie bereitsteht. */
+const SCENE_PRELOAD = 0.2;
+/** Ab hier baut sich die Szene fertig auf, ohne auf eine Scroll-Pause zu warten. */
+const SCENE_URGENT = 0.5;
+/** Ab hier ist das Display so weit offen, dass die Szene die ganze Bühne deckt. */
+const SCENE_COVERS = 0.72;
 
 function frameSrc(kind: Kind, index: number) {
   return `${SETS[kind].dir}/${String(index + 1).padStart(4, "0")}.webp`;
@@ -41,6 +52,10 @@ function frameSrc(kind: Kind, index: number) {
 export function HeroPortal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const sceneCanvasRef = useRef<HTMLCanvasElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
 
   // Bildspeicher lebt außerhalb von React – kein Re-Render pro Frame.
   const store = useRef({
@@ -50,10 +65,22 @@ export function HeroPortal() {
     target: 0,
   });
 
+  const sceneState = useRef({
+    started: false,
+    alive: true,
+    p: 0,
+    controller: null as HeroScene | null,
+  });
+
   const sectionRef = useScrollScene<HTMLElement>({
     mode: "pin",
     minHeight: 560,
-    onFrame: (p) => {
+    onMode: (enhanced) => sceneState.current.controller?.setEnabled(enhanced),
+    onFrame: (p, section) => {
+      sceneState.current.p = p;
+      if (p >= SCENE_PRELOAD) void startScene(section);
+      sceneState.current.controller?.wake();
+
       const canvas = canvasRef.current;
       const pin = pinRef.current;
       if (!canvas || !pin) return;
@@ -72,11 +99,68 @@ export function HeroPortal() {
       s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
       pump(kind);
 
+      // Liegt die Szene deckend darüber, müssen Film und Portal weder zeichnen noch compositen.
+      const covered = p >= SCENE_COVERS && sceneRef.current?.dataset.state === "ready";
+      if (pin.hasAttribute("data-covered") !== covered) pin.toggleAttribute("data-covered", covered);
+
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
-      if (p > 0.94) return;
+      if (covered || p > 0.94) return;
       paint(canvas, pin, smooth(range(p, FILM_END, 0.92)));
     },
   });
+
+  useEffect(() => {
+    const state = sceneState.current;
+    state.alive = true;
+    return () => {
+      state.alive = false;
+      state.controller?.dispose();
+      state.controller = null;
+    };
+  }, []);
+
+  async function startScene(section: HTMLElement) {
+    const state = sceneState.current;
+    const layer = sceneRef.current;
+    const canvas = sceneCanvasRef.current;
+    const pin = pinRef.current;
+    const portal = portalRef.current;
+    const intro = introRef.current;
+    if (state.started || !layer || !canvas || !pin || !portal || !intro) return;
+    state.started = true;
+    const fail = () => {
+      state.controller?.dispose();
+      state.controller = null;
+      layer.dataset.state = "fallback";
+      pin.removeAttribute("data-covered");
+    };
+    try {
+      const { createHeroScene, pause } = await import("./hero-scene");
+      const urgent = () => state.p >= SCENE_URGENT;
+      await pause(urgent);
+      if (!state.alive) return;
+      const controller = await createHeroScene({
+        canvas,
+        section,
+        pin,
+        portal,
+        intro,
+        urgent,
+        onReady: () => {
+          layer.dataset.state = "ready";
+        },
+        onLost: fail,
+      });
+      if (!state.alive) {
+        controller?.dispose();
+        return;
+      }
+      state.controller = controller;
+      if (!controller) fail();
+    } catch {
+      fail();
+    }
+  }
 
   /** Lädt die Frames nach, immer die nächstgelegenen zuerst, max. 4 parallel. */
   function pump(kind: Kind) {
@@ -179,7 +263,13 @@ export function HeroPortal() {
         </div>
 
         {/* Das Display, das sich öffnet. */}
-        <div className="hero-portal__portal" aria-hidden="true" />
+        <div className="hero-portal__portal" ref={portalRef} aria-hidden="true" />
+
+        {/* Licht im Display, dann Dämmerung. Ohne WebGL übernimmt der CSS-Verlauf. */}
+        <div className="hero-portal__scene" ref={sceneRef} aria-hidden="true">
+          <div className="hero-portal__dusk" />
+          <canvas ref={sceneCanvasRef} />
+        </div>
 
         <div className="hero-portal__copy">
           <p className="hero-portal__kicker">BP Agentics — Hagen</p>
@@ -199,12 +289,15 @@ export function HeroPortal() {
         <p className="hero-portal__cue" aria-hidden="true">
           Scrollen
         </p>
+      </div>
 
-        {/* Ankunft: der Moment, in dem wir im Display sind. */}
-        <div className="hero-portal__arrival">
-          <p>Websites, Software, Abläufe.</p>
-          <h2>Drei Bausteine. Einzeln beauftragbar.</h2>
-        </div>
+      {/* Benennt auch die Werkstatt darunter (aria-labelledby="ws-title"). */}
+      <div className="hero-portal__intro" ref={introRef}>
+        <p className="hero-portal__intro-kicker">Websites, Software, Abläufe.</p>
+        <h2 id="ws-title">Drei Bausteine. Einzeln beauftragbar.</h2>
+        <p className="hero-portal__intro-lead">
+          Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.
+        </p>
       </div>
     </section>
   );
