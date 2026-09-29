@@ -585,11 +585,21 @@
 }
 
 @media (max-width: 700px) {
+  .affiliate-hero {
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .affiliate-hero__kicker {
+    margin-top: 0.85rem;
+  }
+
   .affiliate-hero__title {
     max-width: 14ch;
   }
 
   .affiliate-hero__actions {
+    margin-top: 1.25rem;
     flex-direction: column;
     align-items: stretch;
   }
@@ -603,9 +613,65 @@
     display: none;
   }
 
+  .affiliate-hero__inner,
+  .affiliate-note,
+  .affiliate-rollup__inner,
+  .affiliate-case,
+  .affiliate-pay,
+  .affiliate-page__column,
+  .affiliate-cta {
+    width: min(68rem, calc(100% - 2rem));
+  }
+
+  .affiliate-note {
+    padding-bottom: 1.5rem;
+  }
+
+  .affiliate-rollup__steps {
+    gap: 1.15rem;
+    margin-top: 1.25rem;
+  }
+
+  .affiliate-rollup__step {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: 0.65rem;
+  }
+
+  .affiliate-rollup__index {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .affiliate-rollup__step::before {
+    top: 2.25rem;
+    bottom: -1.15rem;
+    left: 1.125rem;
+  }
+
+  .affiliate-case {
+    margin-top: 1.75rem;
+  }
+
+  .affiliate-pay {
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .affiliate-pay__facts {
+    margin-top: 1.25rem;
+  }
+
   .affiliate-pay__facts > div {
     grid-template-columns: 1fr;
     gap: 0.3rem;
+  }
+
+  .affiliate-related {
+    margin-top: 2rem;
+  }
+
+  .affiliate-cta {
+    margin-top: 2rem;
   }
 
   .affiliate-cta__actions {
