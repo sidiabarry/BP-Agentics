@@ -3,102 +3,136 @@ export const affiliatePath = "/leistungen/affiliate";
 export const affiliateNav = {
   href: affiliatePath,
   title: "Affiliate-Programme",
-  sub: "Merchants auf ADCELL bringen.",
+  sub: "Ihr Shop bei ADCELL, eingerichtet und betreut.",
 } as const;
 
 export const affiliateHero = {
-  kicker: "Affiliate-Programme",
-  title: "Sie zahlen, wenn Publisher verkaufen.",
+  kicker: "Affiliate-Programm mit ADCELL",
+  title: "Mehr Kunden über Partnerseiten. Ohne dass Sie täglich daran sitzen.",
   lead:
-    "Wir setzen ADCELL auf. Wir verdienen nur mit, wenn die Provision wirklich bestätigt ist. Das Netzwerk bleibt ADCELL.",
+    "Partnerseiten wie Gutschein- und Vergleichsportale bringen Ihnen Käufer. Provision fällt erst an, wenn ein Verkauf bestätigt ist. Wir richten das bei ADCELL für Sie ein und kümmern uns darum, dass es läuft.",
+} as const;
+
+export const affiliateWhat = {
+  kicker: "Kurz erklärt",
+  title: "Was ist ADCELL?",
+  body:
+    "ADCELL ist ein Affiliate-Netzwerk aus Berlin, seit 2003 und auf Deutschland, Österreich und die Schweiz ausgerichtet. Dort finden Onlineshops Partnerseiten, bei ADCELL „Publisher“ genannt: Gutscheinseiten, Vergleichsportale, Bewertungsseiten, Blogs, Cashback-Portale und Social-Media-Kanäle.",
+  gainLabel: "Was Sie davon haben",
+  gain: ["Mehr Reichweite.", "Bezahlt wird bei Verkauf.", "Läuft im Hintergrund."],
+  flowLabel: "So läuft ein Verkauf über ADCELL",
+  flow: [
+    { label: "Ihr Shop", text: "Sie legen fest, wofür es Provision gibt, zum Beispiel pro Verkauf." },
+    { label: "Partnerseite", text: "Eine Gutscheinseite, ein Vergleichsportal oder ein Blog verlinkt Ihr Produkt." },
+    { label: "Käufer", text: "Jemand klickt den Link und kauft in Ihrem Shop." },
+    { label: "Provision", text: "Erst wenn der Verkauf bestätigt ist, bekommt der Partner seine Provision." },
+  ],
+  rail: { tag: "ADCELL", text: "erfasst jeden Verkauf, rechnet ab und zahlt die Partner aus." },
+} as const;
+
+export const affiliateRollupHead = {
+  kicker: "Ablauf",
+  title: "Das können Sie auch selbst machen.",
+  body:
+    "ADCELL ist so gebaut, dass Shops sich selbst anmelden können. Die Frage ist, ob Sie die Zeit haben, sich einzuarbeiten, und wer danach dranbleibt.",
+  selfLabel: "Selbst machen",
+  usLabel: "Mit BP Agentics",
 } as const;
 
 export const affiliateSteps = [
   {
     title: "Setup",
-    body: "Wir bauen Ihr Partnerprogramm bei ADCELL (Angebote, Feeds, Konditionen, Werbemittel). Ohne Programm können Publisher nichts bewerben. Ergebnis: ein echtes Programm, keine Idee.",
+    self: "Programm, Provision, Werbemittel und Produktdaten richten Sie selbst ein.",
+    body: "Wir legen Ihr Programm bei ADCELL an: Provision, Werbemittel und alle Produkte als CSV-Datei, mit jedem Shopsystem. Der Account läuft auf Ihren Shop, wir betreuen ihn.",
   },
   {
     title: "Tracking",
-    body: "Shop und ADCELL werden verbunden (Shopify / Woo / GTM), damit jeder Verkauf dem richtigen Publisher gehört. Stimmt das Tracking nicht, stimmen die Zahlen nicht. Ergebnis: Zahlen, denen alle vertrauen.",
+    self: "Sie binden ADCELL selbst ein. Fehler merken Sie oft erst, wenn Verkäufe fehlen.",
+    body: "Wir verbinden Ihren Shop mit ADCELL und prüfen vor dem Start, dass jeder Verkauf beim richtigen Partner ankommt.",
   },
   {
-    title: "Publisher",
-    body: "Blogs, Coupons, Creator bewerben Ihre Produkte mit Ihren Links. Sie zahlen nicht für leere Klicks — Sie zahlen bei Verkauf. Ergebnis: Reichweite unter Ihren Regeln.",
+    title: "Partner",
+    self: "Partner legen meist direkt los. Regeln und Überblick liegen bei Ihnen.",
+    body: "Gutscheinseiten, Vergleichsportale, Bewertungsseiten und Blogs verlinken Ihre Produkte. Wir legen mit Ihnen die Regeln fest und sehen, wer wirklich verkauft.",
   },
   {
-    title: "Reporting",
-    body: "Was läuft, was bricht, wer performt, wo Ausreißer bei Auszahlungen. Blindflug vermeiden. Ergebnis: kurzer Status + klarer nächster Schritt.",
+    title: "Betreuung",
+    self: "Offene Verkäufe prüfen, Retouren fristgerecht stornieren, Zahlen im Blick behalten.",
+    body: "Wir prüfen die Verkäufe im Programm, geben frei oder stornieren und geben Ihnen die Ergebnisse weiter, mit kurzem Status und nächstem Schritt.",
   },
   {
     title: "Vergütung",
-    body: "Publisher-Provision läuft über ADCELL. Wir rechnen außerhalb ab: 1–2 % der bestätigten Publisher-Provision. Kein In-Network-Override. Ergebnis: Sie zahlen Erfolg, nicht Hoffnung.",
+    self: "Provision an die Partner und an ADCELL zahlen Sie so oder so.",
+    body: "Wir rechnen getrennt per Rechnung ab und verdienen nur mit, wenn Ihr Shop über ADCELL verkauft.",
   },
 ] as const;
 
 export const affiliatePay = {
-  title: "Sie zahlen Erfolg, nicht Hoffnung.",
-  body:
-    "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos. ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“. Oft mind. 500 € Transaktionsguthaben (AGB).",
+  title: "Keine Einrichtungsgebühr.",
+  body: "Wir verdienen nur mit, wenn Ihr Shop über ADCELL verkauft (1–2 % Provision).",
+  figure: "1–2 %",
 } as const;
 
-/** Nur Auszüge aus affiliatePay.body — keine neuen Zahlen. */
+/** Beträge nur 1–2 % (affiliatePay) und 500 Euro (FAQ, ADCELL-AGB). Keine weiteren Zahlen ohne Sidia/Ops. */
 export const affiliatePayFacts = [
-  {
-    label: "Beteiligung",
-    text: "1–2 % bestätigt, per Rechnung. Agentur-Account kostenlos.",
-  },
-  {
-    label: "Netzwerk",
-    text: "ADCELL-AGB und Netzwerkprovision bleiben — „keine Gebühren“ ≠ „nichts an ADCELL“.",
-  },
-  {
-    label: "Guthaben",
-    text: "oft mind. 500 € Transaktionsguthaben (AGB).",
-  },
+  { label: "Partner", text: "Provision nur für bestätigte Verkäufe. Die Höhe legen Sie selbst fest." },
+  { label: "ADCELL", text: "Keine Einrichtungs- und keine Monatsgebühr, der Agentur-Account ist kostenlos. Dafür eine eigene Netzwerkprovision, die Sie direkt mit ADCELL vereinbaren." },
+  { label: "Startguthaben", text: "Zahlen Sie bei ADCELL ein, nicht bei uns. Daraus werden die Provisionen bezahlt." },
 ] as const;
 
 export const affiliateCaseCopy = {
-  kicker: "Beispiel",
+  kicker: "Aus der Praxis",
   title: "Poolseller GmbH",
   body:
-    "Sidia hat beim Aufbau des ADCELL-Setups mitgewirkt. Das Programm läuft ohne täglichen Eingriff. Der ADCELL-Account wurde im Namen des Shops eingerichtet. Tracking und der Produktfeed wurden aufgesetzt. Partnerseiten wurden eingebunden: Bewertungsportale, Gutscheinseiten und Vergleichsportale.",
+    "Sidia hat beim Aufbau des ADCELL-Setups für Poolseller mitgewirkt. Der Account wurde im Namen des Shops eingerichtet. Tracking und Produktfeed wurden aufgesetzt, dann wurden Partnerseiten eingebunden: Bewertungsportale, Gutscheinseiten und Vergleichsportale. Heute läuft das Programm ohne täglichen Eingriff.",
   from: "Setup",
   to: "läuft",
 } as const;
 
 export const affiliateNext = {
-  title: "Affiliate-Setup besprechen",
+  title: "Erst mal schauen, ob es zu Ihrem Shop passt.",
   body:
-    "Sinnvoll, wenn Sie Merchant auf ADCELL werden wollen und Tracking, Publisher und Konditionen geklärt werden sollen. 90 Minuten.",
-  chips: ["Setup und Feeds", "Tracking", "1–2 % Beteiligung"],
-  primary: { href: "/termin", label: "Affiliate-Setup besprechen" },
+    "In 15 Minuten schauen wir gemeinsam auf Ihren Shop und welche Partnerseiten für Sie in Frage kommen. Danach wissen Sie, ob sich ADCELL für Sie lohnt und ob Sie es selbst machen oder abgeben wollen.",
+  chips: ["15 Minuten", "Jedes Shopsystem", "Keine Einrichtungsgebühr"],
+  primary: { href: "/termin", label: "15-Minuten-Gespräch vereinbaren" },
   secondary: { href: "/kontakt", label: "Nachricht schreiben" },
 } as const;
 
 export const affiliateFaqs = [
   {
     q: "Was ist ADCELL?",
-    a: "ADCELL ist das Affiliate-Netzwerk von Firstlead GmbH, erreichbar unter adcell.de. Rollen dort sind Publisher, Advertiser und Agenturen.",
+    a: "Ein Affiliate-Netzwerk der Firstlead GmbH aus Berlin, seit 2003 und auf Deutschland, Österreich und die Schweiz ausgerichtet. Shops stellen dort ein Partnerprogramm ein. Partnerseiten wie Gutscheinseiten, Vergleichsportale oder Blogs verlinken die Produkte und bekommen Provision, wenn über ihren Link gekauft wird. ADCELL erfasst die Verkäufe, rechnet ab und zahlt die Partner aus.",
+  },
+  {
+    q: "Kann ich das nicht selbst machen?",
+    a: "Doch. ADCELL ist so gebaut, dass sich Shops selbst anmelden können. Die Arbeit steckt in den Details: Tracking, das jeden Verkauf richtig zuordnet, alle Produkte sauber als CSV bei ADCELL, klare Regeln für Partner und das laufende Prüfen, Freigeben und Stornieren von Verkäufen. Das übernehmen wir im Programm und geben Ihnen die Ergebnisse weiter. Wenn Sie dafür selbst Zeit haben, machen Sie es selbst.",
+  },
+  {
+    q: "Was kostet ADCELL selbst?",
+    a: "ADCELL nimmt keine Einrichtungs- und keine Monatsgebühr. Neben der Provision für die Partner berechnet ADCELL eine eigene Netzwerkprovision, deren Höhe Sie direkt mit ADCELL vereinbaren. Zum Start braucht Ihr Transaktionskonto bei ADCELL ein Guthaben von mindestens 500 Euro. Das ist eine Regel von ADCELL (AGB, Ziffer 14.2), kein Preis von uns: Sie zahlen das Geld bei ADCELL ein, und daraus werden die Provisionen bezahlt.",
+  },
+  {
+    q: "Wie wird BP Agentics bezahlt?",
+    a: "Keine Einrichtungsgebühr. Wir verdienen nur mit, wenn Ihr Shop über ADCELL verkauft: 1–2 % der bestätigten Partner-Provision, per Rechnung und getrennt von ADCELL. Das läuft nicht über das Netzwerk, ADCELL zieht dafür nichts ab.",
   },
   {
     q: "Gibt es einen Agentur-Account?",
-    a: "Der offizielle Agentur-Account von Firstlead GmbH / adcell.de ist kostenlos. Mehrere Kunden und Reporting sind vorgesehen.",
+    a: "Ja. ADCELL bietet Agenturen einen eigenen Account, und der ist kostenlos. Darin lassen sich mehrere Kunden und ihr Reporting verwalten.",
   },
   {
-    q: "Heißt „keine Gebühren“, dass nichts an ADCELL geht?",
-    a: "Nein. Die Werbeaussage „keine Gebühren“ heißt nicht „keine Netzwerkprovision“ an ADCELL. Für Merchants gilt oft mindestens 500 € Transaktionsguthaben (AGB).",
+    q: "Auf wessen Namen läuft das Programm?",
+    a: "Auf Ihren. Der ADCELL-Account wird im Namen Ihres Shops angelegt, und wir betreuen ihn für Sie. Programm, Partner und Zahlen bleiben bei Ihnen.",
   },
   {
-    q: "Wie wird BP Agentics vergütet?",
-    a: "Über einen Servicevertrag: 1–2 % der bestätigten Publisher-Provision, per Rechnung. Es gibt keinen dokumentierten Agency-Override im Netzwerk.",
+    q: "Mit welchen Shopsystemen geht das?",
+    a: "Mit jedem. Wir stellen alle Ihre Produkte in eine CSV-Datei und hinterlegen sie bei ADCELL. Das funktioniert unabhängig davon, welches Shopsystem Sie nutzen.",
   },
 ] as const;
 
 export const affiliatePicker = {
   id: "affiliate",
   name: "Affiliate-Programme",
-  sub: "Merchants auf ADCELL bringen.",
+  sub: "Ihr Shop bei ADCELL, eingerichtet und betreut.",
   lead: affiliateHero.lead,
   href: affiliatePath,
   linkLabel: "Affiliate-Programme ansehen",
