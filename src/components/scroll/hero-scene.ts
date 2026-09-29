@@ -45,15 +45,54 @@ const MAX_DPR = 1.5;
 const MIN_DPR = 0.75;
 /** Obergrenze für die Puffergröße (Pixel), damit große Displays nicht teurer werden als nötig. */
 const PIXEL_BUDGET = 3_500_000;
-const LINK_GRACE_MS = 250;
+const LINK_WAIT_MS = 3000;
+const CALM_MS = 150;
 const SEGMENTS = 160;
 
 /** Nächste ruhige Lücke im Main Thread (Safari: kurzer Timeout). */
-export function idle() {
+function idle() {
   return new Promise<void>((resolve) => {
     if ("requestIdleCallback" in window) window.requestIdleCallback(() => resolve(), { timeout: 300 });
     else setTimeout(resolve, 32);
   });
+}
+
+const still = { y: NaN, since: 0 };
+
+/**
+ * Nächste Scroll-Pause, dann eine ruhige Lücke im Main Thread. Solange gescrollt wird,
+ * rechnet der GPU-Prozess am Bild, und jede synchrone WebGL-Abfrage wartet auf ihn.
+ * Mehrere Schritte nutzen dieselbe Pause. `urgent` beendet das Warten, sobald die
+ * Szene gleich gebraucht wird.
+ */
+export function pause(urgent: () => boolean) {
+  return new Promise<void>((resolve) => {
+    const check = () => {
+      const now = performance.now();
+      if (window.scrollY !== still.y) {
+        still.y = window.scrollY;
+        still.since = now;
+      }
+      if (now - still.since >= CALM_MS || urgent()) resolve();
+      else window.setTimeout(check, 50);
+    };
+    check();
+  }).then(idle);
+}
+
+/**
+ * Wartet, bis der GPU-Prozess alle gesendeten Befehle (auch das Linken) abgearbeitet hat.
+ * Der Fence-Status wird zwischen Tasks aktualisiert; die Abfrage blockiert nie.
+ */
+async function drained(gl: WebGL2RenderingContext) {
+  const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+  if (!sync) return;
+  gl.flush();
+  const end = performance.now() + LINK_WAIT_MS;
+  while (gl.getSyncParameter(sync, gl.SYNC_STATUS) !== gl.SIGNALED && performance.now() < end) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  gl.deleteSync(sync);
 }
 
 function vec3(hex: string) {
@@ -340,6 +379,8 @@ export type HeroSceneOptions = {
   portal: HTMLElement;
   /** Der Intro-Text am Ende der Sektion; die Bänder halten Abstand zu ihm. */
   intro: HTMLElement;
+  /** true, sobald die Szene gleich sichtbar wird: dann ohne Scroll-Pause fertig aufbauen. */
+  urgent: () => boolean;
   onReady: () => void;
   onLost: () => void;
 };
@@ -351,7 +392,7 @@ export type HeroScene = {
   dispose: () => void;
 };
 
-export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
+export async function createHeroScene(options: HeroSceneOptions): Promise<HeroScene | null> {
   const { canvas, section, pin, portal, intro } = options;
 
   let renderer: WebGLRenderer;
@@ -369,6 +410,13 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
     return null;
   }
   renderer.setClearColor(0x000000, 0);
+
+  // Kontext und Szenenaufbau: zwei getrennte Tasks.
+  await pause(options.urgent);
+  if (renderer.getContext().isContextLost()) {
+    renderer.dispose();
+    return null;
+  }
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(30, 1, 0.1, 40);
@@ -614,19 +662,15 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
    * Buffer-Upload) laufen je in einem eigenen kurzen Task, nie als ein langer.
    */
   async function warmUp() {
-    await idle();
+    await pause(options.urgent);
     if (disposed) return;
     if (!measured) measure();
     await renderer.compileAsync(scene, camera);
-    if (!renderer.extensions.has("KHR_parallel_shader_compile")) {
-      // Ohne die Erweiterung blockiert die erste Abfrage am Programm, bis es gelinkt ist.
-      // Der GPU-Prozess linkt im Hintergrund, solange der Main Thread nicht fragt.
-      renderer.getContext().flush();
-      await new Promise((resolve) => setTimeout(resolve, LINK_GRACE_MS));
-    }
+    // Ohne die Erweiterung blockiert die erste Abfrage am Programm, bis es gelinkt ist.
+    if (!renderer.extensions.has("KHR_parallel_shader_compile")) await drained(renderer.getContext() as WebGL2RenderingContext);
     const parts: Object3D[][] = [[sky], [motes], ribbons.map((r) => r.mesh)];
     for (const part of parts) {
-      await idle();
+      await pause(options.urgent);
       if (disposed) return;
       for (const child of scene.children) child.visible = part.includes(child);
       renderer.render(scene, camera);

@@ -39,7 +39,9 @@ const FILM_END = 0.6;
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
 /** Ab hier wird die Szene geladen – weit vor dem Portal, damit sie bereitsteht. */
-const SCENE_PRELOAD = 0.3;
+const SCENE_PRELOAD = 0.2;
+/** Ab hier baut sich die Szene fertig auf, ohne auf eine Scroll-Pause zu warten. */
+const SCENE_URGENT = 0.5;
 /** Ab hier ist das Display so weit offen, dass die Szene die ganze Bühne deckt. */
 const SCENE_COVERS = 0.72;
 
@@ -66,6 +68,7 @@ export function HeroPortal() {
   const sceneState = useRef({
     started: false,
     alive: true,
+    p: 0,
     controller: null as HeroScene | null,
   });
 
@@ -74,6 +77,7 @@ export function HeroPortal() {
     minHeight: 560,
     onMode: (enhanced) => sceneState.current.controller?.setEnabled(enhanced),
     onFrame: (p, section) => {
+      sceneState.current.p = p;
       if (p >= SCENE_PRELOAD) void startScene(section);
       sceneState.current.controller?.wake();
 
@@ -131,22 +135,28 @@ export function HeroPortal() {
       pin.removeAttribute("data-covered");
     };
     try {
-      const { createHeroScene, idle } = await import("./hero-scene");
-      // Laden des Chunks und Anlegen des WebGL-Kontexts: zwei getrennte Tasks.
-      await idle();
+      const { createHeroScene, pause } = await import("./hero-scene");
+      const urgent = () => state.p >= SCENE_URGENT;
+      await pause(urgent);
       if (!state.alive) return;
-      state.controller = createHeroScene({
+      const controller = await createHeroScene({
         canvas,
         section,
         pin,
         portal,
         intro,
+        urgent,
         onReady: () => {
           layer.dataset.state = "ready";
         },
         onLost: fail,
       });
-      if (!state.controller) fail();
+      if (!state.alive) {
+        controller?.dispose();
+        return;
+      }
+      state.controller = controller;
+      if (!controller) fail();
     } catch {
       fail();
     }
