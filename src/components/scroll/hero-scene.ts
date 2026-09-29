@@ -31,7 +31,8 @@ import { clamp01, range, smooth } from "@/lib/scroll-engine";
  * beginnt.
  *
  * Scroll setzt nur Zielwerte; Bild und Bewegung laufen gedämpft hinterher.
- * Gerendert wird nur, solange die Szene sichtbar ist.
+ * Gerendert wird nur, solange die Szene sichtbar ist und bis etwa drei Sekunden
+ * nach dem letzten Scrollen; dann bleibt das letzte Bild stehen.
  */
 
 /** Muss zu --open von .hero-portal__portal in scroll-experience.css passen. */
@@ -47,6 +48,9 @@ const MIN_DPR = 0.75;
 const PIXEL_BUDGET = 3_500_000;
 const LINK_WAIT_MS = 3000;
 const CALM_MS = 150;
+/** Ohne Scrollen hält die Szene nach dieser Zeit an; davor läuft der Fluss über SETTLE_MS weich aus. */
+const IDLE_MS = 3000;
+const SETTLE_MS = 800;
 const SEGMENTS = 160;
 
 /** Nächste ruhige Lücke im Main Thread (Safari: kurzer Timeout). */
@@ -540,6 +544,8 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
   let prevP = 0;
   let boost = 0;
   let time = 0;
+  let tempo = 1;
+  let activeAt = 0;
   let drewVisible = false;
   let measured = false;
 
@@ -609,7 +615,11 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     const speed = Math.min(Math.abs(p - prevP) / dt, 0.5);
     prevP = p;
     boost += (speed * 8 - boost) * k;
-    time += dt * (1 + boost);
+    const quiet = now - activeAt;
+    const rest = 1 - smooth(range(quiet, IDLE_MS - SETTLE_MS, IDLE_MS));
+    // Zur Pause hin folgt das Tempo der Kurve bis 0, beim Aufwachen zieht es gedämpft wieder an.
+    tempo = rest < tempo ? rest : tempo + (rest - tempo) * k;
+    time += dt * (tempo + boost);
 
     const pd = damped;
     const dusk = smooth(range(pd, DUSK_START, DUSK_END));
@@ -638,12 +648,14 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     renderer.render(scene, camera);
     drewVisible = p >= PORTAL_START - 0.01;
 
-    const settling = Math.abs(p - damped) > 1e-3;
-    if (enabled && inView && (drewVisible || settling)) raf = requestAnimationFrame(draw);
+    const settling = Math.abs(p - damped) > 1e-3 || Math.abs(exit - exitDamped) > 1e-3;
+    const resting = quiet >= IDLE_MS && boost < 1e-3;
+    if (enabled && inView && (settling || (drewVisible && !resting))) raf = requestAnimationFrame(draw);
     else last = 0;
   }
 
   function wake() {
+    activeAt = performance.now();
     if (!ready || raf || disposed) return;
     const { p } = read();
     if (visible(p) || drewVisible) raf = requestAnimationFrame(draw);
@@ -662,6 +674,9 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
   ro.observe(pin);
   ro.observe(section);
   ro.observe(intro);
+
+  // Nach dem Pin bleibt p bei 1 und der Scroll-Loop meldet sich nicht mehr; die Ausfahrt weckt hier.
+  window.addEventListener("scroll", wake, { passive: true });
 
   const onLost = () => {
     if (disposed) return;
@@ -697,6 +712,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     if (disposed) return;
     ready = true;
     damped = read().p;
+    activeAt = performance.now();
     draw(performance.now());
     options.onReady();
   }
@@ -718,6 +734,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
       cancelAnimationFrame(raf);
       io.disconnect();
       ro.disconnect();
+      window.removeEventListener("scroll", wake);
       canvas.removeEventListener("webglcontextlost", onLost);
       skyGeometry.dispose();
       skyMaterial.dispose();
