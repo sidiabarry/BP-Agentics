@@ -95,6 +95,16 @@ async function drained(gl: WebGL2RenderingContext) {
   gl.deleteSync(sync);
 }
 
+/** Rechnet der Prozessor statt einer GPU (VMs, Remote-Desktops), zählt jedes Pixel. */
+function softwareGl(gl: WebGLRenderingContext | WebGL2RenderingContext) {
+  let name = String(gl.getParameter(gl.RENDERER));
+  if (name === "WebKit WebGL") {
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    if (info) name = String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL));
+  }
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(name);
+}
+
 function vec3(hex: string) {
   const n = parseInt(hex.slice(1), 16);
   return new Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
@@ -410,6 +420,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     return null;
   }
   renderer.setClearColor(0x000000, 0);
+  const maxDpr = softwareGl(renderer.getContext()) ? 1 : MAX_DPR;
 
   // Kontext und Szenenaufbau: zwei getrennte Tasks.
   await pause(options.urgent);
@@ -533,7 +544,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     const w = Math.max(1, pin.clientWidth);
     const h = Math.max(1, pin.clientHeight);
     const budget = Math.sqrt(PIXEL_BUDGET / (w * h));
-    const ratio = Math.max(MIN_DPR, Math.min(window.devicePixelRatio || 1, MAX_DPR, budget));
+    const ratio = Math.max(MIN_DPR, Math.min(window.devicePixelRatio || 1, maxDpr, budget));
     // setSize/setPixelRatio sind durch sharpen-three.ts auf DPR 2 festgelegt; hier gilt 1.5.
     // Die Größe ändert sich nur bei Resize, nie mitten im Scrollen.
     if (canvas.width !== Math.floor(w * ratio) || canvas.height !== Math.floor(h * ratio)) {
