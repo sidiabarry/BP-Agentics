@@ -8,6 +8,7 @@ import {
   OneFactor,
   OneMinusSrcAlphaFactor,
   PerspectiveCamera,
+  Points,
   Scene,
   ShaderMaterial,
   Vector2,
@@ -35,6 +36,9 @@ import { clamp01, range, smooth } from "@/lib/scroll-engine";
 /** Muss zu --open von .hero-portal__portal in scroll-experience.css passen. */
 const PORTAL_START = 0.62;
 const PORTAL_SPAN = 0.16;
+/** Muss zu --dusk von .hero-portal__scene passen (CSS-Fallback ohne WebGL). */
+const DUSK_START = 0.76;
+const DUSK_END = 0.99;
 
 const MAX_DPR = 1.5;
 const MIN_DPR = 0.75;
@@ -115,7 +119,7 @@ void main() {
 
   // Das Licht bleibt oben, wo das Display war.
   float lift = exp(-length(px - g) / (h * 0.6));
-  col = mix(col, LINE, lift * 0.26 * smoothstep(0.35, 1.0, uDusk));
+  col = mix(col, LINE, lift * 0.2 * smoothstep(0.35, 1.0, uDusk));
 
   // Unterkante: exakt die Farbe, mit der die Werkstatt beginnt.
   float seam = uSeam * smoothstep(0.62, 0.96, y);
@@ -139,6 +143,7 @@ uniform float uTime;
 uniform float uMorph;
 uniform float uExit;
 uniform vec2 uHalf;
+uniform float uTilt;
 uniform vec4 uA;
 uniform vec4 uB;
 uniform vec2 uShape;
@@ -148,9 +153,10 @@ varying float vFacing;
 
 const float TAU = 6.2831853;
 
-// Im Licht: ein langer, flacher Schwung quer durchs Bild.
+// Im Licht: ein langer Schwung quer durchs Bild, im Hochformat diagonal.
 vec3 drift(float s, float t) {
   float v = uA.x
+    + uTilt * (s - 0.5)
     + uA.y * sin(TAU * 0.8 * s + t * 0.25 + uA.z)
     + uA.y * 0.45 * sin(TAU * 1.9 * s - t * 0.33 + uA.z * 2.0);
   return vec3(mix(-1.35, 1.35, s), v, 0.9 * sin(TAU * 0.6 * s + t * 0.18 + uA.z));
@@ -175,9 +181,9 @@ void main() {
   vec3 tangent = normalize(path(aS + 0.003) - c);
   vec3 side = normalize(cross(tangent, vec3(0.0, 0.0, 1.0)));
   vec3 lift = cross(side, tangent);
-  float angle = uShape.y * aS + uTime * 0.4 * uA.w + uA.z;
+  float angle = uShape.y * (aS - 0.5) + 0.5 * sin(uTime * 0.2 * uA.w + uA.z);
   vec3 across = cos(angle) * side + sin(angle) * lift;
-  float width = uShape.x * min(uHalf.x, uHalf.y) * (0.2 + 0.8 * sin(3.14159 * aS));
+  float width = uShape.x * sqrt(uHalf.x * uHalf.y) * (0.3 + 0.7 * sin(3.14159 * aS));
   vec3 pos = c + across * aSide * width * 0.5;
   vFacing = abs(normalize(cross(tangent, across)).z);
   vS = aS;
@@ -194,24 +200,69 @@ uniform float uAlpha;
 uniform float uDusk;
 uniform float uTime;
 uniform float uBufH;
+uniform float uGuard;
 varying float vS;
 varying float vSide;
 varying float vFacing;
 
 void main() {
-  float soft = smoothstep(0.0, 0.6, 1.0 - abs(vSide));
-  float fibre = 0.84 + 0.16 * sin(vSide * 38.0 + vS * 14.0);
-  float sheen = pow(vFacing, 2.2);
+  float soft = smoothstep(0.0, 0.9, 1.0 - abs(vSide));
+  float fibre = 0.93 + 0.07 * sin(vSide * 26.0 + vS * 11.0);
+  float sheen = pow(vFacing, 1.6);
+  // Glanzlinie, die längs über die Seide wandert.
+  float band = exp(-pow((vSide - 0.4 * sin(vS * 5.0 + uTime * 0.3)) * 2.4, 2.0));
   float pulse = exp(-pow((fract(vS * 1.4 - uTime * 0.07) - 0.5) * 5.0, 2.0));
   vec3 col = mix(uDeep, uCore, 0.25 + 0.75 * sheen);
-  col = mix(col, uHi, clamp(smoothstep(0.78, 1.0, vFacing) * 0.7 + pulse * 0.18, 0.0, 1.0));
+  col = mix(col, uHi, clamp(band * sheen * 0.85 + pulse * 0.15, 0.0, 1.0));
   float ends = smoothstep(0.0, 0.16, vS) * smoothstep(1.0, 0.78, vS);
-  // Bänder berühren die Unterkante nie, damit die Naht zur Werkstatt sauber bleibt.
-  float ground = smoothstep(0.04, 0.3, gl_FragCoord.y / uBufH);
-  float a = soft * fibre * (0.2 + 0.8 * sheen) * ends * ground * uAlpha;
+  float y = 1.0 - gl_FragCoord.y / uBufH;
+  // Bänder berühren die Unterkante nie (saubere Naht) und laufen nie hinter den Intro-Text.
+  float ground = 1.0 - smoothstep(0.8, 0.96, y);
+  float guard = 1.0 - smoothstep(uGuard - 0.16, uGuard - 0.03, y);
+  float a = soft * fibre * (0.35 + 0.65 * sheen) * ends * ground * guard * uAlpha;
   gl_FragColor = vec4(col * a, a * mix(1.0, 0.4, uDusk));
 }
 `;
+
+// Lichtstaub in der Dämmerung: steigt langsam und beim Scrollen je nach Tiefe schneller.
+const MOTE_VERTEX = /* glsl */ `
+attribute vec4 aSeed;
+uniform float uTime;
+uniform float uRise;
+uniform float uPx;
+uniform vec2 uHalf;
+varying float vA;
+
+void main() {
+  float depth = aSeed.z;
+  float r = fract(aSeed.y + uTime * (0.004 + 0.008 * depth) + uRise * mix(0.25, 0.7, depth));
+  float y = r * 2.0 - 1.0;
+  float x = aSeed.x * 2.0 - 1.0 + 0.03 * sin(uTime * 0.3 + aSeed.w * 6.2831);
+  vec3 pos = vec3(x * uHalf.x * 1.1, y * uHalf.y * 1.1, mix(-2.5, 2.0, depth));
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  gl_PointSize = uPx * mix(2.0, 5.0, depth);
+  vA = mix(0.2, 0.75, depth) * smoothstep(1.0, 0.75, abs(y)) * (0.65 + 0.35 * sin(uTime * 0.9 + aSeed.w * 6.2831));
+}
+`;
+
+const MOTE_FRAGMENT = /* glsl */ `
+uniform float uAlpha;
+uniform float uBufH;
+uniform float uGuard;
+varying float vA;
+const vec3 SOFT = ${glsl("#9fd0f8")};
+
+void main() {
+  float d = length(gl_PointCoord - 0.5);
+  float y = 1.0 - gl_FragCoord.y / uBufH;
+  float guard = 1.0 - smoothstep(uGuard - 0.12, uGuard - 0.02, y);
+  float ground = 1.0 - smoothstep(0.85, 0.97, y);
+  float a = pow(smoothstep(0.5, 0.0, d), 1.8) * vA * uAlpha * guard * ground;
+  gl_FragColor = vec4(SOFT * a, a * 0.5);
+}
+`;
+
+const MOTES = 180;
 
 type RibbonSpec = {
   core: string;
@@ -225,11 +276,26 @@ type RibbonSpec = {
   shape: [number, number];
 };
 
+// Beim Absinken laufen die drei Bänder von weit auseinander zur Bildmitte zusammen.
 const RIBBONS: RibbonSpec[] = [
-  { core: "#9fd0f8", deep: "#1576c4", hi: "#ffffff", a: [0.42, 0.12, 0.0, 1.0], b: [-0.72, 0.05, -0.28, 0.08], shape: [0.34, 5.2] },
-  { core: "#198be8", deep: "#0b5ea8", hi: "#9fd0f8", a: [0.12, 0.14, 2.1, 0.9], b: [-0.28, 0.48, -0.2, 0.1], shape: [0.26, 6.4] },
-  { core: "#9fd0f8", deep: "#198be8", hi: "#ffffff", a: [-0.18, 0.1, 4.2, 1.1], b: [0.18, 0.86, -0.34, 0.07], shape: [0.2, 4.1] },
+  { core: "#9fd0f8", deep: "#1576c4", hi: "#ffffff", a: [0.4, 0.12, 0.0, 1.0], b: [-0.85, -0.22, -0.72, 0.1], shape: [0.6, 3.2] },
+  { core: "#198be8", deep: "#0b5ea8", hi: "#9fd0f8", a: [0.02, 0.14, 2.1, 0.9], b: [-0.05, 0.04, -0.62, 0.14], shape: [0.46, 3.8] },
+  { core: "#9fd0f8", deep: "#198be8", hi: "#ffffff", a: [-0.36, 0.1, 4.2, 1.1], b: [0.8, 0.26, -0.8, 0.1], shape: [0.34, 2.6] },
 ];
+
+function moteGeometry() {
+  const seeds = new Float32Array(MOTES * 4);
+  let s = 7;
+  const rand = () => {
+    s = (s * 16807) % 2147483647;
+    return s / 2147483647;
+  };
+  for (let i = 0; i < seeds.length; i += 1) seeds[i] = rand();
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new BufferAttribute(new Float32Array(MOTES * 3), 3));
+  geometry.setAttribute("aSeed", new BufferAttribute(seeds, 4));
+  return geometry;
+}
 
 function ribbonGeometry() {
   const count = (SEGMENTS + 1) * 2;
@@ -258,6 +324,8 @@ export type HeroSceneOptions = {
   section: HTMLElement;
   pin: HTMLElement;
   portal: HTMLElement;
+  /** Der Intro-Text am Ende der Sektion; die Bänder halten Abstand zu ihm. */
+  intro: HTMLElement;
   onReady: () => void;
   onLost: () => void;
 };
@@ -270,7 +338,7 @@ export type HeroScene = {
 };
 
 export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
-  const { canvas, section, pin, portal } = options;
+  const { canvas, section, pin, portal, intro } = options;
 
   let renderer: WebGLRenderer;
   try {
@@ -319,6 +387,39 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
   sky.renderOrder = 0;
   scene.add(sky);
 
+  // Bänder und Staub nur dort, wo der Himmel schon deckt: außerhalb des Displays bleibt der Canvas leer.
+  const clipped = {
+    transparent: true,
+    depthTest: false,
+    depthWrite: false,
+    blending: CustomBlending,
+    blendSrc: DstAlphaFactor,
+    blendDst: OneMinusSrcAlphaFactor,
+    blendSrcAlpha: ZeroFactor,
+    blendDstAlpha: OneFactor,
+  } as const;
+
+  const moteUniforms = {
+    uTime: { value: 0 },
+    uRise: { value: 0 },
+    uPx: { value: 1 },
+    uHalf: { value: half },
+    uAlpha: { value: 0 },
+    uBufH: { value: 1 },
+    uGuard: { value: 2 },
+  };
+  const moteGeo = moteGeometry();
+  const moteMaterial = new ShaderMaterial({
+    uniforms: moteUniforms,
+    vertexShader: MOTE_VERTEX,
+    fragmentShader: MOTE_FRAGMENT,
+    ...clipped,
+  });
+  const motes = new Points(moteGeo, moteMaterial);
+  motes.frustumCulled = false;
+  motes.renderOrder = 1;
+  scene.add(motes);
+
   const ribbonGeo = ribbonGeometry();
   const ribbons = RIBBONS.map((spec, i) => {
     const material = new ShaderMaterial({
@@ -327,6 +428,8 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
         uMorph: { value: 0 },
         uExit: { value: 0 },
         uHalf: { value: half },
+        uTilt: { value: 0 },
+        uGuard: { value: 2 },
         uA: { value: new Vector4(...spec.a) },
         uB: { value: new Vector4(...spec.b) },
         uShape: { value: new Vector2(...spec.shape) },
@@ -339,24 +442,16 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
       },
       vertexShader: RIBBON_VERTEX,
       fragmentShader: RIBBON_FRAGMENT,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-      // Bänder nur dort, wo der Himmel schon deckt: außerhalb des Displays bleibt der Canvas leer.
-      blending: CustomBlending,
-      blendSrc: DstAlphaFactor,
-      blendDst: OneMinusSrcAlphaFactor,
-      blendSrcAlpha: ZeroFactor,
-      blendDstAlpha: OneFactor,
+      ...clipped,
     });
     const mesh = new Mesh(ribbonGeo, material);
     mesh.frustumCulled = false;
-    mesh.renderOrder = 1 + i;
+    mesh.renderOrder = 2 + i;
     scene.add(mesh);
     return { mesh, material, spec };
   });
 
-  const geo = { top: 0, height: 1, dpr: 1 };
+  const geo = { top: 0, height: 1, pinH: 1, stickyTop: 0, introH: 0 };
   let quality = Math.min(window.devicePixelRatio || 1, MAX_DPR);
   let enabled = true;
   let inView = false;
@@ -378,7 +473,6 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
     const ratio = Math.max(MIN_DPR, Math.min(quality, MAX_DPR));
     // setSize/setPixelRatio sind durch sharpen-three.ts auf DPR 2 festgelegt; hier gilt 1.5.
     renderer.setDrawingBufferSize(w, h, ratio);
-    geo.dpr = ratio;
     skyUniforms.uBuf.value.set(canvas.width, canvas.height);
     skyUniforms.uView.value.set(w, h);
     skyUniforms.uDpr.value = canvas.width / w;
@@ -388,9 +482,25 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
     camera.updateProjectionMatrix();
     const halfH = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
     half.set(halfH * camera.aspect, halfH);
-    for (const r of ribbons) r.material.uniforms.uBufH.value = canvas.height;
+    const tilt = -0.2 - smooth(range(camera.aspect, 1.2, 0.5));
+    for (const r of ribbons) {
+      r.material.uniforms.uBufH.value = canvas.height;
+      r.material.uniforms.uTilt.value = tilt;
+    }
+    moteUniforms.uBufH.value = canvas.height;
+    moteUniforms.uPx.value = canvas.width / w;
     geo.top = section.getBoundingClientRect().top + window.scrollY;
     geo.height = section.offsetHeight;
+    geo.pinH = h;
+    geo.stickyTop = parseFloat(getComputedStyle(pin).top) || 0;
+    geo.introH = intro.offsetHeight;
+  }
+
+  /** Oberkante des Intro-Texts, relativ zur Bühne (0 oben, 1 unten) – ohne Layout-Abfrage. */
+  function guardLine() {
+    const bottom = geo.top + geo.height - window.scrollY;
+    const pinTop = Math.min(geo.stickyTop, bottom - geo.pinH);
+    return (bottom - geo.introH - pinTop) / geo.pinH;
   }
 
   /** Dieselbe Formel wie useScrollScene (mode "pin"), plus Ausfahrt nach dem Pin. */
@@ -421,14 +531,15 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
     time += dt * (1 + boost);
 
     const pd = damped;
-    const dusk = smooth(range(pd, 0.7, 0.98));
+    const dusk = smooth(range(pd, DUSK_START, DUSK_END));
     skyUniforms.uOpen.value = range(p, PORTAL_START, PORTAL_START + PORTAL_SPAN);
-    skyUniforms.uFlow.value = smooth(range(pd, 0.62, 0.72)) * (1 - smooth(range(pd, 0.8, 0.96)));
+    skyUniforms.uFlow.value = smooth(range(pd, 0.62, 0.72)) * (1 - smooth(range(pd, 0.84, 0.97)));
     skyUniforms.uDusk.value = dusk;
-    skyUniforms.uSeam.value = smooth(range(p, 0.86, 0.96));
+    skyUniforms.uSeam.value = smooth(range(p, 0.9, 0.99));
     skyUniforms.uTime.value = time;
     const alpha = smooth(range(pd, 0.625, 0.74)) * (1 - exitDamped * 0.5);
-    const morph = smooth(range(pd, 0.73, 0.99));
+    const morph = smooth(range(pd, 0.78, 1));
+    const guard = guardLine();
     for (const r of ribbons) {
       const u = r.material.uniforms;
       u.uTime.value = time;
@@ -436,7 +547,12 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
       u.uExit.value = exitDamped;
       u.uAlpha.value = alpha;
       u.uDusk.value = dusk;
+      u.uGuard.value = guard;
     }
+    moteUniforms.uTime.value = time;
+    moteUniforms.uRise.value = pd;
+    moteUniforms.uAlpha.value = smooth(range(pd, 0.8, 0.95));
+    moteUniforms.uGuard.value = guard;
 
     renderer.render(scene, camera);
     drewVisible = p >= PORTAL_START - 0.01;
@@ -478,6 +594,7 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
   });
   ro.observe(pin);
   ro.observe(section);
+  ro.observe(intro);
 
   const onLost = () => {
     if (disposed) return;
@@ -518,6 +635,8 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
       canvas.removeEventListener("webglcontextlost", onLost);
       skyGeometry.dispose();
       skyMaterial.dispose();
+      moteGeo.dispose();
+      moteMaterial.dispose();
       ribbonGeo.dispose();
       for (const r of ribbons) r.material.dispose();
       renderer.dispose();

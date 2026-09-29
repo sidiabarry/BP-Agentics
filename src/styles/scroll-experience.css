@@ -312,7 +312,7 @@
 
 /* Die Szene übernimmt, sobald das Display aufgeht; unten endet sie in der Tinte der Werkstatt. */
 .hero-portal[data-scroll-ready] .hero-portal__scene {
-  --dusk: clamp(0, calc((var(--p) - 0.7) / 0.27), 1);
+  --dusk: clamp(0, calc((var(--p) - 0.76) / 0.23), 1);
   display: block;
   z-index: 2;
   overflow: hidden;

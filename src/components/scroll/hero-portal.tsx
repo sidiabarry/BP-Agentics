@@ -51,6 +51,7 @@ export function HeroPortal() {
   const portalRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const sceneCanvasRef = useRef<HTMLCanvasElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
 
   // Bildspeicher lebt außerhalb von React – kein Re-Render pro Frame.
   const store = useRef({
@@ -114,7 +115,8 @@ export function HeroPortal() {
     const canvas = sceneCanvasRef.current;
     const pin = pinRef.current;
     const portal = portalRef.current;
-    if (state.started || !layer || !canvas || !pin || !portal) return;
+    const intro = introRef.current;
+    if (state.started || !layer || !canvas || !pin || !portal || !intro) return;
     state.started = true;
     const fail = () => {
       state.controller?.dispose();
@@ -129,6 +131,7 @@ export function HeroPortal() {
         section,
         pin,
         portal,
+        intro,
         onReady: () => {
           layer.dataset.state = "ready";
         },
@@ -270,7 +273,7 @@ export function HeroPortal() {
       </div>
 
       {/* Benennt auch die Werkstatt darunter (aria-labelledby="ws-title"). */}
-      <div className="hero-portal__intro">
+      <div className="hero-portal__intro" ref={introRef}>
         <p className="hero-portal__intro-kicker">Websites, Software, Abläufe.</p>
         <h2 id="ws-title">Drei Bausteine. Einzeln beauftragbar.</h2>
         <p className="hero-portal__intro-lead">
