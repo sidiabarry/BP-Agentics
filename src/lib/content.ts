@@ -132,11 +132,17 @@ export const steps = [
   },
 ];
 
+// `stamps` are the clock chips burned into each clip (bottom left), in seconds of the clip.
+// The reel's clock overlay must show the same time as the frame; the poster is frame 0.
 export const officeSlides = [
   {
     id: "morgen",
     src: "/media/buero-morgen.mp4",
     poster: "/media/buero-morgen.jpg",
+    stamps: [
+      { at: 0, time: "MO 07:45" },
+      { at: 2.625, time: "MO 11:30" },
+    ],
     time: "MO 07:45",
     alt: "Papierstapel und Festnetztelefon auf einem Handwerks-Schreibtisch am Montagmorgen",
     caption: "Der Tag fängt geordnet an.",
@@ -148,6 +154,10 @@ export const officeSlides = [
     id: "nachmittag",
     src: "/media/buero-nachmittag.mp4",
     poster: "/media/buero-nachmittag.jpg",
+    stamps: [
+      { at: 0, time: "MO 11:30" },
+      { at: 3.29, time: "MO 17:15" },
+    ],
     time: "MO 14:20",
     alt: "Ordner, Zettel und Excel-Ausdruck auf einem überladenen Büroschreibtisch am Nachmittag",
     caption: "Anfragen, Aufträge, Rückfragen.",
@@ -159,6 +169,10 @@ export const officeSlides = [
     id: "nacht",
     src: "/media/buero-nacht.mp4",
     poster: "/media/buero-nacht.jpg",
+    stamps: [
+      { at: 0, time: "MO 17:15" },
+      { at: 3.17, time: "MO 21:40" },
+    ],
     time: "MO 17:15",
     alt: "Leeres Büro am Abend, nur die Schreibtischlampe brennt über offenen Unterlagen",
     caption: "Was noch übertragen werden muss.",
