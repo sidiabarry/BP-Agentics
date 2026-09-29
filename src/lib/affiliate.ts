@@ -62,7 +62,7 @@ export const affiliateCaseCopy = {
   kicker: "Beispiel",
   title: "Poolseller GmbH",
   body:
-    "Sidia hat beim Aufbau des ADCELL-Setups mitgewirkt. Das Programm läuft ohne täglichen Eingriff. Der vermittelte Erfolg liegt im sechsstelligen Bereich.",
+    "Sidia hat beim Aufbau des ADCELL-Setups mitgewirkt. Das Programm läuft ohne täglichen Eingriff. Der ADCELL-Account wurde im Namen des Shops eingerichtet. Tracking und der Produktfeed wurden aufgesetzt. Partnerseiten wurden eingebunden: Bewertungsportale, Gutscheinseiten und Vergleichsportale.",
   from: "Setup",
   to: "läuft",
 } as const;
