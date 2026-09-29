@@ -10,8 +10,9 @@ import "./werkstatt.css";
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Bewusst ohne Scroll-Pinning. Beim Eintritt dämpft useSoftScrollHold Wheel
- * und Touch für 1,5 s — kein Schloss, kein overflow:hidden auf html/body.
+ * Kein Scroll-Schloss. Beim Eintritt dämpft useSoftScrollHold Wheel und Touch
+ * für 1,5 s. Ab 800px hält die Bühne samt Preiskarten zusätzlich kurz per
+ * position: sticky (etwa 32svh), ohne Snap und ohne preventDefault.
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
@@ -299,6 +300,8 @@ export function WerkstattSection() {
         <p>Jede Station zeigt einen Baustein bei der Arbeit. Tippen Sie eine an, um mehr zu sehen.</p>
       </div>
 
+      <div className="ws__dwell">
+        <div className="ws__dwell-frame">
       <div className="ws__stage" ref={stageRef}>
         <div className="ws__scene">
         <picture className="ws__poster">
@@ -484,6 +487,9 @@ export function WerkstattSection() {
           </li>
         ))}
       </ul>
+        </div>
+        <div className="ws__dwell-runway" aria-hidden="true" />
+      </div>
     </section>
   );
 }

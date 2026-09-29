@@ -5,8 +5,11 @@
  * Übernimmt die Rolle der früheren LeistungsMaschine und damit auch ihren
  * Anschluss: Das Hellblau, in dem der Hero-Film endet (--hero-exit), läuft in
  * Tinte über; am Ende blendet die Sektion in Papier für die Problem-Sektion.
- * Keine Scroll-Pinning-Mechanik. Alles Klickbare sitzt in eigenen Ebenen mit
- * eigenem pointer-events, die Leinwand selbst nimmt Tippen und Wischen an.
+ * Ab 800px bleibt die Bühne mit den drei Preiskarten für etwa 32svh per
+ * position: sticky stehen (kein Snap, kein Wheel-Hijacking). Unter 800px und
+ * bei reduced-motion entfällt der Halt. Alles Klickbare sitzt in eigenen
+ * Ebenen mit eigenem pointer-events, die Leinwand selbst nimmt Tippen und
+ * Wischen an.
  */
 
 .ws {
@@ -625,6 +628,46 @@
   font-weight: 600;
   white-space: nowrap;
   color: var(--ws-mist);
+}
+
+/* Kurzer Desktop-Halt: Bühne und Preiskarten bleiben stehen, während der
+   Besucher etwa 32svh weiterrollt. Die Strecke ist Inhaltshöhe, nicht
+   Padding — sticky klebt nur innerhalb der Content-Box. Unter 800px und
+   bei reduced-motion erzeugen die Hüllen keine Box. */
+.ws__dwell,
+.ws__dwell-frame,
+.ws__dwell-runway {
+  display: contents;
+}
+
+@media (min-width: 800px) and (prefers-reduced-motion: no-preference) {
+  .ws__dwell {
+    display: block;
+  }
+
+  .ws__dwell-frame {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: var(--ws-header);
+    z-index: 1;
+    height: calc(100svh - var(--ws-header));
+  }
+
+  .ws__dwell-runway {
+    display: block;
+    height: 32svh;
+  }
+
+  .ws__dwell-frame .ws__stage {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .ws__dwell-frame .ws__list {
+    flex: 0 0 auto;
+  }
 }
 
 /* --- Fokus ---------------------------------------------------------------- */
