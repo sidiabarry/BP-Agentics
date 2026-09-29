@@ -214,11 +214,16 @@ uniform float uTilt;
 uniform vec4 uA;
 uniform vec4 uB;
 uniform vec2 uShape;
+uniform vec2 uBuf;
 varying float vS;
 varying float vSide;
 varying float vFacing;
+varying float vCover;
+varying float vPx;
 
 const float TAU = 6.2831853;
+const float DS = 0.003;
+const float SEGMENTS = ${SEGMENTS}.0;
 
 // Im Licht: ein langer Schwung quer durchs Bild, im Hochformat diagonal.
 vec3 drift(float s, float t) {
@@ -243,19 +248,71 @@ vec3 path(float s) {
   return vec3(p.xy * uHalf, p.z);
 }
 
-void main() {
-  vec3 c = path(aS);
-  vec3 tangent = normalize(path(aS + 0.003) - c);
+// Kante des Bands bei s (Mitte c, nächster Punkt ahead), relativ zur Mitte.
+vec3 edge(float s, vec3 c, vec3 ahead, out vec3 tangent, out vec3 across) {
+  tangent = normalize(ahead - c);
   vec3 side = normalize(cross(tangent, vec3(0.0, 0.0, 1.0)));
   vec3 lift = cross(side, tangent);
-  float angle = uShape.y * (aS - 0.5) + 0.5 * sin(uTime * 0.2 * uA.w + uA.z);
-  vec3 across = cos(angle) * side + sin(angle) * lift;
-  float width = uShape.x * sqrt(uHalf.x * uHalf.y) * (0.3 + 0.7 * sin(3.14159 * aS));
-  vec3 pos = c + across * aSide * width * 0.5;
-  vFacing = abs(normalize(cross(tangent, across)).z);
+  float angle = uShape.y * (s - 0.5) + 0.5 * sin(uTime * 0.2 * uA.w + uA.z);
+  across = cos(angle) * side + sin(angle) * lift;
+  float width = uShape.x * sqrt(uHalf.x * uHalf.y) * (0.3 + 0.7 * sin(3.14159 * s));
+  return across * width * 0.5 * aSide;
+}
+
+vec2 screen(vec4 clip) {
+  return clip.xy / clip.w * 0.5 * uBuf;
+}
+
+vec4 project(vec3 p) {
+  return projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+}
+
+// Pixel des Puffers, unter denen ein Band nie schmaler und ein Dreieck nie flacher wird.
+const float MIN_PX = 3.0;
+const float MIN_TRI = 1.5;
+
+void main() {
+  vec3 c0 = path(aS - DS);
+  vec3 c = path(aS);
+  vec3 c2 = path(aS + DS);
+  vec3 c3 = path(aS + 2.0 * DS);
+  vec3 tangent, across, t0, a0;
+  vec3 e = edge(aS, c, c2, tangent, across);
+  vec3 e0 = edge(aS - DS, c0, c, t0, a0);
+  vec3 e2 = edge(aS + DS, c2, c3, t0, a0);
+
+  // Hochkant gedreht wird das Band schmaler als ein, zwei Pixel und die Rasterung träfe nur
+  // einzelne Pixel (Tüpfel): Dann bleibt es MIN_PX breit und wird dafür entsprechend blasser.
+  // Wo eine Kante in einer Falte zurückläuft oder das Band streifend gesehen wird (Dreiecke
+  // liegen dann als Splitter übereinander), blendet es aus.
+  vec3 normal = normalize(cross(tangent, across));
+  float graze = abs(dot(normal, normalize(cameraPosition - (c + e))));
+  vec4 clip = project(c + e);
+  vec2 mid = screen(project(c));
+  vec2 run = screen(project(c2)) - screen(project(c0));
+  float len = max(length(run), 1e-4);
+  vec2 dir = run / len;
+  vec2 nrm = vec2(-dir.y, dir.x);
+  vec2 off = screen(clip) - mid;
+  float along = dot(off, dir);
+  float reach = dot(off, nrm);
+  float px = 2.0 * abs(reach);
+  float wide = max(abs(reach), 0.5 * MIN_PX);
+  // Schräg gesehen liegt ein Querschnitt fast längs des Bands; die Dreiecke sind dann nur
+  // seg · wide / |off| hoch. Die Scherung wird so gekappt, dass sie nie unter MIN_TRI fallen.
+  float seg = len / (2.0 * DS * SEGMENTS);
+  float keep = wide * sqrt(max(seg * seg / (MIN_TRI * MIN_TRI) - 1.0, 0.0));
+  vec2 moved = mid + dir * clamp(along, -keep, keep) + nrm * sign(reach) * wide;
+  clip.xy = moved / (0.5 * uBuf) * clip.w;
+  float progress = dot(screen(project(c2 + e2)) - screen(project(c0 + e0)), dir) / len;
+  vCover = min(px / MIN_PX, 1.0) * smoothstep(0.05, 0.45, progress) * smoothstep(0.25, 1.0, seg)
+    * smoothstep(0.04, 0.3, graze);
+  vPx = px;
+
+  vFacing = abs(normal.z);
   vS = aS;
   vSide = aSide;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  gl_Position = clip;
 }
 `;
 
@@ -266,27 +323,30 @@ uniform vec3 uHi;
 uniform float uAlpha;
 uniform float uDusk;
 uniform float uTime;
-uniform float uBufH;
+uniform vec2 uBuf;
 uniform float uGuard;
 varying float vS;
 varying float vSide;
 varying float vFacing;
+varying float vCover;
+varying float vPx;
 
 void main() {
   float soft = smoothstep(0.0, 0.9, 1.0 - abs(vSide));
-  float fibre = 0.93 + 0.07 * sin(vSide * 26.0 + vS * 11.0);
+  // Fasern und Glanzlinie brauchen Breite, sonst flimmern sie auf schmalen Bändern.
+  float fibre = 0.93 + 0.07 * smoothstep(24.0, 96.0, vPx) * sin(vSide * 26.0 + vS * 11.0);
   float sheen = pow(vFacing, 1.6);
   // Glanzlinie, die längs über die Seide wandert.
-  float band = exp(-pow((vSide - 0.4 * sin(vS * 5.0 + uTime * 0.3)) * 2.4, 2.0));
+  float band = exp(-pow((vSide - 0.4 * sin(vS * 5.0 + uTime * 0.3)) * 2.4, 2.0)) * smoothstep(4.0, 16.0, vPx);
   float pulse = exp(-pow((fract(vS * 1.4 - uTime * 0.07) - 0.5) * 5.0, 2.0));
   vec3 col = mix(uDeep, uCore, 0.25 + 0.75 * sheen);
   col = mix(col, uHi, clamp(band * sheen * 0.85 + pulse * 0.15, 0.0, 1.0));
   float ends = smoothstep(0.0, 0.16, vS) * smoothstep(1.0, 0.78, vS);
-  float y = 1.0 - gl_FragCoord.y / uBufH;
+  float y = 1.0 - gl_FragCoord.y / uBuf.y;
   // Bänder berühren die Unterkante nie (saubere Naht) und laufen nie hinter den Intro-Text.
   float ground = 1.0 - smoothstep(0.8, 0.96, y);
   float guard = 1.0 - smoothstep(uGuard - 0.16, uGuard - 0.03, y);
-  float a = soft * fibre * (0.35 + 0.65 * sheen) * ends * ground * guard * uAlpha;
+  float a = vCover * soft * fibre * (0.35 + 0.65 * sheen) * ends * ground * guard * uAlpha;
   gl_FragColor = vec4(col * a, a * mix(1.0, 0.4, uDusk));
 }
 `;
@@ -519,7 +579,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
         uHi: { value: vec3(spec.hi) },
         uAlpha: { value: 0 },
         uDusk: { value: 0 },
-        uBufH: { value: 1 },
+        uBuf: { value: new Vector2(1, 1) },
       },
       vertexShader: RIBBON_VERTEX,
       fragmentShader: RIBBON_FRAGMENT,
@@ -571,7 +631,7 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     half.set(halfH * camera.aspect, halfH);
     const tilt = -0.2 - smooth(range(camera.aspect, 1.2, 0.5));
     for (const r of ribbons) {
-      r.material.uniforms.uBufH.value = canvas.height;
+      r.material.uniforms.uBuf.value.set(canvas.width, canvas.height);
       r.material.uniforms.uTilt.value = tilt;
     }
     moteUniforms.uBufH.value = canvas.height;
