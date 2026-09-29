@@ -1081,6 +1081,10 @@
   }
 }
 
+.affiliate-page #seiten-faq {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
 .affiliate-page__column [data-slot="accordion-trigger"] {
   min-height: 44px;
 }

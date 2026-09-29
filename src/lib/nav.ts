@@ -22,7 +22,7 @@ export const leistungItems = [
   {
     href: "/leistungen/affiliate",
     title: "Affiliate-Programme",
-    sub: "Merchants auf ADCELL bringen.",
+    sub: "Ihr Shop bei ADCELL, eingerichtet und betreut.",
   },
 ] as const;
 

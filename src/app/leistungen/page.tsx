@@ -74,7 +74,7 @@ export default function LeistungenPage() {
         <p className="text-sm tracking-[0.2em] text-[#198BE8] uppercase">
           {affiliateHero.kicker}
         </p>
-        <h2 className="mt-3 max-w-[20ch] text-3xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-4xl">
+        <h2 className="mt-3 max-w-[20ch] text-2xl leading-[1.12] font-semibold tracking-[-0.03em] [text-wrap:balance] md:text-4xl">
           {affiliateHero.title}
         </h2>
         <p className="mt-4 max-w-[42rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
