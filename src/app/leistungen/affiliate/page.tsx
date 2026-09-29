@@ -5,6 +5,7 @@ import { AffiliateCta } from "@/components/affiliate/affiliate-cta";
 import { AffiliateHero } from "@/components/affiliate/affiliate-hero";
 import { AffiliatePay } from "@/components/affiliate/affiliate-pay";
 import { AffiliateRollup } from "@/components/affiliate/affiliate-rollup";
+import { AffiliateWhat } from "@/components/affiliate/affiliate-what";
 import { JsonLd } from "@/components/json-ld";
 import { PageFaqs } from "@/components/page-faqs";
 import {
@@ -17,8 +18,9 @@ import { pageMetadata } from "@/lib/seo";
 import "@/styles/affiliate.css";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Affiliate-Programme mit ADCELL für Merchants",
-  description: affiliateHero.lead,
+  title: "ADCELL-Partnerprogramm für Onlineshops einrichten",
+  description:
+    "ADCELL verbindet Onlineshops mit Gutscheinseiten, Vergleichsportalen und Blogs. Provision gibt es nur bei Verkauf. Wir richten Ihr Programm ein und halten es am Laufen.",
   path: affiliatePath,
 });
 
@@ -58,20 +60,23 @@ export default function AffiliatePage() {
         }}
       />
 
-      <AffiliateHero />
-      <section className="affiliate-note">
-        <p>
-          Dieses Angebot richtet sich an Merchants, die ein Partnerprogramm auf ADCELL
-          aufsetzen. Es ist getrennt von den Handwerksleistungen: eine Website, der
-          Nachrichten-Assistent und Büroabläufe beantworten andere Aufgaben und bleiben
-          einzeln beauftragbar.
-        </p>
-        <p>
-          <Link href="/leistungen">Leistungen im Überblick</Link>
-        </p>
-      </section>
-      <AffiliateRollup />
-      <AffiliateCase />
+      <div className="affiliate-top">
+        <AffiliateHero />
+        <section className="affiliate-note">
+          <p>
+          Dieses Angebot ist für Onlineshops, die ein Partnerprogramm bei ADCELL starten
+          wollen. Mit unseren Leistungen für Handwerksbetriebe hat es nichts zu tun.
+          </p>
+          <p>
+            <Link href="/leistungen">Leistungen im Überblick</Link>
+          </p>
+        </section>
+      </div>
+      <AffiliateWhat />
+      <div className="affiliate-chapter">
+        <AffiliateRollup />
+        <AffiliateCase />
+      </div>
       <AffiliatePay />
 
       <div className="affiliate-page__column">
@@ -88,7 +93,9 @@ export default function AffiliatePage() {
         </nav>
       </div>
 
-      <AffiliateCta />
+      <div className="affiliate-dock">
+        <AffiliateCta />
+      </div>
     </main>
   );
 }

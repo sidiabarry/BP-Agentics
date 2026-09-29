@@ -6,7 +6,10 @@ export function AffiliateCase() {
     <article className="affiliate-case">
       <div className="affiliate-case__layout">
         <AffiliateReveal className="affiliate-case__intro">
-          <p className="affiliate-case__kicker">{affiliateCaseCopy.kicker}</p>
+          <p className="affiliate-case__kicker">
+            <span className="sr-only">{affiliateCaseCopy.kicker}</span>
+            <span aria-hidden="true">{affiliateCaseCopy.kicker}</span>
+          </p>
           <h2>{affiliateCaseCopy.title}</h2>
           <p className="affiliate-case__status">
             <span className="affiliate-case__dot" aria-hidden="true" />
