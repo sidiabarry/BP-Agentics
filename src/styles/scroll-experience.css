@@ -216,14 +216,14 @@
   transition: visibility 0s 0.5s;
 }
 
-/* Die eine Überschrift für Szene und Werkstatt. Statisch: eigener Verlauf in die Nacht. */
+/* Die eine Überschrift für Szene und Werkstatt. Statisch: Verlauf vom Posterboden in die Nacht. */
 .hero-portal__intro {
   position: relative;
   z-index: 4;
   display: grid;
   padding: 20svh max(5vw, 1.5rem) 2rem;
   color: var(--paper);
-  background: linear-gradient(var(--hero-exit) 0, var(--signal-deep) 9svh, var(--ink) 18svh);
+  background: linear-gradient(#e8e6e2 0, #7cbcf1 4.5svh, var(--signal-deep) 9svh, var(--ink) 15svh);
 }
 
 .hero-portal__intro-kicker {
