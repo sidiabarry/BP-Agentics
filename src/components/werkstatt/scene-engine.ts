@@ -65,13 +65,15 @@ const DIRECTIONS: Record<ViewId, V3> = {
 };
 
 /**
- * Hochformat: Blick schräg von vorn rechts (45°, 30° von oben). Frontal würden die
- * drei Stationen zu einem schmalen Band schrumpfen; schräg läuft die Reihe in die
- * Tiefe und alle drei Bildschirme bleiben lesbar. Das etwas weitere Sichtfeld hält
- * die Kamera nah genug, um im Raum zu bleiben.
+ * Schmale Bühne: Blick schräg von vorn rechts (45°, 30° von oben). Frontal würden die
+ * drei Stationen seitlich abgeschnitten oder zu einem schmalen Band schrumpfen;
+ * schräg läuft die Reihe in die Tiefe und alle drei Bildschirme bleiben lesbar.
+ * Das etwas weitere Sichtfeld hält die Kamera nah genug, um im Raum zu bleiben.
  */
 const PORTRAIT_OVERVIEW: V3 = [0.612, 0.5, 0.612];
 const PORTRAIT_OVERVIEW_FOV = 58;
+/** Welt-Einheiten Luft um die Stationsbox, damit die Tischkanten mit im Bild bleiben. */
+const PORTRAIT_OVERVIEW_PAD = { x: 0.95, zMin: 0.2, zMax: 0.45 };
 
 /** Wie viel der freien Fläche das Objekt füllen darf. */
 const FILL: Record<ViewId, number> = { overview: 0.9, web: 0.94, chat: 0.92, office: 0.94 };
@@ -526,14 +528,24 @@ export function createWerkstattScene(
 
   function isPortrait() {
     const { w, h } = size();
-    return w / h < 0.9;
+    // Unter 800px ist die Bühne zu schmal für den frontalen Überblick: die
+    // äußeren Stationen fallen aus dem Bild, auch wenn das Seitenverhältnis
+    // nicht streng hochkant ist.
+    return w < 800 || w / h < 0.9;
   }
 
   function solvePose(view: ViewId) {
     const { w, h } = size();
-    const b = view === "overview" ? overviewBox : focusBoxes[view];
-    const target = b.getCenter(new THREE.Vector3());
     const portraitOverview = view === "overview" && isPortrait();
+    let b = view === "overview" ? overviewBox : focusBoxes[view];
+    if (portraitOverview) {
+      b = b.clone();
+      b.min.x -= PORTRAIT_OVERVIEW_PAD.x;
+      b.max.x += PORTRAIT_OVERVIEW_PAD.x;
+      b.min.z -= PORTRAIT_OVERVIEW_PAD.zMin;
+      b.max.z += PORTRAIT_OVERVIEW_PAD.zMax;
+    }
+    const target = b.getCenter(new THREE.Vector3());
     const dir = new THREE.Vector3(...(portraitOverview ? PORTRAIT_OVERVIEW : DIRECTIONS[view])).normalize();
     const fov = portraitOverview ? PORTRAIT_OVERVIEW_FOV : BASE_FOV;
     const f = view === "overview" ? { right: 0, bottom: framing.bottom } : framing;
@@ -699,6 +711,18 @@ export function createWerkstattScene(
     return best;
   }
 
+  function swallowFollowingClick(x: number, y: number) {
+    const swallow = (event: MouseEvent) => {
+      if (Math.hypot(event.clientX - x, event.clientY - y) > 8) return;
+      event.preventDefault();
+      event.stopPropagation();
+      done();
+    };
+    const done = () => window.removeEventListener("click", swallow, true);
+    window.addEventListener("click", swallow, true);
+    window.setTimeout(done, 500);
+  }
+
   let down: { x: number; y: number; t: number; id: number } | null = null;
   const onDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
@@ -718,8 +742,12 @@ export function createWerkstattScene(
     }
     if (Math.hypot(dx, dy) > 10 || dt > 700) return;
     const hit = pick(e.clientX, e.clientY);
+    if (!hit && current === "overview") return;
+    // Der folgende click darf nicht auf einen Knopf fallen, der erst durch
+    // das Öffnen der Karte unter den Finger rutscht.
+    if (window.innerWidth < 800) swallowFollowingClick(e.clientX, e.clientY);
     if (hit) goTo(hit);
-    else if (current !== "overview") goTo("overview");
+    else goTo("overview");
   };
   const onMove = (e: PointerEvent) => {
     if (e.pointerType !== "mouse") return;

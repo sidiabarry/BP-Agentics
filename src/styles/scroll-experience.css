@@ -150,11 +150,14 @@
   color: color-mix(in srgb, var(--ink) 50%, transparent);
 }
 
-/* Portal und Ankunft sind ohne Inszenierung unsichtbar. */
-.hero-portal__portal,
-.hero-portal__arrival {
+/* Portal und Szene gibt es nur mit Inszenierung. */
+.hero-portal__portal {
   opacity: 0;
   pointer-events: none;
+}
+
+.hero-portal__scene {
+  display: none;
 }
 
 .hero-portal__portal {
@@ -175,29 +178,108 @@
   );
 }
 
-.hero-portal__arrival {
+.hero-portal__scene,
+.hero-portal__scene canvas {
   position: absolute;
-  inset: auto 0 0 0;
+  inset: 0;
+}
+
+.hero-portal__scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hero-portal__scene[data-state="ready"] canvas {
+  opacity: 1;
+}
+
+/* Ohne WebGL: dieselbe Dämmerung als Verlauf, nur per transform bewegt. */
+.hero-portal__dusk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200%;
+  background: linear-gradient(
+    transparent 0,
+    color-mix(in srgb, var(--signal-deep) 80%, transparent) 22%,
+    var(--ink) 50%
+  );
+  transform: translate3d(0, calc(50% - var(--dusk, 0) * 85%), 0);
+}
+
+.hero-portal__scene[data-state="ready"] .hero-portal__dusk {
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+
+/* Die eine Überschrift für Szene und Werkstatt. Statisch: Verlauf vom Posterboden in die Nacht. */
+.hero-portal__intro {
+  position: relative;
   z-index: 4;
-  padding: 0 max(5vw, 1.5rem) 16svh;
+  display: grid;
+  padding: 20svh max(5vw, 1.5rem) 2rem;
   color: #fff;
+  background: linear-gradient(#e8e6e2 0, #7cbcf1 4.5svh, var(--signal-deep) 9svh, var(--ink) 15svh);
+}
+
+.hero-portal__intro-kicker,
+.hero-portal__intro h2 {
   text-shadow: 0 1px 30px #0b5ea855;
 }
 
-.hero-portal__arrival p {
+.hero-portal__intro-kicker {
   margin: 0 0 0.6rem;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
   opacity: 0.85;
 }
 
-.hero-portal__arrival h2 {
+.hero-portal__intro h2 {
   margin: 0;
   font-family: var(--font-heading, inherit);
   font-size: clamp(1.25rem, 2.8vw, 2rem);
   line-height: 1.15;
   letter-spacing: -0.03em;
   font-weight: 600;
+}
+
+.hero-portal__intro-lead {
+  margin: 1rem 0 0;
+  max-width: 58ch;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: #dbeaf6;
+}
+
+@media (max-width: 799px) {
+  .hero-portal__intro-lead {
+    font-size: 1.05rem;
+  }
+}
+
+/* Solange der Intro-Text im Bild ist, liegt kein schwebender Knopf über Überschrift oder Einleitung. */
+body:has(.hero-portal__intro[data-in-view]) [data-analytics="whatsapp-fab"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (min-width: 880px) {
+  .hero-portal__intro {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+    align-items: end;
+    column-gap: 2.5rem;
+  }
+
+  .hero-portal__intro-lead {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
 }
 
 /* --- inszeniert ---------------------------------------------------------- */
@@ -243,10 +325,27 @@
   border-radius: calc(50% - var(--open) * 30%);
 }
 
-.hero-portal[data-scroll-ready] .hero-portal__arrival {
-  --in: clamp(0, calc((var(--p) - 0.76) / 0.11), 1);
-  opacity: var(--in);
-  transform: translate3d(0, calc((1 - var(--in)) * 18px), 0);
+/* Die Szene übernimmt, sobald das Display aufgeht; unten endet sie in der Tinte der Werkstatt. */
+.hero-portal[data-scroll-ready] .hero-portal__scene {
+  --dusk: clamp(0, calc((var(--p) - 0.76) / 0.23), 1);
+  display: block;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: clamp(0, calc((var(--p) - 0.615) * 400), 1);
+}
+
+.hero-portal[data-scroll-ready] .hero-portal__pin[data-covered] .hero-portal__film,
+.hero-portal[data-scroll-ready] .hero-portal__pin[data-covered] .hero-portal__portal {
+  visibility: hidden;
+}
+
+/* Der Intro-Text liegt am Ende der Strecke und scrollt nativ über die stehende Szene. */
+.hero-portal[data-scroll-ready] .hero-portal__intro {
+  position: absolute;
+  inset: auto 0 0;
+  padding-top: 0;
+  background: none;
 }
 
 /* ==========================================================================
@@ -1347,13 +1446,11 @@
     font-size: 0.78rem;
   }
 
-  .hero-portal__arrival {
-    padding-bottom: 10svh;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .hero-portal__intro {
+    padding: 16svh 1rem 1.25rem;
   }
 
-  .hero-portal__arrival h2 {
+  .hero-portal__intro h2 {
     font-size: clamp(1.05rem, 5vw, 1.35rem);
   }
 
