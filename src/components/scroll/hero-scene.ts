@@ -405,17 +405,21 @@ export type HeroScene = {
 export async function createHeroScene(options: HeroSceneOptions): Promise<HeroScene | null> {
   const { canvas, section, pin, portal, intro } = options;
 
+  const attributes: WebGLContextAttributes = {
+    alpha: true,
+    premultipliedAlpha: true,
+    antialias: false,
+    depth: false,
+    stencil: false,
+    powerPreference: "default",
+  };
+  // three verlangt WebGL2 und meldet einen fehlenden Kontext per console.error; ohne ihn gilt still der CSS-Verlauf.
+  const context = canvas.getContext("webgl2", attributes);
+  if (!context) return null;
+
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({
-      canvas,
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: false,
-      depth: false,
-      stencil: false,
-      powerPreference: "default",
-    });
+    renderer = new WebGLRenderer({ canvas, context, ...attributes });
   } catch {
     return null;
   }
