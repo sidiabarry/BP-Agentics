@@ -897,6 +897,7 @@
 
   .affiliate-rollup__steps {
     gap: 0;
+    margin-top: 1.5rem;
   }
 
   .affiliate-rollup__step {
@@ -1025,7 +1026,7 @@
   }
 
   .affiliate-rollup__steps {
-    gap: 1.15rem;
+    gap: var(--space-stack);
   }
 
   .affiliate-rollup__step {
@@ -1061,6 +1062,18 @@
   .affiliate-cta__actions a {
     width: 100%;
     justify-content: center;
+  }
+
+  .affiliate-flow__node {
+    padding-bottom: var(--space-stack);
+  }
+
+  .affiliate-gain li {
+    padding-block: 0.6rem;
+  }
+
+  .affiliate-what {
+    padding-top: 0;
   }
 }
 
