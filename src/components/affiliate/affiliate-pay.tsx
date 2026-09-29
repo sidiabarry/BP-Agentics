@@ -2,6 +2,8 @@ import { AffiliateReveal } from "@/components/affiliate/affiliate-reveal";
 import { affiliatePay, affiliatePayFacts } from "@/lib/affiliate";
 
 export function AffiliatePay() {
+  const [pre, post] = affiliatePay.body.split(affiliatePay.figure);
+
   return (
     <section className="affiliate-pay" aria-labelledby="affiliate-pay-title">
       <div className="affiliate-pay__layout">
@@ -12,8 +14,10 @@ export function AffiliatePay() {
           <AffiliateReveal as="h2" id="affiliate-pay-title" delay={60}>
             {affiliatePay.title}
           </AffiliateReveal>
-          <AffiliateReveal as="p" className="affiliate-pay__body" delay={120}>
-            {affiliatePay.body}
+          <AffiliateReveal as="p" className="affiliate-pay__statement" delay={120}>
+            {pre}
+            <span className="affiliate-pay__figure">{affiliatePay.figure}</span>
+            {post}
           </AffiliateReveal>
         </div>
         <dl className="affiliate-pay__facts">

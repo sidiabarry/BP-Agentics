@@ -5,6 +5,7 @@ import { AffiliateCta } from "@/components/affiliate/affiliate-cta";
 import { AffiliateHero } from "@/components/affiliate/affiliate-hero";
 import { AffiliatePay } from "@/components/affiliate/affiliate-pay";
 import { AffiliateRollup } from "@/components/affiliate/affiliate-rollup";
+import { AffiliateWhat } from "@/components/affiliate/affiliate-what";
 import { JsonLd } from "@/components/json-ld";
 import { PageFaqs } from "@/components/page-faqs";
 import {
@@ -71,6 +72,7 @@ export default function AffiliatePage() {
           </p>
         </section>
       </div>
+      <AffiliateWhat />
       <div className="affiliate-chapter">
         <AffiliateRollup />
         <AffiliateCase />
