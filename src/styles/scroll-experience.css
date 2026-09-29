@@ -320,6 +320,11 @@
   opacity: clamp(0, calc((var(--p) - 0.615) * 400), 1);
 }
 
+.hero-portal[data-scroll-ready] .hero-portal__pin[data-covered] .hero-portal__film,
+.hero-portal[data-scroll-ready] .hero-portal__pin[data-covered] .hero-portal__portal {
+  visibility: hidden;
+}
+
 /* Der Intro-Text liegt am Ende der Strecke und scrollt nativ über die stehende Szene. */
 .hero-portal[data-scroll-ready] .hero-portal__intro {
   position: absolute;

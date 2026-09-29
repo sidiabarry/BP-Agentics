@@ -5,6 +5,7 @@ import {
   DstAlphaFactor,
   Mesh,
   NoBlending,
+  type Object3D,
   OneFactor,
   OneMinusSrcAlphaFactor,
   PerspectiveCamera,
@@ -42,7 +43,18 @@ const DUSK_END = 0.99;
 
 const MAX_DPR = 1.5;
 const MIN_DPR = 0.75;
+/** Obergrenze für die Puffergröße (Pixel), damit große Displays nicht teurer werden als nötig. */
+const PIXEL_BUDGET = 3_500_000;
+const LINK_GRACE_MS = 250;
 const SEGMENTS = 160;
+
+/** Nächste ruhige Lücke im Main Thread (Safari: kurzer Timeout). */
+export function idle() {
+  return new Promise<void>((resolve) => {
+    if ("requestIdleCallback" in window) window.requestIdleCallback(() => resolve(), { timeout: 300 });
+    else setTimeout(resolve, 32);
+  });
+}
 
 function vec3(hex: string) {
   const n = parseInt(hex.slice(1), 16);
@@ -101,12 +113,14 @@ void main() {
   float tm = uTime;
 
   // Das Display lebt weiter: drei weiche Lichtflecken ziehen langsam.
-  vec2 b1 = vec2(aspect * (0.26 + 0.09 * sin(tm * 0.23)), 0.24 + 0.08 * cos(tm * 0.19));
-  vec2 b2 = vec2(aspect * (0.76 + 0.07 * cos(tm * 0.17 + 1.3)), 0.5 + 0.1 * sin(tm * 0.21 + 0.7));
-  vec2 b3 = vec2(aspect * (0.48 + 0.13 * sin(tm * 0.13 + 2.1)), 0.84 + 0.06 * cos(tm * 0.25));
-  col = mix(col, P0, exp(-dot(n - b1, n - b1) * 7.0) * 0.42 * uFlow);
-  col = mix(col, LINE, exp(-dot(n - b2, n - b2) * 5.0) * 0.34 * uFlow);
-  col = mix(col, SOFT, exp(-dot(n - b3, n - b3) * 8.0) * 0.3 * uFlow);
+  if (uFlow > 0.0) {
+    vec2 b1 = vec2(aspect * (0.26 + 0.09 * sin(tm * 0.23)), 0.24 + 0.08 * cos(tm * 0.19));
+    vec2 b2 = vec2(aspect * (0.76 + 0.07 * cos(tm * 0.17 + 1.3)), 0.5 + 0.1 * sin(tm * 0.21 + 0.7));
+    vec2 b3 = vec2(aspect * (0.48 + 0.13 * sin(tm * 0.13 + 2.1)), 0.84 + 0.06 * cos(tm * 0.25));
+    col = mix(col, P0, exp(-dot(n - b1, n - b1) * 7.0) * 0.42 * uFlow);
+    col = mix(col, LINE, exp(-dot(n - b2, n - b2) * 5.0) * 0.34 * uFlow);
+    col = mix(col, SOFT, exp(-dot(n - b3, n - b3) * 8.0) * 0.3 * uFlow);
+  }
 
   // Dämmerung: eine weiche, wellige Kante steigt von unten auf.
   float hz = mix(1.4, -0.5, uDusk)
@@ -452,7 +466,6 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
   });
 
   const geo = { top: 0, height: 1, pinH: 1, stickyTop: 0, introH: 0 };
-  let quality = Math.min(window.devicePixelRatio || 1, MAX_DPR);
   let enabled = true;
   let inView = false;
   let ready = false;
@@ -465,14 +478,19 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
   let boost = 0;
   let time = 0;
   let drewVisible = false;
-  let samples: number[] = [];
+  let measured = false;
 
   function measure() {
+    measured = true;
     const w = Math.max(1, pin.clientWidth);
     const h = Math.max(1, pin.clientHeight);
-    const ratio = Math.max(MIN_DPR, Math.min(quality, MAX_DPR));
+    const budget = Math.sqrt(PIXEL_BUDGET / (w * h));
+    const ratio = Math.max(MIN_DPR, Math.min(window.devicePixelRatio || 1, MAX_DPR, budget));
     // setSize/setPixelRatio sind durch sharpen-three.ts auf DPR 2 festgelegt; hier gilt 1.5.
-    renderer.setDrawingBufferSize(w, h, ratio);
+    // Die Größe ändert sich nur bei Resize, nie mitten im Scrollen.
+    if (canvas.width !== Math.floor(w * ratio) || canvas.height !== Math.floor(h * ratio)) {
+      renderer.setDrawingBufferSize(w, h, ratio);
+    }
     skyUniforms.uBuf.value.set(canvas.width, canvas.height);
     skyUniforms.uView.value.set(w, h);
     skyUniforms.uDpr.value = canvas.width / w;
@@ -556,24 +574,10 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
 
     renderer.render(scene, camera);
     drewVisible = p >= PORTAL_START - 0.01;
-    adapt(dt);
 
     const settling = Math.abs(p - damped) > 1e-3;
     if (enabled && inView && (drewVisible || settling)) raf = requestAnimationFrame(draw);
     else last = 0;
-  }
-
-  /** Dynamische Auflösung: bleibt die Bildrate unter ~45 fps, wird der Puffer kleiner. */
-  function adapt(dt: number) {
-    if (quality <= MIN_DPR) return;
-    samples.push(dt);
-    if (samples.length < 60) return;
-    const median = samples.sort((a, b) => a - b)[30];
-    samples = [];
-    if (median > 1 / 45) {
-      quality = Math.max(MIN_DPR, quality * 0.75);
-      measure();
-    }
   }
 
   function wake() {
@@ -605,18 +609,41 @@ export function createHeroScene(options: HeroSceneOptions): HeroScene | null {
   };
   canvas.addEventListener("webglcontextlost", onLost);
 
-  measure();
-  renderer
-    .compileAsync(scene, camera)
-    .then(() => {
+  /**
+   * Kompilieren und der erste Einsatz jedes Programms (Link-Prüfung, Uniforms,
+   * Buffer-Upload) laufen je in einem eigenen kurzen Task, nie als ein langer.
+   */
+  async function warmUp() {
+    await idle();
+    if (disposed) return;
+    if (!measured) measure();
+    await renderer.compileAsync(scene, camera);
+    if (!renderer.extensions.has("KHR_parallel_shader_compile")) {
+      // Ohne die Erweiterung blockiert die erste Abfrage am Programm, bis es gelinkt ist.
+      // Der GPU-Prozess linkt im Hintergrund, solange der Main Thread nicht fragt.
+      renderer.getContext().flush();
+      await new Promise((resolve) => setTimeout(resolve, LINK_GRACE_MS));
+    }
+    const parts: Object3D[][] = [[sky], [motes], ribbons.map((r) => r.mesh)];
+    for (const part of parts) {
+      await idle();
       if (disposed) return;
-      ready = true;
-      const { p } = read();
-      damped = p;
-      draw(performance.now());
-      options.onReady();
-    })
-    .catch(onLost);
+      for (const child of scene.children) child.visible = part.includes(child);
+      renderer.render(scene, camera);
+    }
+    for (const child of scene.children) child.visible = true;
+    const programs = (renderer.info.programs ?? []) as { diagnostics?: { runnable: boolean } }[];
+    if (programs.some((program) => program.diagnostics?.runnable === false)) throw new Error("shader");
+    await idle();
+    if (disposed) return;
+    ready = true;
+    damped = read().p;
+    draw(performance.now());
+    options.onReady();
+  }
+
+  // Die erste Messung liefert der ResizeObserver, ohne ein Layout zu erzwingen.
+  warmUp().catch(onLost);
 
   return {
     wake,

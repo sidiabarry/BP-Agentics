@@ -40,6 +40,8 @@ const FILM_END = 0.6;
 const OVERDRIVE = 0.42;
 /** Ab hier wird die Szene geladen – weit vor dem Portal, damit sie bereitsteht. */
 const SCENE_PRELOAD = 0.3;
+/** Ab hier ist das Display so weit offen, dass die Szene die ganze Bühne deckt. */
+const SCENE_COVERS = 0.72;
 
 function frameSrc(kind: Kind, index: number) {
   return `${SETS[kind].dir}/${String(index + 1).padStart(4, "0")}.webp`;
@@ -93,8 +95,12 @@ export function HeroPortal() {
       s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
       pump(kind);
 
+      // Liegt die Szene deckend darüber, müssen Film und Portal weder zeichnen noch compositen.
+      const covered = p >= SCENE_COVERS && sceneRef.current?.dataset.state === "ready";
+      if (pin.hasAttribute("data-covered") !== covered) pin.toggleAttribute("data-covered", covered);
+
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
-      if (p > 0.94) return;
+      if (covered || p > 0.94) return;
       paint(canvas, pin, smooth(range(p, FILM_END, 0.92)));
     },
   });
@@ -122,9 +128,12 @@ export function HeroPortal() {
       state.controller?.dispose();
       state.controller = null;
       layer.dataset.state = "fallback";
+      pin.removeAttribute("data-covered");
     };
     try {
-      const { createHeroScene } = await import("./hero-scene");
+      const { createHeroScene, idle } = await import("./hero-scene");
+      // Laden des Chunks und Anlegen des WebGL-Kontexts: zwei getrennte Tasks.
+      await idle();
       if (!state.alive) return;
       state.controller = createHeroScene({
         canvas,
