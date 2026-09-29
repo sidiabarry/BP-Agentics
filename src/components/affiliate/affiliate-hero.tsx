@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Link from "next/link";
+import { AffiliateAction } from "@/components/affiliate/affiliate-action";
 import { RevealIn } from "@/components/reveal-in";
-import { affiliateHero, affiliatePath, affiliateSteps } from "@/lib/affiliate";
+import { Button } from "@/components/ui/button";
+import { affiliateHero, affiliateNext, affiliatePath, affiliateSteps } from "@/lib/affiliate";
 
 const crumbs = [
   { name: "Startseite", path: "/" },
@@ -11,39 +13,29 @@ const crumbs = [
   { name: "Affiliate-Programme", path: affiliatePath },
 ] as const;
 
+const primaryClass =
+  "h-12 min-h-12 rounded-full bg-[#1576C4] px-6 text-base font-semibold text-white hover:bg-[#0b5ea8]";
+
+const secondaryClass =
+  "h-12 min-h-12 rounded-full border-[#14161c]/15 bg-white px-6 text-base font-semibold text-[#14161c] hover:bg-[#e7eef6] hover:text-[#14161c]";
+
+function scrollToStep(event: MouseEvent<HTMLAnchorElement>, index: number) {
+  const target = document.getElementById(`affiliate-step-${index}`);
+  if (!target) return;
+  event.preventDefault();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+}
+
 export function AffiliateHero() {
-  const ref = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [armed, setArmed] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.setAttribute("data-in", "");
-      setRevealed(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        el.setAttribute("data-in", "");
-        observer.disconnect();
-      },
-      { threshold: 0.18 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     const el = titleRef.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setRevealed(true);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -62,7 +54,7 @@ export function AffiliateHero() {
   const words = affiliateHero.title.trim().split(/\s+/);
 
   return (
-    <header ref={ref} className="affiliate-hero">
+    <header className="affiliate-hero">
       <div className="affiliate-hero__inner">
         <nav aria-label="Brotkrumen" className="affiliate-hero__crumbs">
           <ol>
@@ -79,7 +71,7 @@ export function AffiliateHero() {
           </ol>
         </nav>
 
-        <RevealIn as="p" variant="kicker" className="affiliate-hero__kicker">
+        <RevealIn as="p" variant="rise" className="affiliate-hero__kicker">
           {affiliateHero.kicker}
         </RevealIn>
         <h1
@@ -99,15 +91,27 @@ export function AffiliateHero() {
           {affiliateHero.lead}
         </RevealIn>
 
-        <p className="affiliate-hero__rail-label" aria-hidden="true">
-          Ablauf
-        </p>
+        <div className="affiliate-hero__actions">
+          <Button asChild className={primaryClass}>
+            <AffiliateAction href={affiliateNext.primary.href}>
+              {affiliateNext.primary.label}
+            </AffiliateAction>
+          </Button>
+          <Button asChild variant="outline" className={secondaryClass}>
+            <AffiliateAction href={affiliateNext.secondary.href}>
+              {affiliateNext.secondary.label}
+            </AffiliateAction>
+          </Button>
+        </div>
+
         <ol className="affiliate-hero__rail" aria-label="Ablauf im Überblick">
           <li className="affiliate-hero__line" aria-hidden="true" />
           {affiliateSteps.map((step, index) => (
             <li key={step.title} className="affiliate-hero__node">
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {step.title}
+              <a href={`#affiliate-step-${index}`} onClick={(event) => scrollToStep(event, index)}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {step.title}
+              </a>
             </li>
           ))}
         </ol>
