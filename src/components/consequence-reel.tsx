@@ -63,6 +63,10 @@ export function ConsequenceReel({
     setIncomingFor(activeIndex);
     if (activeIndex !== heldIndex) setIncomingOn(false);
   }
+  if (reduced && (heldIndex !== activeIndex || incomingOn)) {
+    setHeldIndex(activeIndex);
+    setIncomingOn(false);
+  }
 
   const slide = officeSlides[activeIndex] ?? officeSlides[0];
   const held = officeSlides[heldIndex] ?? slide;
@@ -148,12 +152,6 @@ export function ConsequenceReel({
     }, FADE_MS);
     return () => window.clearTimeout(id);
   }, [heldIndex, activeIndex, reduced, rewindOthers]);
-
-  useEffect(() => {
-    if (!reduced) return;
-    setHeldIndex(activeIndex);
-    setIncomingOn(false);
-  }, [activeIndex, reduced]);
 
   useEffect(() => {
     if (!frameIsVideo) return;
