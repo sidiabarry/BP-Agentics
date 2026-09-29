@@ -93,8 +93,13 @@
   isolation: isolate;
 }
 
-.ws__stage::before,
-.ws__stage::after {
+.ws__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.ws__scene::before,
+.ws__scene::after {
   content: "";
   position: absolute;
   left: 0;
@@ -104,12 +109,12 @@
   pointer-events: none;
 }
 
-.ws__stage::before {
+.ws__scene::before {
   top: 0;
   background: linear-gradient(var(--ws-night), transparent);
 }
 
-.ws__stage::after {
+.ws__scene::after {
   bottom: 0;
   background: linear-gradient(transparent, var(--ws-night));
 }
@@ -657,10 +662,14 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 
 @media (max-width: 799px) {
   .ws {
+    --space-block: clamp(2.25rem, 5vw, 4rem);
+    --space-stack: 1rem;
+    --r: 1.6rem;
     --ws-header: calc(4.5rem + env(safe-area-inset-top, 0px));
-    --ws-pad-top: 0.85rem;
+    /* Sticky-Header plus Blockabstand, damit die Überschrift beim Eintritt frei bleibt. */
+    --ws-pad-top: calc(var(--ws-header) + var(--space-block));
     --ws-pad-bottom: 7.5rem;
-    --ws-gap: 1.25rem;
+    --ws-gap: var(--space-stack);
     --ws-head-block: 9.25rem;
   }
 
@@ -669,14 +678,23 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__stage {
-    /* Kopf + Bühne im ersten Viewport: Header und Copy in --ws-chrome. */
-    height: min(52svh, calc(100svh - var(--ws-chrome)));
-    min-height: 300px;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
   }
 
-  .ws__stage::before,
-  .ws__stage::after {
-    height: 3rem;
+  .ws__scene {
+    position: relative;
+    inset: auto;
+    height: clamp(320px, 54svh, 520px);
+    overflow: hidden;
+    background: var(--ws-night);
+  }
+
+  .ws__scene::before,
+  .ws__scene::after {
+    height: 2.5rem;
   }
 
   .ws__label {
@@ -705,47 +723,86 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     white-space: nowrap;
   }
 
+  .ws__labels,
+  .ws__leaders,
+  .ws__dots {
+    display: none;
+  }
+
   .ws__sheet {
+    position: relative;
     top: auto;
-    left: 0.6rem;
-    right: 0.6rem;
-    bottom: 0.6rem;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    display: none;
     width: auto;
-    max-height: 58%;
-    padding: 0 1.1rem 1.1rem;
-    border-radius: 20px;
-    transform: translateY(24px);
+    max-height: none;
+    overflow: visible;
+    margin: 0 var(--ws-gutter);
+    padding: 0 1.1rem 1.25rem;
+    border-radius: var(--r);
+    transform: none;
+    scroll-margin-top: calc(var(--ws-header) + var(--space-stack));
+  }
+
+  .ws__sheet[data-open="true"] {
+    display: block;
+    margin-top: var(--space-stack);
   }
 
   .ws__sheet-bar {
-    margin: 0 -1.1rem 0.4rem;
-    padding: 0.6rem 0.7rem 0.4rem;
+    position: static;
+    margin: 0 -1.1rem 0.5rem;
+    padding: 1rem 0.85rem 0.4rem;
   }
 
   .ws__sheet h3 {
-    margin: 0.2rem 0 0.5rem;
-    font-size: 1.3rem;
+    margin: 0.35rem 0 0.7rem;
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
   }
 
   .ws__text {
-    margin-bottom: 0.7rem;
-    font-size: 1rem;
+    margin-bottom: 0.9rem;
+    font-size: 1.08rem;
   }
 
   .ws__price {
-    margin-bottom: 0.8rem;
-    font-size: 0.93rem;
+    margin-bottom: 1rem;
+    font-size: 0.98rem;
+  }
+
+  .ws__cta {
+    border-color: #1576c4;
+    background: #1576c4;
+  }
+
+  .ws__cta:hover {
+    background: #0b5ea8;
   }
 
   .ws__cta,
-  .ws__next {
-    min-height: 46px;
-    font-size: 0.98rem;
+  .ws__next,
+  .ws__more summary {
+    min-height: 48px;
+    font-size: 1rem;
   }
 
   .ws__list {
     grid-template-columns: 1fr;
-    gap: 0.6rem;
+    gap: var(--space-stack);
+    margin-top: var(--space-stack);
+  }
+
+  .ws__list-link {
+    min-height: 44px;
+    border-radius: var(--r);
+  }
+
+  .ws__list-link[data-active="true"] {
+    border-color: #9fd0f8;
+    background: #ffffff14;
+    box-shadow: inset 3px 0 0 #9fd0f8;
   }
 
 }
@@ -753,14 +810,6 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 @media (min-width: 800px) and (max-width: 1100px) {
   .ws__list {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Unter 768px überdecken sich die schwebenden Stationsetiketten. Die Liste darunter nennt die Stationen. */
-@media (max-width: 767px) {
-  .ws__labels,
-  .ws__leaders {
-    display: none;
   }
 }
 

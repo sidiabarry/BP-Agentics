@@ -16,9 +16,10 @@ import "./werkstatt.css";
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
  * Bedienung: Station antippen → Sheet mit einer Aussage, Preis und einem Button.
- * Zurück über „Übersicht", Tippen ins Leere oder Escape. Wischen wechselt die
- * Station. Unter der Bühne stehen die drei Leistungen als normale Links — ohne
- * 3D, ohne JavaScript, für alle, die nicht erkunden wollen.
+ * Auf schmalen Schirmen liegt das Sheet unter der Bühne, nicht darüber, und die
+ * Liste wählt die Station. Zurück über „Übersicht", Tippen ins Leere oder Escape.
+ * Wischen wechselt die Station. Die drei Leistungs-Links bleiben im HTML, ohne
+ * JavaScript führen sie direkt auf die Seiten.
  */
 
 const MODEL_URL = "/models/studio-room.v6.glb";
@@ -82,12 +83,21 @@ export function WerkstattSection() {
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
   const [needsConsent, setNeedsConsent] = useState(false);
+  const [narrow, setNarrow] = useState(false);
 
   const open = view !== "overview";
   const detail = stations[shown];
   const next = nextStation(shown);
 
   useSoftScrollHold(sectionRef, { enabled: !open });
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 799px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -225,13 +235,10 @@ export function WerkstattSection() {
     const sheet = sheetRef.current;
     if (!stage || !sheet) return;
     const update = () => {
-      const narrow = stage.clientWidth < 800;
+      const phone = stage.clientWidth < 800;
       const framing: Framing = { right: 0, bottom: 0 };
-      if (open) {
-        if (narrow) framing.bottom = sheet.offsetHeight + 16;
-      } else if (narrow) {
-        framing.bottom = 56;
-      }
+      // Die Karte liegt auf schmalen Schirmen unter der Szene und verdeckt sie nicht.
+      if (phone && !open) framing.bottom = 36;
       controllerRef.current?.setFraming(framing);
     };
     update();
@@ -246,8 +253,15 @@ export function WerkstattSection() {
     const section = sectionRef.current;
     if (!section || !section.contains(document.activeElement)) return;
     if (open) headingRef.current?.focus({ preventScroll: true });
+    else if (narrow) section.querySelector<HTMLElement>(`[data-station="${shown}"]`)?.focus({ preventScroll: true });
     else labelRefs.current[shown]?.focus({ preventScroll: true });
-  }, [open, shown]);
+  }, [open, shown, narrow]);
+
+  useEffect(() => {
+    if (!open || !narrow) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    sheetRef.current?.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+  }, [open, shown, narrow]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
   // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
@@ -287,6 +301,7 @@ export function WerkstattSection() {
       </div>
 
       <div className="ws__stage" ref={stageRef}>
+        <div className="ws__scene">
         <picture className="ws__poster">
           <source media="(max-width: 799px)" type="image/webp" srcSet={`${POSTER}-mobile.webp`} />
           <source media="(max-width: 799px)" srcSet={`${POSTER}-mobile.jpg`} />
@@ -357,6 +372,7 @@ export function WerkstattSection() {
           <span className="ws__hint-touch">Station antippen</span>
           <span className="ws__hint-mouse">Station anklicken</span>
         </p>
+        </div>
 
         <aside
           ref={sheetRef}
@@ -436,7 +452,29 @@ export function WerkstattSection() {
       <ul className="ws__list">
         {stationOrder.map((id) => (
           <li key={id}>
-            <Link href={stations[id].href} className="ws__list-link">
+            <Link
+              href={stations[id].href}
+              className="ws__list-link"
+              data-station={id}
+              data-active={narrow && open && shown === id ? "true" : undefined}
+              aria-expanded={narrow ? open && shown === id : undefined}
+              onClick={(event) => {
+                if (
+                  event.defaultPrevented ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey ||
+                  event.button !== 0
+                ) {
+                  return;
+                }
+                if (!window.matchMedia("(max-width: 799px)").matches) return;
+                if (!controllerRef.current) return;
+                event.preventDefault();
+                goTo(open && shown === id ? "overview" : id);
+              }}
+            >
               <span className="ws__list-num">{stations[id].num}</span>
               <span className="ws__list-body">
                 <span className="ws__list-name">{stations[id].label}</span>
