@@ -755,9 +755,14 @@ export async function createHeroScene(options: HeroSceneOptions): Promise<HeroSc
     await pause(options.urgent);
     if (disposed) return;
     if (!measured) measure();
-    await renderer.compileAsync(scene, camera);
     // Ohne die Erweiterung blockiert die erste Abfrage am Programm, bis es gelinkt ist.
-    if (!renderer.extensions.has("KHR_parallel_shader_compile")) await drained(renderer.getContext() as WebGL2RenderingContext);
+    // compileAsync fragt sie per extensions.get() ab und warnt dann in der Konsole.
+    if (renderer.extensions.has("KHR_parallel_shader_compile")) {
+      await renderer.compileAsync(scene, camera);
+    } else {
+      renderer.compile(scene, camera);
+      await drained(renderer.getContext() as WebGL2RenderingContext);
+    }
     const parts: Object3D[][] = [[sky], [motes], ribbons.map((r) => r.mesh)];
     for (const part of parts) {
       await pause(options.urgent);
