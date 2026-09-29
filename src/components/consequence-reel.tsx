@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import { officeSlides } from "@/lib/content";
 
 const FADE_MS = 580;
+// The videos fade with Tailwind's ease-in-out, cubic-bezier(0.4, 0, 0.2, 1), which reaches
+// 50% opacity at 35% of the duration: from then on the incoming clip is the dominant frame.
+const LEAD_MS = FADE_MS * 0.35;
 
 function subscribeMotion(cb: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -55,12 +58,14 @@ export function ConsequenceReel({
   const [heldIndex, setHeldIndex] = useState(activeIndex);
   const [incomingOn, setIncomingOn] = useState(false);
   const [incomingFor, setIncomingFor] = useState(activeIndex);
+  const [incomingLeads, setIncomingLeads] = useState(false);
   const [stamp, setStamp] = useState({ slide: activeIndex, chapter: 0 });
   const reduced = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
 
   // Reset while rendering, not in an effect: a stale `incomingOn` would paint one frame of the new clip's clock.
   if (incomingFor !== activeIndex) {
     setIncomingFor(activeIndex);
+    setIncomingLeads(false);
     if (activeIndex !== heldIndex) setIncomingOn(false);
   }
   if (reduced && (heldIndex !== activeIndex || incomingOn)) {
@@ -70,7 +75,8 @@ export function ConsequenceReel({
 
   const slide = officeSlides[activeIndex] ?? officeSlides[0];
   const held = officeSlides[heldIndex] ?? slide;
-  const frameIndex = reduced || incomingOn ? activeIndex : heldIndex;
+  const frameIndex =
+    reduced || (incomingOn && (incomingLeads || activeIndex === heldIndex)) ? activeIndex : heldIndex;
   const frameIsVideo = !reduced && (incomingOn || activeIndex !== heldIndex);
   const framed = officeSlides[frameIndex] ?? slide;
   const chapter = frameIsVideo && stamp.slide === frameIndex ? stamp.chapter : 0;
@@ -139,10 +145,16 @@ export function ConsequenceReel({
 
   useEffect(() => {
     if (reduced || !incomingOn || heldIndex === activeIndex) return;
+    const lead = window.setTimeout(() => {
+      setIncomingLeads(true);
+    }, LEAD_MS);
     const id = window.setTimeout(() => {
       setHeldIndex(activeIndex);
     }, FADE_MS);
-    return () => window.clearTimeout(id);
+    return () => {
+      window.clearTimeout(lead);
+      window.clearTimeout(id);
+    };
   }, [incomingOn, heldIndex, activeIndex, reduced]);
 
   useEffect(() => {
