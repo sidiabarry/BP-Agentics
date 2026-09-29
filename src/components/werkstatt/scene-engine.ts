@@ -711,8 +711,9 @@ export function createWerkstattScene(
     return best;
   }
 
-  function swallowFollowingClick() {
-    const swallow = (event: Event) => {
+  function swallowFollowingClick(x: number, y: number) {
+    const swallow = (event: MouseEvent) => {
+      if (Math.hypot(event.clientX - x, event.clientY - y) > 8) return;
       event.preventDefault();
       event.stopPropagation();
       done();
@@ -744,7 +745,7 @@ export function createWerkstattScene(
     if (!hit && current === "overview") return;
     // Der folgende click darf nicht auf einen Knopf fallen, der erst durch
     // das Öffnen der Karte unter den Finger rutscht.
-    if (window.innerWidth < 800) swallowFollowingClick();
+    if (window.innerWidth < 800) swallowFollowingClick(e.clientX, e.clientY);
     if (hit) goTo(hit);
     else goTo("overview");
   };

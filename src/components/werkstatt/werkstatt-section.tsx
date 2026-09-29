@@ -206,7 +206,12 @@ export function WerkstattSection() {
         const controller = controllerRef.current;
         if (!controller) return;
         controller.setVisible(entry.isIntersecting);
-        if (!entry.isIntersecting) controller.goTo("overview", { instant: true });
+        // Unter 800px bleibt die geöffnete Karte im Fluss. Sie zu schließen
+        // lässt ihre Höhe weg und die Seite springt. Ab 800px liegt sie als
+        // Overlay und darf mit der Bühne zur Übersicht zurück.
+        if (!entry.isIntersecting && window.innerWidth >= 800) {
+          controller.goTo("overview", { instant: true });
+        }
       },
       { threshold: 0 },
     );
