@@ -1,12 +1,23 @@
-/* Affiliate-Programm: eigene Seite, natürlicher Lesefluss. */
+/* Affiliate-Programm: one beige canvas, inset dark chapter, docked close. */
 
 .affiliate-page {
-  --section-space: clamp(3.5rem, 7vw, 6rem);
-  --block-gap: clamp(3.5rem, 7vw, 4rem);
+  --canvas: #f3efe6;
+  --ink: #14161c;
+  --tint: #e7eef6;
+  --blue: #1576c4;
+  --blue-deep: #0b5ea8;
+  --blue-line: #198be8;
+  --blue-soft: #9fd0f8;
+  --space-section: clamp(3.5rem, 7.5vw, 6rem);
+  --space-block: clamp(2.25rem, 5vw, 4rem);
+  --space-stack: 1rem;
+  --r: 1.6rem;
+  --panel-inset: clamp(0.5rem, 2.5vw, 2.5rem);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   flex: 1 0 auto;
   overflow: visible;
-  background: #f3efe6;
-  color: #14161c;
+  background: var(--canvas);
+  color: var(--ink);
 }
 
 .affiliate-page__column {
@@ -17,13 +28,25 @@
 }
 
 .affiliate-page__column > section {
-  margin-top: 0;
+  margin-top: var(--space-block);
+}
+
+.affiliate-top {
+  background: linear-gradient(
+    180deg,
+    var(--canvas) 0%,
+    #eef3f8 35%,
+    var(--tint) 60%,
+    var(--canvas) 100%
+  );
+  padding-bottom: var(--space-block);
 }
 
 .affiliate-hero {
   overflow: visible;
-  padding-block: var(--section-space);
-  background: linear-gradient(180deg, #f3efe6 0%, #eef3f8 72%, #e7eef6 100%);
+  padding-top: var(--space-section);
+  padding-bottom: 0;
+  background: none;
 }
 
 .affiliate-hero__inner {
@@ -54,10 +77,12 @@
   align-items: center;
   min-height: 44px;
   text-underline-offset: 4px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
 }
 
 .affiliate-hero__crumbs a:hover {
-  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 .affiliate-hero__kicker {
@@ -65,7 +90,7 @@
   font-size: 0.82rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #0b5ea8;
+  color: var(--blue-deep);
 }
 
 .affiliate-hero__title {
@@ -114,7 +139,7 @@
   left: 6%;
   right: 6%;
   height: 1px;
-  background: #198be8;
+  background: var(--blue-line);
   list-style: none;
 }
 
@@ -132,7 +157,7 @@
 }
 
 .affiliate-hero__node a:hover {
-  color: #0b5ea8;
+  color: var(--blue-deep);
 }
 
 .affiliate-hero__node span {
@@ -140,13 +165,14 @@
   letter-spacing: 0.14em;
   font-weight: 600;
   text-transform: uppercase;
-  color: #198be8;
+  color: var(--blue-line);
 }
 
 .affiliate-note {
   width: min(68rem, calc(100% - 2.5rem));
   margin: 0 auto;
-  padding-bottom: var(--block-gap);
+  padding-top: var(--space-block);
+  padding-bottom: 0;
   font-size: 1.08rem;
   line-height: 1.65;
   color: #3a3d45;
@@ -161,19 +187,45 @@
   align-items: center;
   min-height: 44px;
   font-weight: 600;
-  color: #0b5ea8;
+  color: var(--blue-deep);
   text-underline-offset: 4px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
 }
 
 .affiliate-note a:hover {
-  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.affiliate-chapter {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  margin-inline: var(--panel-inset);
+  padding-block: var(--space-section);
+  border-radius: var(--r);
+  color: var(--canvas);
+  background:
+    radial-gradient(60% 45% at 25% 0%, #198be833, transparent 70%),
+    var(--ink);
+}
+
+.affiliate-chapter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .affiliate-rollup {
   overflow: visible;
-  padding-block: var(--section-space);
-  background: #0f141b;
-  color: #f3efe6;
+  padding: 0;
+  background: transparent;
+  color: var(--canvas);
 }
 
 .affiliate-rollup__inner {
@@ -186,7 +238,7 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #9fd0f8;
+  color: var(--blue-soft);
 }
 
 .affiliate-rollup__steps {
@@ -214,7 +266,7 @@
   bottom: -1.75rem;
   left: 1.375rem;
   width: 1px;
-  background: #198be8;
+  background: var(--blue-line);
 }
 
 .affiliate-rollup__step:last-child::before {
@@ -228,14 +280,14 @@
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid #198be8;
+  border: 1px solid var(--blue-line);
   border-radius: 999px;
-  background: #0f141b;
+  background: #14161c;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
-  color: #9fd0f8;
+  color: var(--blue-soft);
 }
 
 .affiliate-rollup__step h3 {
@@ -258,12 +310,19 @@
 
 .affiliate-case {
   width: min(68rem, calc(100% - 2.5rem));
-  margin: var(--block-gap) auto 0;
+  margin: var(--space-block) auto 0;
   padding: 1.6rem 1.4rem 1.5rem;
-  border-radius: 1.6rem;
-  background: #14161c;
-  color: #f3efe6;
+  border-radius: var(--r);
+  background: transparent;
+  color: var(--canvas);
   overflow: visible;
+}
+
+.affiliate-chapter .affiliate-case {
+  margin: var(--space-block) auto 0;
+  background: #ffffff08;
+  border: 1px solid #ffffff1a;
+  border-radius: calc(var(--r) - 0.6rem);
 }
 
 .affiliate-case__layout {
@@ -276,12 +335,12 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #9fd0f8;
+  color: var(--blue-soft);
 }
 
 .affiliate-case h2 {
   margin-top: 0.7rem;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.03em;
@@ -294,7 +353,7 @@
   margin-top: 0.95rem;
   padding: 0;
   background: none;
-  color: #9fd0f8;
+  color: var(--blue-soft);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -305,7 +364,7 @@
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 999px;
-  background: #198be8;
+  background: var(--blue-line);
 }
 
 .affiliate-case__body {
@@ -319,7 +378,7 @@
 .affiliate-pay {
   width: min(68rem, calc(100% - 2.5rem));
   margin: 0 auto;
-  padding-block: var(--section-space);
+  padding-block: var(--space-section) 0;
   overflow: visible;
 }
 
@@ -328,7 +387,7 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #0b5ea8;
+  color: var(--blue-deep);
 }
 
 .affiliate-pay h2 {
@@ -367,7 +426,7 @@
   font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #0b5ea8;
+  color: var(--blue-deep);
 }
 
 .affiliate-pay__facts dd {
@@ -377,7 +436,7 @@
 }
 
 .affiliate-related {
-  margin-top: var(--block-gap);
+  margin-top: var(--space-block);
   padding-bottom: 0.25rem;
 }
 
@@ -386,7 +445,7 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #0b5ea8;
+  color: var(--blue-deep);
 }
 
 .affiliate-related ul {
@@ -404,21 +463,39 @@
   border: 1px solid #14161c1f;
   border-radius: 999px;
   background: #fff;
-  color: #14161c;
+  color: var(--ink);
+  transition:
+    border-color 160ms var(--ease),
+    color 160ms var(--ease),
+    transform 160ms var(--ease);
 }
 
 .affiliate-related a:hover {
-  border-color: #0b5ea8;
-  color: #0b5ea8;
+  border-color: var(--blue-deep);
+  color: var(--blue-deep);
+  transform: translateY(-1px);
+}
+
+.affiliate-dock {
+  --dock: clamp(4rem, 8vw, 6rem);
+  margin-top: var(--space-block);
+  background: linear-gradient(
+    to bottom,
+    transparent calc(100% - var(--dock)),
+    var(--ink) 0
+  );
 }
 
 .affiliate-cta {
   width: min(68rem, calc(100% - 2.5rem));
-  margin: var(--block-gap) auto 6rem;
+  margin: 0 auto;
   padding: 1.8rem 1.5rem 1.7rem;
-  border-radius: 2rem;
-  background: #14161c;
-  color: #f3efe6;
+  border-radius: var(--r);
+  box-shadow: inset 0 0 0 1px #ffffff14;
+  background:
+    radial-gradient(70% 60% at 85% 0%, #198be829, transparent 70%),
+    var(--ink);
+  color: var(--canvas);
   overflow: visible;
 }
 
@@ -427,13 +504,13 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #9fd0f8;
+  color: var(--blue-soft);
 }
 
 .affiliate-cta h2 {
   max-width: 18ch;
   margin-top: 0.7rem;
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.03em;
@@ -461,7 +538,7 @@
   align-items: center;
   min-height: 2.75rem;
   padding: 0.4rem 0.8rem;
-  border-left: 2px solid #198be8;
+  border-left: 2px solid var(--blue-line);
   background: #ffffff0d;
   font-size: 0.95rem;
 }
@@ -477,13 +554,29 @@
   min-height: 48px;
 }
 
+.affiliate-page :is(a, button) {
+  transition-property: background-color, color, border-color, transform, translate, text-decoration-thickness, outline-color;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease);
+}
+
+.affiliate-page :is(a, button):focus-visible {
+  outline: 2px solid var(--blue-deep);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+:is(.affiliate-chapter, .affiliate-cta) :is(a, button):focus-visible {
+  outline-color: var(--blue-soft);
+}
+
 .affiliate-reveal.is-armed:not(.is-in) {
   opacity: 0;
   transform: translateY(12px);
 }
 
 .affiliate-reveal.is-armed.is-in {
-  animation: affiliate-rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: affiliate-rise 420ms var(--ease) both;
   animation-delay: var(--reveal-delay, 0ms);
 }
 
@@ -495,6 +588,26 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes affiliate-surface-in {
+  from {
+    transform: translateY(2.5rem) scale(0.97);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .affiliate-chapter,
+    .affiliate-cta {
+      animation: affiliate-surface-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
   }
 }
 
@@ -587,7 +700,6 @@
 @media (max-width: 700px) {
   .affiliate-hero {
     padding-top: 2.25rem;
-    padding-bottom: 1.5rem;
   }
 
   .affiliate-hero__kicker {
@@ -615,16 +727,10 @@
 
   .affiliate-hero__inner,
   .affiliate-note,
-  .affiliate-rollup__inner,
-  .affiliate-case,
   .affiliate-pay,
   .affiliate-page__column,
   .affiliate-cta {
     width: min(68rem, calc(100% - 2rem));
-  }
-
-  .affiliate-note {
-    padding-bottom: 1.5rem;
   }
 
   .affiliate-rollup__steps {
@@ -648,15 +754,6 @@
     left: 1.125rem;
   }
 
-  .affiliate-case {
-    margin-top: 1.75rem;
-  }
-
-  .affiliate-pay {
-    padding-top: 2.5rem;
-    padding-bottom: 2rem;
-  }
-
   .affiliate-pay__facts {
     margin-top: 1.25rem;
   }
@@ -664,14 +761,6 @@
   .affiliate-pay__facts > div {
     grid-template-columns: 1fr;
     gap: 0.3rem;
-  }
-
-  .affiliate-related {
-    margin-top: 2rem;
-  }
-
-  .affiliate-cta {
-    margin-top: 2rem;
   }
 
   .affiliate-cta__actions {
@@ -682,10 +771,6 @@
   .affiliate-cta__actions a {
     width: 100%;
     justify-content: center;
-  }
-
-  .affiliate-page {
-    padding-bottom: 5.5rem;
   }
 }
 
@@ -702,5 +787,17 @@
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  .affiliate-chapter,
+  .affiliate-cta {
+    animation: none;
+    transform: none;
+  }
+
+  .affiliate-page :is(a, button):hover,
+  .affiliate-page :is(a, button):active {
+    transform: none !important;
+    translate: none !important;
   }
 }

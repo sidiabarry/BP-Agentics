@@ -58,20 +58,24 @@ export default function AffiliatePage() {
         }}
       />
 
-      <AffiliateHero />
-      <section className="affiliate-note">
-        <p>
-          Dieses Angebot richtet sich an Merchants, die ein Partnerprogramm auf ADCELL
-          aufsetzen. Es ist getrennt von den Handwerksleistungen: eine Website, der
-          Nachrichten-Assistent und Büroabläufe beantworten andere Aufgaben und bleiben
-          einzeln beauftragbar.
-        </p>
-        <p>
-          <Link href="/leistungen">Leistungen im Überblick</Link>
-        </p>
-      </section>
-      <AffiliateRollup />
-      <AffiliateCase />
+      <div className="affiliate-top">
+        <AffiliateHero />
+        <section className="affiliate-note">
+          <p>
+            Dieses Angebot richtet sich an Merchants, die ein Partnerprogramm auf ADCELL
+            aufsetzen. Es ist getrennt von den Handwerksleistungen: eine Website, der
+            Nachrichten-Assistent und Büroabläufe beantworten andere Aufgaben und bleiben
+            einzeln beauftragbar.
+          </p>
+          <p>
+            <Link href="/leistungen">Leistungen im Überblick</Link>
+          </p>
+        </section>
+      </div>
+      <div className="affiliate-chapter">
+        <AffiliateRollup />
+        <AffiliateCase />
+      </div>
       <AffiliatePay />
 
       <div className="affiliate-page__column">
@@ -88,7 +92,9 @@ export default function AffiliatePage() {
         </nav>
       </div>
 
-      <AffiliateCta />
+      <div className="affiliate-dock">
+        <AffiliateCta />
+      </div>
     </main>
   );
 }

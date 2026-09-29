@@ -9,7 +9,7 @@ const primaryClass =
   "h-12 min-h-12 rounded-full bg-[#1576C4] px-6 text-base font-semibold text-white hover:bg-[#0b5ea8]";
 
 const secondaryClass =
-  "h-12 min-h-12 rounded-full border-white/30 bg-[#1c2633] px-6 text-base font-semibold text-[#F3EFE6] hover:bg-[#243140] hover:text-white";
+  "h-12 min-h-12 rounded-full border-white/30 bg-transparent px-6 text-base font-semibold text-[#F3EFE6] hover:bg-white/8 hover:text-white";
 
 export function AffiliateCta() {
   return (
