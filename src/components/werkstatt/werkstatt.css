@@ -678,8 +678,8 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     --space-stack: 1rem;
     --r: 1.6rem;
     --ws-header: calc(4.5rem + env(safe-area-inset-top, 0px));
-    /* Sticky-Header plus Blockabstand, damit die Überschrift beim Eintritt frei bleibt. */
-    --ws-pad-top: calc(var(--ws-header) + var(--space-block));
+    /* Die Überschrift steht im Hero-Intro direkt darüber, die Szene folgt dem Intro-Text dicht. */
+    --ws-pad-top: 0.85rem;
     --ws-pad-bottom: 7.5rem;
     --ws-gap: var(--space-stack);
     --ws-head-block: 9.25rem;
