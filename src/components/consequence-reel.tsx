@@ -20,19 +20,21 @@ function motionSnapshot() {
 function OfficeStamp({ time, caption }: { time: string; caption: string }) {
   const [day, clock] = time.split(/\s+/, 2);
 
+  // The films already print a changing lower-third on the dark wall. This
+  // stamp is one line for the whole slide, so it stays in the empty upper
+  // left and never shares that strip. Sizes track the frame so the block
+  // ends above the burned-in lines at every width.
   return (
-    <div className="pointer-events-none absolute inset-0 z-10">
-      <div className="absolute bottom-[10%] left-4 max-w-[13.5rem] sm:bottom-[12%] sm:left-6 sm:max-w-[17rem] md:left-8 md:max-w-[20rem]">
-        <p className="font-heading text-[0.7rem] tracking-[0.32em] text-white/80 uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] sm:text-sm md:text-base">
-          {day}
-        </p>
-        <p className="font-heading mt-0.5 text-4xl leading-none font-semibold tracking-[-0.04em] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] sm:text-5xl md:text-6xl">
-          {clock}
-        </p>
-        <p className="mt-3 max-w-[16ch] text-base leading-snug text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] sm:mt-4 sm:max-w-[20ch] sm:text-lg md:text-xl">
-          {caption}
-        </p>
-      </div>
+    <div className="office-stamp pointer-events-none absolute top-[4%] left-[4%] z-10 w-[min(42%,19rem)] text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.72)]">
+      <p className="font-heading text-[clamp(0.62rem,2cqw,0.9rem)] tracking-[0.28em] text-white/85 uppercase">
+        {day}
+      </p>
+      <p className="font-heading mt-1 text-[clamp(1.6rem,6.2cqw,3.35rem)] leading-none font-semibold tracking-[-0.04em]">
+        {clock}
+      </p>
+      <p className="mt-2 max-w-[16ch] text-[clamp(0.88rem,2.45cqw,1.15rem)] leading-snug">
+        {caption}
+      </p>
     </div>
   );
 }
@@ -147,7 +149,7 @@ export function ConsequenceReel({
 
   return (
     <div ref={wrapRef}>
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#14161C]">
+      <div className="@container relative overflow-hidden rounded-[2rem] bg-[#14161C]">
         {reduced ? (
           <Image
             src={slide.poster}
