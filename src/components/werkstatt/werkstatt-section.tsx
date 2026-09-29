@@ -259,8 +259,7 @@ export function WerkstattSection() {
 
   useEffect(() => {
     if (!open || !narrow) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    sheetRef.current?.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+    sheetRef.current?.scrollIntoView({ block: "nearest", behavior: "auto" });
   }, [open, shown, narrow]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
