@@ -567,6 +567,10 @@
   color: var(--blue-soft);
 }
 
+.affiliate-case__kicker .sr-only {
+  text-transform: none;
+}
+
 .affiliate-case h2 {
   margin-top: 0.7rem;
   font-size: clamp(1.5rem, 3vw, 2.1rem);
