@@ -1,5 +1,10 @@
 export const leistungItems = [
   {
+    href: "/leistungen",
+    title: "Leistungen im Überblick",
+    sub: "Website, Annahme und Abläufe — die drei Bausteine.",
+  },
+  {
     href: "/leistungen/auftritt",
     title: "Websites",
     sub: "Leistungen, Referenzen und Einsatzgebiet verständlich zeigen.",
@@ -30,7 +35,7 @@ export const mainLinks = [
 
 /** Desktop-Navigation der Startseite (Abschnitte per Anker, Rest als Seiten). */
 export const homeExpandLinks = [
-  { href: "#referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
+  { href: "/referenzen", label: "Arbeiten und Demos", spy: "referenzen" },
   { href: "/preise", label: "Preise", spy: "preise" },
   { href: "/ueber-mich", label: "Über mich", spy: null },
   { href: "/kontakt", label: "Kontakt", spy: null },

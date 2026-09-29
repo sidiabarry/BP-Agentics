@@ -30,6 +30,8 @@ export function StagePage({
   next,
   extraJsonLd = [],
   reviewed,
+  jsonLdDescription,
+  aboutId,
 }: {
   crumbs: Crumb[];
   kicker?: string;
@@ -44,6 +46,8 @@ export function StagePage({
   next?: StageNext | null;
   extraJsonLd?: Record<string, unknown>[];
   reviewed?: string;
+  jsonLdDescription?: string;
+  aboutId?: string;
 }) {
   const trail = [{ name: "Startseite", path: "/" }, ...crumbs];
   const path = crumbs[crumbs.length - 1]?.path ?? "/";
@@ -58,7 +62,8 @@ export function StagePage({
             webPageNode({
               path,
               name: title,
-              description: lead,
+              description: jsonLdDescription ?? lead,
+              aboutId,
             }),
             breadcrumbList(trail),
             ...extraJsonLd,

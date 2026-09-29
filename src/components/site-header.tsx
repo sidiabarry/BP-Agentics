@@ -56,43 +56,58 @@ export function SiteHeader() {
           aria-label="Hauptnavigation"
         >
           <div
-            className="relative"
+            className="group relative"
             onMouseEnter={() => setDrop(true)}
             onMouseLeave={() => setDrop(false)}
           >
-            <button
-              type="button"
+            <div className="inline-flex items-center gap-0.5">
+              <Link
+                href="/leistungen"
+                className={cn(
+                  linkClass(
+                    pathname.startsWith("/leistungen") || (onHome && active === "leistungen"),
+                  ),
+                  "whitespace-nowrap",
+                )}
+              >
+                Leistungen
+              </Link>
+              <button
+                type="button"
+                className={cn(linkClass(false), "inline-flex items-center rounded-full p-1")}
+                aria-expanded={drop}
+                aria-haspopup="true"
+                aria-label="Leistungen öffnen"
+                onClick={() => setDrop((value) => !value)}
+              >
+                <ChevronDown className="size-3.5" />
+              </button>
+            </div>
+            <div
               className={cn(
-                linkClass(onHome && active === "leistungen"),
-                "inline-flex items-center gap-1 whitespace-nowrap",
+                "absolute top-full left-0 z-50 pt-2",
+                drop
+                  ? "visible opacity-100"
+                  : "invisible pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100",
               )}
-              aria-expanded={drop}
-              aria-haspopup="true"
-              onClick={() => setDrop((value) => !value)}
             >
-              Leistungen
-              <ChevronDown className="size-3.5" />
-            </button>
-            {drop ? (
-              <div className="absolute top-full left-0 z-50 pt-2">
-                <div className="w-max max-w-[min(32rem,calc(100vw-2.5rem))] rounded-2xl border border-black/8 bg-white p-1.5 shadow-xl">
-                  {leistungItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block rounded-xl px-3.5 py-2.5 hover:bg-[#E8F4FC]"
-                    >
-                      <span className="block text-[0.95rem] leading-5 font-medium whitespace-nowrap">
-                        {item.title}
-                      </span>
-                      <span className="mt-1 block text-[0.8125rem] leading-5 text-[#5C5F66] whitespace-nowrap">
-                        {item.sub}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
+              <div className="w-max max-w-[min(32rem,calc(100vw-2.5rem))] rounded-2xl border border-black/8 bg-white p-1.5 shadow-xl">
+                {leistungItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-xl px-3.5 py-2.5 hover:bg-[#E8F4FC]"
+                  >
+                    <span className="block text-[0.95rem] leading-5 font-medium whitespace-nowrap">
+                      {item.title}
+                    </span>
+                    <span className="mt-1 block text-[0.8125rem] leading-5 text-[#5C5F66] whitespace-nowrap">
+                      {item.sub}
+                    </span>
+                  </Link>
+                ))}
               </div>
-            ) : null}
+            </div>
           </div>
           {desktopLinks.map((item) => (
             <Link

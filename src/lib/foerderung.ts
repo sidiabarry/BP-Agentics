@@ -1,5 +1,5 @@
 export const foerderung = {
-  reviewed: "2026-09-08",
+  reviewed: "2026-09-29",
   title: "MID-Digitale Prozesse: Förderung für Prozessberatung",
   lead:
     "Das Programm unterstützt bestimmte externe Beratungsleistungen zur Digitalisierung interner Geschäfts- und Produktionsprozesse. Es ist keine pauschale Förderung unserer Website- oder Softwarepakete.",
@@ -26,6 +26,16 @@ export const foerderung = {
       heading: "Was ist vor einer Beauftragung zu beachten?",
       body:
         "Fördervoraussetzungen müssen vor der Beauftragung geklärt werden. Bereits ein rechtsverbindlicher Auftrag für eine projektbezogene Dienstleistung gilt laut Richtlinie als Maßnahmenbeginn. Ein späterer Start der Programmierung allein genügt deshalb nicht.",
+    },
+    {
+      heading: "Was BP Agentics dabei tun kann",
+      body:
+        "Im Gespräch können wir einordnen, ob Ihr Vorhaben eher eine Website, ein Nachrichten-Assistent, ein Büroablauf oder eine davon getrennte Beratung zu internen Prozessen ist. Diese Seite verweist auf die offiziellen Quellen der NRW.BANK und der Richtlinie. Eine Bewilligung sagen wir nicht zu.",
+    },
+    {
+      heading: "Was BP Agentics dabei nicht tun kann",
+      body:
+        "BP Agentics ist nicht die Bewilligungsstelle. Aus den Paketpreisen lässt sich kein pauschaler Zuschuss rechnen. Website- und Softwarepakete werden durch MID-Digitale Prozesse nicht pauschal gefördert. Ob ein Antrag passt, entscheiden die im Programm genannten Stellen anhand der Richtlinie.",
     },
     {
       heading: "Nächster Schritt",

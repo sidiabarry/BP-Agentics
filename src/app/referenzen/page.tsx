@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DemoPair } from "@/components/home-referenzen";
 import { StagePage } from "@/components/stage-page";
 import { pageMetadata } from "@/lib/seo";
@@ -16,7 +17,7 @@ export default function ReferenzenPage() {
     <StagePage
       kicker="Arbeiten und Demos"
       title="Was bisher entstanden ist."
-      lead="Ein Kundenprojekt zeigt einen echten Bestellweg. Eine Produktdemo zeigt, wie sich ein Handwerksbetrieb präsentieren kann. Beschreibungen erklären, was zu sehen ist."
+      lead="Ein Kundenprojekt zeigt einen echten Bestellweg. Eine Produktdemo zeigt, wie sich ein Handwerksbetrieb präsentieren kann. Beschreibungen erklären, was zu sehen ist. Beides ist einzeln ansehen, ohne dass die Demo als Auftrag gilt und ohne dass das Kundenprojekt eine Handwerker-Website ist."
       crumbs={[{ name: "Arbeiten und Demos", path: "/referenzen" }]}
       related={[
         { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
@@ -33,6 +34,38 @@ export default function ReferenzenPage() {
       }}
     >
       <DemoPair surface="white" />
+      <div className="mt-10 max-w-[44rem] space-y-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
+        <p>
+          Die beiden Einträge beantworten verschiedene Fragen. Feinkost Kreta ist ein
+          Kundenprojekt: eine Bestell-App, in der Stammkunden angemeldet bestellen und
+          der Betrieb die Bestellung sieht. Die Dachdecker-Seite ist eine Produktdemo
+          für Website Signature, mit Bildern, Leistungsbeschreibung und Anfrageweg, und
+          ausdrücklich kein Echtbetrieb.
+        </p>
+        <p>
+          Welche Leistung zu einem Betrieb passt, steht nicht in diesen Beispielen fest.
+          Website, Nachrichten-Assistent und Büroabläufe sind einzeln beauftragbar. Im
+          Gespräch von 90 Minuten vor Ort klären wir den passenden Anfang. Den Umfang
+          hält danach der Projektplan fest.
+        </p>
+        <ul className="flex list-none flex-col gap-2 p-0">
+          <li>
+            <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Projekt Feinkost Kreta
+            </Link>
+          </li>
+          <li>
+            <Link href="/referenzen/dachdecker-signature" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Website-Demo Dachdecker
+            </Link>
+          </li>
+          <li>
+            <Link href="/leistungen" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Leistungen im Überblick
+            </Link>
+          </li>
+        </ul>
+      </div>
     </StagePage>
   );
 }

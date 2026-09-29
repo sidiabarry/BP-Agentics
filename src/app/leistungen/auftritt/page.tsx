@@ -99,6 +99,24 @@ export default function AuftrittPage() {
         .
       </p>
 
+      <StageCard className="mt-10" kicker="Einordnung" title="Pakete hier, Überblick auf der Antwortseite.">
+        <p>
+          Diese Seite beschreibt die drei Website-Stufen, die optionale Betreuung und
+          dass die Website nach der Zahlung Ihnen gehört. Der Nachrichten-Assistent
+          und die Büroabläufe sind eigene Leistungen und einzeln beauftragbar. Sie
+          beantworten andere Fragen als der Auftritt: eingehende Textnachrichten
+          beziehungsweise wiederkehrende Büroarbeit.
+        </p>
+        <p className="mt-3">
+          <Link
+            href="/webdesign-fuer-handwerker"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Webdesign für Handwerker im Überblick
+          </Link>
+        </p>
+      </StageCard>
+
       <PageFaqs items={auftrittFaqs} />
     </StagePage>
   );

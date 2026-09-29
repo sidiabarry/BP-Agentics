@@ -62,6 +62,23 @@ export default function GewerkePage() {
           Anwendungsbeispiele, keine Referenzen. Welcher Weg passt, hängt von Ihrem
           Vorhaben und den vorhandenen Programmen ab.
         </p>
+        <p className="mt-4 max-w-[40rem] text-[1.08rem] leading-relaxed text-[#3A3D45]">
+          Wie BP Agentics Websites für Handwerksbetriebe aufbaut, steht auf der Seite{" "}
+          <Link
+            href="/webdesign-fuer-handwerker"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Webdesign für Handwerker
+          </Link>
+          . Anfragen per WhatsApp und E-Mail beschreibt der{" "}
+          <Link
+            href="/leistungen/annahme"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Nachrichten-Assistent
+          </Link>
+          .
+        </p>
         <div className="mt-8 overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/10">
           <Image
             src="/demos/dach-poster.jpg"

@@ -756,6 +756,14 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 }
 
+/* Unter 768px überdecken sich die schwebenden Stationsetiketten. Die Liste darunter nennt die Stationen. */
+@media (max-width: 767px) {
+  .ws__labels,
+  .ws__leaders {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ws *,
   .ws *::after {

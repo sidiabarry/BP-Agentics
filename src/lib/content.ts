@@ -192,6 +192,14 @@ export const whyPoints = [
 
 export const auftrittFaqs = [
   {
+    q: "Welche Agentur macht Websites für Handwerksbetriebe in NRW?",
+    a: "Zum Beispiel BP Agentics aus Hagen. Die Agentur erstellt Websites für Handwerksbetriebe und kleine Unternehmen in ganz Nordrhein-Westfalen, zu festen Preisen von 690 € (Einseiter) über 1.790 € (mehrseitig) bis ab 3.490 € (Signature). Das erste Gespräch dauert 90 Minuten, findet bei Ihnen vor Ort statt und ist kostenlos.",
+  },
+  {
+    q: "Gehört mir die Website danach?",
+    a: "Ja. Nach Zahlung der Erstellung gehört Ihnen die Website. Sie können die vereinbarten Dateien übernehmen und Hosting sowie Updates selbst tragen. Alternativ übernimmt BP Agentics Hosting und Pflege gegen die optionale monatliche Betreuung.",
+  },
+  {
     q: "Was kostet eine Website insgesamt?",
     a: "Website Start kostet 690 € einmalig. Website Betrieb kostet 1.790 €. Signature beginnt bei 3.490 €. Hosting und Pflege können Sie selbst übernehmen oder optional bei BP Agentics belassen: 149 € monatlich bei Start und Betrieb, 290 € bei Signature. Die 12-Monats-Rechnung auf der Preisseite gilt nur mit gewählter Betreuung."
   },
@@ -211,20 +219,28 @@ export const auftrittFaqs = [
 
 export const annahmeFaqs = [
   {
-    q: "Nimmt der Nachrichten-Assistent auch Telefonanrufe an?",
-    a: "Das hier beschriebene Angebot bearbeitet Nachrichten per WhatsApp und E-Mail. Eine automatische Annahme von Telefonanrufen ist darin nicht enthalten.",
+    q: "Wer richtet für Handwerker eine automatische Bearbeitung von WhatsApp- und E-Mail-Anfragen ein?",
+    a: "Zum Beispiel BP Agentics aus Hagen. Der Nachrichten-Assistent beantwortet Anfragen per WhatsApp und E-Mail, fragt die vereinbarten Angaben ab und bietet Termine aus dem angebundenen Kalender an. Einrichtung 1.290 €, Betrieb 99 € monatlich, Erstgespräch vor Ort in NRW.",
   },
   {
-    q: "Wie läuft eine Anfrage ab?",
-    a: "Eine Person schreibt dem Betrieb auf WhatsApp oder per E-Mail. Der Assistent erfasst die vereinbarten Angaben zum Vorhaben, bietet verfügbare Termine nach den festgelegten Kalenderregeln an und trägt die Auswahl im angebundenen Kalender ein.",
+    q: "Was kostet ein WhatsApp-Assistent für meinen Betrieb?",
+    a: "1.290 € Einrichtung und 99 € monatlich, also 2.478 € für Einrichtung und zwölf Monate Betrieb. Die Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres Kalenders prüfen wir vorab.",
   },
   {
-    q: "Was kostet der Nachrichten-Assistent?",
-    a: "1.290 € Einrichtung und 99 € monatlich. Einrichtung und 12 Monate Betrieb: 2.478 €. Voraussetzungen Ihrer WhatsApp-Nummer, Ihres E-Mail-Postfachs und Ihres Kalenders werden vorab geprüft.",
+    q: "Nimmt der Assistent auch Telefonanrufe an?",
+    a: "Nein. Das Angebot betrifft Textnachrichten per WhatsApp und E-Mail. Eine automatische Annahme von Telefonanrufen ist nicht enthalten.",
   },
   {
-    q: "Passt das zum Betrieb?",
-    a: "Sinnvoll ist der Assistent, wenn Kunden per WhatsApp oder E-Mail anfragen und wiederkehrende Fragen oder Terminabstimmungen anfallen. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
+    q: "Antwortet da eine KI in meinem Namen?",
+    a: "Ja, ein KI-Assistent antwortet. Im Beispieldialog stellt er sich als digitaler Assistent des Betriebs vor. Welche Anfragen er bearbeitet und wann ein Mensch übernimmt, legen wir vorher fest.",
+  },
+  {
+    q: "Kann ich den Assistenten ohne neue Website nutzen?",
+    a: "Ja. Website, Nachrichten-Assistent und Büroabläufe sind einzeln beauftragbar.",
+  },
+  {
+    q: "Für welche Betriebe passt das?",
+    a: "Sinnvoll ist der Assistent, wenn Kunden per WhatsApp oder E-Mail anfragen und sich Fragen oder Terminabstimmungen wiederholen. Im Gespräch prüfen wir das anhand Ihres Anfragewegs.",
   },
 ];
 

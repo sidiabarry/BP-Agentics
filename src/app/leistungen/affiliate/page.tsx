@@ -17,7 +17,7 @@ import { pageMetadata } from "@/lib/seo";
 import "@/styles/affiliate.css";
 
 export const metadata: Metadata = pageMetadata({
-  title: affiliateHero.title,
+  title: "Affiliate-Programme mit ADCELL für Merchants",
   description: affiliateHero.lead,
   path: affiliatePath,
 });
@@ -59,6 +59,19 @@ export default function AffiliatePage() {
       />
 
       <AffiliateHero />
+      <section className="mx-auto max-w-3xl px-5 py-8 text-[1.05rem] leading-relaxed text-[#3A3D45] md:px-8">
+        <p>
+          Dieses Angebot richtet sich an Merchants, die ein Partnerprogramm auf ADCELL
+          aufsetzen. Es ist getrennt von den Handwerksleistungen: eine Website, der
+          Nachrichten-Assistent und Büroabläufe beantworten andere Aufgaben und bleiben
+          einzeln beauftragbar.
+        </p>
+        <p className="mt-3">
+          <Link href="/leistungen" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+            Leistungen im Überblick
+          </Link>
+        </p>
+      </section>
       <AffiliateRollup />
       <AffiliatePay />
       <AffiliateCase />

@@ -14,8 +14,18 @@ export function SiteFooter() {
           <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Leistungen</p>
           <ul className="mt-3 space-y-2 text-white/85">
             <li>
+              <Link href="/leistungen" className="hover:text-white">
+                Leistungen im Überblick
+              </Link>
+            </li>
+            <li>
               <Link href="/leistungen/auftritt" className="hover:text-white">
                 Websites
+              </Link>
+            </li>
+            <li>
+              <Link href="/webdesign-fuer-handwerker" className="hover:text-white">
+                Webdesign für Handwerker
               </Link>
             </li>
             <li>
@@ -38,6 +48,11 @@ export function SiteFooter() {
         <div>
           <p className="text-sm tracking-[0.16em] text-white/50 uppercase">Arbeiten und Demos</p>
           <ul className="mt-3 space-y-2 text-white/85">
+            <li>
+              <Link href="/referenzen" className="hover:text-white">
+                Alle Arbeiten und Demos
+              </Link>
+            </li>
             <li>
               <Link href="/referenzen/feinkost-kreta" className="hover:text-white">
                 Feinkost Kreta

@@ -97,6 +97,21 @@ export function HomeReferenzen() {
           <DemoPair surface="cream" />
         </div>
 
+        <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+          <Link
+            href="/referenzen"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Alle Arbeiten und Demos
+          </Link>
+          <Link
+            href="/leistungen"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Leistungen im Überblick
+          </Link>
+        </p>
+
         <div className="mt-16">
           <ReviewsBand tone="cream" />
         </div>
