@@ -651,7 +651,9 @@
     position: sticky;
     top: var(--ws-header);
     z-index: 1;
+    box-sizing: border-box;
     height: calc(100svh - var(--ws-header));
+    padding-bottom: 1.5rem;
   }
 
   .ws__dwell-runway {

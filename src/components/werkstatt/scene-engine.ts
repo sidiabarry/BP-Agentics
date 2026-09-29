@@ -711,6 +711,17 @@ export function createWerkstattScene(
     return best;
   }
 
+  function swallowFollowingClick() {
+    const swallow = (event: Event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      done();
+    };
+    const done = () => window.removeEventListener("click", swallow, true);
+    window.addEventListener("click", swallow, true);
+    window.setTimeout(done, 500);
+  }
+
   let down: { x: number; y: number; t: number; id: number } | null = null;
   const onDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
@@ -730,8 +741,12 @@ export function createWerkstattScene(
     }
     if (Math.hypot(dx, dy) > 10 || dt > 700) return;
     const hit = pick(e.clientX, e.clientY);
+    if (!hit && current === "overview") return;
+    // Der folgende click darf nicht auf einen Knopf fallen, der erst durch
+    // das Öffnen der Karte unter den Finger rutscht.
+    if (window.innerWidth < 800) swallowFollowingClick();
     if (hit) goTo(hit);
-    else if (current !== "overview") goTo("overview");
+    else goTo("overview");
   };
   const onMove = (e: PointerEvent) => {
     if (e.pointerType !== "mouse") return;

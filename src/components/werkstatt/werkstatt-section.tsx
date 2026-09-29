@@ -4,15 +4,13 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Framing, ViewId, WerkstattSceneController } from "./scene-engine";
 import { nextStation, stationOrder, stations, type StationId } from "./content";
-import { useSoftScrollHold } from "./use-soft-scroll-hold";
 import "./werkstatt.css";
 
 /**
  * Die Werkstatt als Leistungsübersicht der Startseite (v6).
  *
- * Kein Scroll-Schloss. Beim Eintritt dämpft useSoftScrollHold Wheel und Touch
- * für 1,5 s. Ab 800px hält die Bühne samt Preiskarten zusätzlich kurz per
- * position: sticky (etwa 32svh), ohne Snap und ohne preventDefault.
+ * Kein Scroll-Schloss und keine Wheel- oder Touch-Dämpfung. Ab 800px hält
+ * die Bühne samt Preiskarten kurz per position: sticky (etwa 32svh).
  * Die 3D-Szene lädt erst kurz bevor sie ins Bild kommt, rendert nur solange
  * sie sichtbar ist und bleibt danach bestehen (kein Abbau beim Wegscrollen).
  *
@@ -89,8 +87,6 @@ export function WerkstattSection() {
   const open = view !== "overview";
   const detail = stations[shown];
   const next = nextStation(shown);
-
-  useSoftScrollHold(sectionRef, { enabled: !open });
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 799px)");
@@ -258,9 +254,39 @@ export function WerkstattSection() {
     else labelRefs.current[shown]?.focus({ preventScroll: true });
   }, [open, shown, narrow]);
 
+  // Nach dem Öffnen die Szene unter dem Header halten, nicht die Karte
+  // passend schieben. Verzögert, damit ein Szenen-Tipp nicht zwischen
+  // pointerup und click die Seite verschiebt (Ghost-Click auf „Übersicht").
   useEffect(() => {
     if (!open || !narrow) return;
-    sheetRef.current?.scrollIntoView({ block: "nearest", behavior: "auto" });
+    const stage = stageRef.current;
+    if (!stage) return;
+    let cancelled = false;
+    const id = window.setTimeout(() => {
+      if (cancelled) return;
+      const scene = stage.querySelector(".ws__scene") ?? stage;
+      const header = document.querySelector("header");
+      const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 0;
+      const pad = 12;
+      const target = headerBottom + pad;
+      const rect = scene.getBoundingClientRect();
+      const viewBottom = window.innerHeight;
+      const fits = rect.height <= viewBottom - target - pad;
+      let delta = 0;
+      if (fits) {
+        if (rect.top < target - 1) delta = rect.top - target;
+        else if (rect.bottom > viewBottom - pad) delta = rect.bottom - (viewBottom - pad);
+      } else {
+        delta = rect.top - target;
+      }
+      if (Math.abs(delta) < 2) return;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollBy({ top: delta, behavior: reduced ? "auto" : "smooth" });
+    }, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(id);
+    };
   }, [open, shown, narrow]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
