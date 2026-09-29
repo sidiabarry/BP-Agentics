@@ -25,9 +25,6 @@
   --ws-header: calc(4.75rem + env(safe-area-inset-top, 0px));
   --ws-pad-top: 1.25rem;
   --ws-pad-bottom: 9rem;
-  --ws-gap: 2rem;
-  --ws-head-block: 10rem;
-  --ws-chrome: calc(var(--ws-header) + var(--ws-pad-top) + var(--ws-head-block) + var(--ws-gap));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -681,8 +678,6 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     /* Die Überschrift steht im Hero-Intro direkt darüber, die Szene folgt dem Intro-Text dicht. */
     --ws-pad-top: 0.85rem;
     --ws-pad-bottom: 7.5rem;
-    --ws-gap: var(--space-stack);
-    --ws-head-block: 9.25rem;
   }
 
   .ws__stage {
