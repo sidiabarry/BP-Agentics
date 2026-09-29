@@ -261,6 +261,13 @@
   }
 }
 
+/* Solange der Intro-Text im Bild ist, liegt kein schwebender Knopf über Überschrift oder Einleitung. */
+body:has(.hero-portal__intro[data-in-view]) [data-analytics="whatsapp-fab"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @media (min-width: 880px) {
   .hero-portal__intro {
     grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);

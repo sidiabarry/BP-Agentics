@@ -119,6 +119,17 @@ export function HeroPortal() {
     };
   }, []);
 
+  // Direkt am DOM, ohne Re-Render: blendet den WhatsApp-Knopf über dem Intro-Text aus.
+  useEffect(() => {
+    const intro = introRef.current;
+    if (!intro) return;
+    const io = new IntersectionObserver(([entry]) => {
+      intro.toggleAttribute("data-in-view", Boolean(entry?.isIntersecting));
+    });
+    io.observe(intro);
+    return () => io.disconnect();
+  }, []);
+
   async function startScene(section: HTMLElement) {
     const state = sceneState.current;
     const layer = sceneRef.current;
