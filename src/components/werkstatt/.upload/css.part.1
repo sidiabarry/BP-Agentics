@@ -1,0 +1,183 @@
+1.25rem;
+  z-index: 5;
+  transform: translateX(-50%);
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: rgb(8 20 28 / 86%);
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--ws-paper);
+}
+
+.ws__start {
+  border: 1px solid rgb(243 239 230 / 30%);
+  cursor: pointer;
+}
+
+/* --- Etiketten über den Stationen ----------------------------------------- */
+
+.ws__labels {
+  /* Clearance über CRT / Handy / Robot — Section-Hook hebt die Pills. */
+  --ws-label-clearance: 6rem;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ws__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.45rem 1rem 0.45rem 0.55rem;
+  border: 1px solid rgb(243 239 230 / 20%);
+  border-radius: 999px;
+  background: rgb(8 20 28 / 84%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ws-paper);
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Führungslinien vom Etikett zum Objekt (Koordinaten setzt die Szene). */
+.ws__leaders {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.ws__leaders line {
+  stroke: rgb(243 239 230 / 55%);
+  stroke-width: 1;
+}
+
+.ws__leaders circle {
+  fill: var(--ws-portal);
+  stroke: var(--ws-night);
+  stroke-width: 1.5;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__leaders {
+  opacity: 1;
+  transition: opacity 0.35s ease 0.15s;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__label {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.35s ease 0.15s,
+    visibility 0s,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ws__label:hover {
+  border-color: var(--ws-portal);
+  background: rgb(18 41 59 / 94%);
+}
+
+.ws__label-num {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--ws-portal);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ws-night);
+}
+
+.ws__label-short {
+  display: none;
+}
+
+.ws__hint {
+  position: absolute;
+  left: var(--ws-gutter);
+  bottom: 1.1rem;
+  z-index: 3;
+  margin: 0;
+  font-size: 0.92rem;
+  color: rgb(243 239 230 / 72%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ws[data-phase="ready"][data-view="overview"] .ws__hint {
+  opacity: 1;
+}
+
+.ws__hint-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .ws__hint-touch {
+    display: inline;
+  }
+  .ws__hint-mouse {
+    display: none;
+  }
+}
+
+/* --- Sheet (Handy unten) / Panel (Desktop rechts) ------------------------- */
+
+.ws__sheet {
+  position: absolute;
+  z-index: 4;
+  top: 1.25rem;
+  right: 1.25rem;
+  bottom: auto;
+  width: min(28rem, 48%);
+  max-height: calc(100% - 2.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.5rem 1.5rem;
+  border-radius: 22px;
+  background: var(--ws-paper);
+  color: var(--ws-ink);
+  box-shadow: 0 24px 60px -24px rgb(0 0 0 / 55%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(24px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.4s;
+}
+
+.ws__sheet[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.3
