@@ -29,7 +29,9 @@
   display: flex;
   flex-direction: column;
   overflow-x: clip;
-  scroll-margin-top: var(--ws-header);
+  /* html already has scroll-padding-top for the header. A second offset here
+     lands #werkstatt a header-height too low. */
+  scroll-margin-top: 0;
   padding: var(--ws-pad-top) 0 var(--ws-pad-bottom);
   color: #eaf3fa;
   background: var(--ws-night);
@@ -302,8 +304,13 @@
   top: 1.25rem;
   right: 1.25rem;
   bottom: auto;
+  display: flex;
+  flex-direction: column;
   width: min(28rem, 48%);
-  max-height: calc(100% - 2.5rem);
+  /* Viewport budget, not the stage box: the open card may overlap the price
+     list when the stage is the short remainder under a sticky frame. */
+  max-height: calc(100svh - var(--ws-header-real, var(--ws-header)) - 1.5rem - 2.5rem);
+  overflow-x: clip;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0 1.5rem 1.5rem;
@@ -349,18 +356,18 @@
   align-items: center;
   gap: 0.3rem;
   min-height: 44px;
-  padding: 0 0.85rem 0 0.55rem;
-  border: 1px solid rgb(20 22 28 / 14%);
-  border-radius: 999px;
-  background: #fff;
+  padding: 0 0.45rem 0 0.1rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   font-size: 0.98rem;
   font-weight: 600;
   color: var(--ws-ink);
   cursor: pointer;
 }
 
-.ws__back:hover {
-  border-color: var(--ws-action);
+.ws__back:hover,
+.ws__back:focus-visible {
   color: var(--ws-action);
 }
 
@@ -383,18 +390,22 @@
 .ws__dot span {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgb(20 22 28 / 18%);
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.1rem;
+  border: 0;
   border-radius: 999px;
+  background: transparent;
   font-size: 0.74rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: rgb(20 22 28 / 60%);
+  color: rgb(20 22 28 / 46%);
 }
 
 .ws__dot[aria-current="true"] span {
-  border-color: var(--ws-ink);
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
   background: var(--ws-ink);
   color: var(--ws-paper);
 }
@@ -424,44 +435,57 @@
 }
 
 .ws__price {
-  margin: 0 0 1.1rem;
-  padding: 0.6rem 0.8rem;
-  border-radius: 12px;
-  background: rgb(20 22 28 / 5%);
+  margin: 0.2rem 0 1rem;
+  padding: 0;
+  border-radius: 0;
+  background: none;
   font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.35;
 }
 
 .ws__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin: 0 -1.5rem;
+  padding: 0.35rem 1.5rem 0.15rem;
+  background: var(--ws-paper);
 }
 
 .ws__cta,
 .ws__next {
   display: inline-flex;
-  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
+  min-width: 0;
   min-height: 48px;
   padding: 0 1.2rem;
-  border-radius: 999px;
   font-size: 1rem;
   font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
 }
 
 .ws__cta {
+  flex: 1 1 auto;
+  max-width: max-content;
   border: 1px solid var(--ws-action);
+  border-radius: 999px;
   background: var(--ws-action);
   color: #fff;
+  white-space: nowrap;
 }
 
 .ws__cta:hover {
@@ -469,13 +493,29 @@
 }
 
 .ws__next {
-  border: 1px solid rgb(20 22 28 / 16%);
+  flex: 0 1 auto;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--ws-ink);
+  padding-inline: 0.2rem;
+  white-space: nowrap;
 }
 
-.ws__next:hover {
-  border-color: var(--ws-ink);
+.ws__next:hover,
+.ws__next:focus-visible {
+  color: var(--ws-action);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* 360/390, and desktop cards under ~28rem, cannot hold both labels on one line. */
+@media (max-width: 1040px) {
+  .ws__cta,
+  .ws__next {
+    white-space: normal;
+    text-wrap: balance;
+  }
 }
 
 .ws__more {
@@ -632,6 +672,13 @@
     flex: 1 1 auto;
     height: auto;
     min-height: 0;
+    /* Clip the studio, not the open card, so the card can overlap the list. */
+    overflow: visible;
+    z-index: 2;
+  }
+
+  .ws__dwell-frame .ws__scene {
+    overflow: hidden;
   }
 
   .ws__dwell-frame .ws__list {
@@ -730,8 +777,7 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__labels,
-  .ws__leaders,
-  .ws__dots {
+  .ws__leaders {
     display: none;
   }
 
@@ -745,16 +791,23 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     width: auto;
     max-height: none;
     overflow: visible;
-    margin: 0 var(--ws-gutter);
+    margin: 0 0.75rem;
     padding: 0 1.1rem 1.25rem;
     border-radius: var(--r);
     transform: none;
-    scroll-margin-top: calc(var(--ws-header) + var(--space-stack));
+    scroll-margin-top: 0;
   }
 
   .ws__sheet[data-open="true"] {
-    display: block;
+    display: flex;
     margin-top: var(--space-stack);
+  }
+
+  .ws__actions {
+    margin-right: -1.1rem;
+    margin-left: -1.1rem;
+    padding-right: 1.1rem;
+    padding-left: 1.1rem;
   }
 
   .ws__sheet-bar {
@@ -816,6 +869,65 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 @media (min-width: 800px) and (max-width: 1100px) {
   .ws__list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Inside the sticky frame the three price cards stay in one row, otherwise
+   they eat the stage and the open card has nowhere to sit. */
+@media (min-width: 800px) and (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
+  .ws__dwell-frame .ws__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Without the sticky frame the stage can be shorter than the viewport budget.
+   Clip the studio, and let the card paint over the list instead of being cut. */
+@media (min-width: 800px) and (prefers-reduced-motion: reduce) {
+  .ws__stage {
+    overflow: visible;
+    z-index: 2;
+  }
+
+  .ws__scene {
+    overflow: hidden;
+  }
+}
+
+@media (max-height: 800px) and (min-width: 800px) and (prefers-reduced-motion: no-preference) {
+  .ws__dwell-frame .ws__list-promise {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .ws__sheet-bar {
+    padding: 0.6rem 0.8rem 0.35rem;
+  }
+
+  .ws__sheet h3 {
+    margin: 0.2rem 0 0.45rem;
+  }
+
+  .ws__text {
+    margin-bottom: 0.55rem;
+  }
+
+  .ws__price {
+    margin-bottom: 0.6rem;
+  }
+
+  .ws__more {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .ws__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
   }
 }
 

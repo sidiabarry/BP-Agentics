@@ -237,6 +237,22 @@ export function WerkstattSection() {
     return () => ro.disconnect();
   }, [open, phase]);
 
+  // Gemessene Header-Höhe, damit die Karte am echten Kopf und nicht am
+  // großzügigen rem-Wert ausgerichtet wird.
+  useEffect(() => {
+    const section = sectionRef.current;
+    const header = document.querySelector("header");
+    if (!section || !(header instanceof HTMLElement)) return;
+    const apply = () => {
+      const height = header.getBoundingClientRect().height;
+      if (height > 0) section.style.setProperty("--ws-header-real", `${height}px`);
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
+
   // --- Fokus: nur wenn die Bedienung aus der Sektion kam (Tastatur/Buttons)
   useEffect(() => {
     const section = sectionRef.current;
@@ -246,30 +262,30 @@ export function WerkstattSection() {
     else labelRefs.current[shown]?.focus({ preventScroll: true });
   }, [open, shown, narrow]);
 
-  // Nach dem Öffnen die Szene unter dem Header halten, nicht die Karte
-  // passend schieben. Verzögert, damit ein Szenen-Tipp nicht zwischen
-  // pointerup und click die Seite verschiebt (Ghost-Click auf „Übersicht").
+  // Nach dem Öffnen die Karte in den sichtbaren Bereich schieben, nicht die
+  // Szene. Verzögert, damit ein Szenen-Tipp nicht zwischen pointerup und click
+  // die Seite verschiebt (Ghost-Click auf „Übersicht").
   useEffect(() => {
-    if (!open || !narrow) return;
-    const stage = stageRef.current;
-    if (!stage) return;
+    if (!open) return;
+    const sheet = sheetRef.current;
+    if (!sheet) return;
     let cancelled = false;
     const id = window.setTimeout(() => {
       if (cancelled) return;
-      const scene = stage.querySelector(".ws__scene") ?? stage;
       const header = document.querySelector("header");
       const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 0;
       const pad = 12;
-      const target = headerBottom + pad;
-      const rect = scene.getBoundingClientRect();
-      const viewBottom = window.innerHeight;
-      const fits = rect.height <= viewBottom - target - pad;
+      const top = headerBottom + pad;
+      const bottom = window.innerHeight - pad;
+      const rect = sheet.getBoundingClientRect();
+      if (rect.height < 2) return;
+      const fits = rect.height <= bottom - top;
       let delta = 0;
       if (fits) {
-        if (rect.top < target - 1) delta = rect.top - target;
-        else if (rect.bottom > viewBottom - pad) delta = rect.bottom - (viewBottom - pad);
+        if (rect.top < top) delta = rect.top - top;
+        else if (rect.bottom > bottom) delta = rect.bottom - bottom;
       } else {
-        delta = rect.top - target;
+        delta = rect.top - top;
       }
       if (Math.abs(delta) < 2) return;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -279,7 +295,7 @@ export function WerkstattSection() {
       cancelled = true;
       window.clearTimeout(id);
     };
-  }, [open, shown, narrow]);
+  }, [open, shown]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
   // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
