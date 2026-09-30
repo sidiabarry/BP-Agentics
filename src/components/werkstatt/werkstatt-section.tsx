@@ -262,9 +262,10 @@ export function WerkstattSection() {
     else labelRefs.current[shown]?.focus({ preventScroll: true });
   }, [open, shown, narrow]);
 
-  // Nach dem Öffnen die Karte in den sichtbaren Bereich schieben, nicht die
-  // Szene. Verzögert, damit ein Szenen-Tipp nicht zwischen pointerup und click
-  // die Seite verschiebt (Ghost-Click auf „Übersicht").
+  // Nach dem Öffnen die Karte in den sichtbaren Bereich schieben. Auf dem
+  // Handy bleibt ihr unterer Rand am Viewport, damit die Szene darüber
+  // sichtbar bleibt. Verzögert, damit ein Szenen-Tipp nicht zwischen
+  // pointerup und click die Seite verschiebt (Ghost-Click auf „Übersicht").
   useEffect(() => {
     if (!open) return;
     const sheet = sheetRef.current;
@@ -282,8 +283,9 @@ export function WerkstattSection() {
       const fits = rect.height <= bottom - top;
       let delta = 0;
       if (fits) {
-        if (rect.top < top) delta = rect.top - top;
-        else if (rect.bottom > bottom) delta = rect.bottom - bottom;
+        if (rect.top < top || rect.bottom > bottom) {
+          delta = narrow ? rect.bottom - bottom : rect.top < top ? rect.top - top : rect.bottom - bottom;
+        }
       } else {
         delta = rect.top - top;
       }
@@ -295,7 +297,7 @@ export function WerkstattSection() {
       cancelled = true;
       window.clearTimeout(id);
     };
-  }, [open, shown]);
+  }, [open, shown, narrow]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
   // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
