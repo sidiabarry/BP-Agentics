@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import "./sharpen-three";
 import { WerkstattSection as Inner } from "./werkstatt-section";
 
 export function WerkstattSection() {

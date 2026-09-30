@@ -38,8 +38,6 @@ type Kind = keyof typeof SETS;
 const FILM_END = 0.6;
 /** Zusätzlicher Kamera-Push, während sich das Portal öffnet. */
 const OVERDRIVE = 0.42;
-/** Ab hier wird die Szene geladen – weit vor dem Portal, damit sie bereitsteht. */
-const SCENE_PRELOAD = 0.2;
 /** Ab hier baut sich die Szene fertig auf, ohne auf eine Scroll-Pause zu warten. */
 const SCENE_URGENT = 0.5;
 /** Ab hier ist das Display so weit offen, dass die Szene die ganze Bühne deckt. */
@@ -63,6 +61,12 @@ export function HeroPortal() {
     images: [] as (HTMLImageElement | null)[],
     inflight: 0,
     target: 0,
+    overdrive: 0,
+    idlePump: 0,
+    paintedIndex: -1,
+    paintedOverdrive: -1,
+    paintedW: 0,
+    paintedH: 0,
   });
 
   const sceneState = useRef({
@@ -78,7 +82,6 @@ export function HeroPortal() {
     onMode: (enhanced) => sceneState.current.controller?.setEnabled(enhanced),
     onFrame: (p, section) => {
       sceneState.current.p = p;
-      if (p >= SCENE_PRELOAD) void startScene(section);
       sceneState.current.controller?.wake();
 
       const canvas = canvasRef.current;
@@ -93,10 +96,14 @@ export function HeroPortal() {
         s.kind = kind;
         s.images = new Array(SETS[kind].count).fill(null);
         s.inflight = 0;
+        s.paintedIndex = -1;
+        s.paintedW = 0;
+        s.paintedH = 0;
       }
 
       const count = SETS[kind].count;
       s.target = Math.round(range(p, 0, FILM_END) * (count - 1));
+      s.overdrive = smooth(range(p, FILM_END, 0.92));
       pump(kind);
 
       // Liegt die Szene deckend darüber, müssen Film und Portal weder zeichnen noch compositen.
@@ -105,9 +112,41 @@ export function HeroPortal() {
 
       // Ab hier deckt das Portal die Bühne vollständig ab – Zeichnen spart Akku.
       if (covered || p > 0.94) return;
-      paint(canvas, pin, smooth(range(p, FILM_END, 0.92)));
+      paint(canvas, pin, s.overdrive);
     },
   });
+
+  useEffect(() => {
+    const kind: Kind = window.matchMedia(`(max-width: ${SMALL_MAX}px)`).matches ? "mobile" : "desktop";
+    const s = store.current;
+    if (s.kind !== kind) {
+      s.kind = kind;
+      s.images = new Array(SETS[kind].count).fill(null);
+      s.inflight = 0;
+    }
+    pump(kind);
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    let cancelled = false;
+    const boot = () => {
+      if (!cancelled) void startScene(section);
+    };
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(boot, { timeout: 1500 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
+    }
+    const id = setTimeout(boot, 1);
+    return () => {
+      cancelled = true;
+      clearTimeout(id);
+    };
+  }, []);
 
   useEffect(() => {
     const state = sceneState.current;
@@ -174,8 +213,19 @@ export function HeroPortal() {
   }
 
   /** Lädt die Frames nach, immer die nächstgelegenen zuerst, max. 4 parallel. */
-  function pump(kind: Kind) {
+  function pump(kind: Kind, fromIdle = false) {
     const s = store.current;
+    const reserved = s.images.reduce((count, img) => count + (img ? 1 : 0), 0);
+    if (reserved >= s.images.length) return;
+    if (reserved >= 12 && !fromIdle) {
+      if (s.idlePump) return;
+      const kick = () => {
+        s.idlePump = 0;
+        pump(kind, true);
+      };
+      s.idlePump = window.requestIdleCallback(kick, { timeout: 400 });
+      return;
+    }
     while (s.inflight < 4) {
       let next = -1;
       let best = Infinity;
@@ -195,10 +245,15 @@ export function HeroPortal() {
       img.decoding = "async";
       img.onload = () => {
         s.inflight -= 1;
-        const canvas = canvasRef.current;
-        const pin = pinRef.current;
-        if (canvas && pin) paint(canvas, pin, 0);
-        pump(kind);
+        void img.decode().then(
+          () => {
+            const canvas = canvasRef.current;
+            const pin = pinRef.current;
+            if (canvas && pin) paint(canvas, pin, s.overdrive);
+            pump(kind);
+          },
+          () => pump(kind),
+        );
       };
       img.onerror = () => {
         s.inflight -= 1;
@@ -214,6 +269,7 @@ export function HeroPortal() {
     const s = store.current;
 
     let best: HTMLImageElement | null = null;
+    let bestIndex = -1;
     let delta = Infinity;
     for (let i = 0; i < s.images.length; i += 1) {
       const img = s.images[i];
@@ -222,6 +278,7 @@ export function HeroPortal() {
       if (d < delta) {
         delta = d;
         best = img;
+        bestIndex = i;
       }
     }
     if (!best) return;
@@ -230,6 +287,14 @@ export function HeroPortal() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = Math.round(rect.width * dpr);
     const h = Math.round(rect.height * dpr);
+    if (
+      bestIndex === s.paintedIndex &&
+      overdrive === s.paintedOverdrive &&
+      w === s.paintedW &&
+      h === s.paintedH
+    ) {
+      return;
+    }
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
@@ -248,6 +313,10 @@ export function HeroPortal() {
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(best, xOff, yOff, dw, dh);
     canvas.dataset.ready = "";
+    s.paintedIndex = bestIndex;
+    s.paintedOverdrive = overdrive;
+    s.paintedW = w;
+    s.paintedH = h;
   }
 
   return (

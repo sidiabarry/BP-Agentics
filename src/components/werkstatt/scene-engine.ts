@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import "./sharpen-three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { createRobot } from "./robot.js";
@@ -24,8 +25,12 @@ import { chatExamples, chatPhaseCaptions, stationOrder, webDemo, type StationId 
 export type { StationId };
 export type ViewId = StationId | "overview";
 
-/** Fläche in px, die von UI verdeckt ist (Panel rechts, Sheet unten). */
-export type Framing = { right: number; bottom: number };
+/**
+ * Fläche in px, die von UI verdeckt ist (Panel rechts, Sheet unten).
+ * `refit: false` hält die Kameradistanz der vollen Bühne und schiebt das Motiv
+ * nur per View-Offset nach oben. Standard `true` rechnet den Abstand neu.
+ */
+export type Framing = { right: number; bottom: number; refit?: boolean };
 
 export interface SceneOptions {
   modelUrl: string;
@@ -239,6 +244,7 @@ export function createWerkstattScene(
       roomReady = true;
       callbacks.onProgress?.(1);
       needsRender = true;
+      void warmGpu();
     },
     (event) => {
       if (event.lengthComputable && event.total > 0) callbacks.onProgress?.(Math.min(0.98, event.loaded / event.total));
@@ -548,9 +554,10 @@ export function createWerkstattScene(
     const target = b.getCenter(new THREE.Vector3());
     const dir = new THREE.Vector3(...(portraitOverview ? PORTRAIT_OVERVIEW : DIRECTIONS[view])).normalize();
     const fov = portraitOverview ? PORTRAIT_OVERVIEW_FOV : BASE_FOV;
-    const f = view === "overview" ? { right: 0, bottom: framing.bottom } : framing;
-    const freeW = Math.max(140, w - f.right);
-    const freeH = Math.max(140, h - f.bottom);
+    const f = view === "overview" ? { right: 0, bottom: framing.bottom, refit: true } : framing;
+    const refit = f.refit !== false;
+    const freeW = refit ? Math.max(140, w - f.right) : w;
+    const freeH = refit ? Math.max(140, h - f.bottom) : h;
     const fill = FILL[view];
 
     fitCam.fov = fov;
@@ -839,10 +846,73 @@ export function createWerkstattScene(
   let last = 0;
   let lastVideoDraw = 0;
 
+  let booted = false;
+
+  function idleSlice() {
+    return new Promise<void>((resolve) => {
+      if ("requestIdleCallback" in window) window.requestIdleCallback(() => resolve(), { timeout: 300 });
+      else setTimeout(resolve, 32);
+    });
+  }
+
+  function sceneTextures() {
+    const found: THREE.Texture[] = [];
+    const seen = new Set<THREE.Texture>();
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh || !mesh.material) return;
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const material of materials) {
+        for (const value of Object.values(material)) {
+          if (value instanceof THREE.Texture && !seen.has(value)) {
+            seen.add(value);
+            found.push(value);
+          }
+        }
+      }
+    });
+    return found;
+  }
+
+  async function warmGpu() {
+    if (disposed || booted) return;
+    const { w, h } = size();
+    camera.position.copy(basePos);
+    camera.lookAt(baseTarget);
+    camera.fov = baseFov;
+    camera.aspect = w / Math.max(1, h);
+    camera.updateProjectionMatrix();
+    applyOffset(baseOffset);
+    await idleSlice();
+    if (disposed) return;
+    try {
+      await renderer.compileAsync(scene, camera);
+    } catch {
+      renderer.compile(scene, camera);
+    }
+    const textures = sceneTextures();
+    for (let i = 0; i < textures.length; i += 3) {
+      await idleSlice();
+      if (disposed) return;
+      for (const texture of textures.slice(i, i + 3)) {
+        try {
+          renderer.initTexture(texture);
+        } catch {
+          // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
+        }
+      }
+    }
+    await idleSlice();
+    if (disposed) return;
+    renderer.render(scene, camera);
+    booted = true;
+    needsRender = true;
+  }
+
   function frame(ms: number) {
     if (disposed) return;
     rafId = requestAnimationFrame(frame);
-    if (!visible || document.hidden || webglFailed) return;
+    if (!booted || !visible || document.hidden || webglFailed) return;
     if (minInterval && ms - last < minInterval - 2) return;
     last = ms;
     const t = ms / 1000;
@@ -939,7 +1009,10 @@ export function createWerkstattScene(
     goTo,
     step,
     setFraming(next) {
-      if (Math.abs(next.right - framing.right) < 1 && Math.abs(next.bottom - framing.bottom) < 1) return;
+      const sameShift =
+        Math.abs(next.right - framing.right) < 1 && Math.abs(next.bottom - framing.bottom) < 1;
+      const sameRefit = (next.refit !== false) === (framing.refit !== false);
+      if (sameShift && sameRefit) return;
       framing = next;
       if (transition && !reduced) {
         const dest = solvePose(current);
