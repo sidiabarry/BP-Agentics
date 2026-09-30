@@ -1,1 +1,1 @@
-PLACEHOLDER
+@file:///tmp/section_content_exact.tsx
