@@ -852,7 +852,12 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
     grid-template-columns: 1fr;
     gap: var(--space-stack);
     margin-top: var(--space-stack);
-    /* Die Karte schiebt die Liste nach unten. Ohne Anker springt die Seite nicht mit. */
+    overflow-anchor: none;
+  }
+
+  /* Der Anker sitzt oft unter der Sektion. Solange eine Karte offen ist,
+     darf das Einfügen ihrer Höhe die Seite nicht um diese Höhe versetzen. */
+  html:has(#werkstatt:not([data-view="overview"])) {
     overflow-anchor: none;
   }
 
@@ -942,6 +947,14 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
 
   .ws__sheet h3 {
     margin: 0.1rem 0 0.35rem;
+  }
+
+  .ws__text {
+    margin-bottom: 0.2rem;
+  }
+
+  .ws__price {
+    margin-bottom: 0.4rem;
   }
 
   .ws__more {
