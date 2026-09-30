@@ -1,0 +1,120 @@
+ ([entry]) => {
+        inViewRef.current = entry.isIntersecting;
+        // Direkt am DOM, ohne Re-Render: blendet den WhatsApp-Knopf über der Bühne aus.
+        sectionRef.current?.toggleAttribute("data-stage-visible", entry.isIntersecting);
+        const controller = controllerRef.current;
+        if (!controller) return;
+        controller.setVisible(entry.isIntersecting);
+        if (!entry.isIntersecting) controller.goTo("overview", { instant: true });
+      },
+      { threshold: 0 },
+    );
+    near.observe(stage);
+    seen.observe(stage);
+    return () => {
+      near.disconnect();
+      seen.disconnect();
+    };
+  }, [start]);
+
+  // --- Bewegung reduzieren (Systemeinstellung) ---------------------------
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => controllerRef.current?.setReduced(mq.matches);
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  // --- Freie Bildfläche an die Kamera melden ------------------------------
+  useEffect(() => {
+    const stage = stageRef.current;
+    const sheet = sheetRef.current;
+    if (!stage || !sheet) return;
+    const update = () => {
+      const narrow = stage.clientWidth < 800;
+      const framing: Framing = { right: 0, bottom: 0 };
+      if (open) {
+        if (narrow) framing.bottom = sheet.offsetHeight + 16;
+      } else if (narrow) {
+        framing.bottom = 56;
+      }
+      controllerRef.current?.setFraming(framing);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(stage);
+    ro.observe(sheet);
+    return () => ro.disconnect();
+  }, [open, phase]);
+
+  // --- Fokus: nur wenn die Bedienung aus der Sektion kam (Tastatur/Buttons)
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !section.contains(document.activeElement)) return;
+    if (open) headingRef.current?.focus({ preventScroll: true });
+    else labelRefs.current[shown]?.focus({ preventScroll: true });
+  }, [open, shown]);
+
+  // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
+  // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      const controller = controllerRef.current;
+      if (!controller || e.defaultPrevented) return;
+      const active = document.activeElement;
+      const free = !active || active === document.body || Boolean(sectionRef.current?.contains(active));
+      if (e.key === "Escape") {
+        e.preventDefault();
+        controller.goTo("overview");
+      } else if (free && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+        e.preventDefault();
+        controller.step(e.key === "ArrowRight" ? 1 : -1);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const lines = titleLines(detail.title);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="werkstatt"
+      className="ws"
+      data-view={view}
+      data-phase={phase}
+      aria-label="Die Werkstatt"
+    >
+      <div className="ws__stage" ref={stageRef}>
+        <picture className="ws__poster">
+          <source media="(max-width: 799px)" type="image/webp" srcSet={`${POSTER}-mobile.webp`} />
+          <source media="(max-width: 799px)" srcSet={`${POSTER}-mobile.jpg`} />
+          <source type="image/webp" srcSet={`${POSTER}-desktop.webp`} />
+          <img src={`${POSTER}-desktop.jpg`} alt="" loading="lazy" decoding="async" />
+        </picture>
+
+        <div className="ws__canvas" ref={hostRef} />
+
+        {phase === "loading" && (
+          <div className="ws__progress" role="progressbar" aria-label="Werkstatt wird geladen" aria-valuenow={Math.round(progress * 100)} aria-valuemin={0} aria-valuemax={100}>
+            <span style={{ transform: `scaleX(${Math.max(0.06, progress)})` }} />
+          </div>
+        )}
+
+        {needsConsent && phase === "idle" && (
+          <button type="button" className="ws__start" onClick={() => void start()}>
+            3D-Werkstatt laden (etwa 0,5 MB)
+          </button>
+        )}
+
+        {phase === "fallback" && message && (
+          <p className="ws__message" role="status">
+            {message}
+          </p>
+        )}
+
+        <svg className="ws__leaders" aria-hidden="true">
+          {stationOrder.map((id) => (
+           
