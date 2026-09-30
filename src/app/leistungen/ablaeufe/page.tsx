@@ -134,6 +134,7 @@ export default function AblaeufePage() {
         { name: "Leistungen", path: "/leistungen" },
         { name: "Büroabläufe", path: "/leistungen/ablaeufe" },
       ]}
+      showCrumbs={false}
       extraJsonLd={[
         serviceOffer({
           name: "Büroabläufe automatisieren",
