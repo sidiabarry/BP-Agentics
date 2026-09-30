@@ -160,7 +160,7 @@
 
 .ws__labels {
   /* Clearance über CRT / Handy / Robot — Section-Hook hebt die Pills. */
-  --ws-label-clearance: 3rem;
+  --ws-label-clearance: 6rem;
   position: absolute;
   inset: 0;
   z-index: 3;
@@ -405,10 +405,10 @@
   margin: 0.35rem 0 0.7rem;
   font-family: var(--font-sora), sans-serif;
   font-size: 1.9rem;
+  font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.015em;
   outline: none;
-  font-weight: 600;
 }
 
 .ws__text {
@@ -642,7 +642,7 @@ body:has(#werkstatt[data-stage-visible]) [data-analytics="whatsapp-fab"] {
   }
 
   .ws__labels {
-    --ws-label-clearance: 2.75rem;
+    --ws-label-clearance: 5rem;
   }
 
   .ws__label-num {
