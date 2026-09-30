@@ -69,7 +69,11 @@ async function waitForHero(alive: () => boolean) {
 }
 
 function waitForCalm() {
+  // Kurze Scroll-Pause abwarten, aber nicht über ein schnelles Wischen hinaus.
+  // Pausen von 120ms würden die 150ms-Ruhe sonst nie erreichen und die Szene
+  // erst hunderte Pixel später starten als vor dem Idle-Boot.
   return new Promise<void>((resolve) => {
+    const deadline = performance.now() + 120;
     let y = window.scrollY;
     let since = performance.now();
     const tick = () => {
@@ -78,8 +82,8 @@ function waitForCalm() {
         y = window.scrollY;
         since = now;
       }
-      if (now - since >= 150) resolve();
-      else window.setTimeout(tick, 50);
+      if (now >= deadline || now - since >= 150) resolve();
+      else window.setTimeout(tick, 40);
     };
     tick();
   });

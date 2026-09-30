@@ -163,8 +163,10 @@ export function DemoLoop({
             loop
             playsInline
             preload="none"
+            width={998}
+            height={788}
             aria-label={posterAlt ?? caption ?? "Produktdemo"}
-            className="block h-auto w-full"
+            className="block aspect-[998/788] h-auto w-full"
             onLoadedData={() => {
               if (inView) videoRef.current?.play().catch(() => {});
             }}
@@ -234,8 +236,10 @@ export function PhoneDemo({
               loop
               playsInline
               preload="none"
+              width={354}
+              height={536}
               aria-label={posterAlt ?? caption ?? "App-Demo"}
-              className="block h-auto w-full"
+              className="block aspect-[354/536] h-auto w-full"
               onLoadedData={() => {
                 if (inView) videoRef.current?.play().catch(() => {});
               }}

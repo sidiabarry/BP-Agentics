@@ -62,7 +62,7 @@ export function HeroPortal() {
     inflight: 0,
     target: 0,
     overdrive: 0,
-    idlePump: 0,
+    idlePump: 0 as number | ReturnType<typeof setTimeout>,
     paintedIndex: -1,
     paintedOverdrive: -1,
     paintedW: 0,
@@ -132,7 +132,11 @@ export function HeroPortal() {
     if (!section) return;
     let cancelled = false;
     const boot = () => {
-      if (!cancelled) void startScene(section);
+      if (cancelled) return;
+      // three.js liegt im Lazy-Chunk. Auf langsamem Netz soll der Download
+      // schon in der ersten Idle-Lücke laufen, nicht erst beim Szenenstart.
+      void import("three");
+      void startScene(section);
     };
     if ("requestIdleCallback" in window) {
       const id = window.requestIdleCallback(boot, { timeout: 1500 });
@@ -223,7 +227,12 @@ export function HeroPortal() {
         s.idlePump = 0;
         pump(kind, true);
       };
-      s.idlePump = window.requestIdleCallback(kick, { timeout: 400 });
+      // Safari hat kein requestIdleCallback. Dieselbe Lücke per Timeout.
+      if ("requestIdleCallback" in window) {
+        s.idlePump = window.requestIdleCallback(kick, { timeout: 400 });
+      } else {
+        s.idlePump = setTimeout(kick, 200);
+      }
       return;
     }
     while (s.inflight < 4) {
