@@ -90,6 +90,74 @@ export function WerkstattSection() {
 
   useSoftScrollHold(stageRef, { enabled: !open });
 
+  // Szene setzt Etiketten in Canvas-Koordinaten. Im Overview liegt die
+  // Leinwand tiefer — Pills bleiben in der freien Leiste darüber, mit Lücke
+  // zu CRT / Handy / Robot. scene-engine.ts bleibt unangetastet.
+  useEffect(() => {
+    if (phase !== "ready" || open) return;
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const TRANSFORM_RE =
+      /^translate3d\((-?\d+(?:\.\d+)?)px,\s*(-?\d+(?:\.\d+)?)px,\s*0(?:px)?\)\s*translateY\(-100%\)$/;
+
+    const clearancePx = () => (stage.clientWidth < 560 ? 28 : 32);
+    const minBottom = (node: HTMLElement) => 12 + node.offsetHeight;
+
+    const liftLabel = (
+      node: HTMLButtonElement,
+      line: SVGLineElement | undefined,
+      dot: SVGCircleElement | undefined,
+    ) => {
+      if (node.dataset.wsClearing === "1") return;
+      const raw = node.style.transform;
+      const match = TRANSFORM_RE.exec(raw);
+      if (!match) return;
+      const x = Number(match[1]);
+      const sceneY = Number(match[2]);
+      // Canvas is inset on overview; labels use stage space → map + lift into the band.
+      const canvasTop = hostRef.current?.offsetTop ?? 0;
+      const mappedY = sceneY + canvasTop;
+      const nextY = Math.max(minBottom(node), Math.min(mappedY - clearancePx(), canvasTop - 10));
+      if (Math.abs(nextY - sceneY) < 0.5 && canvasTop < 1) return;
+      node.dataset.wsClearing = "1";
+      node.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(nextY)}px, 0) translateY(-100%)`;
+      if (line) {
+        // Leaders stay stage-sized; scene writes canvas-space anchors.
+        line.setAttribute("y1", String(Math.round(nextY)));
+        const y2 = Number(line.getAttribute("y2"));
+        if (!Number.isNaN(y2)) line.setAttribute("y2", String(Math.round(y2 + canvasTop)));
+      }
+      if (dot) {
+        const cy = Number(dot.getAttribute("cy"));
+        if (!Number.isNaN(cy)) dot.setAttribute("cy", String(Math.round(cy + canvasTop)));
+      }
+      queueMicrotask(() => {
+        delete node.dataset.wsClearing;
+      });
+    };
+
+    const observers: MutationObserver[] = [];
+    for (const id of stationOrder) {
+      const node = labelRefs.current[id];
+      const line = lineRefs.current[id];
+      const dot = dotRefs.current[id];
+      if (!node) continue;
+      const onLabel = () => liftLabel(node, line, dot);
+      const labelObs = new MutationObserver(onLabel);
+      labelObs.observe(node, { attributes: true, attributeFilter: ["style"] });
+      observers.push(labelObs);
+      onLabel();
+    }
+
+    return () => {
+      for (const obs of observers) obs.disconnect();
+      for (const id of stationOrder) {
+        delete labelRefs.current[id]?.dataset.wsClearing;
+      }
+    };
+  }, [phase, open]);
+
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
   }, []);
