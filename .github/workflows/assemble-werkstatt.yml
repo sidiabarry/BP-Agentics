@@ -1,0 +1,28 @@
+name: assemble-werkstatt
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/components/werkstatt/.upload/**"
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble
+        run: |
+          set -euo pipefail
+          cat src/components/werkstatt/.upload/section.part.* > src/components/werkstatt/werkstatt-section.tsx
+          cat src/components/werkstatt/.upload/css.part.* > src/components/werkstatt/werkstatt.css
+          rm -rf src/components/werkstatt/.upload
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Werkstatt: map labels into band above inset overview canvas"
+          git commit --allow-empty -m "Werkstatt: inset overview canvas to free space for station pills" || true
+          # Amend into one commit with both messages via reset soft
+          git reset --soft HEAD~2
+          git commit -m "Werkstatt: map labels into band above inset overview canvas" -m "Werkstatt: inset overview canvas to free space for station pills"
+          git push
