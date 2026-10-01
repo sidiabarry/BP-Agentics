@@ -1,197 +1,348 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import styles from "./ablaeufe-story.module.css";
 
-const markerClass =
-  "h-11 w-11 rounded-full bg-[#198BE8] px-0 text-[0.95rem] font-semibold text-white";
+export type StoryFocus = "alle" | "a" | "b" | "c";
 
-function Marker({ n }: { n: string }) {
-  return (
-    <div className={styles.marker}>
-      <Badge className={markerClass}>{n}</Badge>
-    </div>
-  );
+const tones = ["ink", "signal", "paper"] as const;
+
+function canHover() {
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 }
 
-function FieldSlip() {
+function Switcher({ focus }: { focus: StoryFocus }) {
+  const items: { id: StoryFocus; href: string; label: string }[] = [
+    { id: "a", href: "/leistungen/ablaeufe?entwurf=a", label: "A · Drei Pakete" },
+    { id: "b", href: "/leistungen/ablaeufe?entwurf=b", label: "B · Eine Fläche" },
+    { id: "c", href: "/leistungen/ablaeufe?entwurf=c", label: "C · Eine Frage" },
+    { id: "alle", href: "/leistungen/ablaeufe?entwurf=alle", label: "Alle drei" },
+  ];
+
   return (
-    <div className={styles.slip} aria-hidden="true">
-      <div className={styles.slipTop}>
-        <span>Termin</span>
-        <span className={styles.slipId}>Do 9:00</span>
+    <div className={styles.switcher}>
+      <p className={styles.switchLabel}>Drei Formen, derselbe Ablauf</p>
+      <div className={styles.switchRow}>
+        {items.map((item) => (
+          <Button
+            key={item.id}
+            asChild
+            variant="outline"
+            size="sm"
+            className={
+              focus === item.id
+                ? "border-[#14161C] bg-[#14161C] text-[#F3EFE6] hover:bg-[#14161C] hover:text-[#F3EFE6]"
+                : "border-[#14161C]/15 bg-transparent text-[#14161C] hover:bg-[#14161C]/5"
+            }
+          >
+            <Link href={item.href} aria-current={focus === item.id ? "page" : undefined}>
+              {item.label}
+            </Link>
+          </Button>
+        ))}
       </div>
-      <p className={styles.slipPlace}>Frau Keller</p>
-      <ul className={styles.slipRows}>
-        <li className={styles.slipRow}>
-          <span className={styles.slipLabel}>Anlass</span>
-          <span>Rückruf</span>
-        </li>
-        <li className={styles.slipRow}>
-          <span className={styles.slipLabel}>Stand</span>
-          <span className={styles.pill}>
-            <span className={styles.dot} />
-            erfasst
-          </span>
-        </li>
-      </ul>
-      <p className={styles.example}>Beispiel</p>
     </div>
   );
 }
 
-function Face({
-  where,
-  status,
-  arrive = false,
-}: {
-  where: string;
-  status: string;
-  arrive?: boolean;
-}) {
+function ProblemFigure({ open }: { open: boolean }) {
+  if (!open) {
+    return (
+      <div className={styles.slip} aria-hidden="true">
+        <div className={styles.slipTop}>
+          <span>Termin</span>
+          <span className={styles.slipId}>Do 9:00</span>
+        </div>
+        <p className={styles.slipPlace}>Frau Keller</p>
+        <p className={styles.slipMeta}>Rückruf</p>
+      </div>
+    );
+  }
+
   return (
-    <div className={arrive ? `${styles.face} ${styles.arrive}` : styles.face} aria-hidden="true">
-      <p className={styles.faceWhere}>{where}</p>
-      <p className={styles.faceId}>Do 9:00</p>
-      <p className={styles.facePlace}>Frau Keller · Rückruf</p>
-      <p className={styles.pill}>{status}</p>
+    <div className={styles.pair} aria-hidden="true">
+      <div className={styles.slip}>
+        <div className={styles.slipTop}>
+          <span>Notiz</span>
+          <span className={styles.slipId}>Do 9:00</span>
+        </div>
+        <p className={styles.slipPlace}>Frau Keller · Rückruf</p>
+      </div>
+      <div className={`${styles.slip} ${styles.slipAsk}`}>
+        <div className={styles.slipTop}>
+          <span>Büro</span>
+          <span>noch einmal</span>
+        </div>
+        <p className={styles.slipPlace}>Uhrzeit?</p>
+      </div>
     </div>
+  );
+}
+
+function OfferFigure({ open, price }: { open: boolean; price: string }) {
+  return (
+    <div className={styles.plate} aria-hidden="true">
+      <p className={styles.plateLabel}>Datenbasis + 1 Prozessmodul</p>
+      <p className={styles.platePrice}>{price}</p>
+      {open ? <p className={styles.plateLine}>Do 9:00 · Frau Keller · einmal</p> : null}
+    </div>
+  );
+}
+
+function ReasonFigure({ open }: { open: boolean }) {
+  return (
+    <div className={styles.ledger} aria-hidden="true">
+      <p className={styles.kept}>
+        <span>Do 9:00 · Frau Keller</span>
+        <span>einmal</span>
+      </p>
+      {open ? (
+        <p className={styles.dropped}>
+          <span>Do 9:00 · Frau Keller</span>
+          <span>noch einmal</span>
+          <span className={styles.strike} />
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function VariantA({ price }: { price: string }) {
+  const [open, setOpen] = useState<number | null>(null);
+  const packs = [
+    {
+      kicker: "Problem",
+      question: "Was für ein Problem haben Sie?",
+      short: "Dieselbe Angabe liegt zweimal vor.",
+      full: "Dieselbe Angabe liegt zweimal vor. Sie notieren Do 9:00, Frau Keller und Rückruf, und das Büro fragt die Uhrzeit noch einmal.",
+    },
+    {
+      kicker: "Angebot",
+      question: "Was verkaufen wir?",
+      short: "Datenbasis und ein Prozessmodul.",
+      full: `Datenbasis und ein Prozessmodul, zusammen ${price}. Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten. Die Datenbasis ist keine kaufmännische Software. Weitere Module kommen nur, wenn sie im Angebot stehen.`,
+    },
+    {
+      kicker: "Grund",
+      question: "Warum brauchen Sie das?",
+      short: "Büro und unterwegs arbeiten mit derselben Zeile.",
+      full: "Büro und unterwegs arbeiten mit derselben Zeile. Do 9:00, Frau Keller, Rückruf wird nicht noch einmal getippt. Programme, die bei Ihnen zuverlässig laufen, bleiben.",
+    },
+  ] as const;
+
+  return (
+    <div className={styles.packs} data-variant="a">
+      {packs.map((pack, index) => {
+        const isOpen = open === index;
+        return (
+          <Card
+            key={pack.kicker}
+            data-open={isOpen ? "true" : "false"}
+            className={`${styles.pack} ${styles[tones[index]]} ring-0 shadow-none`}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") setOpen(index);
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse") {
+                setOpen((current) => (current === index ? null : current));
+              }
+            }}
+          >
+            <h2 className={styles.question}>
+              <button
+                type="button"
+                className={styles.hit}
+                aria-expanded={isOpen}
+                onClick={() => {
+                  if (canHover()) return;
+                  setOpen((current) => (current === index ? null : index));
+                }}
+                onFocus={() => setOpen(index)}
+              >
+                <Badge className={styles.kicker}>{pack.kicker}</Badge>
+                <span className={styles.ask}>{pack.question}</span>
+              </button>
+            </h2>
+            <p className={styles.body}>{isOpen ? pack.full : pack.short}</p>
+            <div className={styles.figure}>
+              {index === 0 ? <ProblemFigure open={isOpen} /> : null}
+              {index === 1 ? <OfferFigure open={isOpen} price={price} /> : null}
+              {index === 2 ? <ReasonFigure open={isOpen} /> : null}
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+
+function VariantB({ price }: { price: string }) {
+  const [one, setOne] = useState(false);
+
+  return (
+    <section className={styles.stage} data-variant="b" data-one={one ? "true" : "false"}>
+      <p className={styles.stageKicker}>{one ? "Eine Zeile" : "Zweimal dieselbe Angabe"}</p>
+      <div className={styles.stageField}>
+        <div className={styles.fact}>
+          <span className={styles.factWhere}>{one ? "Notiz und Büro" : "Notiz"}</span>
+          <span className={styles.factLine}>Do 9:00 · Frau Keller · Rückruf</span>
+        </div>
+        {one ? null : (
+          <div className={styles.fact}>
+            <span className={styles.factWhere}>Büro fragt</span>
+            <span className={styles.factLine}>Do 9:00 · Frau Keller · Rückruf</span>
+          </div>
+        )}
+      </div>
+      <p className={styles.stageBody}>
+        {one
+          ? "Das Büro arbeitet mit dieser Zeile weiter. Sie wird nicht noch einmal getippt."
+          : "Die Notiz hat die Uhrzeit schon. Das Büro fragt sie trotzdem noch einmal."}
+      </p>
+      {one ? (
+        <p className={styles.stagePrice}>
+          Datenbasis und ein Prozessmodul, zusammen {price}. Ohne monatliche Betreuung, keine
+          kaufmännische Software.
+        </p>
+      ) : null}
+      <Button
+        type="button"
+        variant="outline"
+        className={styles.stageButton}
+        aria-pressed={one}
+        onClick={() => setOne((value) => !value)}
+      >
+        {one ? "Die doppelte Angabe zeigen" : "Zur gemeinsamen Zeile"}
+      </Button>
+    </section>
+  );
+}
+
+const steps = [
+  {
+    question: "Was für ein Problem haben Sie?",
+    body: "Sie notieren Do 9:00, Frau Keller und Rückruf. Dieselbe Uhrzeit fragt das Büro noch einmal, weil es die Notiz nicht hat.",
+    fact: "Do 9:00 · Frau Keller · Rückruf",
+    factWhere: "steht schon, und wird noch einmal gefragt",
+  },
+  {
+    question: "Was verkaufen wir?",
+    body: "Datenbasis und ein Prozessmodul. Eine monatliche Betreuung ist darin nicht enthalten. Die Datenbasis ist keine kaufmännische Software. Weitere Module kommen nur, wenn sie im Angebot stehen.",
+    fact: "",
+    factWhere: "",
+  },
+  {
+    question: "Warum brauchen Sie das?",
+    body: "Notiz und Büro arbeiten mit derselben Zeile. Do 9:00, Frau Keller, Rückruf wird nicht noch einmal getippt. Programme, die bei Ihnen zuverlässig laufen, bleiben.",
+    fact: "Do 9:00 · Frau Keller · Rückruf",
+    factWhere: "eine Zeile für Notiz und Büro",
+  },
+] as const;
+
+function VariantC({ price }: { price: string }) {
+  const [step, setStep] = useState(0);
+  const current = steps[step];
+
+  return (
+    <section className={styles.guide} data-variant="c" aria-live="polite">
+      <p className={styles.guideCount}>
+        {step + 1} von {steps.length}
+      </p>
+      <h2 className={styles.guideQuestion}>{current.question}</h2>
+      <p className={styles.guideBody}>{current.body}</p>
+      {step === 1 ? <p className={styles.guidePrice}>{price}</p> : null}
+      {current.fact ? (
+        <p className={styles.guideFact}>
+          <span>{current.factWhere}</span>
+          {current.fact}
+        </p>
+      ) : null}
+      <div className={styles.guideNav}>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={step === 0}
+          onClick={() => setStep((value) => Math.max(0, value - 1))}
+        >
+          Zurück
+        </Button>
+        {step < steps.length - 1 ? (
+          <Button
+            type="button"
+            className="bg-[#198BE8] text-white hover:bg-[#1576C4]"
+            onClick={() => setStep((value) => value + 1)}
+          >
+            Weiter
+          </Button>
+        ) : (
+          <Button type="button" variant="outline" onClick={() => setStep(0)}>
+            Von vorn
+          </Button>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function QuietClose({ note }: { note: string }) {
+  return (
+    <>
+      <p className={styles.note}>{note}</p>
+      <p className={styles.aside}>
+        Wie ein Bestellweg in einem Laden aussehen kann, zeigt die Kundengeschichte{" "}
+        <Link
+          href="/referenzen/feinkost-kreta"
+          className="text-[#198BE8] underline-offset-4 hover:underline"
+        >
+          Projekt Feinkost Kreta
+        </Link>
+        .
+      </p>
+    </>
   );
 }
 
 export function AblaeufeStory({
   price,
   note,
+  focus,
   children,
 }: {
   price: string;
   note: string;
+  focus: StoryFocus;
   children?: ReactNode;
 }) {
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const scenes = root.querySelectorAll("[data-scene]");
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add(styles.on);
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.2, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    scenes.forEach((scene) => observer.observe(scene));
-    return () => observer.disconnect();
-  }, []);
+  const show = (id: StoryFocus) => focus === "alle" || focus === id;
 
   return (
-    <div ref={rootRef} className={styles.path}>
-      <div className={styles.track}>
-        <div className={styles.rail} aria-hidden="true">
-          <span className={styles.railLine} />
-          <span className={styles.bead} />
-        </div>
-        <ol className={styles.steps}>
-          <li className={styles.step} data-scene>
-            <Marker n="1" />
-            <div className={styles.panelField}>
-              <div>
-                <p className={styles.kicker}>Einmal</p>
-                <h2 className={styles.title}>Einmal erfassen</h2>
-                <p className={styles.body}>
-                  Sie notieren den Termin einmal, am Telefon, am Tresen oder unterwegs.
-                  Uhrzeit, Name und Anlass gehen so ins Büro.
-                </p>
-              </div>
-              <FieldSlip />
-            </div>
-          </li>
-
-          <li className={styles.step} data-scene>
-            <Marker n="2" />
-            <div className={styles.panelInk}>
-              <p className={styles.kicker}>Im Büro</p>
-              <h2 className={styles.title}>Büro sieht denselben Stand</h2>
-              <p className={styles.body}>
-                Das Büro sieht Do 9:00 und Frau Keller, ohne die Uhrzeit noch einmal
-                zu erfragen. Fachliche Freigaben bleiben bei den zuständigen Personen
-                im Betrieb.
-              </p>
-              <div className={styles.handoff}>
-                <Face where="Erfasst" status="liegt vor" />
-                <div className={styles.bridge} aria-hidden="true">
-                  <span className={styles.bridgeLine} />
-                  <span>derselbe Stand</span>
-                  <span className={styles.bridgeLine} />
-                </div>
-                <Face where="Büro" status="dieselbe Uhrzeit" arrive />
-              </div>
-            </div>
-          </li>
-
-          <li className={styles.step} data-scene>
-            <Marker n="3" />
-            <div className={styles.once}>
-              <div className={styles.onceCopy}>
-                <p className={styles.kicker}>Danach</p>
-                <h2 className={styles.title}>Nichts wird ein zweites Mal getippt</h2>
-                <p className={styles.body}>
-                  Dieselbe Angabe wird nicht noch einmal abgetippt. Programme, die
-                  bei Ihnen zuverlässig laufen, bleiben. Eine Verbindung entsteht nur
-                  dort, wo Sie sie vereinbaren.
-                </p>
-              </div>
-              <div className={styles.ledger} aria-hidden="true">
-                <p className={styles.kept}>
-                  <span>Do 9:00 · Frau Keller</span>
-                  <span>einmal</span>
-                </p>
-                <p className={styles.dropped}>
-                  <span>Do 9:00 · Frau Keller</span>
-                  <span>noch einmal</span>
-                  <span className={styles.strike} />
-                </p>
-              </div>
-            </div>
-          </li>
-        </ol>
+    <div className={styles.path}>
+      <Switcher focus={focus} />
+      <div className={focus === "alle" ? styles.board : undefined}>
+        {show("a") ? (
+          <div className={styles.slot} id="entwurf-a">
+            {focus === "alle" ? <p className={styles.slotLabel}>A · Drei Pakete</p> : null}
+            <VariantA price={price} />
+          </div>
+        ) : null}
+        {show("b") ? (
+          <div className={styles.slot} id="entwurf-b">
+            {focus === "alle" ? <p className={styles.slotLabel}>B · Eine Fläche</p> : null}
+            <VariantB price={price} />
+          </div>
+        ) : null}
+        {show("c") ? (
+          <div className={styles.slot} id="entwurf-c">
+            {focus === "alle" ? <p className={styles.slotLabel}>C · Eine Frage</p> : null}
+            <VariantC price={price} />
+          </div>
+        ) : null}
       </div>
-
-      <div className={styles.price}>
-        <div className={styles.priceInner}>
-          <Separator className="bg-[#14161C]/15" />
-          <p className={styles.priceLabel}>Datenbasis + 1 Prozessmodul</p>
-          <p className={styles.priceValue}>{price}</p>
-          <p className={styles.priceBody}>
-            Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten. Die
-            Datenbasis ist keine kaufmännische Software. Weitere Module kommen nur,
-            wenn sie im Angebot stehen.
-          </p>
-          <p className={styles.priceNote}>{note}</p>
-          <p className={styles.aside}>
-            Wie ein Bestellweg in einem Laden aussehen kann, zeigt die Kundengeschichte{" "}
-            <Link
-              href="/referenzen/feinkost-kreta"
-              className="text-[#198BE8] underline-offset-4 hover:underline"
-            >
-              Projekt Feinkost Kreta
-            </Link>
-            .
-          </p>
-        </div>
-      </div>
-
+      <QuietClose note={note} />
       {children ? <div className={styles.follow}>{children}</div> : null}
     </div>
   );
