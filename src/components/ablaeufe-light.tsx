@@ -64,11 +64,12 @@ export function AblaeufeLight({ className }: { className?: string }) {
       });
 
       const meshes: InstanceType<typeof THREE.Mesh>[] = [];
+      const radii = [0.62, 0.58, 0.28, 0.12];
       const specs = [
-        { geo: new THREE.IcosahedronGeometry(0.92, 1), mat: glass },
-        { geo: new THREE.TorusGeometry(1.05, 0.028, 16, 64), mat: glass },
-        { geo: new THREE.IcosahedronGeometry(0.38, 0), mat: ink },
-        { geo: new THREE.SphereGeometry(0.14, 20, 16), mat: ink },
+        { geo: new THREE.IcosahedronGeometry(radii[0], 1), mat: glass },
+        { geo: new THREE.TorusGeometry(radii[1], 0.018, 12, 48), mat: glass },
+        { geo: new THREE.IcosahedronGeometry(radii[2], 0), mat: ink },
+        { geo: new THREE.SphereGeometry(radii[3], 20, 16), mat: ink },
       ];
       for (const spec of specs) {
         const mesh = new THREE.Mesh(spec.geo, spec.mat);
@@ -76,19 +77,52 @@ export function AblaeufeLight({ className }: { className?: string }) {
         meshes.push(mesh);
       }
 
+      const depthHalf = (z: number) => {
+        const distance = camera.position.z - z;
+        const halfH = Math.tan((32 * Math.PI) / 180 / 2) * distance;
+        return { halfH, halfW: halfH * camera.aspect };
+      };
+      const toWorld = (px: number, py: number, z: number, width: number, height: number) => {
+        const { halfW, halfH } = depthHalf(z);
+        const ndcX = (px / width) * 2 - 1;
+        const ndcY = -((py / height) * 2 - 1);
+        return { x: ndcX * halfW, y: ndcY * halfH };
+      };
+
       const place = () => {
-        const halfH = Math.tan((32 * Math.PI) / 180 / 2) * camera.position.z;
-        const halfW = halfH * camera.aspect;
-        const narrow = camera.aspect < 1.15;
-        const edge = narrow ? 0.72 : 0.92;
-        meshes[0].position.set(halfW * edge, narrow ? halfH * 0.72 : 0.15, -1.15);
-        meshes[0].scale.setScalar(narrow ? 0.42 : 1);
-        meshes[1].position.set(halfW * (narrow ? 0.78 : 0.62), halfH * (narrow ? 0.78 : 0.62), -1.6);
-        meshes[1].scale.setScalar(narrow ? 0.45 : 0.9);
-        meshes[2].position.set(-halfW * 0.86, halfH * 0.78, -1.3);
-        meshes[2].scale.setScalar(narrow ? 0.55 : 0.85);
-        meshes[3].position.set(narrow ? halfW * 0.8 : -halfW * 0.72, -halfH * 0.78, -0.4);
-        meshes[3].scale.setScalar(narrow ? 0.7 : 1);
+        const width = host.clientWidth;
+        const height = host.clientHeight;
+        if (width < 2 || height < 2) return;
+        const hostRect = host.getBoundingClientRect();
+        let textRight = hostRect.left;
+        for (const node of host.querySelectorAll("p")) {
+          const box = node.getBoundingClientRect();
+          if (box.width < 2 || box.height < 2) continue;
+          textRight = Math.max(textRight, box.right);
+        }
+        const gap = Math.max(28, width * 0.035);
+        const fieldLeft = Math.min(width - 56, textRight - hostRect.left + gap);
+        const fieldRight = width - 18;
+        const fieldW = Math.max(36, fieldRight - fieldLeft);
+        const spots = [
+          { px: fieldRight - fieldW * 0.32, py: height * 0.28, z: -0.35 },
+          { px: fieldLeft + fieldW * 0.38, py: height * 0.2, z: -1.15 },
+          { px: fieldRight - fieldW * 0.24, py: height * 0.68, z: -0.7 },
+          { px: fieldLeft + fieldW * 0.46, py: height * 0.74, z: -0.45 },
+        ];
+        spots.forEach((spot, index) => {
+          const { halfW } = depthHalf(spot.z);
+          const pixelRadius = (radii[index] / halfW) * (width / 2);
+          const room = Math.max(8, fieldW * 0.42);
+          const scale = Math.min(1, room / Math.max(pixelRadius, 1));
+          const mesh = meshes[index];
+          mesh.scale.setScalar(scale);
+          const reach = pixelRadius * scale;
+          const px = Math.min(fieldRight - reach, Math.max(fieldLeft + reach, spot.px));
+          const py = Math.min(height - reach - 12, Math.max(reach + 12, spot.py));
+          const world = toWorld(px, py, spot.z, width, height);
+          mesh.position.set(world.x, world.y, spot.z);
+        });
       };
 
       const resize = () => {
@@ -118,14 +152,15 @@ export function AblaeufeLight({ className }: { className?: string }) {
         if (!running) return;
         const t = clock.getElapsedTime();
         const spin = reduced ? 0.4 : t;
+        place();
         meshes[0].rotation.set(spin * 0.15, spin * 0.22, 0);
         meshes[1].rotation.z = spin * 0.1;
         meshes[1].rotation.x = 0.7 + Math.sin(spin * 0.2) * 0.08;
         meshes[2].rotation.y = spin * 0.2;
-        glow.position.x = meshes[0].position.x - 0.4 + Math.sin(spin * 0.35) * 0.35;
-        glow.position.y = meshes[0].position.y + Math.cos(spin * 0.28) * 0.25;
+        glow.position.x = meshes[0].position.x + Math.sin(spin * 0.35) * 0.12;
+        glow.position.y = meshes[0].position.y + Math.cos(spin * 0.28) * 0.1;
         warm.position.x = meshes[1].position.x;
-        warm.position.y = meshes[1].position.y - 0.4;
+        warm.position.y = meshes[1].position.y;
         rendererInstance.render(scene, camera);
       };
       tick();
