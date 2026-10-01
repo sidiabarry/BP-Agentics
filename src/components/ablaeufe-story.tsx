@@ -21,24 +21,24 @@ function FieldSlip() {
   return (
     <div className={styles.slip} aria-hidden="true">
       <div className={styles.slipTop}>
-        <span>Lieferschein</span>
-        <span className={styles.slipId}>LS-1042</span>
+        <span>Termin</span>
+        <span className={styles.slipId}>Do 9:00</span>
       </div>
-      <p className={styles.slipPlace}>Hagen-Haspe · Garagendach</p>
+      <p className={styles.slipPlace}>Frau Keller</p>
       <ul className={styles.slipRows}>
         <li className={styles.slipRow}>
-          <span className={styles.slipLabel}>Auftrag</span>
-          <span>vor Ort</span>
+          <span className={styles.slipLabel}>Anlass</span>
+          <span>Rückruf</span>
         </li>
         <li className={styles.slipRow}>
           <span className={styles.slipLabel}>Stand</span>
           <span className={styles.pill}>
             <span className={styles.dot} />
-            unterwegs
+            erfasst
           </span>
         </li>
       </ul>
-      <p className={styles.example}>Beispiel · kein Echtbetrieb</p>
+      <p className={styles.example}>Beispiel</p>
     </div>
   );
 }
@@ -55,8 +55,8 @@ function Face({
   return (
     <div className={arrive ? `${styles.face} ${styles.arrive}` : styles.face} aria-hidden="true">
       <p className={styles.faceWhere}>{where}</p>
-      <p className={styles.faceId}>LS-1042</p>
-      <p className={styles.facePlace}>Hagen-Haspe · Garagendach</p>
+      <p className={styles.faceId}>Do 9:00</p>
+      <p className={styles.facePlace}>Frau Keller · Rückruf</p>
       <p className={styles.pill}>{status}</p>
     </div>
   );
@@ -107,11 +107,11 @@ export function AblaeufeStory({
             <Marker n="1" />
             <div className={styles.panelField}>
               <div>
-                <p className={styles.kicker}>Vor Ort</p>
-                <h2 className={styles.title}>Unterwegs erfassen</h2>
+                <p className={styles.kicker}>Einmal</p>
+                <h2 className={styles.title}>Einmal erfassen</h2>
                 <p className={styles.body}>
-                  Sie nehmen den Lieferschein vor Ort auf. Felder und Ablauf stehen
-                  fest, bevor die Angabe ins Büro geht.
+                  Sie notieren den Termin einmal, am Telefon, am Tresen oder unterwegs.
+                  Uhrzeit, Name und Anlass gehen so ins Büro.
                 </p>
               </div>
               <FieldSlip />
@@ -124,17 +124,18 @@ export function AblaeufeStory({
               <p className={styles.kicker}>Im Büro</p>
               <h2 className={styles.title}>Büro sieht denselben Stand</h2>
               <p className={styles.body}>
-                Was Sie unterwegs erfasst haben, sieht das Büro als denselben Stand.
-                Fachliche Freigaben bleiben bei den zuständigen Personen im Betrieb.
+                Das Büro sieht Do 9:00 und Frau Keller, ohne die Uhrzeit noch einmal
+                zu erfragen. Fachliche Freigaben bleiben bei den zuständigen Personen
+                im Betrieb.
               </p>
               <div className={styles.handoff}>
-                <Face where="Außendienst" status="unterwegs" />
+                <Face where="Erfasst" status="liegt vor" />
                 <div className={styles.bridge} aria-hidden="true">
                   <span className={styles.bridgeLine} />
                   <span>derselbe Stand</span>
                   <span className={styles.bridgeLine} />
                 </div>
-                <Face where="Büro" status="Büro sieht mit" arrive />
+                <Face where="Büro" status="dieselbe Uhrzeit" arrive />
               </div>
             </div>
           </li>
@@ -142,23 +143,23 @@ export function AblaeufeStory({
           <li className={styles.step} data-scene>
             <Marker n="3" />
             <div className={styles.once}>
-              <div>
-                <p className={styles.kicker}>Einmal</p>
+              <div className={styles.onceCopy}>
+                <p className={styles.kicker}>Danach</p>
                 <h2 className={styles.title}>Nichts wird ein zweites Mal getippt</h2>
                 <p className={styles.body}>
-                  Die Angabe wird nicht noch einmal eingetippt. Programme, die bei
-                  Ihnen zuverlässig laufen, bleiben. Eine Verbindung entsteht nur
+                  Dieselbe Angabe wird nicht noch einmal abgetippt. Programme, die
+                  bei Ihnen zuverlässig laufen, bleiben. Eine Verbindung entsteht nur
                   dort, wo Sie sie vereinbaren.
                 </p>
               </div>
               <div className={styles.ledger} aria-hidden="true">
                 <p className={styles.kept}>
-                  <span>LS-1042</span>
-                  <span>einmal erfasst</span>
+                  <span>Do 9:00 · Frau Keller</span>
+                  <span>einmal</span>
                 </p>
                 <p className={styles.dropped}>
-                  <span>LS-1042</span>
-                  <span>noch einmal tippen</span>
+                  <span>Do 9:00 · Frau Keller</span>
+                  <span>noch einmal</span>
                   <span className={styles.strike} />
                 </p>
               </div>

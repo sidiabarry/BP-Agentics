@@ -11,7 +11,7 @@ import { PRICE_NOTE, automationOffer, cta } from "@/lib/offers";
 export const metadata: Metadata = pageMetadata({
   title: "Büroabläufe und Automatisierung für Handwerk",
   description:
-    "Sie erfassen den Auftrag einmal unterwegs, und das Büro arbeitet mit demselben Stand weiter. Datenbasis und ein Prozessmodul zusammen ab 2.490 €, ohne monatliche Betreuung.",
+    "Sie erfassen Termin, Notiz oder Stand einmal, und das Büro arbeitet mit derselben Angabe weiter. Datenbasis und ein Prozessmodul zusammen ab 2.490 €, ohne monatliche Betreuung.",
   path: "/leistungen/ablaeufe",
 });
 
@@ -20,7 +20,7 @@ export default function AblaeufePage() {
     <StagePage
       kicker="Büroabläufe"
       title="Einmal erfassen. Im Büro und unterwegs weitergeben."
-      lead="Sie erfassen den Auftrag einmal unterwegs, und das Büro arbeitet mit demselben Stand weiter, ohne die Angabe ein zweites Mal zu tippen."
+      lead="Sie erfassen Termin, Notiz oder Stand einmal, und das Büro arbeitet mit derselben Angabe weiter, ohne sie ein zweites Mal zu tippen."
       crumbs={[
         { name: "Leistungen", path: "/leistungen" },
         { name: "Büroabläufe", path: "/leistungen/ablaeufe" },
