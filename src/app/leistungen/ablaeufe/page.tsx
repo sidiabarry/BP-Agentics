@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AblaeufeStory } from "@/components/ablaeufe-story";
+import { AblaeufeStory, type StoryFocus } from "@/components/ablaeufe-story";
 import { PageFaqs } from "@/components/page-faqs";
 import { Proof } from "@/components/proof";
 import { StagePage } from "@/components/stage-page";
@@ -15,7 +15,15 @@ export const metadata: Metadata = pageMetadata({
   path: "/leistungen/ablaeufe",
 });
 
-export default function AblaeufePage() {
+export default async function AblaeufePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ entwurf?: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const raw = Array.isArray(params.entwurf) ? params.entwurf[0] : params.entwurf;
+  const focus: StoryFocus = raw === "a" || raw === "b" || raw === "c" || raw === "alle" ? raw : "alle";
+
   return (
     <StagePage
       kicker="Büroabläufe"
@@ -51,7 +59,7 @@ export default function AblaeufePage() {
       }}
       appendix={<Proof />}
     >
-      <AblaeufeStory price={automationOffer.combined} note={PRICE_NOTE}>
+      <AblaeufeStory price={automationOffer.combined} note={PRICE_NOTE} focus={focus}>
         <PageFaqs items={ablaeufeFaqs} calm />
       </AblaeufeStory>
     </StagePage>
