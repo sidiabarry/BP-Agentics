@@ -3,446 +3,233 @@
   gap: 1.75rem;
 }
 
-.switcher {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.switchLabel,
-.slotLabel {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #5c5f66;
-}
-
-.switchRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.board {
-  display: grid;
-  gap: 2.5rem;
-}
-
-.slot {
-  display: grid;
-  gap: 0.85rem;
-  min-width: 0;
-  container-type: inline-size;
-}
-
-.packs {
-  display: grid;
-  gap: 0.9rem;
-  align-items: start;
-}
-
-.pack {
-  gap: 0;
-  border: 0;
-  padding: 1.15rem 1.15rem 1.2rem;
-  border-radius: 1.5rem;
-  box-shadow: none;
-  --card-spacing: 0px;
-}
-
-.ink {
-  background: #14161c;
-  color: #f3efe6;
-}
-
-.signal {
-  background: #198be8;
-  color: #fff;
-}
-
-.paper {
-  background: #f3efe6;
-  color: #14161c;
-  box-shadow: inset 0 0 0 1px rgba(20, 22, 28, 0.12);
-}
-
-.question {
-  margin: 0;
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-.hit {
-  display: grid;
-  gap: 0.55rem;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  font: inherit;
-}
-
-.hit:focus-visible {
-  outline: 2px solid #198be8;
-  outline-offset: 4px;
-}
-
-.kicker {
-  width: fit-content;
-  border: 0;
-  background: rgba(243, 239, 230, 0.16);
-  color: inherit;
-}
-
-.paper .kicker {
-  background: #14161c;
-  color: #f3efe6;
-}
-
-.ask {
-  font-size: 1.28rem;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-
-.body {
-  margin: 0.75rem 0 0;
-  font-size: 1.02rem;
-  line-height: 1.5;
-}
-
-.ink .body,
-.signal .body {
-  color: rgba(243, 239, 230, 0.88);
-}
-
-.signal .body {
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.paper .body {
-  color: #3a3d45;
-}
-
-.figure {
-  margin-top: 1rem;
-  min-width: 0;
-}
-
-.slip,
-.plate,
-.ledger {
-  border-radius: 1rem;
-  padding: 0.85rem 0.9rem;
-}
-
-.slip {
-  background: #f3efe6;
-  color: #14161c;
-}
-
-.slipAsk {
-  background: #14161c;
-  color: #f3efe6;
-}
-
-.ink .slipAsk {
-  background: #198be8;
-  color: #fff;
-}
-
-.slipTop,
-.kept,
-.dropped {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.35rem 0.75rem;
-}
-
-.slipTop {
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: #5c5f66;
-}
-
-.slipAsk .slipTop {
-  color: rgba(243, 239, 230, 0.72);
-}
-
-.slipId {
-  font-weight: 600;
-  color: #198be8;
-}
-
-.slipPlace {
-  margin: 0.35rem 0 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.slipMeta {
-  margin: 0.2rem 0 0;
-  color: #5c5f66;
-  font-size: 0.92rem;
-}
-
-.pair {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.plate {
-  background: #f3efe6;
-  color: #14161c;
-}
-
-.signal .plate {
-  background: #14161c;
-  color: #f3efe6;
-}
-
-.plateLabel,
-.factWhere,
-.guideFact span {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.platePrice,
-.guidePrice {
-  margin: 0.25rem 0 0;
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-.plateLine {
-  margin: 0.55rem 0 0;
-  font-size: 0.95rem;
-}
-
-.ledger {
+.scene {
   position: relative;
-  background: #14161c;
-  color: #f3efe6;
   overflow: hidden;
-}
-
-.paper .ledger {
-  background: #14161c;
-}
-
-.kept,
-.dropped {
-  position: relative;
-  margin: 0;
-  padding: 0.45rem 0;
-  font-size: 0.98rem;
-  font-weight: 600;
-}
-
-.kept {
-  border-bottom: 1px solid rgba(243, 239, 230, 0.14);
-}
-
-.kept span:last-child {
-  color: #9fd0f8;
-  font-size: 0.86rem;
-}
-
-.dropped {
-  color: rgba(243, 239, 230, 0.45);
-  font-weight: 500;
-}
-
-.strike {
-  position: absolute;
-  top: 58%;
-  right: 0;
-  left: 0;
-  height: 2px;
-  background: #198be8;
-}
-
-.stage {
-  display: grid;
-  gap: 1.15rem;
-  min-height: 22rem;
-  padding: 1.4rem 1.2rem 1.35rem;
+  min-height: 28rem;
   border-radius: 1.85rem;
   background:
-    radial-gradient(80% 70% at 100% 0%, rgba(25, 139, 232, 0.35), transparent 55%),
+    radial-gradient(70% 80% at 50% 42%, rgba(25, 139, 232, 0.22), transparent 62%),
     #14161c;
   color: #f3efe6;
 }
 
-.stageKicker {
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 2.4rem 1.35rem 2rem;
+  transition: opacity 0.6s ease;
+}
+
+.scene[data-phase="fade"] .copy {
+  opacity: 0;
+}
+
+.caption,
+.captionAgain {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.caption {
+  color: rgba(243, 239, 230, 0.62);
+}
+
+.captionAgain {
+  margin-top: 0.85rem;
   color: #9fd0f8;
 }
 
-.stageField {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.fact {
-  display: grid;
-  gap: 0.3rem;
-  padding: 0.95rem 1rem;
-  border-radius: 1.1rem;
-  background: #f3efe6;
-  color: #14161c;
-}
-
-.factWhere {
-  color: #198be8;
-}
-
-.factLine {
-  font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.38em;
+  row-gap: 0.06em;
+  width: 100%;
+  margin: 0.4rem 0 0;
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(1.65rem, 2.8vw, 2.65rem);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1.2;
 }
 
-.stageBody,
-.stagePrice {
-  margin: 0;
-  max-width: 38rem;
-  font-size: 1.08rem;
-  line-height: 1.5;
-}
-
-.stagePrice {
-  color: rgba(243, 239, 230, 0.78);
-  font-size: 0.98rem;
-}
-
-.stageButton {
-  justify-self: start;
-  border-color: rgba(243, 239, 230, 0.35);
-  background: transparent;
-  color: #f3efe6;
-}
-
-.stageButton:hover {
-  background: rgba(243, 239, 230, 0.08);
-  color: #f3efe6;
-}
-
-.guide {
-  display: grid;
-  gap: 0.9rem;
-  max-width: 40rem;
-  min-height: 18rem;
-}
-
-.guideCount {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #198be8;
-}
-
-.guideQuestion {
-  margin: 0;
-  max-width: 16em;
-  font-size: clamp(1.7rem, 4vw, 2.6rem);
-  line-height: 1.08;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-
-.guideBody {
-  margin: 0;
-  max-width: 38rem;
-  font-size: 1.08rem;
-  line-height: 1.55;
-  color: #3a3d45;
-}
-
-.guidePrice {
-  color: #14161c;
-}
-
-.guideFact {
-  margin: 0.2rem 0 0;
-  padding: 1rem 1.05rem;
-  border-radius: 1.15rem;
-  background: #14161c;
-  color: #f3efe6;
-  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.25;
-}
-
-.guideFact span {
-  margin-bottom: 0.35rem;
+.lineAgain {
   color: #9fd0f8;
 }
 
-.guideNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 0.4rem;
+.word {
+  display: inline-block;
+  overflow: hidden;
+  padding-top: 0.18em;
+  padding-bottom: 0.14em;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 
-.note,
+.wordInner {
+  display: inline-block;
+  transform: translateY(115%);
+}
+
+.lineFirst .wordInner {
+  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.12s + var(--i) * 0.07s);
+}
+
+.scene[data-phase="twice"] .lineAgain .wordInner,
+.scene[data-phase="shared"] .lineAgain .wordInner,
+.scene[data-phase="fade"] .lineAgain .wordInner {
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.08s + var(--i) * 0.07s);
+}
+
+.duplicate {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s ease;
+}
+
+.scene[data-phase="twice"] .duplicate {
+  max-height: 13rem;
+  opacity: 1;
+}
+
+.duplicateInner {
+  overflow: hidden;
+}
+
+.relief,
+.reliefSub,
+.offer,
+.note {
+  margin: 0;
+  max-width: 36rem;
+  opacity: 0;
+  transform: translateY(0.45rem);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scene[data-phase="shared"] .relief,
+.scene[data-phase="shared"] .reliefSub,
+.scene[data-phase="shared"] .offer,
+.scene[data-phase="shared"] .note,
+.scene[data-phase="fade"] .relief,
+.scene[data-phase="fade"] .reliefSub,
+.scene[data-phase="fade"] .offer,
+.scene[data-phase="fade"] .note {
+  opacity: 1;
+  transform: none;
+}
+
+.relief {
+  margin-top: 1.35rem;
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  transition-delay: 0.05s;
+}
+
+.reliefSub {
+  margin-top: 0.4rem;
+  color: rgba(243, 239, 230, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  transition-delay: 0.16s;
+}
+
+.rule {
+  width: 4.5rem;
+  margin-top: 1.25rem;
+  background: rgba(243, 239, 230, 0.2);
+  opacity: 0;
+  transition: opacity 0.6s ease 0.2s;
+}
+
+.scene[data-phase="shared"] .rule,
+.scene[data-phase="fade"] .rule {
+  opacity: 1;
+}
+
+.offer {
+  margin-top: 0.9rem;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  transition-delay: 0.28s;
+}
+
+.note {
+  margin-top: 0.55rem;
+  color: rgba(243, 239, 230, 0.55);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  transition-delay: 0.36s;
+}
+
 .aside {
   margin: 0;
   max-width: 40rem;
+  color: #5c5f66;
   font-size: 0.92rem;
   line-height: 1.5;
-  color: #5c5f66;
 }
 
 .follow {
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 
-@media (min-width: 1100px) {
-  .board {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    align-items: start;
+@keyframes rise {
+  from {
+    transform: translateY(115%);
+  }
+  to {
+    transform: translateY(0);
   }
 }
 
-@container (min-width: 46rem) {
-  .packs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    align-items: stretch;
+@media (min-width: 800px) {
+  .copy {
+    padding: 3.2rem 3rem 2.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordInner,
+  .relief,
+  .reliefSub,
+  .offer,
+  .note,
+  .rule,
+  .copy {
+    animation: none;
+    transition: none;
+    transform: none;
+    opacity: 1;
   }
 
-  .ask {
-    font-size: 1.4rem;
-  }
-
-  .stage {
-    padding: 2rem 2.1rem 1.7rem;
-  }
-
-  .stage[data-one="false"] .stageField {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: stretch;
+  .duplicate {
+    display: none;
   }
 }
