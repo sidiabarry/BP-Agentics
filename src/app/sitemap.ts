@@ -30,7 +30,6 @@ const staticRoutes: {
     lastModified: foerderungUpdated,
   },
   { path: "/referenzen", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
-  { path: "/referenzen/feinkost-kreta", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
   {
     path: "/referenzen/dachdecker-signature",
     changeFrequency: "monthly",

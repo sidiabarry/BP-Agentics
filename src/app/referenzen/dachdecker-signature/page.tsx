@@ -38,7 +38,6 @@ export default function DachdeckerSignaturePage() {
       related={[
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/dachdecker", label: "Anwendungsbeispiel Dachdecker" },
-        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/preise", label: "Preise" },
       ]}
       next={{

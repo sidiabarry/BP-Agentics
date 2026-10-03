@@ -54,11 +54,6 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link href="/referenzen/feinkost-kreta" className="hover:text-white">
-                Feinkost Kreta
-              </Link>
-            </li>
-            <li>
               <Link href="/referenzen/dachdecker-signature" className="hover:text-white">
                 Dachdecker Signature
               </Link>

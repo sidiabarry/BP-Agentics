@@ -169,7 +169,7 @@ export const officeSlides = [
 ] as const;
 
 export const workReferences =
-  "Danach zu sehen: Feinkost Kreta · Dachdecker Signature · Automatisierung";
+  "Danach zu sehen: Dachdecker Signature · Büroabläufe";
 
 export const whyPoints = [
   {

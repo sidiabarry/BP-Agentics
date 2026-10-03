@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageFaqs } from "@/components/page-faqs";
 import { Proof } from "@/components/proof";
 import { StageCard, StageGrid, StageLimit, StagePanel } from "@/components/stage-blocks";
@@ -148,7 +147,6 @@ export default function AblaeufePage() {
         { href: "/leistungen/auftritt", label: "Website-Pakete ansehen" },
         { href: "/leistungen/annahme", label: "Nachrichten-Assistent ansehen" },
         { href: "/leistungen/affiliate", label: "Affiliate-Programme" },
-        { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
         { href: "/preise", label: "Preise" },
       ]}
       next={{
@@ -156,7 +154,7 @@ export default function AblaeufePage() {
         body: "Im Gespräch prüfen wir, welche Programme schon zuverlässig arbeiten und welcher Schritt den passenden Anfang macht. 90 Minuten vor Ort.",
         chips: ["Datenbasis + 1 Modul", "Ohne monatliche Betreuung", "Weitere Abläufe im Angebot"],
         primary: { href: cta.href, label: "Ersten Ablauf besprechen" },
-        secondary: { href: "/referenzen/feinkost-kreta", label: "Projekt Feinkost Kreta" },
+        secondary: { href: "/preise", label: "Preise ansehen" },
       }}
       visual={<LedgerPreview />}
       appendix={
@@ -183,14 +181,6 @@ export default function AblaeufePage() {
           Ablauf. Weitere Module kommen nur, wenn sie im Angebot stehen.
         </p>
       </StageLimit>
-
-      <p className="mt-6 text-[1.05rem] text-[#3A3D45]">
-        Wie ein Bestellweg in einem Laden aussehen kann, zeigt die Kundengeschichte{" "}
-        <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-          Projekt Feinkost Kreta
-        </Link>
-        .
-      </p>
 
       <PageFaqs items={ablaeufeFaqs} />
     </StagePage>

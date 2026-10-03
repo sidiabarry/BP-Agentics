@@ -60,7 +60,7 @@ Lokale, prüfbare Textüberarbeitung. Kein öffentliches Deployment.
 | 3 Werktage / 6 Wochen / 30 Min/Woche | Nicht als pauschale Garantie übernommen. |
 | Assistenten-Kontingente und Fremdkosten | Nicht beziffert. |
 | Laufzeit Automatisierung | Website-Regel nicht automatisch übertragen. |
-| Status Feinkost Kreta | Kundengeschichte: angemeldet bestellen, Betrieb sieht die Bestellung. Video zeigt den Bestellweg. Keine Umsatzzahlen, kein Zitat. Olivenöl-Erinnerung nur als Beispiel. |
+| Feinkost Kreta | Am 03.10.2026 von der Website entfernt. Verbleibend ist die Dachdecker-Demo unter `/referenzen/dachdecker-signature`. Die alte Adresse leitet dorthin um. |
 | Team-Einweisung | Im Projektplan, nicht als enthaltene Schulungsfreiheit. |
 | Datenschutz-Dienstweg | Hosting Deutschland genannt; keine pauschale EU-Garantie für alle Dienste. |
 

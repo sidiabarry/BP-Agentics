@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
         destination: "/leistungen/annahme",
         permanent: true,
       },
+      {
+        source: "/referenzen/feinkost-kreta",
+        destination: "/referenzen/dachdecker-signature",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {
