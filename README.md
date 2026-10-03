@@ -33,9 +33,9 @@ Ohne Key antwortet `/api/termin` mit einem Fehler; das Formular bietet dann noch
 - `/leistungen`, `/leistungen/auftritt`, `/leistungen/annahme`, `/leistungen/ablaeufe`
 - `/passt-das`, `/ueber-mich`
 - `/foerderung/mid-digitale-prozesse`
-- `/referenzen`, `/referenzen/feinkost-kreta`, `/referenzen/dachdecker-signature`
+- `/referenzen`, `/referenzen/dachdecker-signature`
 - `/preise`, `/kontakt`, `/termin`
-- 301: `/leistungen/website` → `/leistungen/auftritt`, `/leistungen/ki-setter` → `/leistungen/annahme`
+- 301: `/leistungen/website` → `/leistungen/auftritt`, `/leistungen/ki-setter` → `/leistungen/annahme`, `/referenzen/feinkost-kreta` → `/referenzen/dachdecker-signature`
 - `/gewerke` — acht Gewerke auf einer Seite; alte Pfade wie `/dachdecker` leiten auf den Anker um
 - `/impressum`, `/datenschutz`
 - Crawl: `/sitemap.xml`, `/robots.txt`, `/llms.txt`

@@ -63,11 +63,7 @@ export function Proof() {
           ))}
         </div>
         <p className="mt-8 text-[1.02rem] text-[#5C5F66]">
-          Danach gebaut:{" "}
-          <Link href="/referenzen/feinkost-kreta" className="text-[#198BE8] underline-offset-4 hover:underline">
-            Feinkost Kreta
-          </Link>
-          {" · "}
+          Danach zu sehen:{" "}
           <Link href="/referenzen/dachdecker-signature" className="text-[#198BE8] underline-offset-4 hover:underline">
             Dachdecker Signature
           </Link>

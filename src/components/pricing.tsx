@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { RevealHeading } from "@/components/reveal-heading";
 import { RevealIn } from "@/components/reveal-in";
 import { WhatsAppInline } from "@/components/whatsapp-button";
-import { DemoLoop, PhoneDemo } from "@/components/demo-player";
+import { DemoLoop } from "@/components/demo-player";
 import {
   PRICE_NOTE,
   automationOffer,
@@ -148,34 +148,16 @@ export function Pricing({
             Datenbasis und ein Prozessmodul kosten zusammen {automationOffer.combined}.
             Eine monatliche Betreuung ist in diesem Einstieg nicht enthalten.
           </p>
-          <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
-            <div>
-              <p className="text-[1.08rem] leading-relaxed text-white/85">
-                {yearTableHint}{" "}
-                <Link href="/leistungen/ablaeufe" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  Automatisierung ansehen
-                </Link>
-                {" · "}
-                <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
-                  Nachrichten-Assistent ansehen
-                </Link>
-                .
-              </p>
-            </div>
-            <PhoneDemo
-              src="/demos/feinkost-loop.mp4"
-              poster="/demos/feinkost-poster.jpg"
-              fullSrc="/demos/feinkost-full.mp4"
-              posterAlt="Smartphone-Ansicht der Bestell-App von Feinkost Kreta"
-              caption="Projekt Feinkost Kreta: angemeldet bestellen."
-              note="Projekt · Feinkost Kreta"
-              width={300}
-            />
-          </div>
-          <p className="mt-4 text-center text-sm text-white/70">
-            <Link href="/referenzen/feinkost-kreta" className="underline-offset-4 hover:underline">
-              Projekt Feinkost Kreta
+          <p className="mt-8 max-w-[40rem] text-[1.08rem] leading-relaxed text-white/85">
+            {yearTableHint}{" "}
+            <Link href="/leistungen/ablaeufe" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+              Automatisierung ansehen
             </Link>
+            {" · "}
+            <Link href="/leistungen/annahme" className="text-[#9FD0F8] underline-offset-4 hover:underline">
+              Nachrichten-Assistent ansehen
+            </Link>
+            .
           </p>
           <div className="mt-8 rounded-[1.4rem] bg-[#F3EFE6] p-6 text-[#14161C] md:p-7">
             <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">

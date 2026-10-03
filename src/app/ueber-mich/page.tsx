@@ -80,12 +80,8 @@ export default function UeberMichPage() {
             leichter werden kann — das klären wir am konkreten Alltag.
           </p>
         </StageCard>
-        <StageCard kicker="Arbeiten und Demos" title="Zwei Wege, die man sehen kann.">
+        <StageCard kicker="Arbeiten und Demos" title="Was man sehen kann.">
           <p>
-            <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
-              Projekt Feinkost Kreta
-            </Link>
-            {" · "}
             <Link href="/referenzen/dachdecker-signature" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
               Website-Demo Dachdecker
             </Link>
