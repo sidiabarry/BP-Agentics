@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DemoLoop } from "@/components/demo-player";
 import { PageFaqs } from "@/components/page-faqs";
 import { StageCard } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
@@ -308,22 +309,38 @@ export default function WebdesignFuerHandwerkerPage() {
         <h2 id="ansehen" className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">
           Was man sich ansehen kann
         </h2>
-        <div className="mt-6 grid gap-4">
-          <StageCard kicker="Produktdemo" title="Dachdecker, Website Signature">
-            <p>
-              Die Demo zeigt eine mögliche Gestaltung für einen Dachdeckerbetrieb mit Bildern,
-              Leistungsbeschreibung und Anfrageweg. Sie ist eine Demo und kein Echtbetrieb.
-            </p>
-            <p className="mt-3">
-              <Link
-                href="/referenzen/dachdecker-signature"
-                className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
-              >
-                Website-Demo ansehen
-              </Link>
-            </p>
-          </StageCard>
-        </div>
+        <article className="mt-6 rounded-3xl bg-white p-6 md:p-8">
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-10">
+            <div>
+              <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
+                Produktdemo · kein Echtbetrieb
+              </p>
+              <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">
+                Dachdecker — Website Signature
+              </h3>
+              <p className="mt-3 text-[1.08rem] leading-relaxed text-[#3A3D45]">
+                Die Demo verbindet Bilder, Leistungsbeschreibung und einen Anfrageweg.
+                Sie zeigt eine mögliche Gestaltung für einen Dachdeckerbetrieb.
+              </p>
+              <p className="mt-5">
+                <Link
+                  href="/referenzen/dachdecker-signature"
+                  className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+                >
+                  Website-Demo ansehen
+                </Link>
+              </p>
+            </div>
+            <DemoLoop
+              src="/demos/dach-loop.mp4"
+              poster="/demos/dach-poster.jpg"
+              fullSrc="/demos/dach-full.mp4"
+              posterAlt="Standbild einer Signature-Website für einen Dachdeckerbetrieb"
+              caption="Mögliche Gestaltung einer Website für einen Dachdeckerbetrieb."
+              note="Produktdemo · kein Echtbetrieb"
+            />
+          </div>
+        </article>
         <p className="mt-4 text-[1.05rem] leading-relaxed text-[#3A3D45]">
           Wir nennen keine Umsatzzahlen und keine erfundenen Ergebnisse.
         </p>

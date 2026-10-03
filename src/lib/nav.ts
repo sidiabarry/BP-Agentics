@@ -47,6 +47,7 @@ export const mobileOverview = {
 } as const;
 
 export const mobileReferenzen = [
+  { href: "/referenzen/feinkost-kreta", label: "Feinkost Kreta" },
   { href: "/referenzen/dachdecker-signature", label: "Dachdecker Signature" },
 ] as const;
 
