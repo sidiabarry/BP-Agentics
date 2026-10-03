@@ -97,23 +97,6 @@ function heroIsScrolling() {
   });
 }
 
-function waitWhileHeroScrolls(alive: () => boolean) {
-  // Chunk-Auswertung nicht mitten in den Hero legen.
-  return new Promise<void>((resolve) => {
-    const step = () => {
-      if (!alive()) {
-        resolve();
-        return;
-      }
-      void heroIsScrolling().then((scrolling) => {
-        if (!alive() || !scrolling) resolve();
-        else step();
-      });
-    };
-    step();
-  });
-}
-
 function titleLines(html: string) {
   return html
     .split(/<br\s*\/?>/i)
@@ -189,19 +172,13 @@ export function WerkstattSection() {
     startedRef.current = true;
     if (announce) setPhase("loading");
     try {
-      await waitForHero(() => aliveRef.current);
-      if (!aliveRef.current) return;
-      await waitWhileHeroScrolls(() => aliveRef.current);
-      if (!aliveRef.current) return;
-      let scrolledDuringImport = false;
-      const noteImportScroll = () => {
-        scrolledDuringImport = true;
-      };
-      window.addEventListener("scroll", noteImportScroll, { passive: true });
+      // Der stille Vorlauf beginnt mit dem ersten Paint. Wartet er auf den
+      // fertigen Hero, landet das eine Standbild im ersten Scroll-Frame.
+      if (announce) {
+        await waitForHero(() => aliveRef.current);
+        if (!aliveRef.current) return;
+      }
       const { createWerkstattScene } = await import("./scene-engine");
-      window.removeEventListener("scroll", noteImportScroll);
-      if (!aliveRef.current) return;
-      if (scrolledDuringImport) await waitWhileHeroScrolls(() => aliveRef.current);
       if (!aliveRef.current) return;
       const controller = createWerkstattScene(
         host,
@@ -247,14 +224,13 @@ export function WerkstattSection() {
   const begin = useCallback(async () => {
     await waitForHero(() => aliveRef.current);
     if (!aliveRef.current) return;
-    // Kein zusätzliches Warten: start() bootet erst in einer echten Pause
-    // oder nach dem Hero. 120ms-Pausen würden sonst um genau diese Pause
-    // später dran sein als der bisherige Start an der 700px-Kante.
+    // Der Vorlauf hängt nicht an einer Scroll-Pause. Sonst ist die Bühne
+    // bei durchgehendem Scroll schon vorbei, wenn die Szene fertig ist.
     void start();
   }, [start]);
 
-  // Nach der fertigen Hero-Szene nur Datei, Parse und Code. Kein WebGL,
-  // solange der Hero noch steht und die Bühne nicht nah ist.
+  // Datei und Parse, sobald der Hero nicht mehr blockiert. Das WebGL-Standbild
+  // startet schon mit dem ersten Paint, sonst liegt es im ersten Scroll-Frame.
   useEffect(() => {
     let cancelled = false;
     let link: HTMLLinkElement | null = null;
@@ -309,6 +285,8 @@ export function WerkstattSection() {
     };
     poll = window.setInterval(arm, 50);
     arm();
+    // GPU-Vorlauf sofort, nicht erst wenn der Hero fertig ist.
+    void start(false);
 
     return () => {
       cancelled = true;
@@ -317,7 +295,7 @@ export function WerkstattSection() {
       if (timer) window.clearTimeout(timer);
       link?.remove();
     };
-  }, []);
+  }, [start]);
 
   // Bei Fallback die Szene abbauen: Standbild und Liste bleiben.
   useEffect(() => {
@@ -335,31 +313,16 @@ export function WerkstattSection() {
     };
   }, []);
 
-  // Erste echte Pause nach dem Scrollen: früher als die 700px-Kante, damit die
-  // Scheiben fertig sind, wenn die Bühne ins Bild kommt. Vor dem ersten Scroll
-  // bleibt der GPU-Teil aus.
-  useEffect(() => {
-    let moved = false;
-    let timer: ReturnType<typeof setTimeout> | 0 = 0;
-    const onScroll = () => {
-      moved = true;
-      if (timer) window.clearTimeout(timer);
-      timer = setTimeout(() => {
-        timer = 0;
-        if (moved) void start();
-      }, 80);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (timer) window.clearTimeout(timer);
-    };
-  }, [start]);
-
   // --- Laden kurz vor dem Sichtbarwerden, Rendern nur solange sichtbar ---
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
+    // Mehrere Viewports vorher, aber nicht schon bei Scroll 0: sonst liegt
+    // der GPU-Vorlauf im ersten Scroll-Moment.
+    const vh = window.innerHeight || 1;
+    const docTop = stage.getBoundingClientRect().top + window.scrollY;
+    const maxLead = Math.max(0, Math.floor(docTop - vh - 48));
+    const lead = Math.min(Math.round(vh * 2.6), maxLead);
     const near = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
@@ -368,7 +331,7 @@ export function WerkstattSection() {
         if (prefersSaveData()) setNeedsConsent(true);
         else void begin();
       },
-      { rootMargin: "700px 0px" },
+      { rootMargin: `${lead}px 0px` },
     );
     const seen = new IntersectionObserver(
       ([entry]) => {
