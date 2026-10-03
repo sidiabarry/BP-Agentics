@@ -24,6 +24,17 @@ import "./werkstatt.css";
 const MODEL_URL = "/models/studio-room.v6.glb";
 const POSTER = "/werkstatt/studio-v6";
 
+let roomBytesPrefetch: Promise<ArrayBuffer> | null = null;
+function prefetchRoomBytes() {
+  if (!roomBytesPrefetch) {
+    roomBytesPrefetch = fetch(MODEL_URL).then((res) => {
+      if (!res.ok) throw new Error("room");
+      return res.arrayBuffer();
+    });
+  }
+  return roomBytesPrefetch;
+}
+
 type Phase = "idle" | "loading" | "ready" | "fallback";
 
 function detectLite() {
@@ -33,18 +44,57 @@ function detectLite() {
   );
 }
 
-function hasWebGL() {
-  try {
-    const c = document.createElement("canvas");
-    return Boolean(c.getContext("webgl2") || c.getContext("webgl"));
-  } catch {
-    return false;
-  }
-}
-
 function prefersSaveData() {
   const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
   return nav.connection?.saveData === true;
+}
+
+function cssLengthPx(el: HTMLElement, name: string) {
+  const raw = getComputedStyle(el).getPropertyValue(name).trim();
+  const value = parseFloat(raw);
+  if (!Number.isFinite(value)) return 0;
+  if (raw.endsWith("rem")) {
+    return value * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
+  }
+  return value;
+}
+
+function heroBlocksWerkstatt() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if (window.innerHeight < 560) return false;
+  const layer = document.querySelector(".hero-portal__scene");
+  if (!(layer instanceof HTMLElement)) return false;
+  const state = layer.dataset.state;
+  return state !== "ready" && state !== "fallback";
+}
+
+function wait(ms: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function waitForHero(alive: () => boolean) {
+  const deadline = performance.now() + 12000;
+  while (alive() && heroBlocksWerkstatt() && performance.now() < deadline) {
+    await wait(50);
+  }
+}
+
+function heroIsScrolling() {
+  return new Promise<boolean>((resolve) => {
+    let sawScroll = false;
+    const onScroll = () => {
+      sawScroll = true;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.removeEventListener("scroll", onScroll);
+        const hero = document.querySelector(".hero-portal");
+        const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 0;
+        resolve(visible && sawScroll);
+      });
+    });
+  });
 }
 
 function titleLines(html: string) {
@@ -83,6 +133,7 @@ export function WerkstattSection() {
   const [message, setMessage] = useState<string | null>(null);
   const [needsConsent, setNeedsConsent] = useState(false);
   const [narrow, setNarrow] = useState(false);
+  const [phoneFit, setPhoneFit] = useState(false);
 
   const open = view !== "overview";
   const detail = stations[shown];
@@ -96,23 +147,34 @@ export function WerkstattSection() {
     return () => mq.removeEventListener("change", sync);
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 600px)");
+    const sync = () => setPhoneFit(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const goTo = useCallback((target: ViewId) => {
     controllerRef.current?.goTo(target);
   }, []);
 
   // --- Szene starten ----------------------------------------------------
-  const start = useCallback(async () => {
-    if (startedRef.current) return;
+  // `announce` zeigt den Ladebalken. Der stille Vorlauf nach dem Hero lässt
+  // die Phase auf „idle", damit die geschlossene Bühne gleich aussieht.
+  const start = useCallback(async (announce = true) => {
+    if (startedRef.current) {
+      if (announce) setPhase((prev) => (prev === "idle" ? "loading" : prev));
+      return;
+    }
     const host = hostRef.current;
     if (!host) return;
     startedRef.current = true;
-    if (!hasWebGL()) {
-      setMessage("Die 3D-Ansicht wird auf diesem Gerät nicht unterstützt.");
-      setPhase("fallback");
-      return;
-    }
-    setPhase("loading");
+    if (announce) setPhase("loading");
     try {
+      // Erst wenn die Hero-Szene steht. Vorher kein zweiter WebGL-Kontext.
+      await waitForHero(() => aliveRef.current);
+      if (!aliveRef.current) return;
       const { createWerkstattScene } = await import("./scene-engine");
       if (!aliveRef.current) return;
       const controller = createWerkstattScene(
@@ -134,6 +196,7 @@ export function WerkstattSection() {
           modelUrl: MODEL_URL,
           lite: detectLite(),
           reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          roomBytes: prefetchRoomBytes(),
         },
       );
       if (!controller) {
@@ -155,6 +218,82 @@ export function WerkstattSection() {
     }
   }, []);
 
+  const begin = useCallback(async () => {
+    await waitForHero(() => aliveRef.current);
+    if (!aliveRef.current) return;
+    // Der Vorlauf hängt nicht an einer Scroll-Pause. Sonst ist die Bühne
+    // bei durchgehendem Scroll schon vorbei, wenn die Szene fertig ist.
+    void start();
+  }, [start]);
+
+  // Datei und Parse, sobald der Hero steht. Der WebGL-Kontext kommt erst
+  // danach, eine Scheibe pro Frame, und die Bühne zeichnet live.
+  useEffect(() => {
+    let cancelled = false;
+    let link: HTMLLinkElement | null = null;
+    let poll = 0;
+    let idleId = 0;
+    let timer: ReturnType<typeof setTimeout> | 0 = 0;
+    const work = () => {
+      if (cancelled) return;
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "prefetch";
+        link.as = "fetch";
+        link.href = MODEL_URL;
+        document.head.appendChild(link);
+      }
+      void heroIsScrolling().then((busy) => {
+        if (cancelled) return;
+        if (busy) {
+          schedule(400);
+          return;
+        }
+        void prefetchRoomBytes()
+          .then(async (buffer) => {
+            if (cancelled) return;
+            const { prepareRoom } = await import("./scene-engine");
+            await prepareRoom(buffer);
+          })
+          .catch(() => {
+            // Der eigentliche Start meldet den Fehler, sobald die Bühne nah ist.
+          });
+      });
+    };
+
+    const schedule = (timeout = 1) => {
+      if (cancelled) return;
+      if (idleId && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
+      if (timer) window.clearTimeout(timer);
+      idleId = 0;
+      timer = 0;
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(work, { timeout });
+        return;
+      }
+      timer = setTimeout(work, timeout > 1 ? timeout : 0);
+    };
+
+    const arm = () => {
+      if (cancelled || heroBlocksWerkstatt()) return;
+      if (poll) window.clearInterval(poll);
+      poll = 0;
+      schedule();
+      // Nur Datei und Parse. Der WebGL-Kontext startet erst kurz vor der
+      // Bühne, sonst laufen Shader-Scheiben durch den ganzen Hero.
+    };
+    poll = window.setInterval(arm, 50);
+    arm();
+
+    return () => {
+      cancelled = true;
+      if (poll) window.clearInterval(poll);
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timer) window.clearTimeout(timer);
+      link?.remove();
+    };
+  }, [start]);
+
   // Bei Fallback die Szene abbauen: Standbild und Liste bleiben.
   useEffect(() => {
     if (phase !== "fallback") return;
@@ -175,15 +314,21 @@ export function WerkstattSection() {
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
+    // Wie 5c1adf5 etwa 700px vorher, plus etwas Luft für die Scheiben,
+    // aber nicht schon im ersten Hero-Moment und nicht bei Scroll 0.
+    const vh = window.innerHeight || 1;
+    const docTop = stage.getBoundingClientRect().top + window.scrollY;
+    const maxLead = Math.max(0, Math.floor(docTop - vh - 48));
+    const lead = Math.min(Math.max(700, Math.round(vh * 1.15)), maxLead);
     const near = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         near.disconnect();
         // Datensparmodus: erst nach ausdrücklichem Tippen laden.
         if (prefersSaveData()) setNeedsConsent(true);
-        else void start();
+        else void begin();
       },
-      { rootMargin: "700px 0px" },
+      { rootMargin: `${lead}px 0px` },
     );
     const seen = new IntersectionObserver(
       ([entry]) => {
@@ -208,7 +353,7 @@ export function WerkstattSection() {
       near.disconnect();
       seen.disconnect();
     };
-  }, [start]);
+  }, [begin]);
 
   // --- Bewegung reduzieren (Systemeinstellung) ---------------------------
   useEffect(() => {
@@ -224,10 +369,33 @@ export function WerkstattSection() {
     const sheet = sheetRef.current;
     if (!stage || !sheet) return;
     const update = () => {
+      const section = sectionRef.current;
       const phone = stage.clientWidth < 800;
       const framing: Framing = { right: 0, bottom: 0 };
-      // Die Karte liegt auf schmalen Schirmen unter der Szene und verdeckt sie nicht.
-      if (phone && !open) framing.bottom = 36;
+      if (phoneFit && open && section) {
+        const scene = stage.querySelector(".ws__scene");
+        const header = document.querySelector("header");
+        const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 0;
+        const sceneH = scene?.getBoundingClientRect().height ?? 0;
+        const sheetH = sheet.getBoundingClientRect().height;
+        const stack = cssLengthPx(section, "--space-stack");
+        const avail = window.innerHeight - headerBottom - 12;
+        const overflow = sceneH + stack + sheetH - avail;
+        const cap = Math.max(0, sceneH - 160);
+        // Aufrunden, damit die Kartenunterkante nicht 1px unter innerHeight−12 rutscht.
+        const overlap = Math.max(0, Math.min(cap, Math.ceil(overflow - 1e-4)));
+        const overlapValue = `${overlap}px`;
+        if (section.style.getPropertyValue("--ws-overlap") !== overlapValue) {
+          section.style.setProperty("--ws-overlap", overlapValue);
+        }
+        framing.bottom = overlap;
+        framing.refit = false;
+      } else {
+        section?.style.removeProperty("--ws-overlap");
+        // Unter 800px liegt die geschlossene Karte nicht auf der Szene.
+        // 601–799px bleibt auch geöffnet bei bottom 0.
+        if (phone && !open) framing.bottom = 36;
+      }
       controllerRef.current?.setFraming(framing);
     };
     update();
@@ -235,7 +403,23 @@ export function WerkstattSection() {
     ro.observe(stage);
     ro.observe(sheet);
     return () => ro.disconnect();
-  }, [open, phase]);
+  }, [open, phase, phoneFit]);
+
+  // Gemessene Header-Höhe, damit die Karte am echten Kopf und nicht am
+  // großzügigen rem-Wert ausgerichtet wird.
+  useEffect(() => {
+    const section = sectionRef.current;
+    const header = document.querySelector("header");
+    if (!section || !(header instanceof HTMLElement)) return;
+    const apply = () => {
+      const height = header.getBoundingClientRect().height;
+      if (height > 0) section.style.setProperty("--ws-header-real", `${height}px`);
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
 
   // --- Fokus: nur wenn die Bedienung aus der Sektion kam (Tastatur/Buttons)
   useEffect(() => {
@@ -246,40 +430,56 @@ export function WerkstattSection() {
     else labelRefs.current[shown]?.focus({ preventScroll: true });
   }, [open, shown, narrow]);
 
-  // Nach dem Öffnen die Szene unter dem Header halten, nicht die Karte
-  // passend schieben. Verzögert, damit ein Szenen-Tipp nicht zwischen
+  // Nach dem Öffnen die Karte in den sichtbaren Bereich schieben. Auf dem
+  // Handy bleibt ihr unterer Rand am Viewport, damit die Szene darüber
+  // sichtbar bleibt. Verzögert, damit ein Szenen-Tipp nicht zwischen
   // pointerup und click die Seite verschiebt (Ghost-Click auf „Übersicht").
   useEffect(() => {
-    if (!open || !narrow) return;
-    const stage = stageRef.current;
-    if (!stage) return;
+    if (!open) return;
+    const sheet = sheetRef.current;
+    if (!sheet) return;
     let cancelled = false;
     const id = window.setTimeout(() => {
-      if (cancelled) return;
-      const scene = stage.querySelector(".ws__scene") ?? stage;
-      const header = document.querySelector("header");
-      const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 0;
-      const pad = 12;
-      const target = headerBottom + pad;
-      const rect = scene.getBoundingClientRect();
-      const viewBottom = window.innerHeight;
-      const fits = rect.height <= viewBottom - target - pad;
-      let delta = 0;
-      if (fits) {
-        if (rect.top < target - 1) delta = rect.top - target;
-        else if (rect.bottom > viewBottom - pad) delta = rect.bottom - (viewBottom - pad);
-      } else {
-        delta = rect.top - target;
-      }
-      if (Math.abs(delta) < 2) return;
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      window.scrollBy({ top: delta, behavior: reduced ? "auto" : "smooth" });
+      const measure = () => {
+        if (cancelled) return;
+        const header = document.querySelector("header");
+        const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 0;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (phoneFit) {
+          const scene = stageRef.current?.querySelector(".ws__scene");
+          if (!scene) return;
+          const delta = scene.getBoundingClientRect().top - headerBottom;
+          if (Math.abs(delta) < 2) return;
+          window.scrollBy({ top: delta, behavior: reduced ? "auto" : "smooth" });
+          return;
+        }
+        const pad = 12;
+        const top = headerBottom + pad;
+        const bottom = window.innerHeight - pad;
+        const rect = sheet.getBoundingClientRect();
+        if (rect.height < 2) return;
+        const fits = rect.height <= bottom - top;
+        let delta = 0;
+        if (fits) {
+          if (rect.top < top || rect.bottom > bottom) {
+            delta = narrow ? rect.bottom - bottom : rect.top < top ? rect.top - top : rect.bottom - bottom;
+          }
+        } else {
+          delta = rect.top - top;
+        }
+        if (Math.abs(delta) < 2) return;
+        window.scrollBy({ top: delta, behavior: reduced ? "auto" : "smooth" });
+      };
+      // Zwei Frames, damit --ws-overlap das Layout schon verschoben hat.
+      // Ein späteres Resize würde ein noch laufendes smooth-scrollBy abbrechen.
+      if (phoneFit) window.requestAnimationFrame(() => window.requestAnimationFrame(measure));
+      else measure();
     }, 0);
     return () => {
       cancelled = true;
       window.clearTimeout(id);
     };
-  }, [open, shown, narrow]);
+  }, [open, shown, narrow, phoneFit]);
 
   // Tastatur: Escape wirkt seitenweit, solange eine Station offen ist; Pfeile
   // nur, wenn nichts anderes den Fokus hat (sonst stören sie Formulare & Co.).
@@ -333,7 +533,7 @@ export function WerkstattSection() {
         )}
 
         {needsConsent && phase === "idle" && (
-          <button type="button" className="ws__start" onClick={() => void start()}>
+          <button type="button" className="ws__start" onClick={() => void begin()}>
             3D-Werkstatt laden (etwa 0,5 MB)
           </button>
         )}

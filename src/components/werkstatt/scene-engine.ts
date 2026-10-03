@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import "./sharpen-three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { createRobot } from "./robot.js";
@@ -24,14 +25,20 @@ import { chatExamples, chatPhaseCaptions, stationOrder, webDemo, type StationId 
 export type { StationId };
 export type ViewId = StationId | "overview";
 
-/** Fläche in px, die von UI verdeckt ist (Panel rechts, Sheet unten). */
-export type Framing = { right: number; bottom: number };
+/**
+ * Fläche in px, die von UI verdeckt ist (Panel rechts, Sheet unten).
+ * `refit: false` hält die Kameradistanz der vollen Bühne und schiebt das Motiv
+ * nur per View-Offset nach oben. Standard `true` rechnet den Abstand neu.
+ */
+export type Framing = { right: number; bottom: number; refit?: boolean };
 
 export interface SceneOptions {
   modelUrl: string;
   /** Schwächeres Gerät / Touch: 30 fps, keine Schatten, kein Video. */
   lite: boolean;
   reduced: boolean;
+/** Schon geholte GLB-Bytes, damit der Boot nicht noch einmal auf das Netz wartet. */
+  roomBytes?: Promise<ArrayBuffer>;
 }
 
 export interface SceneCallbacks {
@@ -86,6 +93,27 @@ const FOCUS_LIGHT: Record<StationId, { pos: V3; color: string; peak: number }> =
 
 const ROOM_TIMEOUT_MS = 20000;
 
+let roomParse: Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF> | null = null;
+
+/**
+ * CPU-Parse des Studios. Kein WebGL-Kontext, keine Shader, keine Uploads.
+ * Der frühe Idle-Schritt nach der fertigen Hero-Szene ruft nur das hier auf.
+ */
+export function prepareRoom(buffer: ArrayBuffer) {
+  if (!roomParse) {
+    roomParse = (async () => {
+      const loader = new GLTFLoader();
+      loader.setMeshoptDecoder(MeshoptDecoder);
+      await MeshoptDecoder.ready;
+      const copy = buffer.slice(0);
+      return await new Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF>((resolve, reject) => {
+        loader.parse(copy, "", (parsed) => resolve(parsed), () => reject(new Error("room")));
+      });
+    })();
+  }
+  return roomParse;
+}
+
 const easeInOutCubic = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
@@ -106,9 +134,76 @@ export function createWerkstattScene(
   let readyFired = false;
   let needsRender = true;
   let framing: Framing = { right: 0, bottom: 0 };
+  let bound: WerkstattSceneController | null = null;
+  let pendingVisible = true;
+  let pendingFraming: Framing = framing;
+  let pendingLabels: {
+    elements: Partial<Record<StationId, HTMLElement>>;
+    leaders?: Partial<Record<StationId, { line: SVGLineElement; dot: SVGCircleElement }>>;
+  } | null = null;
+  let pendingReduced = reduced;
 
+  function stageInView() {
+    const rect = container.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
+  }
+
+  function yieldSlice() {
+    // Eine Scheibe pro Frame. Kein setTimeout(0): das würde mehrere
+    // Scheiben in denselben Task legen.
+    return new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
+  }
+
+  const api: WerkstattSceneController = {
+    goTo(view, opts) {
+      bound?.goTo(view, opts);
+    },
+    step(dir) {
+      bound?.step(dir);
+    },
+    setFraming(next) {
+      pendingFraming = next;
+      bound?.setFraming(next);
+    },
+    setVisible(next) {
+      pendingVisible = next;
+      bound?.setVisible(next);
+    },
+    setReduced(next) {
+      pendingReduced = next;
+      bound?.setReduced(next);
+    },
+    setLabelElements(elements, leaders) {
+      pendingLabels = { elements, leaders };
+      bound?.setLabelElements(elements, leaders);
+    },
+    dispose() {
+      disposed = true;
+      bound?.dispose();
+    },
+  };
+
+  void boot();
+  return api;
+
+  async function boot() {
   const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
-  let renderer: THREE.WebGLRenderer;
+  let renderer!: THREE.WebGLRenderer;
+  const hold = async () => {
+    await yieldSlice();
+    if (!disposed) return false;
+    if (!bound) {
+      cancelAnimationFrame(rafId);
+      renderer?.dispose();
+      renderer?.forceContextLoss();
+      const node = renderer?.domElement;
+      if (node?.parentElement === container) container.removeChild(node);
+    }
+    return true;
+  };
+  if (await hold()) return;
   try {
     renderer = new THREE.WebGLRenderer({
       antialias: pixelRatio() < 2,
@@ -117,8 +212,13 @@ export function createWerkstattScene(
     });
   } catch {
     callbacks.onFallback("Die 3D-Ansicht wird auf diesem Gerät nicht unterstützt.");
-    return null;
+    return;
   }
+  if (!renderer) return;
+  // getProgramInfoLog würde jede Kompilierung synchron zu Ende warten.
+  // Aus, damit eine Scheibe den Hero nicht blockiert; der erste sichtbare
+  // Frame zeichnet danach live, in voller Auflösung, mit Schatten.
+  renderer.debug.checkShaderErrors = false;
   const size = () => ({ w: Math.max(1, container.clientWidth), h: Math.max(1, container.clientHeight) });
   renderer.setPixelRatio(pixelRatio());
   renderer.setSize(size().w, size().h, false);
@@ -197,6 +297,7 @@ export function createWerkstattScene(
     return l;
   }
 
+  if (await hold()) return;
   scene.add(new THREE.HemisphereLight("#b8d5ec", "#70452a", lite ? 1.6 : 1.4));
   const key = new THREE.SpotLight("#f8ce9c", 125, 20, 0.85, 0.8, 1.7);
   key.position.set(-3, 6, 4);
@@ -217,38 +318,28 @@ export function createWerkstattScene(
   const focusColor = new THREE.Color();
 
   let roomRoot: THREE.Object3D | null = null;
-  const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);
-  loader.load(
-    options.modelUrl,
-    (gltf) => {
-      if (disposed) return;
-      const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-      gltf.scene.traverse((o) => {
-        const m = o as THREE.Mesh;
-        if (!m.isMesh) return;
-        m.castShadow = !lite;
-        m.receiveShadow = !lite;
-        for (const mm of Array.isArray(m.material) ? m.material : [m.material]) {
-          const std = mm as THREE.MeshStandardMaterial;
-          if (std?.map) std.map.anisotropy = maxAniso;
-        }
-      });
-      roomRoot = gltf.scene;
-      scene.add(gltf.scene);
-      roomReady = true;
-      callbacks.onProgress?.(1);
-      needsRender = true;
-    },
-    (event) => {
-      if (event.lengthComputable && event.total > 0) callbacks.onProgress?.(Math.min(0.98, event.loaded / event.total));
-    },
-    () => callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar."),
-  );
+  // Nur die Bytes holen. Der CPU-Parse läuft über prepareRoom, ohne WebGL.
+  const roomBytes = options.roomBytes ?? new Promise<ArrayBuffer>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", options.modelUrl);
+    xhr.responseType = "arraybuffer";
+    xhr.onprogress = (event) => {
+      if (event.lengthComputable && event.total > 0) {
+        callbacks.onProgress?.(Math.min(0.98, event.loaded / event.total));
+      }
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300 && xhr.response) resolve(xhr.response as ArrayBuffer);
+      else reject(new Error("room"));
+    };
+    xhr.onerror = () => reject(new Error("room"));
+    xhr.send();
+  });
   const roomTimeout = window.setTimeout(() => {
     if (!roomReady && !disposed) callbacks.onFallback("Das Studio lädt gerade zu langsam. Die Leistungen bleiben unten erreichbar.");
   }, ROOM_TIMEOUT_MS);
 
+  if (await hold()) return;
   const monitor = new THREE.Group();
   monitor.position.set(-3.05, 0.025, 0.3);
   monitor.rotation.y = 0.16;
@@ -291,6 +382,7 @@ export function createWerkstattScene(
   meshAt(new THREE.SphereGeometry(0.023, 12, 8), new THREE.MeshBasicMaterial({ color: "#9dd5b0" }), monitor, [0.82, 0.48, 0.48]);
   for (let i = 0; i < 11; i++) box(0.028, 0.52, 0.03, dark, [0.92, 1.05, 0.47], monitor);
 
+  if (await hold()) return;
   const keyboard = new THREE.Group();
   monitor.add(keyboard);
   keyboard.position.set(0.05, 0.09, 1.04);
@@ -374,6 +466,7 @@ export function createWerkstattScene(
   roofImage.addEventListener("load", drawMonitor);
   roofImage.src = "/demos/dach-poster.jpg";
 
+  if (await hold()) return;
   const tablet = new THREE.Group();
   tablet.position.set(0, 1.08, 1);
   tablet.rotation.set(-0.27, 0, 0);
@@ -480,6 +573,7 @@ export function createWerkstattScene(
     needsRender = true;
   }
 
+  if (await hold()) return;
   const robot = createRobot(THREE, scene);
   robot.group.position.set(3, 0.025, 0.25);
   robot.group.rotation.y = -0.13;
@@ -508,6 +602,7 @@ export function createWerkstattScene(
   scene.add(dust);
 
   const stationObjects: Record<StationId, THREE.Object3D> = { web: monitor, chat: tablet, office: robot.group };
+  if (await hold()) return;
   robot.animate(0, true);
   scene.updateMatrixWorld(true);
   const focusBoxes = {} as Record<StationId, THREE.Box3>;
@@ -548,9 +643,10 @@ export function createWerkstattScene(
     const target = b.getCenter(new THREE.Vector3());
     const dir = new THREE.Vector3(...(portraitOverview ? PORTRAIT_OVERVIEW : DIRECTIONS[view])).normalize();
     const fov = portraitOverview ? PORTRAIT_OVERVIEW_FOV : BASE_FOV;
-    const f = view === "overview" ? { right: 0, bottom: framing.bottom } : framing;
-    const freeW = Math.max(140, w - f.right);
-    const freeH = Math.max(140, h - f.bottom);
+    const f = view === "overview" ? { right: 0, bottom: framing.bottom, refit: true } : framing;
+    const refit = f.refit !== false;
+    const freeW = refit ? Math.max(140, w - f.right) : w;
+    const freeH = refit ? Math.max(140, h - f.bottom) : h;
     const fill = FILL[view];
 
     fitCam.fov = fov;
@@ -839,10 +935,97 @@ export function createWerkstattScene(
   let last = 0;
   let lastVideoDraw = 0;
 
+  let booted = false;
+
+  function sceneTextures() {
+    const found: THREE.Texture[] = [];
+    const seen = new Set<THREE.Texture>();
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh || !mesh.material) return;
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const material of materials) {
+        const maps = material as THREE.MeshStandardMaterial;
+        for (const value of [maps.map, maps.normalMap, maps.roughnessMap, maps.metalnessMap, maps.aoMap, maps.emissiveMap, maps.lightMap, maps.bumpMap, maps.displacementMap, maps.alphaMap, maps.envMap]) {
+          if (value instanceof THREE.Texture && !seen.has(value)) {
+            seen.add(value);
+            found.push(value);
+          }
+        }
+      }
+    });
+    return found;
+  }
+
+  async function warmGpu() {
+    if (disposed || booted) return false;
+    const { w, h } = size();
+    camera.position.copy(basePos);
+    camera.lookAt(baseTarget);
+    camera.fov = baseFov;
+    camera.aspect = w / Math.max(1, h);
+    camera.updateProjectionMatrix();
+    applyOffset(baseOffset);
+
+    const jobs: THREE.Mesh[] = [];
+    const seen = new Set<string>();
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh || !mesh.material) return;
+      const materials = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).filter(
+        (material): material is THREE.Material => Boolean(material),
+      );
+      for (const material of materials) {
+        const kind = (mesh as THREE.SkinnedMesh).isSkinnedMesh
+          ? "s"
+          : (mesh as THREE.InstancedMesh).isInstancedMesh
+            ? "i"
+            : "m";
+        const jobKey = `${material.uuid}:${kind}`;
+        if (seen.has(jobKey)) continue;
+        seen.add(jobKey);
+        jobs.push(mesh);
+      }
+    });
+    // Ein Material pro Frame, solange die Bühne noch unter dem Falz liegt.
+    // Steht sie schon im Bild, sofort live zeichnen: Auflösung, Schatten,
+    // Kameraschwung und Chat. Nicht auf die restlichen Scheiben warten.
+    for (const mesh of jobs) {
+      if (stageInView()) break;
+      if (await hold()) return false;
+      try {
+        renderer.compile(mesh, camera, scene);
+      } catch {
+        // Dieses Material holt der erste sichtbare Frame nach.
+      }
+    }
+    let textures: THREE.Texture[] = [];
+    try {
+      textures = sceneTextures();
+    } catch {
+      textures = [];
+    }
+    if (!stageInView()) {
+      for (const tex of textures) {
+        if (stageInView()) break;
+        if (await hold()) return false;
+        try {
+          renderer.initTexture(tex);
+        } catch {
+          // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
+        }
+      }
+    }
+    if (await hold()) return false;
+    booted = true;
+    needsRender = true;
+    return true;
+  }
+
   function frame(ms: number) {
     if (disposed) return;
     rafId = requestAnimationFrame(frame);
-    if (!visible || document.hidden || webglFailed) return;
+    if (!booted || !visible || document.hidden || webglFailed) return;
     if (minInterval && ms - last < minInterval - 2) return;
     last = ms;
     const t = ms / 1000;
@@ -910,6 +1093,9 @@ export function createWerkstattScene(
     }
 
     if (moving || needsRender) {
+      // Sichtbar heißt live: volle Auflösung, Schatten, Schwung, Chat.
+      // Ein Rest des Hero-Portals (er endet knapp über der Bühne) darf
+      // das nicht aufhalten, sonst bleibt das Poster stehen.
       renderer.render(scene, camera);
       placeLabels();
       needsRender = false;
@@ -928,6 +1114,7 @@ export function createWerkstattScene(
       chatKey = "";
     })
     .catch(() => {});
+  if (await hold()) return;
   drawMonitor();
 
   const onVisibility = () => {
@@ -935,11 +1122,14 @@ export function createWerkstattScene(
   };
   document.addEventListener("visibilitychange", onVisibility);
 
-  return {
+  bound = {
     goTo,
     step,
     setFraming(next) {
-      if (Math.abs(next.right - framing.right) < 1 && Math.abs(next.bottom - framing.bottom) < 1) return;
+      const sameShift =
+        Math.abs(next.right - framing.right) < 1 && Math.abs(next.bottom - framing.bottom) < 1;
+      const sameRefit = (next.refit !== false) === (framing.refit !== false);
+      if (sameShift && sameRefit) return;
       framing = next;
       if (transition && !reduced) {
         const dest = solvePose(current);
@@ -1016,4 +1206,43 @@ export function createWerkstattScene(
       if (el.parentElement === container) container.removeChild(el);
     },
   };
+
+  bound.setVisible(pendingVisible);
+  if (pendingLabels) bound.setLabelElements(pendingLabels.elements, pendingLabels.leaders);
+  bound.setFraming(pendingFraming);
+  if (pendingReduced !== reduced) bound.setReduced(pendingReduced);
+
+  try {
+    const buffer = await roomBytes;
+    if (await hold()) return;
+    const gltf = await prepareRoom(buffer);
+    if (await hold()) return;
+    if (!disposed) {
+      const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      gltf.scene.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        mesh.castShadow = !lite;
+        mesh.receiveShadow = !lite;
+        for (const mm of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+          const std = mm as THREE.MeshStandardMaterial;
+          if (std?.map) std.map.anisotropy = maxAniso;
+        }
+      });
+      roomRoot = gltf.scene;
+      scene.add(gltf.scene);
+      roomReady = true;
+      callbacks.onProgress?.(1);
+      needsRender = true;
+    }
+  } catch {
+    if (!disposed) {
+      callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar.");
+    }
+    return;
+  }
+  if (!(await warmGpu())) {
+    return;
+  }
+  }
 }

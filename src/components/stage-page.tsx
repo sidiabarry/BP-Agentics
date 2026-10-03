@@ -32,6 +32,7 @@ export function StagePage({
   reviewed,
   jsonLdDescription,
   aboutId,
+  showCrumbs = true,
 }: {
   crumbs: Crumb[];
   kicker?: string;
@@ -48,6 +49,7 @@ export function StagePage({
   reviewed?: string;
   jsonLdDescription?: string;
   aboutId?: string;
+  showCrumbs?: boolean;
 }) {
   const trail = [{ name: "Startseite", path: "/" }, ...crumbs];
   const path = crumbs[crumbs.length - 1]?.path ?? "/";
@@ -82,34 +84,37 @@ export function StagePage({
           )}
         >
           <div className="min-w-0">
-            <nav
-              aria-label="Brotkrumen"
-              className={cn("text-sm", ink ? "text-white/55" : "text-[#5C5F66]")}
-            >
-              <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                {trail.map((item, index) => (
-                  <li key={item.path} className="flex items-center gap-2">
-                    {index > 0 ? <span aria-hidden="true">/</span> : null}
-                    {index === trail.length - 1 ? (
-                      <span className={ink ? "text-[#F3EFE6]" : "text-[#14161C]"}>
-                        {item.name}
-                      </span>
-                    ) : (
-                      <Link
-                        href={item.path}
-                        className="underline-offset-4 hover:underline"
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            {showCrumbs ? (
+              <nav
+                aria-label="Brotkrumen"
+                className={cn("text-sm", ink ? "text-white/55" : "text-[#5C5F66]")}
+              >
+                <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  {trail.map((item, index) => (
+                    <li key={item.path} className="flex items-center gap-2">
+                      {index > 0 ? <span aria-hidden="true">/</span> : null}
+                      {index === trail.length - 1 ? (
+                        <span className={ink ? "text-[#F3EFE6]" : "text-[#14161C]"}>
+                          {item.name}
+                        </span>
+                      ) : (
+                        <Link
+                          href={item.path}
+                          className="underline-offset-4 hover:underline"
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            ) : null}
             {kicker ? (
               <p
                 className={cn(
-                  "mt-8 text-sm tracking-[0.2em] uppercase",
+                  "text-sm tracking-[0.2em] uppercase",
+                  showCrumbs && "mt-8",
                   ink ? "text-[#9FD0F8]" : "text-[#198BE8]",
                 )}
               >
