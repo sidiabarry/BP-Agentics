@@ -46,6 +46,11 @@ export function organizationGraph() {
         })),
         knowsAbout: [...site.knowsAbout],
         sameAs: [...site.sameAs],
+        identifier: {
+          "@type": "PropertyValue",
+          propertyID: "googlePlaceId",
+          value: site.googlePlaceId,
+        },
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -144,11 +149,13 @@ export function webPageNode({
   name,
   description,
   extraTypes = [],
+  aboutId,
 }: {
   path: string;
   name: string;
   description: string;
   extraTypes?: string[];
+  aboutId?: string;
 }) {
   return {
     "@type": extraTypes.length ? ["WebPage", ...extraTypes] : "WebPage",
@@ -158,7 +165,7 @@ export function webPageNode({
     description,
     inLanguage: "de-DE",
     isPartOf: { "@id": websiteId },
-    about: { "@id": orgId },
+    about: { "@id": aboutId ?? orgId },
     publisher: { "@id": orgId },
   };
 }

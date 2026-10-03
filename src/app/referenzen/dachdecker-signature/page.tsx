@@ -79,6 +79,42 @@ export default function DachdeckerSignaturePage() {
             </Link>
           </p>
         </StageCard>
+        <StageCard kicker="Was die Demo zeigt" title="Aufbau, nicht ein bestimmter Betrieb.">
+          <p>
+            Zu sehen sind Bilder, eine Leistungsbeschreibung und ein Anfrageweg in
+            einem zusammenhängenden Auftritt. Bewegung führt durch die Seite, der
+            Inhalt bleibt auch ohne sie lesbar. Die Demo zeigt, wie Website Signature
+            aussehen kann, wenn Gestaltung und Bildführung im Vordergrund stehen.
+            Sie zeigt keinen Umsatz, keine Anfragezahlen und keinen Kundennamen.
+          </p>
+          <p className="mt-3">
+            Was sie nicht ist: ein Echtbetrieb, eine Referenz und keine Zusage, dass
+            jede Handwerker-Website so aussieht. Für einen klaren Überblick über
+            Leistungen, Betrieb und Kontakt reicht oft eine schlichtere Stufe. Den
+            Umfang halten wir im Angebot fest.
+          </p>
+        </StageCard>
+        <StageCard kicker="Für wen" title="Signature ist eine Stufe, kein Muss.">
+          <p>
+            Signature ist für Betriebe gedacht, die einen individuell gestalteten
+            Auftritt wollen. Der Preis beginnt bei 3.490 €, die Betreuung ist
+            optional. Ob dieser Umfang passt, hängt von den Inhalten ab, die schon
+            vorliegen, und davon, wie viele Leistungen einzeln gezeigt werden sollen.
+            Der Zeitrahmen steht im Projektplan.
+          </p>
+          <p className="mt-3">
+            Die Pakete stehen unter{" "}
+            <Link href="/leistungen/auftritt" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Websites
+            </Link>
+            . Ein Anwendungsbeispiel für Dacharbeiten, ohne diese Demo als Auftrag zu
+            lesen, steht bei{" "}
+            <Link href="/dachdecker" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+              Dachdecker
+            </Link>
+            .
+          </p>
+        </StageCard>
       </StageGrid>
     </StagePage>
   );

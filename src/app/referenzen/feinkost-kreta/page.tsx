@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { PhoneDemo } from "@/components/demo-player";
+import { feinkostStores } from "@/lib/feinkost";
 import { StageCard, StageGrid } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
 import { videoObject } from "@/lib/json-ld";
@@ -110,6 +111,33 @@ export default function FeinkostPage() {
             Angemeldete Kunden bestellen in wenigen Schritten. Der Betrieb wird
             benachrichtigt. Die Erinnerung läuft derzeit für Olivenöl — als
             konkretes Beispiel, nicht als Regel für das ganze Sortiment.
+          </p>
+        </StageCard>
+        <StageCard kicker="Einordnung" title="Bestell-App, keine Handwerker-Website.">
+          <p>
+            Das Projekt zeigt einen digitalen Bestell- und Anfrageweg für einen
+            echten Betrieb. Stammkunden melden sich an, Angaben bleiben erhalten,
+            und jede Bestellung erreicht den Laden. Es ist kein Nachrichten-Assistent
+            für WhatsApp oder E-Mail und kein Website-Paket für ein Gewerk. Wer einen
+            Auftritt für einen Handwerksbetrieb sucht, findet die Stufen auf der
+            Paketseite, nicht in dieser App.
+          </p>
+          <p className="mt-3">
+            Die App ist im{" "}
+            <a
+              href={feinkostStores.googlePlay}
+              className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              Google Play Store
+            </a>{" "}
+            und im{" "}
+            <a
+              href={feinkostStores.appStore}
+              className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              App Store
+            </a>{" "}
+            verfügbar. Weitere Kennzahlen nennen wir hier nicht.
           </p>
         </StageCard>
       </StageGrid>

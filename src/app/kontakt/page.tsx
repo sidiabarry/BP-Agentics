@@ -87,6 +87,28 @@ export default function KontaktPage() {
         </aside>
 
         <div className="min-w-0 rounded-[2rem] bg-white p-6 md:p-8">
+          <div className="mb-8 space-y-3 text-[1.05rem] leading-relaxed text-[#3A3D45]">
+            <p>
+              Sie erreichen {site.founder.name} telefonisch, per E-Mail oder per
+              WhatsApp. Die Nummern und die Adresse stehen neben diesem Formular.
+              Ein Anruf oder eine Nachricht genügt, wenn Sie erst klären wollen, ob
+              ein Gespräch sinnvoll ist.
+            </p>
+            <p>
+              Das Formular sendet einen Terminwunsch, keine feste Buchung. Ich
+              bestätige den Termin persönlich. Das Erstgespräch dauert 90 Minuten,
+              findet bei Ihnen vor Ort in Nordrhein-Westfalen statt und ist
+              kostenlos. Darin sehen wir uns an, wie Anfragen und Unterlagen heute
+              durch den Betrieb laufen.
+            </p>
+            <p>
+              Danach erhalten Sie einen Projektplan mit den vereinbarten Leistungen,
+              einem Zeitrahmen und einem Festpreis. Website, Nachrichten-Assistent
+              und Büroabläufe sind einzeln beauftragbar. Welcher Baustein den Anfang
+              macht, entscheiden wir anhand Ihres Vorhabens, nicht anhand einer
+              vorgefertigten Reihe.
+            </p>
+          </div>
           <p className="text-sm tracking-[0.16em] text-[#198BE8] uppercase">
             Terminwunsch
           </p>

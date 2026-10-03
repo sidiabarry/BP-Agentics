@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
 import { type Crumb } from "@/components/doc-page";
@@ -30,6 +30,8 @@ export function StagePage({
   next,
   extraJsonLd = [],
   reviewed,
+  jsonLdDescription,
+  aboutId,
 }: {
   crumbs: Crumb[];
   kicker?: string;
@@ -44,6 +46,8 @@ export function StagePage({
   next?: StageNext | null;
   extraJsonLd?: Record<string, unknown>[];
   reviewed?: string;
+  jsonLdDescription?: string;
+  aboutId?: string;
 }) {
   const trail = [{ name: "Startseite", path: "/" }, ...crumbs];
   const path = crumbs[crumbs.length - 1]?.path ?? "/";
@@ -58,7 +62,8 @@ export function StagePage({
             webPageNode({
               path,
               name: title,
-              description: lead,
+              description: jsonLdDescription ?? lead,
+              aboutId,
             }),
             breadcrumbList(trail),
             ...extraJsonLd,
@@ -180,18 +185,21 @@ export function StagePage({
 function StageAction({
   href,
   children,
-}: {
-  href: string;
-  children: ReactNode;
-}) {
+  ...rest
+}: ComponentProps<"a"> & { href: string }) {
   if (href.startsWith("http://") || href.startsWith("https://")) {
     return (
-      <a href={href} rel="noopener noreferrer">
+      <a href={href} rel="noopener noreferrer" {...rest}>
         {children}
       </a>
     );
   }
-  return <Link href={href}>{children}</Link>;
+
+  return (
+    <Link href={href} {...rest}>
+      {children}
+    </Link>
+  );
 }
 
 function StageNext({ step }: { step: StageNext }) {

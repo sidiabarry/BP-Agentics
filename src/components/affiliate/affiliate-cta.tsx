@@ -1,54 +1,49 @@
 "use client";
 
-import type { ReactNode } from "react";
-import Link from "next/link";
-import { RevealIn } from "@/components/reveal-in";
+import { AffiliateAction } from "@/components/affiliate/affiliate-action";
+import { AffiliateReveal } from "@/components/affiliate/affiliate-reveal";
 import { Button } from "@/components/ui/button";
 import { affiliateNext } from "@/lib/affiliate";
 
-function Action({ href, children }: { href: string; children: ReactNode }) {
-  if (href.startsWith("http://") || href.startsWith("https://")) {
-    return (
-      <a href={href} rel="noopener noreferrer">
-        {children}
-      </a>
-    );
-  }
-  return <Link href={href}>{children}</Link>;
-}
+const primaryClass =
+  "h-12 min-h-12 rounded-full bg-[#1576C4] px-6 text-base font-semibold text-white hover:bg-[#0b5ea8]";
+
+const secondaryClass =
+  "h-12 min-h-12 rounded-full border-white/30 bg-transparent px-6 text-base font-semibold text-[#F3EFE6] hover:bg-white/8 hover:text-white";
 
 export function AffiliateCta() {
-  const primary = affiliateNext.primary;
-
   return (
     <section className="affiliate-cta" aria-labelledby="affiliate-cta-title">
-      <RevealIn as="div" variant="rise">
-        <p className="affiliate-cta__kicker">Nächster Schritt</p>
-        <h2 id="affiliate-cta-title">{affiliateNext.title}</h2>
-        <p className="affiliate-cta__body">{affiliateNext.body}</p>
-        <ul className="affiliate-cta__chips">
-          {affiliateNext.chips.map((chip) => (
-            <li key={chip}>{chip}</li>
-          ))}
-        </ul>
-        <div className="affiliate-cta__actions">
-          <Button
-            asChild
-            className="h-12 rounded-full bg-[#198BE8] px-6 text-white hover:bg-[#1576C4]"
-          >
-            <Action href={primary.href}>{primary.label}</Action>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="h-12 rounded-full border-white/20 bg-transparent px-6 text-[#F3EFE6] hover:bg-white/8"
-          >
-            <Action href={affiliateNext.secondary.href}>
-              {affiliateNext.secondary.label}
-            </Action>
-          </Button>
+      <div className="affiliate-cta__layout">
+        <div className="affiliate-cta__copy">
+          <AffiliateReveal as="p" className="affiliate-cta__kicker">
+            Nächster Schritt
+          </AffiliateReveal>
+          <AffiliateReveal as="h2" id="affiliate-cta-title" delay={60}>
+            {affiliateNext.title}
+          </AffiliateReveal>
+          <AffiliateReveal as="p" className="affiliate-cta__body" delay={120}>
+            {affiliateNext.body}
+          </AffiliateReveal>
+          <AffiliateReveal as="ul" className="affiliate-cta__chips" delay={180}>
+            {affiliateNext.chips.map((chip) => (
+              <li key={chip}>{chip}</li>
+            ))}
+          </AffiliateReveal>
         </div>
-      </RevealIn>
+        <AffiliateReveal as="div" className="affiliate-cta__actions" delay={240}>
+          <Button asChild className={primaryClass}>
+            <AffiliateAction href={affiliateNext.primary.href}>
+              {affiliateNext.primary.label}
+            </AffiliateAction>
+          </Button>
+          <Button asChild variant="outline" className={secondaryClass}>
+            <AffiliateAction href={affiliateNext.secondary.href}>
+              {affiliateNext.secondary.label}
+            </AffiliateAction>
+          </Button>
+        </AffiliateReveal>
+      </div>
     </section>
   );
 }

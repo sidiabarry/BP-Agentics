@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StageCard } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
@@ -57,8 +58,8 @@ export default async function IndustryPage({ params }: Props) {
       ]}
       related={related}
       next={{
-        title: "Welches Beispiel zu Ihrem Vorhaben passt, klären wir im Gespräch.",
-        body: seo.local,
+        title: seo.nextTitle,
+        body: seo.nextBody,
         primary: { href: cta.href, label: cta.primary },
       }}
     >
@@ -67,7 +68,30 @@ export default async function IndustryPage({ params }: Props) {
           {seo.body.map((paragraph) => (
             <p key={paragraph.slice(0, 48)}>{paragraph}</p>
           ))}
-          <p>{seo.answer}</p>
+          <p>
+            {seo.bridge}{" "}
+            <Link
+              href="/webdesign-fuer-handwerker"
+              className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              Webdesign für Handwerker
+            </Link>
+            .
+          </p>
+          <p className="flex flex-wrap gap-x-4 gap-y-2">
+            <Link
+              href={seo.leistung.href}
+              className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              {seo.leistung.label}
+            </Link>
+            <Link
+              href={seo.second.href}
+              className="text-[#198BE8] underline-offset-4 hover:underline"
+            >
+              {seo.second.label}
+            </Link>
+          </p>
         </div>
       </StageCard>
     </StagePage>

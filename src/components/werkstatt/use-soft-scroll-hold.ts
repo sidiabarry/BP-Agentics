@@ -3,17 +3,18 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 /**
- * Weicher Halt erst an der ruhenden Übersicht: volle Bühne (01–03),
- * Etiketten und Preiskarten darunter. Kein Halt in der blauen Ankunft
- * und kein Halt, solange nur der obere Rand des Tisches zu sehen ist.
- * Etwa 1 s dämpfen, kein Pin. Offene Station: kein Halt.
+ * Weicher Halt an der Werkstatt: Wheel- und Touch-Deltas werden 1,5 s
+ * gedämpft (0,2 → 1,0), nicht auf 0 gesetzt und nicht per Pin / body-overflow
+ * gesperrt. Einmal pro Eintritt. Tastatur bleibt frei.
  */
 
-const HOLD_MS = 1000;
-const SOLID_MS = 480;
-const DAMP_START = 0.14;
+const HOLD_MS = 1500;
+const DAMP_START = 0.2;
 const DAMP_END = 1;
-const REARM_MS = 900;
+const WHEEL_RELEASE = 140;
+const TOUCH_RELEASE = 80;
+const LEAVE_ABOVE = 32;
+const LEAVE_BELOW = 96;
 
 function headerPx() {
   const header = document.querySelector("header");
@@ -25,168 +26,53 @@ function headerPx() {
 }
 
 function dampAt(holdStart: number) {
-  const elapsed = performance.now() - holdStart;
-  if (elapsed >= HOLD_MS) return DAMP_END;
-  if (elapsed <= SOLID_MS) return DAMP_START;
-  const t = (elapsed - SOLID_MS) / (HOLD_MS - SOLID_MS);
-  const eased = t * t;
+  const t = Math.min(1, (performance.now() - holdStart) / HOLD_MS);
+  const eased = 1 - (1 - t) * (1 - t);
   return DAMP_START + (DAMP_END - DAMP_START) * eased;
 }
 
-function listEl(stage: HTMLElement) {
-  return stage.parentElement?.querySelector<HTMLElement>(".ws__list") ?? null;
-}
-
-function heroStillInFrame(header: number) {
-  const hero = document.querySelector(".hero-portal");
-  if (!(hero instanceof HTMLElement)) return false;
-  return hero.getBoundingClientRect().bottom > header + 20;
-}
-
-/** Volle Werkstatt-Übersicht: Tisch, 01–03, Preiskarten. Nicht die Ankunft. */
-function overviewParked(stage: HTMLElement) {
-  const header = headerPx();
-  const vh = window.innerHeight;
-  if (heroStillInFrame(header)) return false;
-
-  const s = stage.getBoundingClientRect();
-  const list = listEl(stage)?.getBoundingClientRect();
-  if (!list) return false;
-
-  if (s.top > header + 18) return false;
-  if (s.bottom < header + Math.min(s.height * 0.62, vh * 0.48)) return false;
-  if (list.top > vh - 20) return false;
-  if (list.top < header + 8) return false;
-  return true;
-}
-
-function overviewClearlyAway(stage: HTMLElement) {
-  const header = headerPx();
-  const vh = window.innerHeight;
-  const s = stage.getBoundingClientRect();
-  const list = listEl(stage)?.getBoundingClientRect();
-  if (heroStillInFrame(header)) return true;
-  if (s.top > vh * 0.55) return true;
-  if (s.bottom < header + 40) return true;
-  if (list && list.bottom < header - 16) return true;
-  return false;
-}
-
-function mark(el: HTMLElement | null, on: boolean, at = 0) {
-  if (!el) return;
-  const section = el.closest<HTMLElement>("#werkstatt");
-  if (on) {
-    el.setAttribute("data-ws-hold", "on");
-    el.setAttribute("data-ws-hold-at", String(Math.round(at)));
-    section?.setAttribute("data-ws-hold", "on");
-  } else {
-    el.removeAttribute("data-ws-hold");
-    el.removeAttribute("data-ws-hold-at");
-    section?.removeAttribute("data-ws-hold");
-  }
-}
-
 export function useSoftScrollHold(
-  stageRef: RefObject<HTMLElement | null>,
+  sectionRef: RefObject<HTMLElement | null>,
   options: { enabled: boolean },
 ) {
   const enabledRef = useRef(options.enabled);
   enabledRef.current = options.enabled;
+  const armedRef = useRef(true);
   const releaseRef = useRef<() => void>(() => {});
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motion.matches) return;
 
-    let cancelled = false;
-    let armed = true;
     let holding = false;
-    let releasedAt = 0;
     let holdStart = 0;
     let holdTimer = 0;
-    let pulse = 0;
     let lastTouchY = 0;
-    let expectedY = 0;
-    let syncing = false;
+    let touchAccum = 0;
     let observer: IntersectionObserver | null = null;
-    let retry = 0;
-    let poll = 0;
-    let bound: HTMLElement | null = null;
-
-    const stage = () =>
-      stageRef.current ?? document.querySelector<HTMLElement>("#werkstatt .ws__stage");
 
     const release = () => {
-      if (holding) releasedAt = performance.now();
       holding = false;
-      mark(stage(), false);
       if (holdTimer) {
         window.clearTimeout(holdTimer);
         holdTimer = 0;
       }
-      if (pulse) {
-        window.clearInterval(pulse);
-        pulse = 0;
-      }
-    };
-
-    const tick = () => {
-      if (!holding || cancelled) return;
-      if (performance.now() - holdStart >= HOLD_MS) {
-        release();
-        return;
-      }
-      restrain();
     };
 
     const begin = () => {
-      const el = stage();
-      if (!el || !enabledRef.current || !armed || holding) return;
-      if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
-      if (!overviewParked(el)) return;
-      armed = false;
+      if (!enabledRef.current || !armedRef.current || holding) return;
+      armedRef.current = false;
       holding = true;
       holdStart = performance.now();
-      expectedY = window.scrollY;
-      mark(el, true, holdStart);
       holdTimer = window.setTimeout(release, HOLD_MS);
-      if (!pulse) pulse = window.setInterval(tick, 16);
     };
 
-    const inspect = () => {
-      const el = stage();
-      if (!el) return;
-      if (holding) return;
-      if (releasedAt && performance.now() - releasedAt < REARM_MS) return;
-      if (overviewClearlyAway(el)) {
-        armed = true;
-        releasedAt = 0;
-        return;
-      }
-      if (enabledRef.current) begin();
-    };
-
-    const applyDelta = (raw: number) => {
-      if (!holding || raw === 0) return;
-      expectedY += raw * dampAt(holdStart);
-      syncing = true;
-      window.scrollTo(0, expectedY);
-      syncing = false;
-    };
-
-    const restrain = () => {
-      if (syncing || !holding) return;
-      if (performance.now() - holdStart >= HOLD_MS) {
-        release();
-        return;
-      }
-      const current = window.scrollY;
-      const raw = current - expectedY;
-      if (Math.abs(raw) < 0.5) return;
-      expectedY += raw * dampAt(holdStart);
-      syncing = true;
-      window.scrollTo(0, expectedY);
-      syncing = false;
+    const clearlyLeft = (rect: DOMRectReadOnly) => {
+      const header = headerPx();
+      return rect.bottom < header - LEAVE_ABOVE || rect.top > header + LEAVE_BELOW;
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -194,18 +80,23 @@ export function useSoftScrollHold(
         release();
         return;
       }
-      inspect();
       if (!holding) return;
       if (performance.now() - holdStart >= HOLD_MS) {
         release();
         return;
       }
+      if (Math.abs(event.deltaY) >= WHEEL_RELEASE) {
+        release();
+        return;
+      }
       event.preventDefault();
-      applyDelta(event.deltaY);
+      const dy = event.deltaY * dampAt(holdStart);
+      if (dy !== 0) window.scrollBy(0, dy);
     };
 
     const onTouchStart = (event: TouchEvent) => {
       lastTouchY = event.touches[0]?.clientY ?? 0;
+      touchAccum = 0;
     };
 
     const onTouchMove = (event: TouchEvent) => {
@@ -213,7 +104,6 @@ export function useSoftScrollHold(
         release();
         return;
       }
-      inspect();
       if (!holding) return;
       if (performance.now() - holdStart >= HOLD_MS) {
         release();
@@ -223,66 +113,59 @@ export function useSoftScrollHold(
       const raw = lastTouchY - y;
       lastTouchY = y;
       if (Math.abs(raw) < 2) return;
-      event.preventDefault();
-      applyDelta(raw);
-    };
-
-    const onScroll = () => {
-      if (syncing) return;
-      inspect();
-      restrain();
-    };
-
-    const watch = (el: HTMLElement) => {
-      observer?.disconnect();
-      const header = headerPx();
-      observer = new IntersectionObserver(inspect, {
-        rootMargin: `-${Math.round(header)}px 0px 0px 0px`,
-        threshold: [0, 0.15, 0.4, 0.7, 1],
-      });
-      observer.observe(el);
-      const cards = listEl(el);
-      if (cards) observer.observe(cards);
-      bound = el;
-    };
-
-    const attach = () => {
-      if (cancelled) return;
-      const el = stage();
-      if (!el) {
-        retry = window.setTimeout(attach, 80);
+      touchAccum += raw;
+      if (Math.abs(raw) >= TOUCH_RELEASE || Math.abs(touchAccum) >= TOUCH_RELEASE * 1.4) {
+        release();
         return;
       }
-      if (bound !== el) watch(el);
-      inspect();
+      event.preventDefault();
+      window.scrollBy(0, raw * dampAt(holdStart));
+    };
+
+    const connectObserver = () => {
+      observer?.disconnect();
+      const header = headerPx();
+      const band = Math.max(0, window.innerHeight - header - 2);
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry) return;
+          if (entry.isIntersecting) {
+            begin();
+            return;
+          }
+          if (clearlyLeft(entry.boundingClientRect)) {
+            armedRef.current = true;
+            release();
+          }
+        },
+        { rootMargin: `-${header}px 0px -${band}px 0px`, threshold: 0 },
+      );
+      observer.observe(section);
+    };
+
+    const onMotionChange = () => {
+      if (motion.matches) release();
     };
 
     releaseRef.current = release;
-    attach();
-    poll = window.setInterval(attach, 140);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", attach);
+    connectObserver();
+    window.addEventListener("resize", connectObserver);
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-    motion.addEventListener("change", () => {
-      if (motion.matches) release();
-    });
+    motion.addEventListener("change", onMotionChange);
 
     return () => {
-      cancelled = true;
       releaseRef.current = () => {};
       release();
       observer?.disconnect();
-      window.clearTimeout(retry);
-      window.clearInterval(poll);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", attach);
+      window.removeEventListener("resize", connectObserver);
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("touchstart", onTouchStart, true);
       window.removeEventListener("touchmove", onTouchMove, true);
+      motion.removeEventListener("change", onMotionChange);
     };
-  }, [stageRef]);
+  }, [sectionRef]);
 
   useEffect(() => {
     enabledRef.current = options.enabled;

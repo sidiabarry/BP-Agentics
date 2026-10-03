@@ -3,7 +3,8 @@ import { industryList } from "@/lib/content";
 import { foerderung } from "@/lib/foerderung";
 import { site } from "@/lib/site";
 
-const contentUpdated = new Date("2026-09-08");
+const unchanged = new Date("2026-09-08");
+const revised = new Date("2026-09-29");
 const foerderungUpdated = new Date(foerderung.reviewed);
 
 const staticRoutes: {
@@ -12,39 +13,40 @@ const staticRoutes: {
   priority: number;
   lastModified: Date;
 }[] = [
-  { path: "/", changeFrequency: "weekly", priority: 1, lastModified: contentUpdated },
-  { path: "/leistungen", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/leistungen/auftritt", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/leistungen/annahme", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/leistungen/ablaeufe", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/leistungen/affiliate", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/passt-das", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
-  { path: "/gewerke", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
-  { path: "/ueber-mich", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
+  { path: "/", changeFrequency: "weekly", priority: 1, lastModified: revised },
+  { path: "/leistungen", changeFrequency: "monthly", priority: 0.9, lastModified: unchanged },
+  { path: "/leistungen/auftritt", changeFrequency: "monthly", priority: 0.9, lastModified: revised },
+  { path: "/leistungen/annahme", changeFrequency: "monthly", priority: 0.9, lastModified: revised },
+  { path: "/leistungen/ablaeufe", changeFrequency: "monthly", priority: 0.9, lastModified: unchanged },
+  { path: "/leistungen/affiliate", changeFrequency: "monthly", priority: 0.9, lastModified: revised },
+  { path: "/webdesign-fuer-handwerker", changeFrequency: "monthly", priority: 0.9, lastModified: revised },
+  { path: "/passt-das", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
+  { path: "/gewerke", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
+  { path: "/ueber-mich", changeFrequency: "monthly", priority: 0.7, lastModified: unchanged },
   {
     path: "/foerderung/mid-digitale-prozesse",
     changeFrequency: "weekly",
     priority: 0.8,
     lastModified: foerderungUpdated,
   },
-  { path: "/referenzen", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
-  { path: "/referenzen/feinkost-kreta", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
+  { path: "/referenzen", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
+  { path: "/referenzen/feinkost-kreta", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
   {
     path: "/referenzen/dachdecker-signature",
     changeFrequency: "monthly",
     priority: 0.8,
-    lastModified: contentUpdated,
+    lastModified: revised,
   },
-  { path: "/preise", changeFrequency: "monthly", priority: 0.9, lastModified: contentUpdated },
-  { path: "/kontakt", changeFrequency: "monthly", priority: 0.8, lastModified: contentUpdated },
-  { path: "/termin", changeFrequency: "monthly", priority: 0.7, lastModified: contentUpdated },
-  { path: "/impressum", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
-  { path: "/datenschutz", changeFrequency: "yearly", priority: 0.2, lastModified: contentUpdated },
+  { path: "/preise", changeFrequency: "monthly", priority: 0.9, lastModified: unchanged },
+  { path: "/kontakt", changeFrequency: "monthly", priority: 0.8, lastModified: revised },
+  { path: "/termin", changeFrequency: "monthly", priority: 0.7, lastModified: unchanged },
+  { path: "/impressum", changeFrequency: "yearly", priority: 0.2, lastModified: unchanged },
+  { path: "/datenschutz", changeFrequency: "yearly", priority: 0.2, lastModified: unchanged },
   ...industryList.map((item) => ({
     path: `/${item.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.7,
-    lastModified: contentUpdated,
+    lastModified: revised,
   })),
 ];
 
