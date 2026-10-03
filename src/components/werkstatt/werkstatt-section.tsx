@@ -222,7 +222,6 @@ export function WerkstattSection() {
           modelUrl: MODEL_URL,
           lite: detectLite(),
           reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-          bootNow: true,
           roomBytes: prefetchRoomBytes(),
         },
       );
@@ -254,8 +253,8 @@ export function WerkstattSection() {
     void start();
   }, [start]);
 
-  // Dateien erst nach der fertigen Hero-Szene, und nur in einer echten Pause.
-  // Ein Dauer-Scroll durch den Hero soll weder Chunk noch GLB parsen.
+  // Nach der fertigen Hero-Szene nur Datei, Parse und Code. Kein WebGL,
+  // solange der Hero noch steht und die Bühne nicht nah ist.
   useEffect(() => {
     let cancelled = false;
     let link: HTMLLinkElement | null = null;
@@ -271,23 +270,35 @@ export function WerkstattSection() {
         link.href = MODEL_URL;
         document.head.appendChild(link);
       }
-      // Chunk und GLB-Puffer erst in einer Pause. Ein arrayBuffer mitten im
-      // Hero-Scroll ist selbst ein Long Task.
       void heroIsScrolling().then((busy) => {
-        if (cancelled || busy) return;
-        prefetchRoomBytes();
-        void import("./scene-engine");
-        if (!prefersSaveData()) void start(false);
+        if (cancelled) return;
+        if (busy) {
+          schedule(400);
+          return;
+        }
+        void prefetchRoomBytes()
+          .then(async (buffer) => {
+            if (cancelled) return;
+            const { prepareRoom } = await import("./scene-engine");
+            await prepareRoom(buffer);
+          })
+          .catch(() => {
+            // Der eigentliche Start meldet den Fehler, sobald die Bühne nah ist.
+          });
       });
     };
 
-    const schedule = () => {
+    const schedule = (timeout = 1) => {
       if (cancelled) return;
+      if (idleId && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
+      if (timer) window.clearTimeout(timer);
+      idleId = 0;
+      timer = 0;
       if ("requestIdleCallback" in window) {
-        idleId = window.requestIdleCallback(work, { timeout: 1 });
+        idleId = window.requestIdleCallback(work, { timeout });
         return;
       }
-      timer = setTimeout(work, 0);
+      timer = setTimeout(work, timeout > 1 ? timeout : 0);
     };
 
     const arm = () => {
@@ -306,7 +317,7 @@ export function WerkstattSection() {
       if (timer) window.clearTimeout(timer);
       link?.remove();
     };
-  }, [start]);
+  }, []);
 
   // Bei Fallback die Szene abbauen: Standbild und Liste bleiben.
   useEffect(() => {
@@ -323,6 +334,27 @@ export function WerkstattSection() {
       controllerRef.current = null;
     };
   }, []);
+
+  // Erste echte Pause nach dem Scrollen: früher als die 700px-Kante, damit die
+  // Scheiben fertig sind, wenn die Bühne ins Bild kommt. Vor dem ersten Scroll
+  // bleibt der GPU-Teil aus.
+  useEffect(() => {
+    let moved = false;
+    let timer: ReturnType<typeof setTimeout> | 0 = 0;
+    const onScroll = () => {
+      moved = true;
+      if (timer) window.clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = 0;
+        if (moved) void start();
+      }, 80);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [start]);
 
   // --- Laden kurz vor dem Sichtbarwerden, Rendern nur solange sichtbar ---
   useEffect(() => {

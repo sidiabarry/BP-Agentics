@@ -37,13 +37,7 @@ export interface SceneOptions {
   /** Schwächeres Gerät / Touch: 30 fps, keine Schatten, kein Video. */
   lite: boolean;
   reduced: boolean;
-  /**
-   * Der Aufrufer hat gerade eine Pause bestätigt. Der erste Slice wartet
-   * dann nicht noch einmal zwei Frames, sonst rutscht ein schnelles Wischen
-   * an der Bühne vorbei.
-   */
-  bootNow?: boolean;
-  /** Schon geholte GLB-Bytes, damit der Boot nicht noch einmal auf das Netz wartet. */
+/** Schon geholte GLB-Bytes, damit der Boot nicht noch einmal auf das Netz wartet. */
   roomBytes?: Promise<ArrayBuffer>;
 }
 
@@ -99,6 +93,27 @@ const FOCUS_LIGHT: Record<StationId, { pos: V3; color: string; peak: number }> =
 
 const ROOM_TIMEOUT_MS = 20000;
 
+let roomParse: Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF> | null = null;
+
+/**
+ * CPU-Parse des Studios. Kein WebGL-Kontext, keine Shader, keine Uploads.
+ * Der frühe Idle-Schritt nach der fertigen Hero-Szene ruft nur das hier auf.
+ */
+export function prepareRoom(buffer: ArrayBuffer) {
+  if (!roomParse) {
+    roomParse = (async () => {
+      const loader = new GLTFLoader();
+      loader.setMeshoptDecoder(MeshoptDecoder);
+      await MeshoptDecoder.ready;
+      const copy = buffer.slice(0);
+      return await new Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF>((resolve, reject) => {
+        loader.parse(copy, "", (parsed) => resolve(parsed), () => reject(new Error("room")));
+      });
+    })();
+  }
+  return roomParse;
+}
+
 const easeInOutCubic = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
@@ -128,14 +143,12 @@ export function createWerkstattScene(
   } | null = null;
   let pendingReduced = reduced;
 
-  let sprint = options.bootNow === true;
+  let sprint = false;
   let scrolls = 0;
-  let quietAt = -1;
   const noteScroll = () => {
     scrolls += 1;
   };
   window.addEventListener("scroll", noteScroll, { passive: true });
-  if (sprint) quietAt = scrolls;
   const stopScrollWatch = () => window.removeEventListener("scroll", noteScroll);
 
   function heroCovering() {
@@ -144,22 +157,34 @@ export function createWerkstattScene(
   }
 
   function yieldSlice() {
-    // Während der Hero läuft und gescrollt wird: nichts tun. Eine bestätigte
-    // Pause (zwei Frames ohne Scroll) oder das Ende des Heros lässt den Rest
-    // im selben Zug durch, sonst zieht ein schneller Scroll an der Bühne vorbei.
+    // Eine GPU-Scheibe pro Task. Im Hero nur nach zwei Frames ohne Scroll,
+    // und nie im selben Zug wie die vorige Scheibe. Nach dem Hero laufen die
+    // Scheiben weiter, auch während gescrollt wird.
     return new Promise<void>((resolve) => {
-      const go = () => {
-        sprint = true;
-        quietAt = scrolls;
-        resolve();
-      };
-      const attempt = () => {
+      const step = () => {
         if (disposed) {
           resolve();
           return;
         }
-        if (!heroCovering()) {
-          go();
+      if (!heroCovering()) {
+        sprint = true;
+        setTimeout(resolve, 0);
+        return;
+      }
+        if (sprint) {
+          const stamp = scrolls;
+          setTimeout(() => {
+            if (disposed) {
+              resolve();
+              return;
+            }
+            if (heroCovering() && scrolls !== stamp) {
+              sprint = false;
+              step();
+              return;
+            }
+            resolve();
+          }, 0);
           return;
         }
         const stamp = scrolls;
@@ -170,19 +195,15 @@ export function createWerkstattScene(
               return;
             }
             if (heroCovering() && scrolls !== stamp) {
-              attempt();
+              step();
               return;
             }
-            go();
+            sprint = true;
+            setTimeout(resolve, 0);
           }),
         );
       };
-      if (sprint && (!heroCovering() || scrolls === quietAt)) {
-        resolve();
-        return;
-      }
-      sprint = false;
-      attempt();
+      step();
     });
   }
 
@@ -345,11 +366,7 @@ export function createWerkstattScene(
   const focusColor = new THREE.Color();
 
   let roomRoot: THREE.Object3D | null = null;
-  const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);
-  // Nur die Bytes holen. Parsen passiert später in einer eigenen Scheibe,
-  // nicht im XHR-Callback mitten im Hero-Scroll. Liegt der Puffer schon vor,
-  // entfällt das Warten mitten in der Pause.
+  // Nur die Bytes holen. Der CPU-Parse läuft über prepareRoom, ohne WebGL.
   const roomBytes = options.roomBytes ?? new Promise<ArrayBuffer>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", options.modelUrl);
@@ -976,7 +993,8 @@ export function createWerkstattScene(
       if (!mesh.isMesh || !mesh.material) return;
       const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
       for (const material of materials) {
-        for (const value of Object.values(material)) {
+        const maps = material as THREE.MeshStandardMaterial;
+        for (const value of [maps.map, maps.normalMap, maps.roughnessMap, maps.metalnessMap, maps.aoMap, maps.emissiveMap, maps.lightMap, maps.bumpMap, maps.displacementMap, maps.alphaMap, maps.envMap]) {
           if (value instanceof THREE.Texture && !seen.has(value)) {
             seen.add(value);
             found.push(value);
@@ -997,22 +1015,57 @@ export function createWerkstattScene(
     camera.updateProjectionMatrix();
     applyOffset(baseOffset);
 
-    if (await hold()) return false;
-    try {
-      renderer.compile(scene, camera);
-    } catch {
-      // Einzelne Materialien können hier fehlen; der erste sichtbare Frame holt sie nach.
+    const jobs: THREE.Mesh[] = [];
+    const seen = new Set<string>();
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh || !mesh.material) return;
+      const materials = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).filter(
+        (material): material is THREE.Material => Boolean(material),
+      );
+      for (const material of materials) {
+        const key = `${material.uuid}:${(mesh as THREE.SkinnedMesh).isSkinnedMesh ? "s" : "m"}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        jobs.push(mesh);
+      }
+    });
+    // compile(scene) läuft über alle Meshes. Ein Mesh pro Scheibe, die Lichter
+    // bleiben die der ganzen Szene, damit die Shadow-Variante mit kompiliert.
+    for (const mesh of jobs) {
+      if (await hold()) return false;
+      try {
+        renderer.compile(mesh, camera, scene);
+      } catch {
+        // Dieses Material holt der erste sichtbare Frame nach.
+      }
     }
-    for (const tex of sceneTextures()) {
+    let textures: THREE.Texture[] = [];
+    try {
+      textures = sceneTextures();
+    } catch {
+      textures = [];
+    }
+    for (const tex of textures) {
+      if (await hold()) return false;
       try {
         renderer.initTexture(tex);
       } catch {
         // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
       }
     }
-    renderer.render(scene, camera);
+    if (await hold()) return false;
     booted = true;
     needsRender = true;
+    try {
+      renderer.render(scene, camera);
+    } catch {
+      // Der nächste sichtbare Frame zeichnet.
+    }
+    if (roomReady && !readyFired) {
+      readyFired = true;
+      callbacks.onReady();
+    }
     return true;
   }
 
@@ -1206,11 +1259,7 @@ export function createWerkstattScene(
   try {
     const buffer = await roomBytes;
     if (await hold()) return;
-    await MeshoptDecoder.ready;
-    if (await hold()) return;
-    const gltf = await new Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF>((resolve, reject) => {
-      loader.parse(buffer, "", (parsed) => resolve(parsed), () => reject(new Error("room")));
-    });
+    const gltf = await prepareRoom(buffer);
     if (await hold()) return;
     if (!disposed) {
       const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
