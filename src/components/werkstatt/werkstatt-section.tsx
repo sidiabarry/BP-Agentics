@@ -24,6 +24,17 @@ import "./werkstatt.css";
 const MODEL_URL = "/models/studio-room.v6.glb";
 const POSTER = "/werkstatt/studio-v6";
 
+let roomBytesPrefetch: Promise<ArrayBuffer> | null = null;
+function prefetchRoomBytes() {
+  if (!roomBytesPrefetch) {
+    roomBytesPrefetch = fetch(MODEL_URL).then((res) => {
+      if (!res.ok) throw new Error("room");
+      return res.arrayBuffer();
+    });
+  }
+  return roomBytesPrefetch;
+}
+
 type Phase = "idle" | "loading" | "ready" | "fallback";
 
 function detectLite() {
@@ -68,52 +79,38 @@ async function waitForHero(alive: () => boolean) {
   }
 }
 
-function waitWhileHeroScrolls(alive: () => boolean) {
-  // Chunk-Auswertung nicht mitten in den Hero legen. Eine kurze Pause reicht.
-  return new Promise<void>((resolve) => {
-    let y = window.scrollY;
-    let at = performance.now();
+function heroIsScrolling() {
+  return new Promise<boolean>((resolve) => {
+    let sawScroll = false;
     const onScroll = () => {
-      if (window.scrollY !== y) {
-        y = window.scrollY;
-        at = performance.now();
-      }
+      sawScroll = true;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    const step = () => {
-      const hero = document.querySelector(".hero-portal");
-      const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
-      const busy = alive() && visible && performance.now() - at < 48;
-      if (!busy) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         window.removeEventListener("scroll", onScroll);
-        resolve();
-        return;
-      }
-      if ("requestIdleCallback" in window) window.requestIdleCallback(step, { timeout: 400 });
-      else setTimeout(step, 48);
-    };
-    step();
+        const hero = document.querySelector(".hero-portal");
+        const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 0;
+        resolve(visible && sawScroll);
+      });
+    });
   });
 }
 
-function waitForCalm() {
-  // Kurze Scroll-Pause abwarten, aber nicht über ein schnelles Wischen hinaus.
-  // Pausen von 120ms würden die 150ms-Ruhe sonst nie erreichen und die Szene
-  // erst hunderte Pixel später starten als vor dem Idle-Boot.
+function waitWhileHeroScrolls(alive: () => boolean) {
+  // Chunk-Auswertung nicht mitten in den Hero legen.
   return new Promise<void>((resolve) => {
-    const deadline = performance.now() + 120;
-    let y = window.scrollY;
-    let since = performance.now();
-    const tick = () => {
-      const now = performance.now();
-      if (window.scrollY !== y) {
-        y = window.scrollY;
-        since = now;
+    const step = () => {
+      if (!alive()) {
+        resolve();
+        return;
       }
-      if (now >= deadline || now - since >= 150) resolve();
-      else window.setTimeout(tick, 40);
+      void heroIsScrolling().then((scrolling) => {
+        if (!alive() || !scrolling) resolve();
+        else step();
+      });
     };
-    tick();
+    step();
   });
 }
 
@@ -192,9 +189,19 @@ export function WerkstattSection() {
     startedRef.current = true;
     if (announce) setPhase("loading");
     try {
+      await waitForHero(() => aliveRef.current);
+      if (!aliveRef.current) return;
       await waitWhileHeroScrolls(() => aliveRef.current);
       if (!aliveRef.current) return;
+      let scrolledDuringImport = false;
+      const noteImportScroll = () => {
+        scrolledDuringImport = true;
+      };
+      window.addEventListener("scroll", noteImportScroll, { passive: true });
       const { createWerkstattScene } = await import("./scene-engine");
+      window.removeEventListener("scroll", noteImportScroll);
+      if (!aliveRef.current) return;
+      if (scrolledDuringImport) await waitWhileHeroScrolls(() => aliveRef.current);
       if (!aliveRef.current) return;
       const controller = createWerkstattScene(
         host,
@@ -215,6 +222,8 @@ export function WerkstattSection() {
           modelUrl: MODEL_URL,
           lite: detectLite(),
           reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          bootNow: true,
+          roomBytes: prefetchRoomBytes(),
         },
       );
       if (!controller) {
@@ -239,8 +248,9 @@ export function WerkstattSection() {
   const begin = useCallback(async () => {
     await waitForHero(() => aliveRef.current);
     if (!aliveRef.current) return;
-    await waitForCalm();
-    if (!aliveRef.current) return;
+    // Kein zusätzliches Warten: start() bootet erst in einer echten Pause
+    // oder nach dem Hero. 120ms-Pausen würden sonst um genau diese Pause
+    // später dran sein als der bisherige Start an der 700px-Kante.
     void start();
   }, [start]);
 
@@ -252,22 +262,6 @@ export function WerkstattSection() {
     let poll = 0;
     let idleId = 0;
     let timer: ReturnType<typeof setTimeout> | 0 = 0;
-    let y = window.scrollY;
-    let at = performance.now();
-    const onScroll = () => {
-      const next = window.scrollY;
-      if (next === y) return;
-      y = next;
-      at = performance.now();
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const heroBusy = () => {
-      const hero = document.querySelector(".hero-portal");
-      const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
-      return visible && performance.now() - at < 48;
-    };
-
     const work = () => {
       if (cancelled) return;
       if (!link) {
@@ -277,33 +271,23 @@ export function WerkstattSection() {
         link.href = MODEL_URL;
         document.head.appendChild(link);
       }
-      void import("./scene-engine");
-      // Szene schon in den Pausen aufbauen, ohne die Phase zu wechseln.
-      // Der Poster bleibt, bis die Bühne sichtbar und fertig ist.
-      if (!prefersSaveData()) void start(false);
+      // Chunk und GLB-Puffer erst in einer Pause. Ein arrayBuffer mitten im
+      // Hero-Scroll ist selbst ein Long Task.
+      void heroIsScrolling().then((busy) => {
+        if (cancelled || busy) return;
+        prefetchRoomBytes();
+        void import("./scene-engine");
+        if (!prefersSaveData()) void start(false);
+      });
     };
 
     const schedule = () => {
       if (cancelled) return;
       if ("requestIdleCallback" in window) {
-        idleId = window.requestIdleCallback(() => {
-          if (cancelled) return;
-          if (heroBusy()) {
-            schedule();
-            return;
-          }
-          work();
-        }, { timeout: 1500 });
+        idleId = window.requestIdleCallback(work, { timeout: 1 });
         return;
       }
-      timer = setTimeout(() => {
-        if (cancelled) return;
-        if (heroBusy()) {
-          schedule();
-          return;
-        }
-        work();
-      }, 200);
+      timer = setTimeout(work, 0);
     };
 
     const arm = () => {
@@ -317,7 +301,6 @@ export function WerkstattSection() {
 
     return () => {
       cancelled = true;
-      window.removeEventListener("scroll", onScroll);
       if (poll) window.clearInterval(poll);
       if (idleId) window.cancelIdleCallback(idleId);
       if (timer) window.clearTimeout(timer);

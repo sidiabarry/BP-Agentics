@@ -37,6 +37,14 @@ export interface SceneOptions {
   /** Schwächeres Gerät / Touch: 30 fps, keine Schatten, kein Video. */
   lite: boolean;
   reduced: boolean;
+  /**
+   * Der Aufrufer hat gerade eine Pause bestätigt. Der erste Slice wartet
+   * dann nicht noch einmal zwei Frames, sonst rutscht ein schnelles Wischen
+   * an der Bühne vorbei.
+   */
+  bootNow?: boolean;
+  /** Schon geholte GLB-Bytes, damit der Boot nicht noch einmal auf das Netz wartet. */
+  roomBytes?: Promise<ArrayBuffer>;
 }
 
 export interface SceneCallbacks {
@@ -94,32 +102,6 @@ const ROOM_TIMEOUT_MS = 20000;
 const easeInOutCubic = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
-/**
- * Obergrenze einer Init-Scheibe. 12 ms bleiben auch bei vierfacher CPU-Drossel
- * unter der Long-Task-Schwelle von 50 ms.
- */
-const SLICE_MS = 12;
-
-function trackScroll() {
-  let y = window.scrollY;
-  let at = performance.now();
-  const onScroll = () => {
-    const next = window.scrollY;
-    if (next === y) return;
-    y = next;
-    at = performance.now();
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  return {
-    calm() {
-      return performance.now() - at;
-    },
-    stop() {
-      window.removeEventListener("scroll", onScroll);
-    },
-  };
-}
-
 export function createWerkstattScene(
   container: HTMLElement,
   callbacks: SceneCallbacks,
@@ -137,7 +119,6 @@ export function createWerkstattScene(
   let readyFired = false;
   let needsRender = true;
   let framing: Framing = { right: 0, bottom: 0 };
-  const scroll = trackScroll();
   let bound: WerkstattSceneController | null = null;
   let pendingVisible = true;
   let pendingFraming: Framing = framing;
@@ -147,33 +128,61 @@ export function createWerkstattScene(
   } | null = null;
   let pendingReduced = reduced;
 
-  function heroScrolling() {
+  let sprint = options.bootNow === true;
+  let scrolls = 0;
+  let quietAt = -1;
+  const noteScroll = () => {
+    scrolls += 1;
+  };
+  window.addEventListener("scroll", noteScroll, { passive: true });
+  if (sprint) quietAt = scrolls;
+  const stopScrollWatch = () => window.removeEventListener("scroll", noteScroll);
+
+  function heroCovering() {
     const hero = document.querySelector(".hero-portal");
-    const heroVisible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
-    // Kurze Pause (auch 120 ms) zählt nicht als Dauer-Scroll.
-    return heroVisible && scroll.calm() < 48;
+    return hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 0;
   }
 
   function yieldSlice() {
+    // Während der Hero läuft und gescrollt wird: nichts tun. Eine bestätigte
+    // Pause (zwei Frames ohne Scroll) oder das Ende des Heros lässt den Rest
+    // im selben Zug durch, sonst zieht ein schneller Scroll an der Bühne vorbei.
     return new Promise<void>((resolve) => {
-      const step = () => {
+      const go = () => {
+        sprint = true;
+        quietAt = scrolls;
+        resolve();
+      };
+      const attempt = () => {
         if (disposed) {
           resolve();
           return;
         }
-        // Während der Hero läuft und die Seite sich bewegt: nicht arbeiten.
-        // In einer Scroll-Pause oder sobald der Hero weg ist, eine Scheibe.
-        if (!heroScrolling()) {
-          requestAnimationFrame(() => resolve());
+        if (!heroCovering()) {
+          go();
           return;
         }
-        if ("requestIdleCallback" in window) {
-          window.requestIdleCallback(step, { timeout: 700 });
-          return;
-        }
-        setTimeout(step, 48);
+        const stamp = scrolls;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            if (disposed) {
+              resolve();
+              return;
+            }
+            if (heroCovering() && scrolls !== stamp) {
+              attempt();
+              return;
+            }
+            go();
+          }),
+        );
       };
-      step();
+      if (sprint && (!heroCovering() || scrolls === quietAt)) {
+        resolve();
+        return;
+      }
+      sprint = false;
+      attempt();
     });
   }
 
@@ -202,7 +211,7 @@ export function createWerkstattScene(
     },
     dispose() {
       disposed = true;
-      scroll.stop();
+      stopScrollWatch();
       bound?.dispose();
     },
   };
@@ -339,8 +348,9 @@ export function createWerkstattScene(
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
   // Nur die Bytes holen. Parsen passiert später in einer eigenen Scheibe,
-  // nicht im XHR-Callback mitten im Hero-Scroll.
-  const roomBytes = new Promise<ArrayBuffer>((resolve, reject) => {
+  // nicht im XHR-Callback mitten im Hero-Scroll. Liegt der Puffer schon vor,
+  // entfällt das Warten mitten in der Pause.
+  const roomBytes = options.roomBytes ?? new Promise<ArrayBuffer>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", options.modelUrl);
     xhr.responseType = "arraybuffer";
@@ -403,6 +413,7 @@ export function createWerkstattScene(
   meshAt(new THREE.SphereGeometry(0.023, 12, 8), new THREE.MeshBasicMaterial({ color: "#9dd5b0" }), monitor, [0.82, 0.48, 0.48]);
   for (let i = 0; i < 11; i++) box(0.028, 0.52, 0.03, dark, [0.92, 1.05, 0.47], monitor);
 
+  if (await hold()) return;
   const keyboard = new THREE.Group();
   monitor.add(keyboard);
   keyboard.position.set(0.05, 0.09, 1.04);
@@ -986,56 +997,19 @@ export function createWerkstattScene(
     camera.updateProjectionMatrix();
     applyOffset(baseOffset);
 
-    const meshes: THREE.Mesh[] = [];
-    scene.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
-      if (mesh.isMesh) meshes.push(mesh);
-    });
-    const warmed = new Set<THREE.Material>();
-    for (const mesh of meshes) mesh.visible = false;
-
-    // Ein neues Material pro Scheibe: Compile und erster Einsatz bleiben kurz.
-    let index = 0;
-    while (index < meshes.length) {
-      if (await hold()) return false;
-      const started = performance.now();
-      let introduced = false;
-      while (index < meshes.length && performance.now() - started < SLICE_MS) {
-        const mesh = meshes[index];
-        const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).filter(
-          (mat): mat is THREE.Material => Boolean(mat),
-        );
-        const novel = mats.some((mat) => !warmed.has(mat));
-        if (novel && introduced) break;
-        mesh.visible = true;
-        for (const mat of mats) warmed.add(mat);
-        if (novel) introduced = true;
-        index++;
-      }
-      try {
-        await renderer.compileAsync(scene, camera);
-      } catch {
-        renderer.compile(scene, camera);
-      }
-      renderer.render(scene, camera);
-    }
-    for (const mesh of meshes) mesh.visible = true;
-
-    const textures = sceneTextures();
-    let texAt = 0;
-    while (texAt < textures.length) {
-      if (await hold()) return false;
-      const started = performance.now();
-      while (texAt < textures.length && performance.now() - started < SLICE_MS) {
-        try {
-          renderer.initTexture(textures[texAt]);
-        } catch {
-          // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
-        }
-        texAt++;
-      }
-    }
     if (await hold()) return false;
+    try {
+      renderer.compile(scene, camera);
+    } catch {
+      // Einzelne Materialien können hier fehlen; der erste sichtbare Frame holt sie nach.
+    }
+    for (const tex of sceneTextures()) {
+      try {
+        renderer.initTexture(tex);
+      } catch {
+        // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
+      }
+    }
     renderer.render(scene, camera);
     booted = true;
     needsRender = true;
@@ -1260,8 +1234,13 @@ export function createWerkstattScene(
     if (!disposed) {
       callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar.");
     }
+    stopScrollWatch();
     return;
   }
-  if (!(await warmGpu())) return;
+  if (!(await warmGpu())) {
+    stopScrollWatch();
+    return;
+  }
+  stopScrollWatch();
   }
 }
