@@ -68,6 +68,34 @@ async function waitForHero(alive: () => boolean) {
   }
 }
 
+function waitWhileHeroScrolls(alive: () => boolean) {
+  // Chunk-Auswertung nicht mitten in den Hero legen. Eine kurze Pause reicht.
+  return new Promise<void>((resolve) => {
+    let y = window.scrollY;
+    let at = performance.now();
+    const onScroll = () => {
+      if (window.scrollY !== y) {
+        y = window.scrollY;
+        at = performance.now();
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const step = () => {
+      const hero = document.querySelector(".hero-portal");
+      const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
+      const busy = alive() && visible && performance.now() - at < 48;
+      if (!busy) {
+        window.removeEventListener("scroll", onScroll);
+        resolve();
+        return;
+      }
+      if ("requestIdleCallback" in window) window.requestIdleCallback(step, { timeout: 400 });
+      else setTimeout(step, 48);
+    };
+    step();
+  });
+}
+
 function waitForCalm() {
   // Kurze Scroll-Pause abwarten, aber nicht über ein schnelles Wischen hinaus.
   // Pausen von 120ms würden die 150ms-Ruhe sonst nie erreichen und die Szene
@@ -152,13 +180,20 @@ export function WerkstattSection() {
   }, []);
 
   // --- Szene starten ----------------------------------------------------
-  const start = useCallback(async () => {
-    if (startedRef.current) return;
+  // `announce` zeigt den Ladebalken. Der stille Vorlauf nach dem Hero lässt
+  // die Phase auf „idle", damit die geschlossene Bühne gleich aussieht.
+  const start = useCallback(async (announce = true) => {
+    if (startedRef.current) {
+      if (announce) setPhase((prev) => (prev === "idle" ? "loading" : prev));
+      return;
+    }
     const host = hostRef.current;
     if (!host) return;
     startedRef.current = true;
-    setPhase("loading");
+    if (announce) setPhase("loading");
     try {
+      await waitWhileHeroScrolls(() => aliveRef.current);
+      if (!aliveRef.current) return;
       const { createWerkstattScene } = await import("./scene-engine");
       if (!aliveRef.current) return;
       const controller = createWerkstattScene(
@@ -209,29 +244,86 @@ export function WerkstattSection() {
     void start();
   }, [start]);
 
+  // Dateien erst nach der fertigen Hero-Szene, und nur in einer echten Pause.
+  // Ein Dauer-Scroll durch den Hero soll weder Chunk noch GLB parsen.
   useEffect(() => {
+    let cancelled = false;
     let link: HTMLLinkElement | null = null;
-    const run = () => {
-      link = document.createElement("link");
-      link.rel = "prefetch";
-      link.as = "fetch";
-      link.href = MODEL_URL;
-      document.head.appendChild(link);
-      void import("./scene-engine");
+    let poll = 0;
+    let idleId = 0;
+    let timer: ReturnType<typeof setTimeout> | 0 = 0;
+    let y = window.scrollY;
+    let at = performance.now();
+    const onScroll = () => {
+      const next = window.scrollY;
+      if (next === y) return;
+      y = next;
+      at = performance.now();
     };
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(run, { timeout: 2000 });
-      return () => {
-        window.cancelIdleCallback(id);
-        link?.remove();
-      };
-    }
-    const id = setTimeout(run, 1);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    const heroBusy = () => {
+      const hero = document.querySelector(".hero-portal");
+      const visible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
+      return visible && performance.now() - at < 48;
+    };
+
+    const work = () => {
+      if (cancelled) return;
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "prefetch";
+        link.as = "fetch";
+        link.href = MODEL_URL;
+        document.head.appendChild(link);
+      }
+      void import("./scene-engine");
+      // Szene schon in den Pausen aufbauen, ohne die Phase zu wechseln.
+      // Der Poster bleibt, bis die Bühne sichtbar und fertig ist.
+      if (!prefersSaveData()) void start(false);
+    };
+
+    const schedule = () => {
+      if (cancelled) return;
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(() => {
+          if (cancelled) return;
+          if (heroBusy()) {
+            schedule();
+            return;
+          }
+          work();
+        }, { timeout: 1500 });
+        return;
+      }
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        if (heroBusy()) {
+          schedule();
+          return;
+        }
+        work();
+      }, 200);
+    };
+
+    const arm = () => {
+      if (cancelled || heroBlocksWerkstatt()) return;
+      if (poll) window.clearInterval(poll);
+      poll = 0;
+      schedule();
+    };
+    poll = window.setInterval(arm, 50);
+    arm();
+
     return () => {
-      clearTimeout(id);
+      cancelled = true;
+      window.removeEventListener("scroll", onScroll);
+      if (poll) window.clearInterval(poll);
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timer) window.clearTimeout(timer);
       link?.remove();
     };
-  }, []);
+  }, [start]);
 
   // Bei Fallback die Szene abbauen: Standbild und Liste bleiben.
   useEffect(() => {

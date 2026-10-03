@@ -94,6 +94,32 @@ const ROOM_TIMEOUT_MS = 20000;
 const easeInOutCubic = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
+/**
+ * Obergrenze einer Init-Scheibe. 12 ms bleiben auch bei vierfacher CPU-Drossel
+ * unter der Long-Task-Schwelle von 50 ms.
+ */
+const SLICE_MS = 12;
+
+function trackScroll() {
+  let y = window.scrollY;
+  let at = performance.now();
+  const onScroll = () => {
+    const next = window.scrollY;
+    if (next === y) return;
+    y = next;
+    at = performance.now();
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  return {
+    calm() {
+      return performance.now() - at;
+    },
+    stop() {
+      window.removeEventListener("scroll", onScroll);
+    },
+  };
+}
+
 export function createWerkstattScene(
   container: HTMLElement,
   callbacks: SceneCallbacks,
@@ -111,9 +137,95 @@ export function createWerkstattScene(
   let readyFired = false;
   let needsRender = true;
   let framing: Framing = { right: 0, bottom: 0 };
+  const scroll = trackScroll();
+  let bound: WerkstattSceneController | null = null;
+  let pendingVisible = true;
+  let pendingFraming: Framing = framing;
+  let pendingLabels: {
+    elements: Partial<Record<StationId, HTMLElement>>;
+    leaders?: Partial<Record<StationId, { line: SVGLineElement; dot: SVGCircleElement }>>;
+  } | null = null;
+  let pendingReduced = reduced;
 
+  function heroScrolling() {
+    const hero = document.querySelector(".hero-portal");
+    const heroVisible = hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 120;
+    // Kurze Pause (auch 120 ms) zählt nicht als Dauer-Scroll.
+    return heroVisible && scroll.calm() < 48;
+  }
+
+  function yieldSlice() {
+    return new Promise<void>((resolve) => {
+      const step = () => {
+        if (disposed) {
+          resolve();
+          return;
+        }
+        // Während der Hero läuft und die Seite sich bewegt: nicht arbeiten.
+        // In einer Scroll-Pause oder sobald der Hero weg ist, eine Scheibe.
+        if (!heroScrolling()) {
+          requestAnimationFrame(() => resolve());
+          return;
+        }
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(step, { timeout: 700 });
+          return;
+        }
+        setTimeout(step, 48);
+      };
+      step();
+    });
+  }
+
+  const api: WerkstattSceneController = {
+    goTo(view, opts) {
+      bound?.goTo(view, opts);
+    },
+    step(dir) {
+      bound?.step(dir);
+    },
+    setFraming(next) {
+      pendingFraming = next;
+      bound?.setFraming(next);
+    },
+    setVisible(next) {
+      pendingVisible = next;
+      bound?.setVisible(next);
+    },
+    setReduced(next) {
+      pendingReduced = next;
+      bound?.setReduced(next);
+    },
+    setLabelElements(elements, leaders) {
+      pendingLabels = { elements, leaders };
+      bound?.setLabelElements(elements, leaders);
+    },
+    dispose() {
+      disposed = true;
+      scroll.stop();
+      bound?.dispose();
+    },
+  };
+
+  void boot();
+  return api;
+
+  async function boot() {
   const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
-  let renderer: THREE.WebGLRenderer;
+  let renderer!: THREE.WebGLRenderer;
+  const hold = async () => {
+    await yieldSlice();
+    if (!disposed) return false;
+    if (!bound) {
+      cancelAnimationFrame(rafId);
+      renderer?.dispose();
+      renderer?.forceContextLoss();
+      const node = renderer?.domElement;
+      if (node?.parentElement === container) container.removeChild(node);
+    }
+    return true;
+  };
+  if (await hold()) return;
   try {
     renderer = new THREE.WebGLRenderer({
       antialias: pixelRatio() < 2,
@@ -122,8 +234,9 @@ export function createWerkstattScene(
     });
   } catch {
     callbacks.onFallback("Die 3D-Ansicht wird auf diesem Gerät nicht unterstützt.");
-    return null;
+    return;
   }
+  if (!renderer) return;
   const size = () => ({ w: Math.max(1, container.clientWidth), h: Math.max(1, container.clientHeight) });
   renderer.setPixelRatio(pixelRatio());
   renderer.setSize(size().w, size().h, false);
@@ -202,6 +315,7 @@ export function createWerkstattScene(
     return l;
   }
 
+  if (await hold()) return;
   scene.add(new THREE.HemisphereLight("#b8d5ec", "#70452a", lite ? 1.6 : 1.4));
   const key = new THREE.SpotLight("#f8ce9c", 125, 20, 0.85, 0.8, 1.7);
   key.position.set(-3, 6, 4);
@@ -224,37 +338,29 @@ export function createWerkstattScene(
   let roomRoot: THREE.Object3D | null = null;
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
-  loader.load(
-    options.modelUrl,
-    (gltf) => {
-      if (disposed) return;
-      const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-      gltf.scene.traverse((o) => {
-        const m = o as THREE.Mesh;
-        if (!m.isMesh) return;
-        m.castShadow = !lite;
-        m.receiveShadow = !lite;
-        for (const mm of Array.isArray(m.material) ? m.material : [m.material]) {
-          const std = mm as THREE.MeshStandardMaterial;
-          if (std?.map) std.map.anisotropy = maxAniso;
-        }
-      });
-      roomRoot = gltf.scene;
-      scene.add(gltf.scene);
-      roomReady = true;
-      callbacks.onProgress?.(1);
-      needsRender = true;
-      void warmGpu();
-    },
-    (event) => {
-      if (event.lengthComputable && event.total > 0) callbacks.onProgress?.(Math.min(0.98, event.loaded / event.total));
-    },
-    () => callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar."),
-  );
+  // Nur die Bytes holen. Parsen passiert später in einer eigenen Scheibe,
+  // nicht im XHR-Callback mitten im Hero-Scroll.
+  const roomBytes = new Promise<ArrayBuffer>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", options.modelUrl);
+    xhr.responseType = "arraybuffer";
+    xhr.onprogress = (event) => {
+      if (event.lengthComputable && event.total > 0) {
+        callbacks.onProgress?.(Math.min(0.98, event.loaded / event.total));
+      }
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300 && xhr.response) resolve(xhr.response as ArrayBuffer);
+      else reject(new Error("room"));
+    };
+    xhr.onerror = () => reject(new Error("room"));
+    xhr.send();
+  });
   const roomTimeout = window.setTimeout(() => {
     if (!roomReady && !disposed) callbacks.onFallback("Das Studio lädt gerade zu langsam. Die Leistungen bleiben unten erreichbar.");
   }, ROOM_TIMEOUT_MS);
 
+  if (await hold()) return;
   const monitor = new THREE.Group();
   monitor.position.set(-3.05, 0.025, 0.3);
   monitor.rotation.y = 0.16;
@@ -380,6 +486,7 @@ export function createWerkstattScene(
   roofImage.addEventListener("load", drawMonitor);
   roofImage.src = "/demos/dach-poster.jpg";
 
+  if (await hold()) return;
   const tablet = new THREE.Group();
   tablet.position.set(0, 1.08, 1);
   tablet.rotation.set(-0.27, 0, 0);
@@ -486,6 +593,7 @@ export function createWerkstattScene(
     needsRender = true;
   }
 
+  if (await hold()) return;
   const robot = createRobot(THREE, scene);
   robot.group.position.set(3, 0.025, 0.25);
   robot.group.rotation.y = -0.13;
@@ -514,6 +622,7 @@ export function createWerkstattScene(
   scene.add(dust);
 
   const stationObjects: Record<StationId, THREE.Object3D> = { web: monitor, chat: tablet, office: robot.group };
+  if (await hold()) return;
   robot.animate(0, true);
   scene.updateMatrixWorld(true);
   const focusBoxes = {} as Record<StationId, THREE.Box3>;
@@ -848,13 +957,6 @@ export function createWerkstattScene(
 
   let booted = false;
 
-  function idleSlice() {
-    return new Promise<void>((resolve) => {
-      if ("requestIdleCallback" in window) window.requestIdleCallback(() => resolve(), { timeout: 300 });
-      else setTimeout(resolve, 32);
-    });
-  }
-
   function sceneTextures() {
     const found: THREE.Texture[] = [];
     const seen = new Set<THREE.Texture>();
@@ -875,7 +977,7 @@ export function createWerkstattScene(
   }
 
   async function warmGpu() {
-    if (disposed || booted) return;
+    if (disposed || booted) return false;
     const { w, h } = size();
     camera.position.copy(basePos);
     camera.lookAt(baseTarget);
@@ -883,30 +985,61 @@ export function createWerkstattScene(
     camera.aspect = w / Math.max(1, h);
     camera.updateProjectionMatrix();
     applyOffset(baseOffset);
-    await idleSlice();
-    if (disposed) return;
-    try {
-      await renderer.compileAsync(scene, camera);
-    } catch {
-      renderer.compile(scene, camera);
+
+    const meshes: THREE.Mesh[] = [];
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (mesh.isMesh) meshes.push(mesh);
+    });
+    const warmed = new Set<THREE.Material>();
+    for (const mesh of meshes) mesh.visible = false;
+
+    // Ein neues Material pro Scheibe: Compile und erster Einsatz bleiben kurz.
+    let index = 0;
+    while (index < meshes.length) {
+      if (await hold()) return false;
+      const started = performance.now();
+      let introduced = false;
+      while (index < meshes.length && performance.now() - started < SLICE_MS) {
+        const mesh = meshes[index];
+        const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).filter(
+          (mat): mat is THREE.Material => Boolean(mat),
+        );
+        const novel = mats.some((mat) => !warmed.has(mat));
+        if (novel && introduced) break;
+        mesh.visible = true;
+        for (const mat of mats) warmed.add(mat);
+        if (novel) introduced = true;
+        index++;
+      }
+      try {
+        await renderer.compileAsync(scene, camera);
+      } catch {
+        renderer.compile(scene, camera);
+      }
+      renderer.render(scene, camera);
     }
+    for (const mesh of meshes) mesh.visible = true;
+
     const textures = sceneTextures();
-    for (let i = 0; i < textures.length; i += 3) {
-      await idleSlice();
-      if (disposed) return;
-      for (const texture of textures.slice(i, i + 3)) {
+    let texAt = 0;
+    while (texAt < textures.length) {
+      if (await hold()) return false;
+      const started = performance.now();
+      while (texAt < textures.length && performance.now() - started < SLICE_MS) {
         try {
-          renderer.initTexture(texture);
+          renderer.initTexture(textures[texAt]);
         } catch {
           // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
         }
+        texAt++;
       }
     }
-    await idleSlice();
-    if (disposed) return;
+    if (await hold()) return false;
     renderer.render(scene, camera);
     booted = true;
     needsRender = true;
+    return true;
   }
 
   function frame(ms: number) {
@@ -998,6 +1131,7 @@ export function createWerkstattScene(
       chatKey = "";
     })
     .catch(() => {});
+  if (await hold()) return;
   drawMonitor();
 
   const onVisibility = () => {
@@ -1005,7 +1139,7 @@ export function createWerkstattScene(
   };
   document.addEventListener("visibilitychange", onVisibility);
 
-  return {
+  bound = {
     goTo,
     step,
     setFraming(next) {
@@ -1089,4 +1223,45 @@ export function createWerkstattScene(
       if (el.parentElement === container) container.removeChild(el);
     },
   };
+
+  bound.setVisible(pendingVisible);
+  if (pendingLabels) bound.setLabelElements(pendingLabels.elements, pendingLabels.leaders);
+  bound.setFraming(pendingFraming);
+  if (pendingReduced !== reduced) bound.setReduced(pendingReduced);
+
+  try {
+    const buffer = await roomBytes;
+    if (await hold()) return;
+    await MeshoptDecoder.ready;
+    if (await hold()) return;
+    const gltf = await new Promise<import("three/examples/jsm/loaders/GLTFLoader.js").GLTF>((resolve, reject) => {
+      loader.parse(buffer, "", (parsed) => resolve(parsed), () => reject(new Error("room")));
+    });
+    if (await hold()) return;
+    if (!disposed) {
+      const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      gltf.scene.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        mesh.castShadow = !lite;
+        mesh.receiveShadow = !lite;
+        for (const mm of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+          const std = mm as THREE.MeshStandardMaterial;
+          if (std?.map) std.map.anisotropy = maxAniso;
+        }
+      });
+      roomRoot = gltf.scene;
+      scene.add(gltf.scene);
+      roomReady = true;
+      callbacks.onProgress?.(1);
+      needsRender = true;
+    }
+  } catch {
+    if (!disposed) {
+      callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar.");
+    }
+    return;
+  }
+  if (!(await warmGpu())) return;
+  }
 }
