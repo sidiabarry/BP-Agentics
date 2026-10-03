@@ -143,11 +143,9 @@ export function createWerkstattScene(
   } | null = null;
   let pendingReduced = reduced;
 
-  function heroCovering() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-    if (window.innerHeight < 560) return false;
-    const hero = document.querySelector(".hero-portal");
-    return hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 0;
+  function stageInView() {
+    const rect = container.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
   }
 
   function yieldSlice() {
@@ -989,9 +987,11 @@ export function createWerkstattScene(
         jobs.push(mesh);
       }
     });
-    // Ein Material pro Frame. Die Szene bleibt live: Auflösung, Schatten,
-    // Kameraschwung und Chat zeichnet erst der sichtbare Frame.
+    // Ein Material pro Frame, solange die Bühne noch unter dem Falz liegt.
+    // Steht sie schon im Bild, sofort live zeichnen: Auflösung, Schatten,
+    // Kameraschwung und Chat. Nicht auf die restlichen Scheiben warten.
     for (const mesh of jobs) {
+      if (stageInView()) break;
       if (await hold()) return false;
       try {
         renderer.compile(mesh, camera, scene);
@@ -1005,12 +1005,15 @@ export function createWerkstattScene(
     } catch {
       textures = [];
     }
-    for (const tex of textures) {
-      if (await hold()) return false;
-      try {
-        renderer.initTexture(tex);
-      } catch {
-        // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
+    if (!stageInView()) {
+      for (const tex of textures) {
+        if (stageInView()) break;
+        if (await hold()) return false;
+        try {
+          renderer.initTexture(tex);
+        } catch {
+          // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
+        }
       }
     }
     if (await hold()) return false;
@@ -1090,10 +1093,9 @@ export function createWerkstattScene(
     }
 
     if (moving || needsRender) {
-      // Der erste Vollframe dauert auf Software-GL über eine Sekunde.
-      // Solange der Hero noch im Bild ist, nicht zeichnen: sonst reißt
-      // genau dort die Hero-Bildrate. Danach jeder Scroll-Frame live.
-      if (heroCovering()) return;
+      // Sichtbar heißt live: volle Auflösung, Schatten, Schwung, Chat.
+      // Ein Rest des Hero-Portals (er endet knapp über der Bühne) darf
+      // das nicht aufhalten, sonst bleibt das Poster stehen.
       renderer.render(scene, camera);
       placeLabels();
       needsRender = false;

@@ -279,9 +279,8 @@ export function WerkstattSection() {
       if (poll) window.clearInterval(poll);
       poll = 0;
       schedule();
-      // Nicht an eine Scroll-Pause gebunden, sonst ist die Bühne bei
-      // durchgehendem Scroll schon vorbei. Der Hero ist hier schon fertig.
-      if (!prefersSaveData()) void start(false);
+      // Nur Datei und Parse. Der WebGL-Kontext startet erst kurz vor der
+      // Bühne, sonst laufen Shader-Scheiben durch den ganzen Hero.
     };
     poll = window.setInterval(arm, 50);
     arm();
@@ -315,12 +314,12 @@ export function WerkstattSection() {
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
-    // Mehrere Viewports vorher, aber nicht schon bei Scroll 0: sonst liegt
-    // der GPU-Vorlauf im ersten Scroll-Moment.
+    // Wie 5c1adf5 etwa 700px vorher, plus etwas Luft für die Scheiben,
+    // aber nicht schon im ersten Hero-Moment und nicht bei Scroll 0.
     const vh = window.innerHeight || 1;
     const docTop = stage.getBoundingClientRect().top + window.scrollY;
     const maxLead = Math.max(0, Math.floor(docTop - vh - 48));
-    const lead = Math.min(Math.round(vh * 2.6), maxLead);
+    const lead = Math.min(Math.max(700, Math.round(vh * 1.15)), maxLead);
     const near = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
