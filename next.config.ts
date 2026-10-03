@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1", "localhost", "172.30.0.2"],
   outputFileTracingRoot: path.join(process.cwd()),
   staticPageGenerationTimeout: 90,
+  trailingSlash: false,
   async headers() {
     // Modelle und Standbilder tragen die Version im Dateinamen (…v6…) und
     // dürfen deshalb dauerhaft im Browser-Cache bleiben.
@@ -14,6 +15,8 @@ const nextConfig: NextConfig = {
       { source: "/werkstatt/:file+", headers: immutable },
     ];
   },
+  // /BingSiteAuth.xml wird später als echte Bing-Datei nach public/ gelegt.
+  // Kein Rewrite, Redirect, Catch-all oder trailingSlash darf diesen Pfad abfangen.
   async redirects() {
     return [
       {

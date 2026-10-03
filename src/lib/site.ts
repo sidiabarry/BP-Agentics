@@ -40,9 +40,8 @@ export const site = {
     "Prozessautomatisierung",
     "MID Digitale Prozesse",
   ],
-  sameAs: [
-    "https://www.google.com/maps/search/?api=1&query=Kleiststra%C3%9Fe+9%2C+58095+Hagen",
-  ] as readonly string[],
+  sameAs: ["https://share.google/p6ZGte7IpVhv0IMQQ"] as readonly string[],
+  googlePlaceId: "g/11zxhxcgv_",
   defaultTitle:
     "BP Agentics | Websites & Online-Marketing für Handwerk – Hagen / NRW",
   defaultDescription:

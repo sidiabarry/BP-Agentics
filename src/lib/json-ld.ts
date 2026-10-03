@@ -46,6 +46,11 @@ export function organizationGraph() {
         })),
         knowsAbout: [...site.knowsAbout],
         sameAs: [...site.sameAs],
+        identifier: {
+          "@type": "PropertyValue",
+          propertyID: "googlePlaceId",
+          value: site.googlePlaceId,
+        },
         contactPoint: [
           {
             "@type": "ContactPoint",
