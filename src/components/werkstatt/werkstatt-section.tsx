@@ -172,12 +172,9 @@ export function WerkstattSection() {
     startedRef.current = true;
     if (announce) setPhase("loading");
     try {
-      // Der stille Vorlauf beginnt mit dem ersten Paint. Wartet er auf den
-      // fertigen Hero, landet das eine Standbild im ersten Scroll-Frame.
-      if (announce) {
-        await waitForHero(() => aliveRef.current);
-        if (!aliveRef.current) return;
-      }
+      // Erst wenn die Hero-Szene steht. Vorher kein zweiter WebGL-Kontext.
+      await waitForHero(() => aliveRef.current);
+      if (!aliveRef.current) return;
       const { createWerkstattScene } = await import("./scene-engine");
       if (!aliveRef.current) return;
       const controller = createWerkstattScene(
@@ -229,8 +226,8 @@ export function WerkstattSection() {
     void start();
   }, [start]);
 
-  // Datei und Parse, sobald der Hero nicht mehr blockiert. Das WebGL-Standbild
-  // startet schon mit dem ersten Paint, sonst liegt es im ersten Scroll-Frame.
+  // Datei und Parse, sobald der Hero steht. Der WebGL-Kontext kommt erst
+  // danach, eine Scheibe pro Frame, und die Bühne zeichnet live.
   useEffect(() => {
     let cancelled = false;
     let link: HTMLLinkElement | null = null;
@@ -282,11 +279,12 @@ export function WerkstattSection() {
       if (poll) window.clearInterval(poll);
       poll = 0;
       schedule();
+      // Nicht an eine Scroll-Pause gebunden, sonst ist die Bühne bei
+      // durchgehendem Scroll schon vorbei. Der Hero ist hier schon fertig.
+      if (!prefersSaveData()) void start(false);
     };
     poll = window.setInterval(arm, 50);
     arm();
-    // GPU-Vorlauf sofort, nicht erst wenn der Hero fertig ist.
-    void start(false);
 
     return () => {
       cancelled = true;

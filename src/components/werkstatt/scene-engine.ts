@@ -143,16 +143,16 @@ export function createWerkstattScene(
   } | null = null;
   let pendingReduced = reduced;
 
-  let scrolls = 0;
-  const noteScroll = () => {
-    scrolls += 1;
-  };
-  window.addEventListener("scroll", noteScroll, { passive: true });
-  const stopScrollWatch = () => window.removeEventListener("scroll", noteScroll);
+  function heroCovering() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+    if (window.innerHeight < 560) return false;
+    const hero = document.querySelector(".hero-portal");
+    return hero instanceof HTMLElement && hero.getBoundingClientRect().bottom > 0;
+  }
 
   function yieldSlice() {
-    // Eine Scheibe pro Frame, auch während gescrollt wird. Ein setTimeout(0)
-    // würde mehrere Scheiben in denselben Task legen.
+    // Eine Scheibe pro Frame. Kein setTimeout(0): das würde mehrere
+    // Scheiben in denselben Task legen.
     return new Promise<void>((resolve) => {
       requestAnimationFrame(() => resolve());
     });
@@ -183,7 +183,6 @@ export function createWerkstattScene(
     },
     dispose() {
       disposed = true;
-      stopScrollWatch();
       bound?.dispose();
     },
   };
@@ -193,22 +192,7 @@ export function createWerkstattScene(
 
   async function boot() {
   const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
-  // Volle Frames dieser Szene dauern auf Software-GL über eine Sekunde.
-  // Während gescrollt wird, zeichnet ein kleines Pufferbild; die CSS-Größe
-  // bleibt. Steht der Scroll, kommt das volle Bild zurück. Zeiten und Posen
-  // der Animation bleiben dieselben.
-  // Ein Standbild, einmal vor dem Scrollen. Große Bühnen bei halber
-  // Auflösung, kleine in voller: die Pixelzahl bleibt ähnlich, damit
-  // dieser eine Draw vor dem ersten Scroll-Frame fertig ist.
-  const draftRatio = () => (size().w * size().h > 500_000 ? 0.5 : 1);
-  const FULL_SHADOW = 1024;
   let renderer!: THREE.WebGLRenderer;
-  let drawDraft = true;
-  let settledScrolls = -1;
-  let snapshotDirty = true;
-  let snapshotReady = false;
-  let snapshotShown = false;
-  let quietFrames = 0;
   const hold = async () => {
     await yieldSlice();
     if (!disposed) return false;
@@ -233,13 +217,16 @@ export function createWerkstattScene(
     return;
   }
   if (!renderer) return;
+  // getProgramInfoLog würde jede Kompilierung synchron zu Ende warten.
+  // Aus, damit eine Scheibe den Hero nicht blockiert; der erste sichtbare
+  // Frame zeichnet danach live, in voller Auflösung, mit Schatten.
   renderer.debug.checkShaderErrors = false;
   const size = () => ({ w: Math.max(1, container.clientWidth), h: Math.max(1, container.clientHeight) });
-  renderer.setPixelRatio(draftRatio());
+  renderer.setPixelRatio(pixelRatio());
   renderer.setSize(size().w, size().h, false);
   renderer.domElement.style.width = "100%";
   renderer.domElement.style.height = "100%";
-  renderer.shadowMap.enabled = false;
+  renderer.shadowMap.enabled = !lite;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
@@ -317,8 +304,8 @@ export function createWerkstattScene(
   const key = new THREE.SpotLight("#f8ce9c", 125, 20, 0.85, 0.8, 1.7);
   key.position.set(-3, 6, 4);
   key.target.position.set(0, 0, -0.5);
-  key.castShadow = false;
-  key.shadow.mapSize.set(FULL_SHADOW, FULL_SHADOW);
+  key.castShadow = !lite;
+  key.shadow.mapSize.set(1024, 1024);
   key.shadow.bias = -0.00015;
   key.shadow.normalBias = 0.025;
   scene.add(key, key.target);
@@ -935,32 +922,9 @@ export function createWerkstattScene(
     }
   }
 
-  function applyDrawQuality(draft: boolean) {
-    if (draft === drawDraft) return;
-    drawDraft = draft;
-    const { w, h } = size();
-    renderer.setPixelRatio(draft ? draftRatio() : pixelRatio());
-    renderer.setSize(w, h, false);
-    snapshotDirty = true;
-    snapshotReady = false;
-    snapshotShown = false;
-    if (lite) return;
-    // Schatten machen auf Software-GL jeden Frame zum Ruck. Beim Scrollen
-    // bleiben sie aus, im Stand kommt die volle Karte zurück.
-    renderer.shadowMap.enabled = !draft;
-    const wantShadow = !draft;
-    if (key.castShadow !== wantShadow) {
-      key.castShadow = wantShadow;
-      if (key.shadow.map) {
-        key.shadow.map.dispose();
-        key.shadow.map = null;
-      }
-    }
-  }
-
   function resize() {
     const { w, h } = size();
-    renderer.setPixelRatio(drawDraft ? draftRatio() : pixelRatio());
+    renderer.setPixelRatio(pixelRatio());
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -995,152 +959,6 @@ export function createWerkstattScene(
     return found;
   }
 
-  function programProxy(mesh: THREE.Mesh, material: THREE.Material) {
-    const skin = mesh as THREE.SkinnedMesh;
-    if (skin.isSkinnedMesh) {
-      const skinned = new THREE.SkinnedMesh(skin.geometry, material);
-      if (skin.skeleton) skinned.bind(skin.skeleton, skin.bindMatrix);
-      skinned.morphTargetInfluences = skin.morphTargetInfluences;
-      skinned.morphTargetDictionary = skin.morphTargetDictionary;
-      return skinned;
-    }
-    const instanced = mesh as THREE.InstancedMesh;
-    if (instanced.isInstancedMesh) {
-      return new THREE.InstancedMesh(instanced.geometry, material, instanced.count);
-    }
-    return new THREE.Mesh(mesh.geometry, material);
-  }
-
-  const SNAPSHOT_TRIS = 1_000_000;
-  let snapshot: THREE.WebGLRenderTarget | null = null;
-  let blitScene: THREE.Scene | null = null;
-  let blitCam: THREE.OrthographicCamera | null = null;
-  let snapshotBatches: { mesh: THREE.Mesh; start: number; count: number }[][] = [];
-  let snapshotCursor = 0;
-  let snapshotBuiltFor = "";
-
-  function geometryCount(geo: THREE.BufferGeometry) {
-    return geo.index ? geo.index.count : (geo.getAttribute("position")?.count ?? 0);
-  }
-
-  function snapshotKey() {
-    return `${renderer.domElement.width}x${renderer.domElement.height}`;
-  }
-
-  function ensureBlit() {
-    if (snapshot && blitScene && blitCam) return;
-    snapshot = new THREE.WebGLRenderTarget(16, 16);
-    snapshot.texture.colorSpace = renderer.outputColorSpace;
-    blitCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    blitScene = new THREE.Scene();
-    const quad = new THREE.Mesh(
-      new THREE.PlaneGeometry(2, 2),
-      new THREE.MeshBasicMaterial({
-        map: snapshot.texture,
-        depthTest: false,
-        depthWrite: false,
-        toneMapped: false,
-      }),
-    );
-    quad.frustumCulled = false;
-    blitScene.add(quad);
-  }
-
-  function markReady() {
-    if (roomReady && !readyFired) {
-      readyFired = true;
-      callbacks.onReady();
-    }
-  }
-
-  function queueSnapshot() {
-    ensureBlit();
-    const items: { mesh: THREE.Mesh; start: number; count: number }[] = [];
-    const budget = SNAPSHOT_TRIS * 3;
-    scene.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
-      if (!mesh.isMesh || !mesh.geometry) return;
-      const count = geometryCount(mesh.geometry);
-      if (count <= budget) {
-        items.push({ mesh, start: 0, count });
-        return;
-      }
-      for (let start = 0; start < count; start += budget) {
-        items.push({ mesh, start, count: Math.min(budget, count - start) });
-      }
-    });
-    snapshotBatches = [];
-    let batch: { mesh: THREE.Mesh; start: number; count: number }[] = [];
-    let tris = 0;
-    for (const item of items) {
-      const itemTris = item.count / 3;
-      if (batch.length && tris + itemTris > SNAPSHOT_TRIS) {
-        snapshotBatches.push(batch);
-        batch = [];
-        tris = 0;
-      }
-      batch.push(item);
-      tris += itemTris;
-    }
-    if (batch.length) snapshotBatches.push(batch);
-    snapshotCursor = 0;
-    snapshotReady = false;
-    snapshotBuiltFor = snapshotKey();
-    snapshot!.setSize(Math.max(1, renderer.domElement.width), Math.max(1, renderer.domElement.height));
-  }
-
-  function drawSnapshotSlice() {
-    if (snapshotCursor >= snapshotBatches.length) {
-      snapshotReady = true;
-      markReady();
-      return;
-    }
-    const batch = snapshotBatches[snapshotCursor];
-    snapshotCursor += 1;
-    const first = snapshotCursor === 1;
-    const inBatch = new Set(batch.map((item) => item.mesh));
-    const hidden: THREE.Mesh[] = [];
-    const ranges: { geo: THREE.BufferGeometry; start: number; count: number }[] = [];
-    scene.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
-      if (!mesh.isMesh || !mesh.visible) return;
-      if (!inBatch.has(mesh)) {
-        mesh.visible = false;
-        hidden.push(mesh);
-      }
-    });
-    for (const item of batch) {
-      const geo = item.mesh.geometry;
-      ranges.push({ geo, start: geo.drawRange.start, count: geo.drawRange.count });
-      geo.setDrawRange(item.start, item.count);
-    }
-    renderer.setRenderTarget(snapshot);
-    renderer.autoClear = first;
-    if (first && snapshot) renderer.clear();
-    try {
-      renderer.render(scene, camera);
-    } catch {
-      // Diese Scheibe holt der Stand-Frame nach.
-    }
-    renderer.setRenderTarget(null);
-    renderer.autoClear = true;
-    for (const range of ranges) range.geo.setDrawRange(range.start, range.count);
-    for (const mesh of hidden) mesh.visible = true;
-    if (snapshotCursor >= snapshotBatches.length) {
-      snapshotReady = true;
-      markReady();
-    }
-  }
-
-  function drawMovingLayer() {
-    if (!blitScene || !blitCam) return;
-    // Nur das Standbild. Die volle Szene hat auf Software-GL mehrere
-    // hundert Millisekunden; die Pose läuft weiter und erscheint im Stand.
-    renderer.setRenderTarget(null);
-    renderer.autoClear = true;
-    renderer.render(blitScene, blitCam);
-  }
-
   async function warmGpu() {
     if (disposed || booted) return false;
     const { w, h } = size();
@@ -1151,7 +969,7 @@ export function createWerkstattScene(
     camera.updateProjectionMatrix();
     applyOffset(baseOffset);
 
-    const jobs: { mesh: THREE.Mesh; material: THREE.Material }[] = [];
+    const jobs: THREE.Mesh[] = [];
     const seen = new Set<string>();
     scene.traverse((obj) => {
       const mesh = obj as THREE.Mesh;
@@ -1168,17 +986,15 @@ export function createWerkstattScene(
         const jobKey = `${material.uuid}:${kind}`;
         if (seen.has(jobKey)) continue;
         seen.add(jobKey);
-        jobs.push({ mesh, material });
+        jobs.push(mesh);
       }
     });
-    // checkShaderErrors ist aus, daher blockiert compile() hier nicht auf
-    // getProgramInfoLog. Kompilieren und die kleinen Texturen in diesem
-    // einen Vorlauf, dann genau ein Standbild. Ein Vollbild pro Scroll-Frame
-    // wäre der mehrsekündige Ruck.
-    for (const job of jobs) {
-      const proxy = programProxy(job.mesh, job.material);
+    // Ein Material pro Frame. Die Szene bleibt live: Auflösung, Schatten,
+    // Kameraschwung und Chat zeichnet erst der sichtbare Frame.
+    for (const mesh of jobs) {
+      if (await hold()) return false;
       try {
-        renderer.compile(proxy, camera, scene);
+        renderer.compile(mesh, camera, scene);
       } catch {
         // Dieses Material holt der erste sichtbare Frame nach.
       }
@@ -1190,59 +1006,23 @@ export function createWerkstattScene(
       textures = [];
     }
     for (const tex of textures) {
+      if (await hold()) return false;
       try {
         renderer.initTexture(tex);
       } catch {
         // Textur noch ohne Bild: der erste sichtbare Frame lädt sie nach.
       }
     }
-    if (disposed) return false;
-    drawMonitor();
-    const snapT = performance.now() / 1000;
-    const snapChat = chatState(snapT);
-    chatKey = `${snapChat.phase}-${snapChat.index}`;
-    drawChat(snapChat.phase, snapChat.index);
-    try {
-      renderer.initTexture(screenTex);
-      renderer.initTexture(chatTex);
-    } catch {
-      // Der Stand-Frame holt die Flächen nach.
-    }
+    if (await hold()) return false;
     booted = true;
     needsRender = true;
-    applyDrawQuality(true);
-    queueSnapshot();
-    snapshotDirty = false;
-    drawSnapshotSlice();
-    if (snapshotReady) {
-      drawMovingLayer();
-      snapshotShown = true;
-      markReady();
-    }
     return true;
   }
 
   function frame(ms: number) {
     if (disposed) return;
     rafId = requestAnimationFrame(frame);
-    if (!booted || document.hidden || webglFailed) return;
-    const scrolled = scrolls !== settledScrolls;
-    quietFrames = scrolled ? 0 : quietFrames + 1;
-    // Solange die Bühne nicht im Bild ist, beim Entwurf bleiben. Ein einzelner
-    // Frame ohne Scroll-Event schaltet nicht auf die volle Szene um.
-    const drafting = !visible || quietFrames < 3;
-    settledScrolls = scrolls;
-    if (drafting !== drawDraft) {
-      applyDrawQuality(drafting);
-      needsRender = true;
-    }
-    if (drawDraft && !snapshotReady) {
-      if (snapshotDirty || snapshotBuiltFor !== snapshotKey()) queueSnapshot();
-      snapshotDirty = false;
-      drawSnapshotSlice();
-      return;
-    }
-    if (!visible) return;
+    if (!booted || !visible || document.hidden || webglFailed) return;
     if (minInterval && ms - last < minInterval - 2) return;
     last = ms;
     const t = ms / 1000;
@@ -1276,8 +1056,7 @@ export function createWerkstattScene(
       drift.y += ddy * 0.06;
       moving = true;
     }
-    const sway = drawDraft ? 0 : 1;
-    camera.position.set(basePos.x + drift.x * sway, basePos.y + drift.y * sway, basePos.z);
+    camera.position.set(basePos.x + drift.x, basePos.y + drift.y, basePos.z);
     camera.lookAt(baseTarget);
     camera.fov = baseFov;
     applyOffset(baseOffset);
@@ -1310,22 +1089,18 @@ export function createWerkstattScene(
       moving = true;
     }
 
-    if (drawDraft && snapshotReady) {
-      if (!snapshotShown) {
-        drawMovingLayer();
-        snapshotShown = true;
-      }
-      placeLabels();
-      needsRender = false;
-      markReady();
-      return;
-    }
-
     if (moving || needsRender) {
+      // Der erste Vollframe dauert auf Software-GL über eine Sekunde.
+      // Solange der Hero noch im Bild ist, nicht zeichnen: sonst reißt
+      // genau dort die Hero-Bildrate. Danach jeder Scroll-Frame live.
+      if (heroCovering()) return;
       renderer.render(scene, camera);
       placeLabels();
       needsRender = false;
-      markReady();
+      if (roomReady && !readyFired) {
+        readyFired = true;
+        callbacks.onReady();
+      }
     }
   }
   rafId = requestAnimationFrame(frame);
@@ -1424,7 +1199,6 @@ export function createWerkstattScene(
       });
       screenTex.dispose();
       chatTex.dispose();
-      snapshot?.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
       if (el.parentElement === container) container.removeChild(el);
@@ -1463,11 +1237,9 @@ export function createWerkstattScene(
     if (!disposed) {
       callbacks.onFallback("Das Studio konnte nicht geladen werden. Die Leistungen bleiben unten erreichbar.");
     }
-    stopScrollWatch();
     return;
   }
   if (!(await warmGpu())) {
-    stopScrollWatch();
     return;
   }
   }
