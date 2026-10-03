@@ -91,7 +91,12 @@ export default function AuftrittPage() {
           Website-Demo
         </Link>
         {" "}
-        — Produktdemo, kein Echtbetrieb.
+        — Produktdemo, kein Echtbetrieb. Einen Bestellweg als Kundengeschichte
+        zeigt das{" "}
+        <Link href="/referenzen/feinkost-kreta" className="font-semibold text-[#198BE8] underline-offset-4 hover:underline">
+          Projekt Feinkost Kreta
+        </Link>
+        .
       </p>
 
       <StageCard className="mt-10" kicker="Einordnung" title="Pakete hier, Überblick auf der Antwortseite.">

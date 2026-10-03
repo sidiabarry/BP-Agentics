@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageFaqs } from "@/components/page-faqs";
 import { StageCard } from "@/components/stage-blocks";
 import { StagePage } from "@/components/stage-page";
+import { feinkostStores } from "@/lib/feinkost";
 import { faqPage } from "@/lib/json-ld";
 import { industryList } from "@/lib/content";
 import { PRICE_NOTE, cta, websitePackages, whatsappOffer } from "@/lib/offers";
@@ -309,6 +310,37 @@ export default function WebdesignFuerHandwerkerPage() {
           Was man sich ansehen kann
         </h2>
         <div className="mt-6 grid gap-4">
+          <StageCard kicker="Kundenprojekt" title="Feinkost Kreta">
+            <p>
+              Für Feinkost Kreta hat BP Agentics eine Bestell-App entwickelt. Stammkunden bestellen
+              angemeldet in wenigen Schritten, ihre Angaben bleiben gespeichert, und der Betrieb
+              wird über jede Bestellung benachrichtigt. Für Olivenöl gibt es eine automatische
+              Erinnerung nach etwa sechs Monaten. Die App ist im{" "}
+              <a
+                href={feinkostStores.googlePlay}
+                className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+              >
+                Google Play Store
+              </a>{" "}
+              und im{" "}
+              <a
+                href={feinkostStores.appStore}
+                className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+              >
+                App Store
+              </a>{" "}
+              verfügbar. Das Projekt ist eine App, keine Handwerker-Website. Es zeigt, wie BP
+              Agentics einen Bestell- und Anfrageweg für einen echten Betrieb umsetzt.
+            </p>
+            <p className="mt-3">
+              <Link
+                href="/referenzen/feinkost-kreta"
+                className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+              >
+                Projekt Feinkost Kreta ansehen
+              </Link>
+            </p>
+          </StageCard>
           <StageCard kicker="Produktdemo" title="Dachdecker, Website Signature">
             <p>
               Die Demo zeigt eine mögliche Gestaltung für einen Dachdeckerbetrieb mit Bildern,

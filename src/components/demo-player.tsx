@@ -3,7 +3,8 @@
 /**
  * DemoPlayer — BP Agentics
  * ---------------------------------------------------------------------------
- * <DemoLoop />   Querformat-Schleife mit optionaler Vollversion
+ * <DemoLoop />   Querformat-Schleife (Dachdecker) mit optionaler Vollversion
+ * <PhoneDemo />  Hochformat-Schleife im Telefonrahmen (Feinkost Kreta)
  *
  * src steht erst, wenn der Block nahe ist. preload="none" allein reicht in
  * Chrome nicht. prefers-reduced-motion lädt nie ein Video.
@@ -186,6 +187,78 @@ export function DemoLoop({
         <figcaption className="mt-3 text-sm text-[#5C5F66]">
           {caption}
           {note ? <span className="ml-2 text-[#5C5F66]/70">{note}</span> : null}
+        </figcaption>
+      ) : null}
+      {open && fullSrc ? <Lightbox src={fullSrc} onClose={close} /> : null}
+    </figure>
+  );
+}
+
+type PhoneDemoProps = Omit<DemoLoopProps, "className"> & {
+  className?: string;
+  width?: number;
+};
+
+export function PhoneDemo({
+  src,
+  poster,
+  fullSrc,
+  caption,
+  note,
+  posterAlt,
+  className = "",
+  width = 300,
+}: PhoneDemoProps) {
+  const wrapRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const motion = useMotionAllowed();
+  const [open, setOpen] = useState(false);
+  const { near, inView } = useNearAndPlaying(wrapRef, motion);
+  useLoopPlayback(videoRef, inView, motion);
+  const close = useCallback(() => setOpen(false), []);
+
+  return (
+    <figure ref={wrapRef} className={cn("flex w-full max-w-full flex-col items-center", className)}>
+      <div
+        style={{ maxWidth: Math.min(width, 240) }}
+        className="relative w-[min(100%,13.25rem)] rounded-[2.2rem] bg-[#14161C] p-2 shadow-2xl ring-1 ring-black/20"
+      >
+        <div className="absolute top-3 left-1/2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-white/20" />
+        <div className="overflow-hidden rounded-[1.7rem] bg-black">
+          {motion ? (
+            <video
+              ref={videoRef}
+              src={near ? src : undefined}
+              poster={poster}
+              muted
+              loop
+              playsInline
+              preload="none"
+              aria-label={posterAlt ?? caption ?? "App-Demo"}
+              className="block h-auto w-full"
+              onLoadedData={() => {
+                if (inView) videoRef.current?.play().catch(() => {});
+              }}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={poster} alt={posterAlt ?? caption ?? "App-Demo"} className="block h-auto w-full" />
+          )}
+        </div>
+      </div>
+      {fullSrc ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="mt-4 text-sm font-medium text-[#9FD0F8] underline underline-offset-4 hover:text-white"
+        >
+          Ganzen Bestellweg ansehen
+        </button>
+      ) : null}
+      {caption || note ? (
+        <figcaption className="mt-3 max-w-xs text-center text-sm text-white/70">
+          {caption}
+          {note ? <span className="mt-1 block text-white/45">{note}</span> : null}
         </figcaption>
       ) : null}
       {open && fullSrc ? <Lightbox src={fullSrc} onClose={close} /> : null}

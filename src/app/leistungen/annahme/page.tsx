@@ -182,8 +182,17 @@ export default function AnnahmePage() {
       <StageCard className="mt-4" kicker="Ansprechpartner" title="Wer das einrichtet.">
         <p>
           BP Agentics ist die Agentur von {site.founder.name}, {site.streetAddress}, {site.postalCode}{" "}
-          {site.addressLocality}. Sie sprechen während der Einrichtung direkt mit mir. Der Dialog
-          auf dieser Seite ist ein Beispiel ohne echte Buchung.
+          {site.addressLocality}. Sie sprechen während der Einrichtung direkt mit mir. Ein
+          Kundenprojekt mit echtem Bestellweg ist die App für{" "}
+          <Link
+            href="/referenzen/feinkost-kreta"
+            className="font-semibold text-[#198BE8] underline-offset-4 hover:underline"
+          >
+            Feinkost Kreta
+          </Link>
+          : Stammkunden bestellen angemeldet, der Betrieb wird über jede Bestellung benachrichtigt.
+          Das ist kein Nachrichten-Assistent, sondern ein anderer digitaler Anfrage- und Bestellweg.
+          Der Dialog auf dieser Seite ist ein Beispiel ohne echte Buchung.
         </p>
       </StageCard>
 
